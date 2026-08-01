@@ -1,0 +1,42 @@
+{
+  "name": "日语五十音图",
+  "lang": "ja",
+  "description": "日语基础五十音图:46 个清音 + 拨音「ん」。每张卡同时显示平假名与片假名、罗马字、所属行,并附一个例词。适合零基础入门识记。",
+  "cardHtml": "<div class=\"jgo-card\" data-card-id=\"{{id}}\"></div>",
+  "cardCss": "\n.jgo-card {\n    background: var(--card-bg, #ffffff);\n    border-radius: 18px;\n    padding: 22px 28px 18px;\n    box-shadow: 0 1px 3px rgba(30,41,59,.10), 0 8px 24px rgba(30,41,59,.08);\n    border: 1px solid var(--line, #e6e9f0);\n    border-top: 4px solid #4f6bed;\n    min-height: 260px;\n    display: flex; flex-direction: column;\n    font-family: \"Hiragino Sans\",\"Hiragino Kaku Gothic ProN\",\"Noto Sans JP\",\"Yu Gothic\",\"PingFang SC\",sans-serif;\n}\n.jgo-row {\n    display: inline-flex; align-items: center; gap: 8px;\n    align-self: flex-start;\n    background: #eef1ff; color: #4f6bed;\n    font-size: calc(13px * var(--card-font-scale,1));\n    font-weight: 700;\n    padding: 4px 12px; border-radius: 999px;\n    margin-bottom: 8px;\n}\n.jgo-kana {\n    display: flex; align-items: center; justify-content: center;\n    gap: 30px; margin: 4px 0; flex: 1; flex-wrap: wrap;\n}\n.jgo-kana-block { text-align: center; }\n.jgo-hira, .jgo-kata { line-height: 1.1; color: #1e293b; font-weight: var(--card-font-weight, 700); }\n.jgo-hira { font-size: calc(76px * var(--card-font-scale,1)); }\n.jgo-kata { font-size: calc(42px * var(--card-font-scale,1)); color: #4f6bed; }\n.jgo-kana-label {\n    font-size: calc(11px * var(--card-font-scale,1));\n    color: #94a3b8; margin-top: 4px; letter-spacing: 2px;\n}\n.jgo-romaji {\n    text-align: center;\n    font-size: calc(22px * var(--card-font-scale,1));\n    font-weight: 700; color: #334155; letter-spacing: 3px;\n    margin: 2px 0 10px;\n}\n.jgo-example {\n    border-top: 1px dashed var(--line, #e6e9f0);\n    padding-top: 10px; margin-top: auto;\n    font-size: calc(14px * var(--card-font-scale,1));\n    color: #475569; line-height: 1.5;\n}\n.jgo-example .jgo-ex-word { color: #4f6bed; font-weight: 700; }\n.jgo-tools { display: flex; gap: 6px; margin-top: 12px; }\n.jgo-tools .action-btn { width: 38px; height: 38px; border: none; background: var(--action-btn-bg, #eef1ff); border-radius: 90px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #4f6bed; transition: all .2s; }\n.jgo-tools .action-btn:hover { background: #dfe5ff; }\n.jgo-tools .action-btn.is-active { background: #4f6bed; color: #fff; }\n\n.action-btn i { font-size: 18px; line-height: 1; }\n.action-btn:hover i { transform: scale(1.1); }\n\n.jgo-card { margin-bottom: 16px; }\n\n.jgo-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; }\n.jgo-top .jgo-tools { margin-top: 0; }\n",
+  "cardJs": "(function () {\n    'use strict';\n    function esc(s) {\n        if (s == null) return '';\n        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n    }\n    window.cardTemplate = {\n        name: '日语五十音图',\n        fields: [\n            { key: 'hiragana', label: '平假名', hideable: false },\n            { key: 'katakana', label: '片假名', hideable: false },\n            { key: 'romaji',   label: '罗马字' },\n            { key: 'row',      label: '行' },\n            { key: 'example',  label: '例词' }\n        ],\n        render: function (cardHtml, cardData, api) {\n            var data = api.getCardData ? api.getCardData() : cardData;\n            var d = data.data || {};\n            var hidden = (api.getHiddenFields && api.getHiddenFields()) || {};\n            function isHidden(k) { return hidden.has && hidden.has(k); }\n            function wrap(k, html) { return isHidden(k) ? '' : html; }\n            var markActive = data.is_unknown === 1 ? 'is-active' : '';\n            var favActive = data.is_favorite === 1 ? 'is-active' : '';\n            var exampleHtml = '';\n            if (d.example) {\n                var m = String(d.example).match(/^(.*?)[（(](.*)[）)]$/);\n                var word = m ? m[1] : d.example;\n                var mean = m ? m[2] : '';\n                exampleHtml = '<div class=\"jgo-example\">例：<span class=\"jgo-ex-word\">' + esc(word) + '</span>'\n                    + (mean ? '（' + esc(mean) + '）' : '') + '</div>';\n            }\n            return '<div class=\"jgo-card\" data-card-id=\"' + data.id + '\">' +\n                '<div class=\"jgo-top\">' +\n                    wrap('row', '<span class=\"jgo-row\">' + esc(d.row || '') + ' 行</span>') +\n                    '<div class=\"jgo-tools\">' +\n                        '<button class=\"action-btn act-play\" data-action=\"play\" data-tooltip=\"朗读\"><i class=\"fa-solid fa-volume-high\"></i></button>' +\n                        '<button class=\"action-btn act-mark ' + markActive + '\" data-action=\"mark\" data-tooltip=\"标记\"><i class=\"' + (data.is_unknown === 1 ? 'fa-solid' : 'fa-regular') + ' fa-star\"></i></button>' +\n                        '<button class=\"action-btn act-fav ' + favActive + '\" data-action=\"favorite\" data-tooltip=\"收藏\"><i class=\"' + (data.is_favorite === 1 ? 'fa-solid' : 'fa-regular') + ' fa-bookmark\"></i></button>' +\n                    '</div>' +\n                '</div>' +\n                '<div class=\"jgo-kana\">' +\n                    wrap('hiragana', '<div class=\"jgo-kana-block\"><div class=\"jgo-hira\">' + esc(d.hiragana) + '</div><div class=\"jgo-kana-label\">平假名</div></div>') +\n                    wrap('katakana', '<div class=\"jgo-kana-block\"><div class=\"jgo-kata\">' + esc(d.katakana) + '</div><div class=\"jgo-kana-label\">片假名</div></div>') +\n                '</div>' +\n                wrap('romaji', '<div class=\"jgo-romaji\">' + esc(d.romaji) + '</div>') +\n                wrap('example', exampleHtml) +\n            '</div>';\n        },\n        init: function (el, cardData, api) {\n            api.track('definition_view');\n            var playBtn = el.querySelector('[data-action=\"play\"]');\n            if (playBtn) playBtn.addEventListener('click', function () {\n                var d = (cardData && cardData.data) || {};\n                api.playAudio(d.hiragana || d.romaji || '');\n                api.track('audio_play');\n            });\n            var markBtn = el.querySelector('[data-action=\"mark\"]');\n            if (markBtn) markBtn.addEventListener('click', function () {\n                api.toggleMark().then(function () { api.rerender(); });\n                api.track('word_mark');\n            });\n            var favBtn = el.querySelector('[data-action=\"favorite\"]');\n            if (favBtn) favBtn.addEventListener('click', function () {\n                api.toggleFavorite().then(function () { api.rerender(); });\n                api.track('favorite_toggle');\n            });\n        }\n    };\n})();",
+  "trackedActions": [
+    {
+      "action": "definition_view",
+      "label": "查看"
+    },
+    {
+      "action": "audio_play",
+      "label": "朗读"
+    },
+    {
+      "action": "word_mark",
+      "label": "标记"
+    },
+    {
+      "action": "favorite_toggle",
+      "label": "收藏"
+    }
+  ],
+  "sampleData": [
+    {
+      "hiragana": "あ",
+      "katakana": "ア",
+      "romaji": "a",
+      "row": "あ",
+      "example": "あか（红色）"
+    },
+    {
+      "hiragana": "か",
+      "katakana": "カ",
+      "romaji": "ka",
+      "row": "か",
+      "example": "かさ（伞）"
+    }
+  ]
+}

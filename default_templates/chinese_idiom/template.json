@@ -1,0 +1,88 @@
+{
+  "name": "Chinese Idiom Card",
+  "lang": "zh",
+  "description": "Learn Chinese idioms (成语) with pinyin, meaning, and usage examples.",
+  "cardHtml": "<div class=\"idiom-card\" data-card-id=\"{{id}}\">\n    <div class=\"idiom-header\">\n        <div class=\"idiom-basic\">\n            <span class=\"idiom-index\">{{current_order}}</span>\n            <span class=\"idiom-word\">{{idiom}}</span>\n        </div>\n        <div class=\"idiom-tools\">\n            <button class=\"action-btn act-play\" data-action=\"play\" data-tooltip=\"Play Pronunciation\">\n                <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n            </button>\n            <button class=\"action-btn act-mark {{markActive}}\" data-action=\"mark\" data-tooltip=\"Mark as Unknown\">\n                <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"{{markFill}}\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"/></svg>\n            </button>\n            <button class=\"action-btn act-fav {{favActive}}\" data-action=\"favorite\" data-tooltip=\"Favorite\">\n                <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"{{favFill}}\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z\"/></svg>\n            </button>\n        </div>\n    </div>\n    <div class=\"idiom-body\">\n        <div class=\"idiom-section show\">\n            <div class=\"idiom-label\">Pinyin</div>\n            <div class=\"idiom-pinyin\">{{pinyin}}</div>\n        </div>\n        <div class=\"idiom-section {{meaningShow}}\">\n            <div class=\"idiom-label\">释义</div>\n            <div class=\"idiom-meaning\">{{meaning}}</div>\n        </div>\n        <div class=\"idiom-section show\">\n            <div class=\"idiom-label\">例句</div>\n            <div class=\"idiom-example\">{{example}}</div>\n        </div>\n    </div>\n    <div class=\"idiom-actions\">\n        <button class=\"idiom-btn {{meaningActive}}\" data-action=\"toggle-meaning\" data-tooltip=\"Show Meaning\">释</button>\n    </div>\n</div>",
+  "cardCss": ".idiom-card {\n    background: var(--card-bg, #ffffff);\n    border-radius: 16px;\n    padding: 14px 18px;\n    box-shadow: 0 1px 3px rgba(190, 18, 60, 0.05);\n    border: 1px solid var(--line, #e6e6e6);\n    border-left: 4px solid #be123c;\n    margin-bottom: 16px;\n    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;\n}\n.idiom-card:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(190, 18, 60, 0.10); border-color: #f9d0d0; }\n.idiom-card:active { transform: scale(0.99); }\n.idiom-card.enter { animation: cardIn 0.5s both; }\n@keyframes cardIn {\n    from { opacity: 0; transform: translateY(14px) scale(0.99); }\n    to   { opacity: 1; transform: none; }\n}\n.idiom-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; }\n.idiom-basic { display: flex; align-items: center; gap: 10px; min-width: 0; }\n.idiom-index { color: var(--ink-3, #64748b); font-size: calc(12px * var(--card-font-scale, 1)); font-weight: var(--card-font-weight, 600); }\n.idiom-word { font-size: calc(30px * var(--card-font-scale, 1)); font-weight: 800; color: #be123c; letter-spacing: 4px; }\n.idiom-tools { display: flex; gap: 6px; flex-shrink: 0; }\n.idiom-tools .action-btn {\n    width: 40px; height: 40px; border: none; background: var(--action-btn-bg, #f1f5f9);\n    border-radius: 90px; cursor: pointer; display: flex; align-items: center; justify-content: center;\n    color: var(--ink-3, #64748b); transition: all 0.2s;\n}\n.idiom-tools .action-btn svg, .action-btn i { width: 22px; height: 22px; transition: transform 0.18s; }\n.idiom-tools .action-btn:hover { transform: translateY(-2px); }\n.idiom-tools .action-btn:hover svg { transform: scale(1.1); }\n.idiom-tools .act-play:hover { background: #be123c; color: #fff; box-shadow: 0 4px 12px rgba(190, 18, 60, 0.3); }\n.idiom-tools .eye-btn { background: var(--action-btn-bg, #f1f5f9); color: var(--ink-3, #64748b); }\n.idiom-tools .eye-btn:hover { background: var(--amber-soft, #fef3c7); color: var(--amber, #d97706); box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3); }\n.idiom-tools .eye-btn.is-active { background: var(--amber, #d97706); color: #fff; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3); }\n.idiom-tools .act-mark:hover { background: var(--unknown-soft, #ffe4e6); color: var(--unknown, #f43f5e); box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3); }\n.idiom-tools .act-mark.is-active { background: var(--unknown, #f43f5e); color: #fff; box-shadow: 0 4px 14px rgba(244, 63, 94, 0.3); }\n.idiom-tools .act-fav:hover { background: var(--amber-soft, #fef3c7); color: var(--amber, #d97706); box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3); }\n.idiom-tools .act-fav.is-active { background: var(--amber, #d97706); color: #fff; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3); }\n.idiom-body { display: flex; flex-direction: column; gap: 6px; }\n.idiom-section {\n    padding: 10px 14px; border-radius: 8px;\n    background: var(--slate-soft, #f1f5f9);\n    display: none; line-height: 1.5;\n}\n.idiom-section.show { display: block; animation: fadeSlide 0.25s ease; }\n@keyframes fadeSlide {\n    from { opacity: 0; transform: translateY(-6px); }\n    to   { opacity: 1; transform: translateY(0); }\n}\n.idiom-label {\n    font-size: calc(10px * var(--card-font-scale, 1)); font-weight: var(--card-font-weight, 700); color: var(--ink-3, #64748b);\n    text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px;\n}\n.idiom-pinyin { font-size: calc(15px * var(--card-font-scale, 1)); color: var(--ink-2, #475569); font-weight: 500; }\n.idiom-meaning { font-size: calc(14px * var(--card-font-scale, 1)); color: var(--ink, #1d1d1d); }\n.idiom-example { font-size: calc(14px * var(--card-font-scale, 1)); color: var(--ink-2, #475569); font-style: italic; }\n.action-btn i { font-size: 18px; line-height: 1; }\n.action-btn:hover i { transform: scale(1.1); }\n",
+  "cardJs": "(function () {\n    'use strict';\n    window.cardTemplate = {\n        name: 'Chinese Idiom Card',\n        fields: [\n            { key: 'idiom', label: 'Idiom', hideable: false },\n            { key: 'pinyin', label: 'Pinyin' },\n            { key: 'meaning', label: 'Meaning' },\n            { key: 'example', label: 'Example' }\n        ],\n        render: function (cardHtml, cardData, api) {\n            var data = api.getCardData ? api.getCardData() : cardData;\n            var d = data.data || {};\n            var hidden = (api.getHiddenFields && api.getHiddenFields()) || {};\n            function isHidden(key) { return hidden.has && hidden.has(key); }\n            function wrap(key, content) { return isHidden(key) ? '' : content; }\n            var markActive = data.is_unknown === 1 ? 'is-active' : '';\n            var favActive = data.is_favorite === 1 ? 'is-active' : '';\n            var meaningShow = data._showMeaning ? 'show' : '';\n            var meaningActive = data._showMeaning ? 'is-active' : '';\n            return '<div class=\"idiom-card ' + (data.is_unknown === 1 ? 'highlighted' : '') + '\" data-card-id=\"' + data.id + '\">' +\n                '<div class=\"idiom-header\">' +\n                '<div class=\"idiom-basic\">' +\n                '<span class=\"idiom-index\">' + String(data.current_order).padStart(2, '0') + '</span>' +\n                wrap('idiom', '<span class=\"idiom-word\">' + (d.idiom || '') + '</span>') +\n                '</div>' +\n                '<div class=\"idiom-tools\">' +\n                '<button class=\"action-btn act-play\" data-action=\"play\" data-tooltip=\"Play Pronunciation\"><i class=\"fa-solid fa-volume-high\"></i></button>' +\n                '<button class=\"action-btn eye-btn act-eye ' + meaningActive + '\" data-action=\"toggle-meaning\" data-tooltip=\"Show Meaning\"><i class=\"' + (data._showMeaning ? 'fa-solid' : 'fa-regular') + ' fa-eye\"></i></button>' +\n                '<button class=\"action-btn act-mark ' + markActive + '\" data-action=\"mark\" data-tooltip=\"Mark as Unknown\"><i class=\"' + (data.is_unknown === 1 ? 'fa-solid' : 'fa-regular') + ' fa-star\"></i></button>' +\n                '<button class=\"action-btn act-fav ' + favActive + '\" data-action=\"favorite\" data-tooltip=\"Favorite\"><i class=\"' + (data.is_favorite === 1 ? 'fa-solid' : 'fa-regular') + ' fa-bookmark\"></i></button>' +\n                '</div></div>' +\n                '<div class=\"idiom-body\">' +\n                wrap('pinyin', '<div class=\"idiom-section show\"><div class=\"idiom-label\">Pinyin</div><div class=\"idiom-pinyin\">' + (d.pinyin || '') + '</div></div>') +\n                wrap('meaning', '<div class=\"idiom-section ' + meaningShow + '\"><div class=\"idiom-label\">释义</div><div class=\"idiom-meaning\">' + (d.meaning || '') + '</div></div>') +\n                wrap('example', '<div class=\"idiom-section show\"><div class=\"idiom-label\">例句</div><div class=\"idiom-example\">' + (d.example || '') + '</div></div>') +\n                '</div></div>';\n        },\n        init: function (cardElement, cardData, api) {\n            api.track(\"definition_view\");\n            cardElement.querySelector('[data-action=\"play\"]').addEventListener('click', function () {\n                var w = cardData.data && cardData.data.idiom;\n                if (w) api.playAudio(w);\n                api.track('audio_play');\n            });\n            cardElement.querySelector('[data-action=\"mark\"]').addEventListener('click', function () {\n                var self = this;\n                api.toggleMark().then(function (dd) {\n                    if (dd.success) {\n                        cardElement.classList.toggle('highlighted');\n                        self.classList.toggle('is-active');\n                    }\n                });\n                api.track('word_mark');\n            });\n            var favBtn = cardElement.querySelector('[data-action=\"favorite\"]');\n            if (favBtn) {\n                favBtn.addEventListener('click', function () {\n                    var self = this;\n                    api.toggleFavorite().then(function (dd) {\n                        if (dd.success) self.classList.toggle('is-active');\n                    });\n                    api.track('favorite_toggle');\n                });\n            }\n            var meaningBtn = cardElement.querySelector('[data-action=\"toggle-meaning\"]');\n            if (meaningBtn) {\n                var meaningSec = cardElement.querySelector('.idiom-meaning');\n                meaningBtn.addEventListener('click', function () {\n                    if (cardData._showMeaning) {\n                        clearTimeout(cardData._meaningTimer);\n                        cardData._showMeaning = false;\n                        if (meaningSec) meaningSec.parentElement.classList.remove('show');\n                        meaningBtn.classList.remove('is-active');\n                    } else {\n                        cardData._showMeaning = true;\n                        clearTimeout(cardData._meaningTimer);\n                        if (meaningSec) meaningSec.parentElement.classList.add('show');\n                        meaningBtn.classList.add('is-active');\n                        cardData._meaningTimer = setTimeout(function () {\n                            cardData._showMeaning = false;\n                            if (meaningSec) meaningSec.parentElement.classList.remove('show');\n                            meaningBtn.classList.remove('is-active');\n                        }, 5000);\n                    }\n                });\n            }\n            cardElement.querySelectorAll('[data-action]').forEach(function (btn) {\n                btn.addEventListener('mouseenter', function () {\n                    var tooltip = btn.dataset.tooltip;\n                    if (tooltip && api.showTooltip) api.showTooltip(btn, tooltip);\n                });\n                btn.addEventListener('mouseleave', function () {\n                    if (api.hideTooltip) api.hideTooltip();\n                });\n            });\n        },\n        update: function (cardElement, cardData, api) {\n            var p = cardElement.parentElement;\n            if (p) { cardElement.outerHTML = this.render('', cardData, api); }\n        }\n    };\n})();",
+  "trackedActions": [
+    {
+      "action": "definition_view",
+      "label": "查看释义"
+    },
+    {
+      "action": "audio_play",
+      "label": "发音"
+    },
+    {
+      "action": "word_mark",
+      "label": "标记"
+    },
+    {
+      "action": "favorite_toggle",
+      "label": "收藏"
+    }
+  ],
+  "sampleData": [
+    {
+      "idiom": "画蛇添足",
+      "pinyin": "huà shé tiān zú",
+      "meaning": "比喻做了多余的事，非但无益，反而不合适。",
+      "example": "这篇文章已经写得很完整了，再加结尾就是画蛇添足。"
+    },
+    {
+      "idiom": "守株待兔",
+      "pinyin": "shǒu zhū dài tù",
+      "meaning": "比喻不主动努力，存在侥幸心理，希望得到意外的收获。",
+      "example": "学习不能守株待兔，要主动去探索新知识。"
+    },
+    {
+      "idiom": "掩耳盗铃",
+      "pinyin": "yǎn ěr dào líng",
+      "meaning": "比喻自己欺骗自己，明明掩盖不住的事情偏要想法子掩盖。",
+      "example": "考试作弊是掩耳盗铃，最终害的是自己。"
+    },
+    {
+      "idiom": "对牛弹琴",
+      "pinyin": "duì niú tán qín",
+      "meaning": "比喻说话不看对象，或对不懂道理的人讲道理。",
+      "example": "跟完全不懂编程的人讲代码优化，简直是对牛弹琴。"
+    },
+    {
+      "idiom": "杯弓蛇影",
+      "pinyin": "bēi gōng shé yǐng",
+      "meaning": "比喻因疑神疑鬼而引起恐惧。",
+      "example": "你别杯弓蛇影了，他只是咳嗽一声而已。"
+    },
+    {
+      "idiom": "井底之蛙",
+      "pinyin": "jǐng dǐ zhī wā",
+      "meaning": "比喻见识狭窄、目光短浅的人。",
+      "example": "多出去走走，不要做井底之蛙。"
+    },
+    {
+      "idiom": "亡羊补牢",
+      "pinyin": "wáng yáng bǔ láo",
+      "meaning": "比喻出了问题以后想办法补救，防止继续受损失。",
+      "example": "现在开始认真复习还来得及，亡羊补牢，为时未晚。"
+    },
+    {
+      "idiom": "鹤立鸡群",
+      "pinyin": "hè lì jī qún",
+      "meaning": "比喻一个人的仪表或才能在周围一群人里显得很突出。",
+      "example": "他在比赛中表现优异，鹤立鸡群。"
+    },
+    {
+      "idiom": "画龙点睛",
+      "pinyin": "huà lóng diǎn jīng",
+      "meaning": "比喻在关键处用几句话点明实质，使内容生动有力。",
+      "example": "最后一段的总结起到了画龙点睛的作用。"
+    },
+    {
+      "idiom": "胸有成竹",
+      "pinyin": "xiōng yǒu chéng zhú",
+      "meaning": "比喻做事前已有了通盘考虑和充分准备。",
+      "example": "他准备了整整一个月，这次演讲胸有成竹。"
+    }
+  ]
+}

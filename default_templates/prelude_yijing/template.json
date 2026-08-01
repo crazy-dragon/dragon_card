@@ -1,0 +1,42 @@
+{
+  "name": "易经入门卡",
+  "lang": "zh",
+  "description": "《周易》零基础入门:阴阳、八卦、爻与卦的组成、怎么读、怎么起卦,先看这个再学六十四卦。",
+  "cardHtml": "<div class=\"prelude-card\" data-card-id=\"{{id}}\">{{title}}</div>",
+  "cardCss": ".prelude-card {\n    background: var(--card-bg, #fffdf8);\n    border-radius: 16px;\n    padding: 16px 20px;\n    box-shadow: 0 1px 3px rgba(140,109,63,.10), 0 6px 16px rgba(140,109,63,.08);\n    border: 1px solid var(--line, #ece3d2);\n    border-left: 4px solid #b48a3f;\n    min-height: 200px; display: flex; flex-direction: column;\n}\n.prelude-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 8px; }\n.prelude-diagram { flex-shrink: 0; padding-top: 2px; }\n.prelude-mini-lines { display: flex; flex-direction: column; gap: 5px; }\n.prelude-mini-line { width: 48px; height: 8px; border-radius: 4px; background: #1f2937; }\n.prelude-mini-line.yin { background: transparent; position: relative; }\n.prelude-mini-line.yin::before, .prelude-mini-line.yin::after { content: \"\"; position: absolute; top: 0; height: 8px; width: 19px; background: #1f2937; border-radius: 4px; }\n.prelude-mini-line.yin::before { left: 0; }\n.prelude-mini-line.yin::after { right: 0; }\n.prelude-title-wrap { flex: 1; min-width: 0; }\n.prelude-title { font-family: \"Songti SC\",\"STSong\",\"SimSun\",serif; font-weight: var(--card-font-weight, 800); color: #1f2937; font-size: calc(26px * var(--card-font-scale, 1)); letter-spacing: 2px; }\n.prelude-pinyin { color: #6b7280; font-size: calc(13px * var(--card-font-scale, 1)); margin-top: 2px; }\n.prelude-body { font-size: calc(15px * var(--card-font-scale, 1)); line-height: 1.7; color: #374151; }\n.prelude-note { margin-top: 8px; font-size: calc(13px * var(--card-font-scale, 1)); line-height: 1.65; color: #6b7280; white-space: pre-line; border-top: 1px dashed var(--line, #ece3d2); padding-top: 8px; }\n.prelude-tools { display: flex; gap: 6px; margin-top: 10px; }\n.prelude-tools .action-btn { width: 38px; height: 38px; border: none; background: var(--action-btn-bg, #f3ede2); border-radius: 90px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #6b7280; transition: all .2s; }\n.prelude-tools .action-btn svg, .action-btn i { width: 20px; height: 20px; }\n.prelude-tools .action-btn:hover { transform: translateY(-2px); }\n.prelude-tools .act-play:hover { background: #b48a3f; color: #fff; }\n.prelude-tools .act-mark.is-active { color: var(--unknown, #f43f5e); }\n.prelude-tools .act-fav.is-active { color: #eab308; }\n\n.action-btn i { font-size: 18px; line-height: 1; }\n.action-btn:hover i { transform: scale(1.1); }\n\n.prelude-card { margin-bottom: 16px; }\n\n.prelude-head { justify-content: space-between; }\n.prelude-head-left { display: flex; gap: 16px; align-items: flex-start; min-width: 0; }\n.prelude-tools { margin-top: 0; }\n",
+  "cardJs": "(function () {\n    'use strict';\n    function esc(s) {\n        if (s == null) return '';\n        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n    }\n    window.cardTemplate = {\n        name: '易经入门卡',\n        fields: [\n            { key: 'title',   label: '主题', hideable: false },\n            { key: 'pinyin',  label: '拼音' },\n            { key: 'diagram', label: '卦象', hideable: false },\n            { key: 'body',    label: '讲解', hideable: false },\n            { key: 'note',    label: '注记' }\n        ],\n        render: function (cardHtml, cardData, api) {\n            var data = api.getCardData ? api.getCardData() : cardData;\n            var d = data.data || {};\n            var hidden = (api.getHiddenFields && api.getHiddenFields()) || {};\n            function isHidden(k) { return hidden.has && hidden.has(k); }\n            function wrap(k, html) { return isHidden(k) ? '' : html; }\n            var markActive = data.is_unknown === 1 ? 'is-active' : '';\n            var favActive = data.is_favorite === 1 ? 'is-active' : '';\n            var diagram = d.diagram || '';\n            var diagHtml = '';\n            if (diagram.length === 3) {\n                var lines = '';\n                for (var i = 0; i < 3; i++) {\n                    var yin = diagram.charAt(i) === '0';\n                    lines += '<div class=\"prelude-mini-line ' + (yin ? 'yin' : 'yang') + '\"></div>';\n                }\n                diagHtml = '<div class=\"prelude-diagram\"><div class=\"prelude-mini-lines\">' + lines + '</div></div>';\n            }\n            var headInner = diagHtml + '<div class=\"prelude-title-wrap\">' +\n                wrap('title', '<div class=\"prelude-title\">' + esc(d.title) + '</div>') +\n                wrap('pinyin', '<div class=\"prelude-pinyin\">' + esc(d.pinyin) + '</div>') +\n                '</div>';\n            return '<div class=\"prelude-card\" data-card-id=\"' + data.id + '\">' +\n                '<div class=\"prelude-head\">' +\n                    '<div class=\"prelude-head-left\">' + headInner + '</div>' +\n                    '<div class=\"prelude-tools\">' +\n                        '<button class=\"action-btn act-play\" data-action=\"play\" data-tooltip=\"朗读\"><i class=\"fa-solid fa-volume-high\"></i></button>' +\n                        '<button class=\"action-btn act-mark ' + markActive + '\" data-action=\"mark\" data-tooltip=\"标记\"><i class=\"' + (data.is_unknown === 1 ? 'fa-solid' : 'fa-regular') + ' fa-star\"></i></button>' +\n                        '<button class=\"action-btn act-fav ' + favActive + '\" data-action=\"favorite\" data-tooltip=\"收藏\"><i class=\"' + (data.is_favorite === 1 ? 'fa-solid' : 'fa-regular') + ' fa-bookmark\"></i></button>' +\n                    '</div>' +\n                '</div>' +\n                wrap('body', '<div class=\"prelude-body\">' + esc(d.body) + '</div>') +\n                wrap('note', (d.note ? '<div class=\"prelude-note\">' + esc(d.note) + '</div>' : '')) +\n            '</div>';\n        },\n        init: function (cardElement, cardData, api) {\n            api.track('definition_view');\n            var playBtn = cardElement.querySelector('[data-action=\"play\"]');\n            if (playBtn) playBtn.addEventListener('click', function () {\n                var d = cardData.data || {};\n                api.playAudio(d.title || '');\n                api.track('audio_play');\n            });\n            var markBtn = cardElement.querySelector('[data-action=\"mark\"]');\n            if (markBtn) markBtn.addEventListener('click', function () {\n                api.toggleMark().then(function () { api.rerender(); });\n                api.track('word_mark');\n            });\n            var favBtn = cardElement.querySelector('[data-action=\"favorite\"]');\n            if (favBtn) favBtn.addEventListener('click', function () {\n                api.toggleFavorite().then(function () { api.rerender(); });\n                api.track('favorite_toggle');\n            });\n        }\n    };\n})();",
+  "trackedActions": [
+    {
+      "action": "definition_view",
+      "label": "查看"
+    },
+    {
+      "action": "audio_play",
+      "label": "朗读"
+    },
+    {
+      "action": "word_mark",
+      "label": "标记"
+    },
+    {
+      "action": "favorite_toggle",
+      "label": "收藏"
+    }
+  ],
+  "sampleData": [
+    {
+      "title": "阴阳",
+      "pinyin": "yīn yáng",
+      "diagram": "",
+      "body": "阳(⚊)代表刚、动、明、天;阴(⚋)代表柔、静、暗、地。",
+      "note": "要点:阴阳互补、互相转化。"
+    },
+    {
+      "title": "乾",
+      "pinyin": "qián",
+      "diagram": "111",
+      "body": "三爻皆阳,象天。德性为\"健\"。",
+      "note": "家庭角色:父。"
+    }
+  ]
+}

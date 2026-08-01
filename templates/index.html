@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DragonCard</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐉</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/vendor/tailwind/tailwind.browser.min.js"></script>
+    <script src="/static/i18n.js"></script>
+    <script src="/static/docs.js"></script>
+    <script src="/static/app.js" defer></script>
+</head>
+<body>
+    <div class="app-shell">
+
+        <!-- ===== Global Sidebar (home/decks) ===== -->
+        <aside class="global-sidebar" id="global-sidebar">
+            <div class="gs-logo"><i class="fa-solid fa-dragon"></i> DragonCard</div>
+            <nav class="gs-nav">
+                <div class="gs-nav-item active" data-gs-page="home"><i class="fa-solid fa-layer-group"></i><span data-i18n="nav.home">我的卡组</span></div>
+                <div class="gs-nav-item" data-gs-page="achievements"><i class="fa-solid fa-trophy"></i><span data-i18n="nav.achievements">成就</span></div>
+                <div class="gs-nav-item" data-gs-page="stats"><i class="fa-solid fa-chart-line"></i><span data-i18n="nav.stats">统计</span></div>
+                <div class="gs-nav-item" data-gs-page="market"><i class="fa-solid fa-store"></i><span data-i18n="nav.market">市场</span></div>
+                <div class="gs-nav-item" data-gs-page="docs"><i class="fa-solid fa-book-open"></i><span data-i18n="nav.docs">使用文档</span></div>
+                <div class="gs-nav-extra" id="sages-btn"><i class="fa-solid fa-scroll"></i><span data-i18n="nav.sages">先贤的智慧</span></div>
+            </nav>
+        </aside>
+
+        <!-- ===== Main Area ===== -->
+        <div class="app-main">
+
+            <!-- === HOME: My Decks (blue theme) === -->
+            <div id="home-panel" class="home-panel">
+                <!-- Home Header -->
+                <div class="home-header" id="home-header">
+                    <div class="home-header-left">
+                        <h2 class="home-title" id="home-title" data-i18n="home.title">我的卡组</h2>
+                    </div>
+                    <div class="home-header-right" id="home-header-right">
+                        <button id="settings-btn" class="hh-btn" data-i18n-tooltip="common.about" data-tooltip="关于" title="关于">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </button>
+                        <button id="dark-theme-btn" class="hh-btn" data-i18n-tooltip="home.darkMode" data-tooltip="深色模式" title="深色模式">
+                            <i class="fa-solid fa-moon dark-icon-light"></i>
+                            <i class="fa-solid fa-sun dark-icon-dark" style="display:none;"></i>
+                        </button>
+                        <button id="lang-toggle-btn" class="hh-btn" data-tooltip="切换语言 / Switch Language" title="切换语言 / Switch Language">
+                            <span class="lang-label">中/EN</span>
+                        </button>
+                        <button id="howto-btn" class="hh-btn" data-i18n-tooltip="manage.templateTitle" data-tooltip="模板 API 参考" title="模板 API 参考">
+                            <i class="fa-solid fa-code"></i>
+                        </button>
+                        <button class="hh-btn-primary" id="new-deck-btn">
+                            <i class="fa-solid fa-plus"></i>
+                            <span data-i18n="home.newDeck">新建卡组</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Home Body -->
+                <div class="home-body" id="home-body">
+                    <div id="home-content">
+                        <!-- Stat Cards -->
+                        <div class="stat-cards-row" id="stat-cards-row">
+                            <div class="sc-card">
+                                <div class="flex items-center justify-between mb-2">
+                                    <i class="fa-solid fa-layer-group text-xl text-[var(--hp-primary)]"></i>
+                                    <div class="sc-value" id="stat-decks" style="color:var(--hp-primary)">0</div>
+                                </div>
+                                <div class="sc-label" data-i18n="home.stat.decks">卡组总数</div>
+                            </div>
+                            <div class="sc-card">
+                                <div class="flex items-center justify-between mb-2">
+                                    <i class="fa-solid fa-card text-xl text-[var(--hp-success)]"></i>
+                                    <div class="sc-value" id="stat-cards" style="color:var(--hp-success)">0</div>
+                                </div>
+                                <div class="sc-label" data-i18n="home.stat.cards">卡片总数</div>
+                            </div>
+                            <div class="sc-card">
+                                <div class="flex items-center justify-between mb-2">
+                                    <i class="fa-solid fa-fire text-xl text-[var(--hp-danger)]"></i>
+                                    <div class="sc-value" id="stat-streak" style="color:var(--hp-danger)">0</div>
+                                </div>
+                                <div class="sc-label" id="stat-streak-label" data-i18n="home.stat.streak">连续学习天数</div>
+                            </div>
+                        </div>
+
+                        <!-- Deck Grid -->
+                        <div class="section-head">
+                            <h3 class="section-title" data-i18n="home.title">我的卡组</h3>
+                        </div>
+                        <div id="deck-grid" class="deck-grid"></div>
+                    </div>
+
+                    <!-- Placeholder pages (achievements/stats/market) -->
+                    <div class="ph-page" id="ph-achievements">
+                        <div class="ach-container" id="ach-container"></div>
+                    </div>
+                    <div class="ph-page" id="ph-stats">
+                        <div class="stats-container">
+                            <!-- Control bar -->
+                            <div class="stats-bar">
+                                <div class="stats-bar-left">
+                                    <select id="stats-deck-select">
+                                        <option value="" data-i18n="stats.allDecks">全卡组</option>
+                                    </select>
+                                </div>
+                                <div class="stats-bar-center">
+                                    <button class="stats-view-btn active" data-view="heatmap" data-i18n="stats.heatmap">热力图</button>
+                                    <button class="stats-view-btn" data-view="daily" data-i18n="stats.day">日</button>
+                                    <button class="stats-view-btn" data-view="weekly" data-i18n="stats.week">周</button>
+                                    <button class="stats-view-btn" data-view="monthly" data-i18n="stats.month">月</button>
+                                </div>
+                                <div class="stats-bar-right">
+                                    <button class="stats-nav-btn" id="stats-prev">&larr;</button>
+                                    <span id="stats-date-display" class="stats-date"></span>
+                                    <button class="stats-nav-btn" id="stats-next">&rarr;</button>
+                                    <button class="stats-refresh-btn" id="stats-refresh">&#x21bb;</button>
+                                </div>
+                            </div>
+                            <!-- Stats cards -->
+                            <div class="stats-cards" id="stats-cards">
+                                <div class="stats-empty" data-i18n="stats.empty">选择卡组开始查看统计</div>
+                            </div>
+                            <!-- Chart area -->
+                            <div class="stats-chart" id="stats-chart"></div>
+                            <!-- Legend -->
+                            <div class="stats-legend" id="stats-legend"></div>
+                        </div>
+                    </div>
+                    <div class="ph-page" id="ph-market"><div class="ph-body"><div class="ph-icon"><i class="fa-solid fa-store"></i></div><div class="ph-text" data-i18n="page.market">卡组市场</div></div></div>
+                    <div class="ph-page" id="ph-docs">
+                        <div class="docs-container">
+                            <div class="docs-header">
+                                <h2 data-i18n="page.docs">使用文档</h2>
+                                <p>DragonCard 使用说明</p>
+                            </div>
+                            <div class="docs-content" id="docs-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === STUDY VIEW (teal/sage theme) === -->
+            <div id="study-view" style="display:none;">
+                <div class="layout-row">
+                    <div class="sidebar">
+                        <div class="sidebar-content">
+                            <button id="sidebar-home-btn" class="sidebar-brand-btn flex items-center justify-center gap-1.5 p-3 rounded-full text-sm font-semibold cursor-pointer transition-all text-[var(--ink-2)] whitespace-nowrap w-[calc(100%-8px)] my-0.5 mx-1 text-center min-h-[44px] border-0 box-border hover:bg-[var(--slate-soft)] hover:text-[var(--primary)] [.active]:bg-[var(--primary-soft)] [.active]:text-[var(--primary)] [.active]:font-bold [.active]:shadow-[0_2px_8px_rgba(15,118,110,0.12)] active" data-tab="catalogue">
+                                <i class="fa-solid fa-dragon"></i>
+                                <span>DragonCard</span>
+                            </button>
+                            <div class="study-tabs" id="study-tabs-container"></div>
+                        </div>
+                    </div>
+                    <div class="main-content">
+                        <div class="study-top-bar">
+                            <button id="study-back-btn" class="top-btn study-back-btn" data-i18n-tooltip="study.back" data-tooltip="返回主页">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <span id="study-deck-title" class="study-deck-title"></span>
+                            <span style="flex:1"></span>
+                            <button id="font-settings-btn" class="top-btn" data-i18n-tooltip="study.font" data-tooltip="字体设置">
+                                <i class="fa-solid fa-font"></i>
+                            </button>
+                            <div class="control-group">
+                                <button class="top-btn voice-select-btn" data-i18n-tooltip="study.voice" data-tooltip="Voice">
+                                    <i class="fa-solid fa-microphone"></i>
+                                </button>
+                                <div class="voice-dropdown" style="display:none;">
+                                    <div class="voice-dropdown-header" data-i18n="voice.selectVoice">Select Voice</div>
+                                    <div class="voice-list"></div>
+                                </div>
+                            </div>
+                            <button class="top-btn" id="scroll-top-btn" data-i18n-tooltip="study.scrollTop" data-tooltip="Scroll to Top">
+                                <i class="fa-solid fa-arrow-up"></i>
+                            </button>
+                            <button class="top-btn" id="scroll-bottom-btn" data-i18n-tooltip="study.scrollBottom" data-tooltip="Scroll to Bottom">
+                                <i class="fa-solid fa-arrow-down"></i>
+                            </button>
+                            <button id="card-view-btn" class="top-btn" data-i18n-tooltip="study.singleCard" data-tooltip="Single Card">
+                                <i class="fa-solid fa-grip"></i>
+                            </button>
+                            <button id="refresh-stats" class="stats-text" data-i18n-tooltip="study.refresh" data-tooltip="Refresh">
+                                <i class="fa-solid fa-arrows-rotate"></i>
+                                <span>0 / 0</span>
+                            </button>
+                        </div>
+                        <div class="study-scroll">
+                            <div class="study-content">
+                                <div id="catalogue-view" style="padding:16px 20px 0;">
+                                    <div id="catalogue-grid" class="grid"></div>
+                                </div>
+                                <div id="study-pages-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- end .app-main -->
+
+        <!-- Finish Modal -->
+        <div id="finish-modal" class="modal-overlay" style="display:none;">
+            <div class="modal" style="width:380px;">
+                <div class="text-center pt-8 pb-4 px-8">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-check text-3xl text-green-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-[var(--hp-text)] mb-2" data-i18n="study.finish.title">完成学习？</div>
+                    <div id="finish-subtitle" class="text-sm text-[var(--ink-3)]" data-i18n="study.finish.subtitle">回顾你的学习进度</div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 px-8 pb-6">
+                    <div class="bg-[var(--slate-soft)] p-5 rounded-xl text-center">
+                        <div id="finish-total" class="text-3xl font-bold text-[var(--hp-text)]">0</div>
+                        <div class="text-sm text-[var(--ink-3)] mt-1" data-i18n="study.finish.total">总计</div>
+                    </div>
+                    <div class="bg-[var(--slate-soft)] p-5 rounded-xl text-center">
+                        <div id="finish-marked" class="text-3xl font-bold text-[var(--unknown)]">0</div>
+                        <div class="text-sm text-[var(--ink-3)] mt-1" data-i18n="study.finish.unknown">未掌握</div>
+                    </div>
+                </div>
+                <div class="flex gap-4 px-8 pb-8">
+                    <button id="modal-finish-cancel" class="flex-1 py-4 bg-[var(--slate-soft)] text-[var(--ink-2)] rounded-full hover:bg-[var(--hp-border)] transition-colors text-base font-semibold" data-i18n="study.finish.continue">继续学习</button>
+                    <button id="modal-finish-confirm" class="flex-1 py-4 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors text-base font-semibold" data-i18n="study.finish.done">完成</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Modal -->
+        <div id="about-modal" class="modal-overlay" style="display:none;">
+            <div class="modal" style="width:360px;">
+                <div class="flex flex-col items-center py-8 px-6">
+                    <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style="background:linear-gradient(135deg,var(--hp-primary),var(--hp-primary-dark));">
+                        <span style="font-size:2rem;">🐉</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-[var(--hp-text)]">DragonCard</h2>
+                    <p class="text-xs text-[var(--hp-text-light)] mt-1">v1.1.0</p>
+                </div>
+                <div class="px-6 pb-4 text-center text-sm text-[var(--hp-text-sub)] leading-relaxed">
+                    <span data-i18n="about.tagline">通用卡片学习框架</span><br>
+                    <span class="text-xs" data-i18n="about.taglineSub">用自定义模板学习任何内容</span>
+                </div>
+                <div class="border-t border-[var(--hp-border)] px-6 py-4 text-center">
+                    <p class="text-xs text-[var(--hp-text-light)]">
+                        <i class="fa-solid fa-heart text-red-500"></i> Built with passion
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Go Again Modal -->
+        <div id="goagain-modal" class="modal-overlay" style="display:none;">
+            <div class="modal" style="width:360px;">
+                <div class="text-center pt-6 pb-3 px-6">
+                    <div class="flex items-center justify-center gap-2 mb-3">
+                        <i class="fa-solid fa-triangle-exclamation text-xl text-red-500"></i>
+                        <div class="text-xl font-bold text-red-500" data-i18n="study.reorder.title">重排卡片？</div>
+                    </div>
+                    <div class="text-sm text-[var(--ink-2)] mb-4" data-i18n="study.reorder.desc">这将打乱所有卡片的顺序。请输入以下短语确认：</div>
+                    <div class="bg-red-50 px-4 py-3 rounded-lg mb-3 text-center">
+                        <div class="text-lg font-semibold text-red-600">广修万劫证吾道心</div>
+                    </div>
+                    <input type="text" id="goagain-input" data-i18n-placeholder="study.reorder.input" placeholder="输入上方短语..." class="w-full px-3 py-2 border-2 border-[var(--line-2)] rounded-lg text-sm focus:outline-none focus:border-red-300 transition-colors">
+                </div>
+                <div class="flex gap-3 px-6 pb-6">
+                    <button id="modal-goagain-cancel" class="flex-1 py-3 bg-[var(--slate-soft)] text-[var(--ink-2)] rounded-full hover:bg-[var(--hp-border)] transition-colors text-sm font-semibold" data-i18n="common.cancel">取消</button>
+                    <button id="modal-goagain-confirm" class="flex-1 py-3 bg-[var(--primary-soft)] text-[var(--primary)] rounded-full hover:bg-[var(--primary)] hover:text-white transition-colors text-sm font-semibold disabled:opacity-30 disabled:cursor-not-allowed" data-i18n="common.confirm" disabled>确认</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Docs Modal -->
+        <!-- New Deck Modal -->
+        <div id="new-deck-modal" class="modal-overlay" style="display:none;">
+            <div class="modal" style="width:420px;">
+                <div class="modal-header">
+                    <div class="modal-title flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle text-[var(--hp-primary)]"></i>
+                        <span data-i18n="newDeck.title">新建卡组</span>
+                    </div>
+                    <button class="close-btn" id="new-deck-modal-close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-[var(--hp-text-sub)] mb-2" data-i18n="newDeck.nameLabel">名称</label>
+                        <input type="text" id="new-deck-name-input" data-i18n-placeholder="newDeck.namePlaceholder" placeholder="例如：考研核心词" class="w-full px-3 py-2 border border-[var(--hp-border)] rounded-lg focus:outline-none focus:border-[var(--hp-primary)] text-sm">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-[var(--hp-text-sub)] mb-2" data-i18n="newDeck.kindLabel">类型</label>
+                        <div class="kind-picker" id="new-deck-kind-picker"></div>
+                    </div>
+                    <div class="bg-[var(--hp-primary-soft)] text-[var(--hp-primary)] text-xs px-3 py-2 rounded-lg mb-4 flex items-start gap-2">
+                        <i class="fa-solid fa-circle-info mt-0.5"></i>
+                        <span data-i18n="newDeck.hint">创建后可点击「管理卡组」上传模版与数据</span>
+                    </div>
+                    <div class="flex gap-3">
+                        <button id="new-deck-do-cancel" class="px-4 py-2 bg-[var(--hp-bg)] text-[var(--hp-text-sub)] rounded-lg hover:bg-[var(--hp-border)] transition-colors text-sm font-medium" data-i18n="common.cancel">取消</button>
+                        <button id="new-deck-do-create" class="flex-1 px-4 py-2 bg-[var(--hp-primary)] text-white rounded-lg hover:bg-[var(--hp-primary-dark)] transition-colors text-sm font-medium" data-i18n="newDeck.create">创建</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Management Modal -->
+        <div id="manage-modal" class="modal-overlay" style="display:none;">
+            <div class="manage-modal-box">
+                <div class="mm-head">
+                    <div class="mm-head-icon" id="mm-icon"></div>
+                        <div class="mm-head-info">
+                            <div class="mm-head-name-row">
+                                <div class="mm-head-name" id="mm-name">卡组名</div>
+                                <button class="mm-rename-btn" id="mm-rename-btn" data-i18n-tooltip="common.rename" title="改名"><i class="fa-solid fa-pen"></i></button>
+                            </div>
+                            <div class="mm-head-sub" id="mm-sub">模版 · 描述</div>
+                            <div class="mm-kind-row">
+                                <label class="mm-kind-label" data-i18n="manage.kindLabel">类型</label>
+                                <select id="mm-kind-select" class="mm-kind-select"></select>
+                            </div>
+                        </div>
+                    <button class="mm-head-close" id="manage-modal-close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="mm-body">
+                    <!-- Top: Templates + Data -->
+                    <div class="mm-top">
+                        <!-- Templates -->
+                        <div class="mm-tpl-section">
+                            <div class="section-header">
+                                <h3><i class="fa-solid fa-clipboard-list"></i> <span data-i18n="manage.templates">模板</span></h3>
+                                <span data-i18n="manage.max3">最多 3 个</span>
+                            </div>
+                            <div class="tpl-cards" id="mm-tpl-list"></div>
+                        </div>
+                        <!-- Data -->
+                        <div class="mm-data-section">
+                            <div class="section-header">
+                                <h3><i class="fa-solid fa-database"></i> <span data-i18n="manage.data">数据</span></h3>
+                                <span></span>
+                            </div>
+                            <div class="data-cards">
+                                <div class="data-card">
+                                    <div class="data-count" id="mm-data-count">0</div>
+                                    <div class="data-count-label" data-i18n="manage.items">条数据</div>
+                                    <div class="data-actions">
+                                        <button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" id="mma-data" data-i18n-tooltip="manage.uploadData" title="上传数据"><i class="fa-solid fa-upload"></i></button>
+                                        <button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" id="ma-export" data-i18n-tooltip="manage.exportData" title="导出数据"><i class="fa-solid fa-download"></i></button>
+                                        <button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-red-50 hover:text-red-600 hover:border-red-600" id="ma-goagain" data-i18n-tooltip="manage.goagain" title="重新打乱"><i class="fa-solid fa-rotate"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Preview -->
+                    <div class="mm-preview">
+                        <div class="preview-header">
+                            <h3><i class="fa-solid fa-eye"></i> <span data-i18n="manage.preview">预览</span></h3>
+                            <span id="mm-preview-label">点击模板查看渲染效果</span>
+                        </div>
+                        <div class="preview-area" id="mm-preview-area">
+                            <div class="preview-placeholder" id="mm-preview-placeholder">
+                                点击左侧模板预览卡片渲染效果
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mastery Statistics Modal -->
+        <div id="mastery-modal" class="modal-overlay" style="display:none;">
+            <div class="modal mastery-modal">
+                <div class="modal-header">
+                    <div class="modal-title flex items-center gap-2">
+                        <i class="fa-solid fa-chart-simple text-[var(--hp-primary)]"></i>
+                        <span id="mastery-title-text" data-i18n="mastery.title">掌握统计</span>
+                    </div>
+                    <button class="close-btn" id="mastery-modal-close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="mastery-tabs">
+                    <button class="mastery-tab active" data-mtab="heatmap" data-i18n="mastery.heatmap">热力图</button>
+                    <button class="mastery-tab" data-mtab="categorized" data-i18n="mastery.categorized">掌握分布</button>
+                    <button class="mastery-tab" data-mtab="rounds" data-i18n="mastery.rounds">轮次统计</button>
+                </div>
+                <div class="mastery-body">
+                    <div class="mastery-pane" id="mastery-heatmap"></div>
+                    <div class="mastery-pane" id="mastery-categorized" style="display:none;"></div>
+                    <div class="mastery-pane" id="mastery-rounds" style="display:none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Template Preview Modal (full card, no sidebar) -->
+        <div id="preview-modal" class="modal-overlay" style="display:none;">
+            <div class="preview-modal-content">
+                <div class="preview-modal-header">
+                    <div class="preview-modal-title flex items-center gap-2">
+                        <i class="fa-solid fa-eye text-[var(--hp-primary)]"></i>
+                        <span data-i18n="preview.title">模板预览</span>
+                    </div>
+                    <button class="close-btn" id="preview-modal-close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="preview-canvas-full" id="preview-canvas">
+                    <div class="preview-loading" data-i18n="preview.loading">Loading template...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Template API Modal -->
+        <div id="template-api-modal" class="modal-overlay" style="display:none;">
+            <div class="modal modal--md">
+                <div class="modal-header">
+                    <div class="modal-title flex items-center gap-2">
+                        <i class="fa-solid fa-code text-[var(--hp-primary)]"></i>
+                        <span data-i18n="manage.templateTitle">模板 API 参考</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="copy-api-btn" class="manage-action-btn" style="padding:4px 10px;font-size:11px;">
+                            <i class="fa-solid fa-copy"></i>
+                            <span data-i18n="common.copy">复制</span>
+                        </button>
+                        <button class="close-btn" id="template-api-modal-close">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body" style="padding:0;">
+                    <pre id="api-md-content" class="api-prompt"></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Font Settings Drawer (font size + font weight, applied to card content only) -->
+        <div id="font-drawer" class="font-drawer" style="display:none;">
+            <div class="setting-item">
+                <label data-i18n="study.font">字体大小</label>
+                <div class="control">
+                    <button id="font-size-minus">&minus;</button>
+                    <span id="font-size-value" class="value">100%</span>
+                    <button id="font-size-plus">+</button>
+                </div>
+            </div>
+            <button id="reset-fonts" class="reset-btn" data-i18n="common.reset">重置</button>
+        </div>
+
+        <a id="download-helper" style="display:none;"></a>
+        <input type="file" id="deck-template-input" accept=".json,.js" style="display:none;">
+        <input type="file" id="deck-data-input" accept=".json,.xlsx,.xls" style="display:none;">
+
+        <div id="global-tooltip" class="action-btn-tooltip"></div>
+        <div id="toast" class="toast"></div>
+    </div>
+</body>
+</html>

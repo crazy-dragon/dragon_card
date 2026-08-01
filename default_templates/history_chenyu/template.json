@@ -1,0 +1,46 @@
+{
+  "name": "中国古代谶语录",
+  "lang": "zh",
+  "description": "考据向历史阅读素材:收录秦至清史书、笔记所载的谶语、童谣、谣谚。首条为阅读提醒(子不语怪力乱神)——我们考据历史,不涉迷信。每张卡标注朝代、原文、出处与考据。",
+  "cardHtml": "<div class=\"chenyu-card\" data-card-id=\"{{id}}\"></div>",
+  "cardCss": ".chenyu-card {\n    background: var(--card-bg, #fbf6ea);\n    border-radius: 14px;\n    padding: 20px 22px;\n    box-shadow: 0 1px 3px rgba(80,60,30,.12), 0 8px 22px rgba(80,60,30,.10);\n    border: 1px solid var(--line, #e4d9bf);\n    min-height: 280px;\n    display: flex; gap: 16px;\n    font-family: \"Songti SC\",\"STSong\",\"SimSun\",\"Noto Serif SC\",serif;\n}\n.chenyu-seal {\n    flex-shrink: 0;\n    writing-mode: vertical-rl; text-orientation: upright;\n    background: #9b2d20; color: #fbf6ea;\n    font-weight: 700;\n    font-size: calc(18px * var(--card-font-scale,1));\n    letter-spacing: 6px;\n    padding: 12px 8px; border-radius: 8px;\n    box-shadow: inset 0 0 0 2px rgba(251,246,234,.35);\n    align-self: flex-start;\n}\n.chenyu-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }\n.chenyu-text {\n    font-weight: var(--card-font-weight, 700);\n    font-size: calc(30px * var(--card-font-scale,1));\n    line-height: 1.6; color: #2b2620;\n    margin: 4px 0 10px;\n}\n.chenyu-source {\n    font-size: calc(14px * var(--card-font-scale,1));\n    color: #8a6d3b; font-style: italic;\n    margin-bottom: 8px;\n}\n.chenyu-gloss {\n    font-size: calc(15px * var(--card-font-scale,1));\n    line-height: 1.75; color: #4a4034;\n    border-top: 1px dashed var(--line, #e4d9bf);\n    padding-top: 10px; margin-top: auto;\n}\n.chenyu-tools { display: flex; gap: 6px; margin-top: 12px; }\n.chenyu-tools .action-btn { width: 38px; height: 38px; border: none; background: var(--action-btn-bg, #efe6d2); border-radius: 90px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #9b2d20; transition: all .2s; }\n.chenyu-tools .action-btn:hover { background: #e2d4b5; }\n.chenyu-tools .action-btn.is-active { background: #9b2d20; color: #fbf6ea; }\n\n.action-btn i { font-size: 18px; line-height: 1; }\n.action-btn:hover i { transform: scale(1.1); }\n\n.chenyu-card { margin-bottom: 16px; }\n\n.chenyu-card { flex-direction: column; }\n.chenyu-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; }\n.chenyu-tools { margin-top: 0; }\n",
+  "cardJs": "(function () {\n    'use strict';\n    function esc(s) {\n        if (s == null) return '';\n        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n    }\n    window.cardTemplate = {\n        name: '中国古代谶语录',\n        fields: [\n            { key: 'dynasty', label: '朝代', hideable: false },\n            { key: 'text',   label: '原文', hideable: false },\n            { key: 'source', label: '出处' },\n            { key: 'gloss',  label: '考据' }\n        ],\n        render: function (cardHtml, cardData, api) {\n            var data = api.getCardData ? api.getCardData() : cardData;\n            var d = data.data || {};\n            var hidden = (api.getHiddenFields && api.getHiddenFields()) || {};\n            function isHidden(k) { return hidden.has && hidden.has(k); }\n            function wrap(k, html) { return isHidden(k) ? '' : html; }\n            var markActive = data.is_unknown === 1 ? 'is-active' : '';\n            var favActive = data.is_favorite === 1 ? 'is-active' : '';\n            return '<div class=\"chenyu-card\" data-card-id=\"' + data.id + '\">' +\n                '<div class=\"chenyu-head\">' +\n                    wrap('dynasty', '<div class=\"chenyu-seal\">' + esc(d.dynasty) + '</div>') +\n                    '<div class=\"chenyu-tools\">' +\n                        '<button class=\"action-btn act-play\" data-action=\"play\" data-tooltip=\"朗读\"><i class=\"fa-solid fa-volume-high\"></i></button>' +\n                        '<button class=\"action-btn act-mark ' + markActive + '\" data-action=\"mark\" data-tooltip=\"标记\"><i class=\"' + (data.is_unknown === 1 ? 'fa-solid' : 'fa-regular') + ' fa-star\"></i></button>' +\n                        '<button class=\"action-btn act-fav ' + favActive + '\" data-action=\"favorite\" data-tooltip=\"收藏\"><i class=\"' + (data.is_favorite === 1 ? 'fa-solid' : 'fa-regular') + ' fa-bookmark\"></i></button>' +\n                    '</div>' +\n                '</div>' +\n                '<div class=\"chenyu-main\">' +\n                    wrap('text', '<div class=\"chenyu-text\">' + esc(d.text) + '</div>') +\n                    wrap('source', '<div class=\"chenyu-source\">出处：' + esc(d.source) + '</div>') +\n                    wrap('gloss', '<div class=\"chenyu-gloss\">' + esc(d.gloss) + '</div>') +\n                '</div>' +\n            '</div>';\n        },\n        init: function (el, cardData, api) {\n            api.track('definition_view');\n            var playBtn = el.querySelector('[data-action=\"play\"]');\n            if (playBtn) playBtn.addEventListener('click', function () {\n                var d = (cardData && cardData.data) || {};\n                api.playAudio(d.text || '');\n                api.track('audio_play');\n            });\n            var markBtn = el.querySelector('[data-action=\"mark\"]');\n            if (markBtn) markBtn.addEventListener('click', function () {\n                api.toggleMark().then(function () { api.rerender(); });\n                api.track('word_mark');\n            });\n            var favBtn = el.querySelector('[data-action=\"favorite\"]');\n            if (favBtn) favBtn.addEventListener('click', function () {\n                api.toggleFavorite().then(function () { api.rerender(); });\n                api.track('favorite_toggle');\n            });\n        }\n    };\n})();",
+  "trackedActions": [
+    {
+      "action": "definition_view",
+      "label": "查看"
+    },
+    {
+      "action": "audio_play",
+      "label": "朗读"
+    },
+    {
+      "action": "word_mark",
+      "label": "标记"
+    },
+    {
+      "action": "favorite_toggle",
+      "label": "收藏"
+    }
+  ],
+  "sampleData": [
+    {
+      "dynasty": "凡例",
+      "text": "子不语怪力乱神",
+      "source": "《论语·述而》",
+      "gloss": "本录为历史考据素材,意在了解古人如何借谶纬、童谣表达政治预期与社会情绪,绝非宣扬迷信。请理性看待,考据为先。"
+    },
+    {
+      "dynasty": "秦",
+      "text": "亡秦者胡也",
+      "source": "《史记·秦始皇本纪》",
+      "gloss": "方士卢生奏'录图书'之语。始皇以为指匈奴,发蒙恬三十万北击胡、修长城;实应於少子胡亥。谶语之'灵',在政治与人心的向背,非天意。"
+    },
+    {
+      "dynasty": "明",
+      "text": "十八子,主神器",
+      "source": "《明史·李自成传》",
+      "gloss": "拆字谶:'十八子'合为'李',指李自成。'主神器'谓得天下,甲申年(1644)大顺军入京。"
+    }
+  ]
+}
