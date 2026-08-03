@@ -1321,6 +1321,8 @@ function _pad2(n) { return String(n).padStart(2, '0'); }
 function _fmtDate(d) { return d.getFullYear() + '-' + _pad2(d.getMonth() + 1) + '-' + _pad2(d.getDate()); }
 
 function initStatsPage() {
+    /* Sync view buttons to the current _stats.view (defaults to heatmap) */
+    $$('.stats-view-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.view === _stats.view); });
     loadStatsDecks();
     loadStatsActions();
     updateStatsDateDisplay();
@@ -1328,9 +1330,12 @@ function initStatsPage() {
 }
 
 function destroyStatsPage() {
-    _stats.view = 'heatmap';
-    _stats.currentDate = new Date();
-    _stats.deckId = null;
+    /* Keep view + deckId so returning to the page preserves the user's selection */
+    if (_statsChart) {
+        _statsChart.dispose();
+        _statsChart = null;
+        _statsChartInited = false;
+    }
     _stats.actionConfig = {};
     _stats.rawData = [];
     _stats.actionsLoaded = false;
@@ -1373,7 +1378,6 @@ function loadStatsActions() {
                 };
             });
             _stats.actionsLoaded = true;
-            renderStatsLegend();
             renderStatsCards();
         });
 }
@@ -1393,6 +1397,35 @@ function loadStatsData() {
                 _stats.rawData = data.data || [];
                 renderStatsCards();
                 renderStatsChart();
+                /* If a day/week/month view came back empty, jump to the latest date with activity */
+                if (_stats.view !== 'heatmap' && !_stats.rawData.length) {
+                    _loadStatsLatestDate();
+                }
+            }
+        });
+}
+
+/* Find the latest date that has activity (via year heatmap) and re-load the current view around it */
+function _loadStatsLatestDate() {
+    var params = new URLSearchParams({ view: 'heatmap', date: _fmtDate(new Date()) });
+    if (state.userId) params.set('user_id', state.userId);
+    if (_stats.deckId) params.set('deck_id', _stats.deckId);
+    fetch('/v1/observability/data?' + params.toString())
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+            if (!d.success || !d.data || !d.data.length) return;
+            /* data is sorted ascending by date; take the last non-empty one */
+            var latest = null;
+            d.data.forEach(function(item) {
+                var total = 0;
+                Object.values(item.actions || {}).forEach(function(v) { total += v; });
+                if (total > 0) latest = item.date;
+            });
+            if (latest) {
+                var parts = String(latest).split('-');
+                _stats.currentDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                updateStatsDateDisplay();
+                loadStatsData();
             }
         });
 }
@@ -1429,6 +1462,21 @@ function renderStatsChart() {
     if (!el) return;
     var actions = Object.keys(_stats.actionConfig);
     if (!actions.length || !_stats.rawData.length) {
+        /* Use ECharts to show empty state (do NOT wipe the container, keeps instance alive) */
+        if (typeof echarts !== 'undefined') {
+            var chart = ensureStatsChart(el);
+            if (chart) {
+                chart.clear();
+                chart.setOption({
+                    title: {
+                        text: t('stats.noData'),
+                        left: 'center', top: 'middle',
+                        textStyle: { fontSize: 14, color: '#94a3b8', fontWeight: 'normal' }
+                    }
+                });
+                return;
+            }
+        }
         el.innerHTML = '<div class="stats-chart-empty">' + t('stats.noData') + '</div>';
         return;
     }
@@ -1436,151 +1484,194 @@ function renderStatsChart() {
     else renderBarChart(el);
 }
 
+/* ===== ECharts-based stats charts ===== */
+var _statsChart = null;
+var _statsChartInited = false;
+
+function ensureStatsChart(el) {
+    if (typeof echarts === 'undefined') return null;
+    if (!_statsChartInited) {
+        el.style.height = '100%';
+        _statsChart = echarts.init(el);
+        _statsChartInited = true;
+        var ro = new ResizeObserver(function () { if (_statsChart) _statsChart.resize(); });
+        ro.observe(el);
+    }
+    return _statsChart;
+}
+
 function renderHeatmap(el) {
+    var chart = ensureStatsChart(el);
+    if (!chart) { el.innerHTML = '<div class="stats-chart-empty">' + t('stats.noData') + '</div>'; return; }
     var year = _stats.currentDate.getFullYear();
+    var isDark = state.darkTheme;
+    var textColor = isDark ? '#94a3b8' : '#64748b';
+    var borderColor = isDark ? '#1e293b' : '#ffffff';
+
+    /* Prepare date -> total count + per-action breakdown */
     var countMap = {};
-    _stats.rawData.forEach(function(item) {
+    var breakdownMap = {};
+    _stats.rawData.forEach(function (item) {
         var total = 0;
-        Object.values(item.actions).forEach(function(v) { total += v; });
+        var bd = {};
+        Object.keys(item.actions).forEach(function (a) {
+            var v = item.actions[a];
+            if (v > 0) { total += v; bd[a] = v; }
+        });
         countMap[item.date] = total;
+        breakdownMap[item.date] = bd;
     });
 
-    var start = new Date(year, 0, 1);
-    var startDow = (start.getDay() + 6) % 7;
-    var isLeap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
-    var daysInYear = isLeap ? 366 : 365;
-
-    var weeks = [];
-    for (var d = 0; d < daysInYear; d++) {
-        var dt = new Date(year, 0, d + 1);
+    /* Fill all days of the year */
+    var calendarData = [];
+    var startDate = new Date(year, 0, 1);
+    var endDate = new Date(year, 11, 31);
+    for (var dt = new Date(startDate); dt <= endDate; dt.setDate(dt.getDate() + 1)) {
         var ds = _fmtDate(dt);
-        var total = countMap[ds] || 0;
-        var dow = (d + startDow) % 7;
-        var wk = Math.floor((d + startDow) / 7);
-        if (!weeks[wk]) weeks[wk] = [];
-        weeks[wk][dow] = total;
-    }
-    var numWeeks = weeks.length;
-
-    // Dynamic cell size — larger cells for better visibility (height x1.5)
-    var gap = 5;
-    var pad = 60;
-    var legendH = 30;
-    var availW = el.clientWidth - pad - 60 - (numWeeks + 1) * gap;
-    var availH = el.clientHeight - pad - 24 - 8 * gap - legendH;
-    var cellW = Math.max(18, Math.floor(availW / numWeeks));
-    var cellH = Math.max(18, Math.min(Math.floor(availH / 7), Math.floor(cellW * 1.1)));
-    cellH = Math.round(cellH * 1.5);
-
-    var monthWeeks = [];
-    var monthLabels = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-    for (var m = 0; m < 12; m++) {
-        var fd = new Date(year, m, 1);
-        var doy = Math.floor((fd - start) / 86400000);
-        var fw = Math.floor((doy + startDow) / 7);
-        monthWeeks.push({ label: monthLabels[m], week: fw });
+        calendarData.push([ds, countMap[ds] || 0]);
     }
 
-    var html = '<div class="heatmap-container">';
-    html += '<div class="heatmap-wrap"><div class="heatmap-grid" style="grid-template-columns:60px repeat(' + numWeeks + ', ' + cellW + 'px);grid-template-rows:24px repeat(7, ' + cellH + 'px)">';
-    html += '<div></div>';
-    for (var w = 0; w < numWeeks; w++) {
-        var lbl = '';
-        for (var mi = 0; mi < monthWeeks.length; mi++) {
-            if (monthWeeks[mi].week === w) { lbl = monthWeeks[mi].label; break; }
+    var chartEl = el;
+    chartEl.style.height = '100%';
+
+    var actionColors = _stats.actionConfig;
+    var option = {
+        backgroundColor: 'transparent',
+        tooltip: {
+            confine: true,
+            extraCssText: 'max-height:60%;overflow-y:auto;',
+            formatter: function (params) {
+                var date = params.value[0], count = params.value[1];
+                var bd = breakdownMap[date] || {};
+                var html = '<div style="font-weight:600;margin-bottom:6px;">' + date + '</div>';
+                html += '<div style="font-weight:600;margin-bottom:4px;">' + t('stats.legend') + ': ' + count + '</div>';
+                Object.keys(bd).forEach(function (a) {
+                    var cfg = actionColors[a];
+                    var color = cfg ? cfg.color : '#94a3b8';
+                    html += '<div style="display:flex;align-items:center;gap:6px;margin:2px 0;">' +
+                        '<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:' + color + '"></span>' +
+                        '<span>' + (cfg ? cfg.label : a) + ': ' + bd[a] + '</span></div>';
+                });
+                return html;
+            },
+            backgroundColor: 'rgba(30,41,59,0.95)',
+            borderColor: '#475569',
+            textStyle: { color: '#f1f5f9' },
+            appendToBody: true
+        },
+        visualMap: {
+            type: 'piecewise',
+            orient: 'horizontal',
+            left: 'center',
+            top: 0,
+            itemWidth: 15,
+            itemHeight: 15,
+            textStyle: { color: textColor, fontSize: 12 },
+            pieces: [
+                { min: 0, max: 0, label: '0', color: isDark ? '#334155' : '#eceff1' },
+                { min: 1, max: 500, label: '1-500', color: '#4fc3f7' },
+                { min: 501, max: 1000, label: '501-1000', color: '#66bb6a' },
+                { min: 1001, max: 1500, label: '1001-1500', color: '#ffeb3b' },
+                { min: 1501, max: 2000, label: '1501-2000', color: '#ff9800' },
+                { min: 2001, label: '2000+', color: '#f44336' }
+            ]
+        },
+        calendar: {
+            top: 60,
+            left: 30,
+            right: 30,
+            bottom: 20,
+            cellSize: ['auto', 16],
+            range: year,
+            itemStyle: { borderWidth: 2, borderColor: borderColor, borderRadius: 2 },
+            yearLabel: { show: false },
+            monthLabel: { color: textColor, fontSize: 12 },
+            dayLabel: { firstDay: 1, color: textColor, fontSize: 11 },
+            splitLine: { show: true, lineStyle: { color: borderColor, width: 2 } }
+        },
+        series: [{
+            type: 'heatmap',
+            coordinateSystem: 'calendar',
+            data: calendarData,
+            itemStyle: { borderRadius: 2 },
+            emphasis: { itemStyle: { borderColor: 'transparent', shadowBlur: 0 } },
+            select: { disabled: true },
+            hoverAnimation: false
+        }],
+        animationDuration: 500
+    };
+
+    chart.setOption(option, true);
+    chart.off('click');
+    chart.on('click', function (params) {
+        if (params.value && params.value[0]) {
+            var parts = String(params.value[0]).split('-');
+            _stats.currentDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+            statsSetView('daily');
         }
-        html += '<div class="hm-month">' + lbl + '</div>';
-    }
-    var dayLbls = ['一','二','三','四','五','六','日'];
-    for (var row = 0; row < 7; row++) {
-        html += '<div class="hm-label">' + dayLbls[row] + '</div>';
-        for (var w = 0; w < numWeeks; w++) {
-            var total = (weeks[w] && weeks[w][row] !== undefined) ? weeks[w][row] : 0;
-            /* Piecewise level by activity count (aligned with legacy thresholds) */
-            var level;
-            if (total === 0) level = 0;
-            else if (total <= 500) level = 1;
-            else if (total <= 1000) level = 2;
-            else if (total <= 1500) level = 3;
-            else if (total <= 2000) level = 4;
-            else level = 5;
-            var dayOfYear = w * 7 + row - startDow;
-            var cellDate = _fmtDate(new Date(year, 0, dayOfYear + 1));
-            html += '<div class="hm-cell" style="width:' + cellW + 'px;height:' + cellH + 'px" data-lvl="' + level + '" data-date="' + cellDate + '" data-count="' + total + '" title="' + cellDate + ': ' + total + ' ' + t('stats.activities') + '"></div>';
-        }
-    }
-    html += '</div></div>';
-
-    /* Legend: value -> color intervals (below heatmap) */
-    html += '<div class="hm-legend">';
-    html += '<span class="hm-legend-label">' + t('stats.legend') + '</span>';
-    [
-        { min: 0, max: 0, label: '0' },
-        { min: 1, max: 500, label: '1-500' },
-        { min: 501, max: 1000, label: '501-1000' },
-        { min: 1001, max: 1500, label: '1001-1500' },
-        { min: 1501, max: 2000, label: '1501-2000' },
-        { min: 2001, label: '2000+' }
-    ].forEach(function (seg) {
-        var lvl = seg.max === 0 ? 0 : (seg.max === 500 ? 1 : (seg.max === 1000 ? 2 : (seg.max === 1500 ? 3 : (seg.max === 2000 ? 4 : 5))));
-        html += '<span class="hm-legend-item"><i class="hm-legend-color" data-lvl="' + lvl + '"></i>' + seg.label + '</span>';
     });
-    html += '</div>';
-
-    html += '</div>';
-    el.innerHTML = html;
 }
 
 function renderBarChart(el) {
+    var chart = ensureStatsChart(el);
+    if (!chart) { el.innerHTML = '<div class="stats-chart-empty">' + t('stats.noData') + '</div>'; return; }
+
     var data = _stats.rawData;
-    var actions = Object.keys(_stats.actionConfig);
-    if (!data.length) { el.innerHTML = '<div class="stats-chart-empty">' + t('stats.noData') + '</div>'; return; }
-
-    var maxTotal = 0;
-    data.forEach(function(item) {
-        var total = 0;
-        actions.forEach(function(k) { total += item.actions[k] || 0; });
-        if (total > maxTotal) maxTotal = total;
-    });
-    maxTotal = Math.max(maxTotal, 1);
-
-    var barH = Math.max(100, el.clientHeight - 40);
-
-    var html = '<div class="bar-chart-wrap" style="flex:1;display:flex;width:100%;overflow-x:auto;"><div class="bar-chart" style="flex:1;display:flex;align-items:flex-end;gap:3px;border-bottom:1px solid var(--hp-border);">';
-    data.forEach(function(item) {
-        var label = item.time || item.date || '';
-        if (label.length > 5 && label.indexOf('-') >= 0) label = label.slice(5);
-        var total = 0;
-        actions.forEach(function(k) { total += item.actions[k] || 0; });
-        var pct = Math.max(total / maxTotal * barH, 2);
-
-        html += '<div class="bar-col" style="flex:1;min-width:18px;max-width:60px;display:flex;flex-direction:column;align-items:center;cursor:pointer;">';
-        html += '<div class="bar-stack" style="height:' + pct + 'px;width:100%;display:flex;flex-direction:column-reverse;border-radius:3px 3px 0 0;overflow:hidden;">';
-        actions.forEach(function(k) {
-            var v = item.actions[k] || 0;
-            if (v > 0) {
-                var segPct = v / maxTotal * barH;
-                var cfg = _stats.actionConfig[k];
-                html += '<div style="height:' + segPct + 'px;background:' + cfg.color + ';width:100%;flex-shrink:0;"></div>';
+    if (!data.length) {
+        /* Show empty state via ECharts (keeps instance alive) */
+        chart.clear();
+        chart.setOption({
+            title: {
+                text: t('stats.noData'),
+                left: 'center', top: 'middle',
+                textStyle: { fontSize: 14, color: '#94a3b8', fontWeight: 'normal' }
             }
         });
-        html += '</div>';
-        html += '<div class="bar-label" style="font-size:9px;color:var(--hp-text-sub);margin-top:4px;white-space:nowrap;">' + label + '</div>';
-        html += '</div>';
-    });
-    html += '</div></div>';
-    el.innerHTML = html;
-}
+        return;
+    }
 
-function renderStatsLegend() {
-    var el = $('#stats-legend');
-    if (!el) return;
-    var html = '';
-    Object.keys(_stats.actionConfig).forEach(function(key) {
-        var cfg = _stats.actionConfig[key];
-        html += '<div class="stats-legend-item"><div class="stats-legend-dot" style="background:' + cfg.color + '"></div><span>' + cfg.label + '</span></div>';
+    var isDark = state.darkTheme;
+    var textColor = isDark ? '#94a3b8' : '#64748b';
+    var actions = Object.keys(_stats.actionConfig);
+
+    var chartEl = el;
+    chartEl.style.height = '100%';
+
+    var categories = data.map(function (item) {
+        var label = item.time || item.date || '';
+        if (label.length > 5 && label.indexOf('-') >= 0) label = label.slice(5);
+        return label;
     });
-    el.innerHTML = html || '<div class="stats-legend-item" style="color:var(--hp-text-sub)">' + t('stats.noActions') + '</div>';
+
+    var series = actions.map(function (a) {
+        var cfg = _stats.actionConfig[a];
+        return {
+            name: cfg.label,
+            type: 'bar',
+            stack: 'total',
+            data: data.map(function (item) { return item.actions[a] || 0; }),
+            itemStyle: { color: cfg.color }
+        };
+    });
+
+    var option = {
+        backgroundColor: 'transparent',
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { type: 'shadow' },
+            confine: true,
+            appendToBody: true,
+            extraCssText: 'max-height:60%;overflow-y:auto;'
+        },
+        legend: { data: actions.map(function (a) { return _stats.actionConfig[a].label; }), textStyle: { color: textColor }, top: 0 },
+        grid: { left: 50, right: 20, top: 40, bottom: 30 },
+        xAxis: { type: 'category', data: categories, axisLabel: { color: textColor } },
+        yAxis: { type: 'value', axisLabel: { color: textColor } },
+        series: series,
+        animationDuration: 400
+    };
+
+    chart.setOption(option, true);
 }
 
 function updateStatsDateDisplay() {
@@ -2602,15 +2693,6 @@ function setupEventListeners() {
         if (target.closest('#stats-prev')) { statsNavigate(-1); return; }
         if (target.closest('#stats-next')) { statsNavigate(1); return; }
         if (target.closest('#stats-refresh')) { loadStatsData(); return; }
-        if (target.closest('.hm-cell')) {
-            var dateStr = target.closest('.hm-cell').dataset.date;
-            if (dateStr) {
-                var parts = dateStr.split('-');
-                _stats.currentDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-                statsSetView('daily');
-            }
-            return;
-        }
 
         /* Font drawer close */
         var fontDrawer = $('#font-drawer');

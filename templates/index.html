@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/static/vendor/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="/static/styles.css">
     <script src="/static/vendor/tailwind/tailwind.browser.min.js"></script>
+    <script src="/static/vendor/echarts/echarts.min.js"></script>
     <script src="/static/i18n.js"></script>
     <script src="/static/docs.js"></script>
     <script src="/static/app.js" defer></script>
@@ -129,8 +130,6 @@
                             </div>
                             <!-- Chart area -->
                             <div class="stats-chart" id="stats-chart"></div>
-                            <!-- Legend -->
-                            <div class="stats-legend" id="stats-legend"></div>
                         </div>
                     </div>
                     <div class="ph-page" id="ph-market"><div class="ph-body"><div class="ph-icon"><i class="fa-solid fa-store"></i></div><div class="ph-text" data-i18n="page.market">卡组市场</div></div></div>
@@ -236,8 +235,8 @@
         <div id="about-modal" class="modal-overlay" style="display:none;">
             <div class="modal" style="width:360px;">
                 <div class="flex flex-col items-center py-8 px-6">
-                    <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style="background:linear-gradient(135deg,var(--hp-primary),var(--hp-primary-dark));">
-                        <span style="font-size:2rem;">🐉</span>
+                    <div class="w-40 h-40 mb-4">
+                        <img src="/static/logo.png" alt="DragonCard" class="w-full h-full rounded-2xl object-cover">
                     </div>
                     <h2 class="text-xl font-bold text-[var(--hp-text)]">DragonCard</h2>
                     <p class="text-xs text-[var(--hp-text-light)] mt-1">v1.1.0</p>
