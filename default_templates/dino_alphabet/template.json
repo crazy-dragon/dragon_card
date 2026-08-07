@@ -1,0 +1,50 @@
+{
+  "name": "Dino Alphabet",
+  "lang": "en",
+  "description": "Playful dinosaur-themed alphabet cards for young kids (3-6). One letter = one dinosaur, candy colors. Graphic-dominant: huge dino hero occupies most of the card, with an enlarged letter + compact text column beside it. Pronunciation reads ONLY the ALPHABET LETTER being learned, never the dinosaur name. Tap the dino to roar + collect.",
+  "cardHtml": "<div class=\"dc-card dino-card\" data-card-id=\"{{id}}\"></div>",
+  "cardCss": ".dino-card {\n  --dino: #4D96FF;\n  position: relative;\n  border-radius: 22px;\n  border: 4px solid #fff;\n  background: var(--dino);\n  color: #fff;\n  padding: 12px 14px 14px;\n  margin-bottom: 16px;\n  box-shadow: 0 10px 22px rgba(60,50,120,.16);\n  font-family: 'Fredoka','Baloo 2','Comic Sans MS','Chalkboard SE',system-ui,sans-serif;\n  overflow: hidden;\n}\n/* actions float top-right */\n.dino-acts { position:absolute; top:10px; right:10px; display:flex; gap:8px; z-index:4; }\n.dc-act {\n  width:40px;height:40px;border-radius:9999px;display:inline-flex;align-items:center;justify-content:center;\n  background: rgba(255,255,255,.9); color:#33415a; border:none; cursor:pointer; font-size:17px;\n  transition: all .18s ease; box-shadow: 0 3px 8px rgba(0,0,0,.12);\n}\n.dc-act:hover { transform: translateY(-2px) scale(1.06); color:#111; }\n.dc-act:active { transform: scale(.9); }\n.dc-act.is-active { background:#fff; color:#ff5b8a; }\n.dc-act.act-fav.is-active { color:#ffb800; }\n.dc-act.act-mark.is-active { color:#7a3fb0; }\n/* graphic-dominant: huge dino on the left, compact text column on the right */\n.dino-stage { display:flex; align-items:center; gap:8px; margin-top:4px; }\n.dino-graphic {\n  flex:1 1 auto; min-width:0; display:flex; align-items:center; justify-content:center;\n  cursor:pointer; user-select:none;\n}\n.dino-emoji { font-size:182px; line-height:1; filter: drop-shadow(2px 6px 5px rgba(0,0,0,.22)); animation: dinoBob 2.6s ease-in-out infinite; }\n@keyframes dinoBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }\n.dino-side { flex:0 0 31%; min-width:92px; text-align:left; }\n.dino-letter {\n  font-family:'Baloo 2','Fredoka',sans-serif; font-weight:800; font-size:82px; line-height:.86;\n  text-shadow: 2px 3px 0 rgba(0,0,0,.22); margin-bottom:2px;\n}\n.dino-name { font-weight:700; font-size:15px; letter-spacing:.2px; text-shadow:1px 1px 0 rgba(0,0,0,.12); }\n.dino-zh { font-size:12px; opacity:.95; }\n.dino-ph { display:inline-block; margin-top:5px; background:rgba(255,255,255,.92); color:#333; font-weight:700; font-size:12px; padding:2px 10px; border-radius:999px; }\n.dino-hint { margin-top:6px; font-size:11px; font-weight:600; opacity:.9; }\n.dino-star { position:absolute; right:12px; bottom:10px; font-size:22px; color:rgba(255,255,255,.55); transition:.2s; opacity:0; pointer-events:none; }\n.dino-card.collected .dino-star { opacity:1; color:#fff; text-shadow:0 0 8px rgba(255,255,255,.85); }\n.dino-fun {\n  margin-top:8px; background:rgba(255,255,255,.96); color:#5b2a86; font-weight:600;\n  border-radius:14px; padding:0 12px; font-size:14px; max-height:0; overflow:hidden; opacity:0; transition: all .3s ease;\n}\n.dino-fun.show { padding:10px 12px; max-height:220px; opacity:1; }\n.dino-vis { margin-top:8px; font-size:12px; opacity:.88; line-height:1.5; background:rgba(0,0,0,.13); border-radius:10px; padding:6px 10px; }\n.dino-card.roar { animation: dinoRoar .55s ease; }\n@keyframes dinoRoar { 0%{transform:scale(1)} 30%{transform:scale(1.05) rotate(2deg)} 60%{transform:scale(.97) rotate(-2deg)} 100%{transform:scale(1)} }\nbody.dark-mode .dino-card { color:#fff; }",
+  "cardJs": "(function () {\n  'use strict';\n  function esc(s) {\n    if (s == null) return '';\n    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n  }\n  var PAL = ['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF9F45','#B983FF','#FF6FB5','#3DCCC7'];\n  window.cardTemplate = {\n    name: 'Dino Alphabet',\n    fields: [\n      { key: 'letter', label: '字母', hideable: false },\n      { key: 'dinoEn', label: '恐龙(英)' },\n      { key: 'dinoZh', label: '恐龙(中)' },\n      { key: 'emoji', label: '恐龙形象', hideable: false },\n      { key: 'color', label: '主题色', hideable: false },\n      { key: 'phonics', label: '发音' },\n      { key: 'sampleWord', label: '示例词' },\n      { key: 'visual', label: '视觉构思' },\n      { key: 'fun', label: '趣味点子' }\n    ],\n    render: function (cardHtml, cardData, api) {\n      var data = api.getCardData ? api.getCardData() : cardData;\n      var d = data.data || {};\n      var id = data.id;\n      var hidden = (api.getHiddenFields && api.getHiddenFields()) || {};\n      function isHidden(k) { return hidden.has && hidden.has(k); }\n      function h(k, html) { return isHidden(k) ? '' : html; }\n      var color = d.color || PAL[((id || 0) % PAL.length + PAL.length) % PAL.length];\n\n      var html = '';\n      html += '<div class=\"dc-card dino-card\" data-card-id=\"' + id + '\" style=\"--dino:' + esc(color) + ';background:' + esc(color) + '\">';\n      // actions (top-right)\n      html += '  <div class=\"dino-acts\">';\n      html += '    <button class=\"dc-act act-play\" data-action=\"play\" title=\"听一听\"><i class=\"fa-solid fa-volume-high\"></i></button>';\n      html += '    <button class=\"dc-act act-mark\" data-action=\"mark\" title=\"标记\"><i class=\"fa-solid fa-bookmark\"></i></button>';\n      html += '    <button class=\"dc-act act-fav\" data-action=\"favorite\" title=\"收藏\"><i class=\"fa-solid fa-star\"></i></button>';\n      html += '  </div>';\n      // graphic-dominant body: huge dino left, compact text right\n      html += '  <div class=\"dino-stage\">';\n      html += '    <div class=\"dino-graphic\" data-action=\"collect\"><div class=\"dino-emoji\">' + esc(d.emoji || '🦕') + '</div></div>';\n      html += '    <div class=\"dino-side\">';\n      html += '      <div class=\"dino-letter\">' + esc(d.letter || '') + '</div>';\n      html += h('dinoEn', '      <div class=\"dino-name\">' + esc(d.dinoEn || '') + '</div>');\n      html += h('dinoZh', '      <div class=\"dino-zh\">' + esc(d.dinoZh || '') + '</div>');\n      html += h('phonics', '      <div class=\"dino-ph\">' + esc(d.phonics || '') + '</div>');\n      html += '      <div class=\"dino-hint\">🦕 点我嗷呜！</div>';\n      html += '    </div>';\n      html += '  </div>';\n      // collected star\n      html += '  <div class=\"dino-star\"><i class=\"fa-solid fa-star\"></i></div>';\n      // fun bubble (revealed on tap)\n      html += h('fun', '  <div class=\"dino-fun\">' + esc(d.fun || '') + '</div>');\n      // visual design note (hideable, muted)\n      html += h('visual', '  <div class=\"dino-vis\">💡 ' + esc(d.visual || '') + '</div>');\n      html += '</div>';\n      return html;\n    },\n    init: function (el, cardData, api) {\n      var data = api.getCardData ? api.getCardData() : cardData;\n      var d = data.data || {};\n      if (data.is_unknown) { var m0 = el.querySelector('.act-mark'); if (m0) m0.classList.add('is-active'); }\n      if (data.is_favorite) { var f0 = el.querySelector('.act-fav'); if (f0) f0.classList.add('is-active'); }\n\n      var playBtn = el.querySelector('.act-play');\n      if (playBtn) playBtn.addEventListener('click', function (e) {\n        e.stopPropagation();\n        // read ONLY the ALPHABET LETTER being learned — never the dinosaur name\n        var txt = d.letter || '';\n        api.playAudio(txt);\n        api.track('audio_play');\n      });\n      var markBtn = el.querySelector('.act-mark');\n      if (markBtn) markBtn.addEventListener('click', function (e) {\n        e.stopPropagation();\n        api.toggleMark().then(function () { markBtn.classList.toggle('is-active'); });\n        api.track('word_mark');\n      });\n      var favBtn = el.querySelector('.act-fav');\n      if (favBtn) favBtn.addEventListener('click', function (e) {\n        e.stopPropagation();\n        api.toggleFavorite().then(function () { favBtn.classList.toggle('is-active'); });\n        api.track('favorite_toggle');\n      });\n\n      function roar() {\n        el.classList.remove('roar'); void el.offsetWidth; el.classList.add('roar');\n        el.classList.add('collected');\n        var fb = el.querySelector('.dino-fun'); if (fb) fb.classList.add('show');\n        try {\n          var AC = window.AudioContext || window.webkitAudioContext;\n          if (AC) {\n            var ac = new AC();\n            var o = ac.createOscillator(), g = ac.createGain();\n            o.type = 'sawtooth';\n            o.frequency.setValueAtTime(200, ac.currentTime);\n            o.frequency.exponentialRampToValueAtTime(70, ac.currentTime + 0.4);\n            g.gain.setValueAtTime(0.10, ac.currentTime);\n            g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.45);\n            o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime + 0.45);\n          }\n        } catch (e) {}\n        api.track('collect');\n      }\n      var graphic = el.querySelector('.dino-graphic');\n      if (graphic) graphic.addEventListener('click', function (e) { e.stopPropagation(); roar(); });\n    }\n  };\n})();",
+  "trackedActions": [
+    {
+      "action": "audio_play",
+      "label": "发音"
+    },
+    {
+      "action": "word_mark",
+      "label": "标记"
+    },
+    {
+      "action": "favorite_toggle",
+      "label": "收藏"
+    },
+    {
+      "action": "collect",
+      "label": "收集"
+    }
+  ],
+  "sampleData": [
+    {
+      "letter": "A",
+      "dinoEn": "Ankylosaurus",
+      "dinoZh": "甲龙",
+      "emoji": "🦕",
+      "color": "#FF6B6B",
+      "phonics": "/æ/",
+      "sampleWord": "apple",
+      "visual": "圆滚滚的装甲身体，背上一块块骨板，尾巴末端是巨大的“狼牙棒”。卡片底色珊瑚红，字母 A 设计成一块拼图骨板。",
+      "fun": "点尾巴“狼牙棒”→ 旋转扫飞一颗掉落的陨石（动画），边玩边记 A。"
+    },
+    {
+      "letter": "B",
+      "dinoEn": "Brachiosaurus",
+      "dinoZh": "腕龙",
+      "emoji": "🦕",
+      "color": "#FFD93D",
+      "phonics": "/b/",
+      "sampleWord": "ball",
+      "visual": "超长脖子伸向天空、小脑袋顶着云朵；字母 B 弯成脖子形状。天蓝+草绿。",
+      "fun": "点长脖子→ 它慢慢“长高”去够树顶叶子，伴随“咔嚓”吃叶声。"
+    }
+  ]
+}

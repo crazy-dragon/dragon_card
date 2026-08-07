@@ -1,0 +1,21 @@
+[
+  {
+    "item_order": 1,
+    "data": {
+      "name": "霸王龙",
+      "model": "/static/media/trex.glb",
+      "latin": "Tyrannosaurus rex",
+      "desc": "霸王龙（学名 Tyrannosaurus rex）是暴龙科中体型最大的一种，生活在白垩纪末期，是著名的肉食性恐龙。它的后肢强壮有力，前肢短小，头部巨大，咬合力极强。"
+    }
+  },
+  {
+    "item_order": 2,
+    "data": {
+      "name": "化骨龙",
+      "model": "/static/media/boy.glb",
+      "latin": "Guu Gwat Lung",
+      "desc": "化骨龙是粤语中的方言词汇，指小朋友、小鬼头。广东人常用来称呼自家或熟人家的小孩，带着亲昵和玩笑的语气，取意\"调皮、精力旺盛、好像怎么都吃不胖\"的小孩子。"
+    }
+  }
+]
+

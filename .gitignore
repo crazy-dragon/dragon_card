@@ -14,6 +14,19 @@ backups/
 # 大词汇数据（仅提交 2000 词精简版，完整版保留本地）
 default_templates/english_coca20000/vocabulary.json
 
+# 本地多媒体资源（3D 模型等大文件，不提交）
+static/media/*.glb
+static/media/*.obj
+static/media/*.stl
+static/media/*.usdz
+static/media/*.gltf
+
+# 独立静态 demo（GitHub Pages 单独部署，不入主仓库）
+demo/
+
+# 临时设计稿
+designs/
+
 # 系统文件
 .DS_Store
 Thumbs.db

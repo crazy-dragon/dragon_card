@@ -19,6 +19,8 @@ var state = {
     enteredPages: new Set(),
     singleCardMode: false,
     singleCardIndex: 0,
+    resourceMode: false,
+    resourceIndex: 0,
 };
 
 /* ===== DOM helpers ===== */
@@ -247,6 +249,37 @@ var templateEngine = {
     }
 };
 
+/* Whether a template declares a 3D model field (fields entry with type 'model') */
+function templateSupports3D(templateId) {
+    var ct = templateEngine.getCardTemplate(templateId);
+    if (ct && Array.isArray(ct.fields)) {
+        for (var i = 0; i < ct.fields.length; i++) {
+            if (ct.fields[i] && ct.fields[i].type === 'model') return true;
+        }
+    }
+    return false;
+}
+
+/* Whether any loaded card data has a model/url field pointing to a 3D resource */
+function deckHasModelData() {
+    for (var pn in state.cards) {
+        var list = state.cards[pn] || [];
+        for (var i = 0; i < list.length; i++) {
+            var d = list[i].data || {};
+            if ((typeof d.model === 'string' && d.model) || (typeof d.url === 'string' && d.url)) return true;
+        }
+    }
+    return false;
+}
+
+/* Show/hide the 3D resource view button based on template fields or loaded data */
+function updateResourceBtn() {
+    var btn = $('#resource-view-btn');
+    if (!btn) return;
+    var show = templateSupports3D(state.templateId) || deckHasModelData();
+    btn.style.display = show ? '' : 'none';
+}
+
 /* ===== Batched observability tracking ===== */
 var _trackQueue = [];
 var _trackTimer = null;
@@ -302,6 +335,11 @@ function createApiForCard(cardData) {
         cardId: deckId,
         templateId: templateId,
         getCardData: function () { return cardData; },
+        getViewMode: function () {
+            if (state.resourceMode) return 'resource';
+            if (state.singleCardMode) return 'single';
+            return 'list';
+        },
         getHiddenFields: function () { return JSON.parse(JSON.stringify(_hidden)); },
         setHiddenFields: function (fields) { _hidden = fields || {}; persistHidden(); },
         toggleMark: function (isUnknown) {
@@ -571,13 +609,41 @@ function progressColor(pct) {
     return 'var(--hp-primary)';
 }
 
+/* Deck kind filter state: null = all, otherwise a kind key */
+var _deckKindFilter = null;
+
+/* Render the type filter bar (order follows DECK_KIND_META definition order) */
+function renderDeckKindFilter() {
+    var container = $('#deck-kind-filter');
+    if (!container) return;
+    var html = '';
+    html += '<button class="deck-kind-tab' + (_deckKindFilter === null ? ' active' : '') + '" data-kind="" data-dbl="1">' + t('home.filterAll') + '</button>';
+    Object.keys(DECK_KIND_META).forEach(function (k) {
+        var meta = DECK_KIND_META[k];
+        var active = _deckKindFilter === k;
+        html += '<button class="deck-kind-tab' + (active ? ' active' : '') + '" data-kind="' + k + '" style="--kcolor:' + meta.color + ';' + (active ? 'border-color:' + meta.color + ';color:' + meta.color + ';' : '') + '">' + meta.icon + ' ' + t(meta.i18n) + '</button>';
+    });
+    container.innerHTML = html;
+}
+
+function setDeckKindFilter(kind) {
+    _deckKindFilter = kind || null;
+    renderDeckKindFilter();
+    renderDeckList();
+}
+
 function renderDeckList() {
     var grid = $('#deck-grid');
     if (!grid) return;
+    renderDeckKindFilter();
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--hp-text-sub);"><i class="fa-solid fa-layer-group" style="font-size:32px;margin-bottom:12px;display:block;"></i><div style="font-size:14px;">' + t('common.loading') + '</div></div>';
 
     fetch('/v1/decks?user_id=' + state.userId).then(function (r) { return r.json(); }).then(function (d) {
-        if (!d.decks || !d.decks.length) {
+        var decks = d.decks || [];
+        if (_deckKindFilter) {
+            decks = decks.filter(function (dk) { return (dk.kind || 'other') === _deckKindFilter; });
+        }
+        if (!decks.length) {
             grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--hp-text-sub);">' +
                 '<i class="fa-solid fa-layer-group" style="font-size:48px;margin-bottom:16px;display:block;color:var(--hp-text-light);"></i>' +
                 '<div style="font-size:18px;font-weight:700;margin-bottom:8px;color:var(--hp-text);">' + t('home.empty.title') + '</div>' +
@@ -586,7 +652,7 @@ function renderDeckList() {
             return;
         }
         var html = '';
-        d.decks.forEach(function (deck) {
+        decks.forEach(function (deck) {
             var kindMeta = getKindMeta(deck.kind);
             var pct = deck.item_count > 0 ? Math.round((deck.mastered_count || 0) / deck.item_count * 100) : 0;
             var hasTpl = !!deck.template_name;
@@ -639,7 +705,7 @@ function renderDeckList() {
             html += '</div>';
         });
         grid.innerHTML = html;
-        updateHomeStats(d.decks);
+        updateHomeStats(decks);
     }).catch(function () {
         grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--hp-danger);">Failed to load decks</div>';
     });
@@ -689,6 +755,7 @@ function enterDeck(deckId) {
         if (!state.templateId) return;
         showStudyView();
         voiceMgr.setLang(templateLangOf(state.templateId));
+        updateResourceBtn();
         renderTabs();
         renderStudyPages();
         return loadInfo();
@@ -727,6 +794,7 @@ function loadPage(pageNum) {
                 if (c.data && c.data.examples) c.data.examples.forEach(function (e) { e._show = false; });
                 return c;
             });
+            updateResourceBtn();
             return state.cards[pageNum];
         });
 }
@@ -832,6 +900,14 @@ function resetSingleCardMode() {
 function toggleSingleCardMode() {
     var pn = currentStudyPageNum();
     if (pn == null) { showToast('Open a page first', true); return; }
+    if (state.resourceMode) {
+        /* Exit resource mode first (mutually exclusive) */
+        state.resourceMode = false;
+        var rb = $('#resource-view-btn');
+        if (rb) rb.classList.remove('active');
+        document.body.classList.remove('resource-mode');
+        threeRenderer.dispose();
+    }
     state.singleCardMode = !state.singleCardMode;
     var btn = $('#card-view-btn');
     if (btn) btn.classList.toggle('active', state.singleCardMode);
@@ -862,9 +938,9 @@ function renderSingleCardStage(pageNum) {
         '<div class="single-card-stage">' +
             '<div class="sc-card-wrap" id="sc-card-wrap"></div>' +
             '<div class="sc-nav-row">' +
-                '<button class="sc-nav sc-prev" data-sc="prev" aria-label="Previous card">' + prevSvg + '</button>' +
+                '<button class="sc-nav sc-prev" data-sc="prev" data-tooltip="' + t('study.prev') + '" aria-label="Previous card">' + prevSvg + '</button>' +
                 '<div class="sc-progress"><span id="sc-idx">1</span> / ' + cards.length + '</div>' +
-                '<button class="sc-nav sc-next" data-sc="next" aria-label="Next card">' + nextSvg + '</button>' +
+                '<button class="sc-nav sc-next" data-sc="next" data-tooltip="' + t('study.next') + '" aria-label="Next card">' + nextSvg + '</button>' +
             '</div>' +
         '</div>';
     renderSingleCardContent(pageNum, state.singleCardIndex, false);
@@ -897,6 +973,288 @@ function singleCardNav(delta) {
     if (pn == null) return;
     renderSingleCardContent(pn, state.singleCardIndex + delta, true);
 }
+
+/* ===== 3D Resource Mode ===== */
+function toggleResourceMode() {
+    var pn = currentStudyPageNum();
+    if (pn == null) { showToast(t('study.noDataPage'), true); return; }
+    if (state.singleCardMode) {
+        /* Exit single card mode first (mutually exclusive) */
+        state.singleCardMode = false;
+        var sb = $('#card-view-btn');
+        if (sb) sb.classList.remove('active');
+    }
+    state.resourceMode = !state.resourceMode;
+    var btn = $('#resource-view-btn');
+    if (btn) btn.classList.toggle('active', state.resourceMode);
+    document.body.classList.toggle('resource-mode', state.resourceMode);
+    if (state.resourceMode) {
+        /* Entering resource mode: ensure at least one card has a 3D model */
+        state.resourceIndex = 0;
+        var cards = state.cards[pn] || [];
+        if (!cards.length) {
+            loadPage(pn).then(function () { renderResourceStage(pn); });
+        } else {
+            renderResourceStage(pn);
+        }
+    } else {
+        /* Leaving resource mode: dispose the 3D scene and re-render the page */
+        threeRenderer.dispose();
+        renderStudyPage(pn);
+    }
+}
+
+function renderResourceStage(pageNum) {
+    var container = $('#study-' + pageNum);
+    if (!container) return;
+    var cards = state.cards[pageNum] || [];
+    if (!cards.length) {
+        container.innerHTML = '<div class="empty-state" style="padding:60px 20px;">' + t('study.noDataPage') + '</div>';
+        return;
+    }
+    var prevSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
+    var nextSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+    container.innerHTML =
+        '<div class="resource-stage">' +
+            '<div class="res-3d-wrap" id="res-3d-wrap"></div>' +
+            '<div class="res-side">' +
+                '<div class="sc-nav-row res-nav">' +
+                    '<button class="sc-nav sc-prev" data-res="prev" data-tooltip="' + t('study.prev') + '" aria-label="Previous card">' + prevSvg + '</button>' +
+                    '<div class="sc-progress"><span id="res-idx">1</span> / ' + cards.length + '</div>' +
+                    '<button class="sc-nav sc-next" data-res="next" data-tooltip="' + t('study.next') + '" aria-label="Next card">' + nextSvg + '</button>' +
+                '</div>' +
+                '<div class="res-info-card" id="res-info-card"></div>' +
+            '</div>' +
+        '</div>';
+    renderResourceContent(pageNum, state.resourceIndex, false);
+}
+
+function renderResourceContent(pageNum, idx, animate) {
+    var cards = state.cards[pageNum] || [];
+    if (!cards.length) return;
+    if (idx < 0) idx = cards.length - 1;
+    if (idx >= cards.length) idx = 0;
+    state.resourceIndex = idx;
+
+    var wrap = $('#res-3d-wrap');
+    var info = $('#res-info-card');
+    if (!wrap || !info) return;
+
+    var card = cards[idx];
+
+    /* Info overlay card: template renders card (model hidden, no action buttons in resource mode) */
+    info.innerHTML = templateEngine.renderCard(card, '');
+    var infoEl = info.querySelector('[data-card-id]:not(button)');
+    if (infoEl) templateEngine.initCard(infoEl, card);
+
+    /* 3D section: load the model field from card data */
+    var modelUrl = '';
+    var d = card.data || {};
+    if (typeof d.model === 'string') modelUrl = d.model;
+    else if (typeof d.url === 'string') modelUrl = d.url;
+    if (modelUrl) {
+        threeRenderer.loadInto(wrap, modelUrl);
+    } else {
+        threeRenderer.dispose();
+        wrap.innerHTML = '<div class="res-placeholder">' + (t('res.noModel') || 'No 3D model') + '</div>';
+    }
+
+    var idxEl = $('#res-idx');
+    if (idxEl) idxEl.textContent = idx + 1;
+}
+
+function resourceNav(delta) {
+    var pn = currentStudyPageNum();
+    if (pn == null) return;
+    renderResourceContent(pn, state.resourceIndex + delta, true);
+}
+
+/* ===== Three.js renderer (lazy loaded via ES modules) ===== */
+var threeRenderer = {
+    ready: false,
+    THREE: null,
+    GLTFLoader: null,
+    renderer: null,
+    scene: null,
+    camera: null,
+    model: null,
+    animId: null,
+    container: null,
+    currentUrl: null,
+    autoRotate: true,
+    _rotX: 0,
+    _rotY: 0,
+    _zoom: 6,
+
+    /* Load three + GLTFLoader once (ES module dynamic import) */
+    load: function () {
+        var self = this;
+        if (this.ready) return Promise.resolve(true);
+        return Promise.all([
+            import('three'),
+            import('three/addons/loaders/GLTFLoader.js')
+        ]).then(function (mods) {
+            self.THREE = mods[0];
+            self.GLTFLoader = mods[1].GLTFLoader;
+            self.ready = true;
+            return true;
+        }).catch(function (e) {
+            console.error('three load failed', e);
+            return false;
+        });
+    },
+
+    loadInto: function (container, url) {
+        var self = this;
+        this.container = container;
+        this.currentUrl = url;
+        this._loadSeq = (this._loadSeq || 0) + 1;
+        var seq = this._loadSeq;
+        this.load().then(function (ok) {
+            if (seq !== self._loadSeq) return; /* stale request */
+            if (!ok) { container.innerHTML = '<div class="res-placeholder">Three.js load failed</div>'; return; }
+            if (!self.renderer) {
+                self._init();
+            } else {
+                /* Canvas may have been removed from DOM; re-attach it */
+                if (!self.renderer.domElement.parentNode) container.appendChild(self.renderer.domElement);
+                self._resize();
+            }
+            self._loadModel(url, seq);
+        });
+    },
+
+    _resize: function () {
+        if (!this.renderer || !this.container) return;
+        var w = this.container.clientWidth || 600;
+        var h = this.container.clientHeight || 400;
+        this.renderer.setSize(w, h);
+        if (this.camera) {
+            this.camera.aspect = w / h;
+            this.camera.updateProjectionMatrix();
+        }
+    },
+
+    _init: function () {
+        var container = this.container;
+        var w = container.clientWidth || 600;
+        var h = container.clientHeight || 400;
+        this.renderer = new this.THREE.WebGLRenderer({ antialias: true, alpha: true });
+        this.renderer.setSize(w, h);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(this.renderer.domElement);
+
+        this.scene = new this.THREE.Scene();
+        this.camera = new this.THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
+        this.camera.position.set(0, 1.5, 6);
+        this.camera.lookAt(0, 0, 0);
+
+        var ambient = new this.THREE.AmbientLight(0xffffff, 0.6);
+        this.scene.add(ambient);
+        var dir = new this.THREE.DirectionalLight(0xffffff, 0.9);
+        dir.position.set(5, 10, 7);
+        this.scene.add(dir);
+        var dir2 = new this.THREE.DirectionalLight(0xffffff, 0.3);
+        dir2.position.set(-5, -3, -5);
+        this.scene.add(dir2);
+
+        this._setupControls();
+        this.animId = requestAnimationFrame(this._animate.bind(this));
+        window.addEventListener('resize', this._onResize.bind(this));
+    },
+
+    _setupControls: function () {
+        var self = this;
+        var isDragging = false;
+        var prevX = 0, prevY = 0;
+        var dom = this.renderer.domElement;
+
+        dom.addEventListener('mousedown', function (e) {
+            isDragging = true;
+            self.autoRotate = false;
+            prevX = e.clientX; prevY = e.clientY;
+            dom.style.cursor = 'grabbing';
+        });
+        window.addEventListener('mouseup', function () {
+            if (isDragging) { isDragging = false; dom.style.cursor = 'grab'; }
+        });
+        dom.addEventListener('mousemove', function (e) {
+            if (!isDragging || !self.model) return;
+            var dx = e.clientX - prevX;
+            var dy = e.clientY - prevY;
+            prevX = e.clientX; prevY = e.clientY;
+            self._rotY += dx * 0.01;
+            self._rotX += dy * 0.01;
+            self._rotX = Math.max(-1.5, Math.min(1.5, self._rotX));
+            self.model.rotation.y = self._rotY;
+            self.model.rotation.x = self._rotX;
+        });
+        dom.addEventListener('wheel', function (e) {
+            e.preventDefault();
+            self._zoom += e.deltaY * 0.005;
+            self._zoom = Math.max(2, Math.min(20, self._zoom));
+        }, { passive: false });
+        dom.style.cursor = 'grab';
+    },
+
+    _loadModel: function (url, seq) {
+        var self = this;
+        if (this.model) { this.scene.remove(this.model); this.model = null; }
+        var loader = new this.GLTFLoader();
+        loader.load(url, function (gltf) {
+            if (seq !== self._loadSeq) return; /* stale request */
+            self.model = gltf.scene || gltf.scenes[0];
+            var box = new self.THREE.Box3().setFromObject(self.model);
+            var size = box.getSize(new self.THREE.Vector3());
+            var maxDim = Math.max(size.x, size.y, size.z);
+            var scale = maxDim > 0 ? 2.2 / maxDim : 1;
+            self.model.scale.setScalar(scale);
+            var center = box.getCenter(new self.THREE.Vector3());
+            self.model.position.sub(center);
+            self.scene.add(self.model);
+            self.model.rotation.y = self._rotY;
+            self.model.rotation.x = self._rotX;
+        }, undefined, function (err) {
+            if (seq !== self._loadSeq) return;
+            console.error('model load error', err);
+            if (self.container) self.container.innerHTML = '<div class="res-placeholder">Failed to load model</div>';
+        });
+    },
+
+    _animate: function () {
+        if (!this.renderer) return;
+        if (this.model && this.autoRotate) this.model.rotation.y += 0.004;
+        this.camera.position.z = this._zoom;
+        this.camera.lookAt(0, 0, 0);
+        this.renderer.render(this.scene, this.camera);
+        this.animId = requestAnimationFrame(this._animate.bind(this));
+    },
+
+    _onResize: function () {
+        if (!this.renderer || !this.container) return;
+        this._resize();
+    },
+
+    dispose: function () {
+        if (this.animId) cancelAnimationFrame(this.animId);
+        this.animId = null;
+        if (this.renderer) {
+            this.renderer.dispose();
+            if (this.renderer.domElement && this.renderer.domElement.parentNode) {
+                this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
+            }
+            this.renderer = null;
+        }
+        this.scene = null;
+        this.camera = null;
+        this.model = null;
+        this.container = null;
+        this.currentUrl = null;
+        this.autoRotate = true;
+        this._rotX = 0; this._rotY = 0; this._zoom = 6;
+        this._loadSeq = (this._loadSeq || 0) + 1;
+    }
+};
 
 function renderStudyPages() {
     var container = $('#study-pages-container');
@@ -2104,8 +2462,15 @@ function doReorder(deckId) {
 }
 
 /* ===== Back to Home ===== */
-function goHomeFromStudy() {
+ function goHomeFromStudy() {
     resetSingleCardMode();
+    if (state.resourceMode) {
+        state.resourceMode = false;
+        var rb = $('#resource-view-btn');
+        if (rb) rb.classList.remove('active');
+        document.body.classList.remove('resource-mode');
+        threeRenderer.dispose();
+    }
     state.deckId = null;
     state.templateId = null;
     state.currentDeck = null;
@@ -2332,8 +2697,21 @@ function setupEventListeners() {
         if (target.closest('[data-sc="prev"]')) { singleCardNav(-1); return; }
         if (target.closest('[data-sc="next"]')) { singleCardNav(1); return; }
 
+        /* Resource (3D) mode toggle + navigation */
+        if (target.closest('#resource-view-btn')) { toggleResourceMode(); return; }
+        if (target.closest('[data-res="prev"]')) { resourceNav(-1); return; }
+        if (target.closest('[data-res="next"]')) { resourceNav(1); return; }
+
         /* New Deck (home page) */
         if (target.closest('#new-deck-btn')) { doCreateDeck(); return; }
+
+        /* Deck kind filter bar (single click selects a type, double click also selects) */
+        if (target.closest('.deck-kind-tab')) {
+            var kindTab = target.closest('.deck-kind-tab');
+            var kind = kindTab.dataset.kind || '';
+            setDeckKindFilter(kind);
+            return;
+        }
 
         /* Deck mastery stats (blue modal) — must be checked BEFORE data-study-deck */
         if (target.closest('[data-deck-stats]')) {
@@ -2700,6 +3078,48 @@ function setupEventListeners() {
         var voiceDD = $('.voice-dropdown');
         if (voiceDD && voiceDD.style.display !== 'none' && !target.closest('.voice-dropdown') && !target.closest('.voice-select-btn')) voiceDD.style.display = 'none';
     });
+
+    /* ===== Global tooltip (hover on any [data-tooltip] element) ===== */
+    var _tipTimer = null;
+    var _tipEl = null;
+
+    function hideTip() {
+        clearTimeout(_tipTimer);
+        _tipTimer = null;
+        _tipEl = null;
+        var tip = $('#global-tooltip');
+        if (tip) tip.classList.remove('show');
+    }
+
+    document.addEventListener('mouseover', function (e) {
+        var el = e.target.closest('[data-tooltip]');
+        if (!el || el === _tipEl) return;
+        _tipEl = el;
+        clearTimeout(_tipTimer);
+        _tipTimer = setTimeout(function () {
+            var text = el.getAttribute('data-tooltip');
+            if (!text) return;
+            var tip = $('#global-tooltip');
+            if (!tip) return;
+            tip.textContent = text;
+            tip.classList.add('show');
+            /* Position below the element, flip above if overflow */
+            var r = el.getBoundingClientRect();
+            var tr = tip.getBoundingClientRect();
+            var left = r.left + r.width / 2 - tr.width / 2;
+            var top = r.bottom + 8;
+            if (left < 8) left = 8;
+            if (left + tr.width > window.innerWidth - 8) left = window.innerWidth - tr.width - 8;
+            if (top + tr.height > window.innerHeight - 8) top = r.top - tr.height - 8;
+            tip.style.left = left + 'px';
+            tip.style.top = top + 'px';
+        }, 300);
+    });
+    document.addEventListener('mouseleave', function (e) {
+        if (e.target.closest('[data-tooltip]')) hideTip();
+    });
+    document.addEventListener('mousedown', function () { hideTip(); });
+    window.addEventListener('scroll', function () { hideTip(); }, true);
 
     /* Keyboard navigation for single-card mode */
     document.addEventListener('keydown', function (e) {

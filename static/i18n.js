@@ -27,6 +27,7 @@
         'home.lastStudied': '—',
         'home.notBound': '未绑定模版',
         'home.active': '当前',
+        'home.filterAll': '全部',
 
         /* 侧边栏切换页标题 */
         'page.achievements': '成就中心',
@@ -65,6 +66,8 @@
         'study.scrollBottom': 'Scroll to Bottom',
         'study.singleCard': 'Single Card',
         'study.refresh': 'Refresh',
+        'study.prev': '上一张',
+        'study.next': '下一张',
         'study.noTemplate': '该卡组还没有模版，请在管理中上传',
         'study.noDataPage': 'No cards on this page.',
         'study.noData': 'No data yet. Go to Manage to import data for this deck.',
@@ -209,6 +212,9 @@
         'stats.lastYear': '近一年',
         'stats.activities': '次活动',
         'stats.legend': '活动量',
+        'stats.prev': '上一页',
+        'stats.next': '下一页',
+        'stats.refresh': '刷新',
 
         /* 关于 */
         'about.tagline': '通用卡片学习框架',
@@ -270,6 +276,7 @@
         'home.lastStudied': '—',
         'home.notBound': 'No template',
         'home.active': 'Active',
+        'home.filterAll': 'All',
 
         /* 侧边栏切换页标题 */
         'page.achievements': 'Achievements',
@@ -307,6 +314,8 @@
         'study.scrollBottom': 'Scroll to Bottom',
         'study.singleCard': 'Single Card',
         'study.refresh': 'Refresh',
+        'study.prev': 'Previous',
+        'study.next': 'Next',
         'study.noTemplate': 'This deck has no template. Upload one in Manage.',
         'study.noDataPage': 'No cards on this page.',
         'study.noData': 'No data yet. Go to Manage to import data for this deck.',
@@ -451,6 +460,9 @@
         'stats.lastYear': 'Last year',
         'stats.activities': 'activities',
         'stats.legend': 'Activity',
+        'stats.prev': 'Previous',
+        'stats.next': 'Next',
+        'stats.refresh': 'Refresh',
 
         /* 关于 */
         'about.tagline': 'A generic flashcard learning framework',

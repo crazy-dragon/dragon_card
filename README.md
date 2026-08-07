@@ -52,6 +52,26 @@ python app.py
 3. 在数据区上传数据文件（JSON 或 Excel）
 4. 返回目录，点击页码开始学习
 
+## 🎪 在线 Demo
+
+`demo/` 目录是一个**独立可交互的静态演示**，可在 GitHub Pages 等纯静态环境部署（无需后端）。
+
+```bash
+# 本地预览（需 HTTP 服务，file:// 打开会因 fetch JSON 失败）
+cd demo
+python3 -m http.server 8888
+# 访问 http://localhost:8888
+```
+
+Demo 包含：
+- 理念介绍：「简单 · 不强迫 · 慢慢来」
+- 3 个示例卡组（英文核心词 / 成语 / 日语五十音），每个 3 张卡
+- 卡片交互：发音（浏览器 TTS）、标记、收藏、左右切换
+- 中/EN 语言切换
+- 前端库使用 CDN 加载（公网场景；本地应用则用 `static/vendor/` 离线加载）
+
+部署到 GitHub Pages 时，将 `demo/` 目录内容作为站点根目录即可。
+
 > 详细操作见应用内「使用文档」（侧边栏进入，支持中英切换）。
 
 ## 🎴 自定义模板
@@ -116,12 +136,21 @@ dragoncard/
 │   ├── history_chenyu/
 │   ├── japanese_gojuon/
 │   ├── prelude_yijing/
-│   └── yijing/
+│   ├── yijing/
+│   ├── english_word_simple/
+│   ├── dino_alphabet/
+│   └── dinosaur_3d/
+│
+├── demo/                      # 独立可交互静态演示（GitHub Pages 可部署）
+│   ├── index.html
+│   ├── assets/
+│   └── data/
 │
 ├── templates/
 │   └── index.html             # SPA 主页面
 │
 └── static/
+    ├── media/                 # 本地多媒体资源（3D 模型等）
     ├── app.js                 # 框架 JS (模板加载/学习引擎/国际化)
     ├── i18n.js                # 中英文案字典
     ├── docs.js                # 内置使用文档（中英双语）

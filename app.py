@@ -623,16 +623,23 @@ def import_deck_items_excel(deck_id):
 # ==================== Learning ====================
 
 def _init_progress(user_id, deck_id):
-    existing = Progress.query.filter_by(user_id=user_id, deck_id=deck_id).first()
-    if existing:
-        return
+    """Ensure every deck item has a Progress record for this user (idempotent)."""
     items = DeckItem.query.filter_by(deck_id=deck_id).order_by(DeckItem.item_order).all()
+    existing_ids = {
+        p.deck_item_id
+        for p in Progress.query.filter_by(user_id=user_id, deck_id=deck_id).all()
+    }
+    added = 0
     for item in items:
+        if item.id in existing_ids:
+            continue
         db.session.add(Progress(
             user_id=user_id, deck_id=deck_id, deck_item_id=item.id,
             is_unknown=0, current_order=item.item_order,
         ))
-    db.session.commit()
+        added += 1
+    if added:
+        db.session.commit()
 
 
 @app.route('/v1/learn/info')

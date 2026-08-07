@@ -302,6 +302,30 @@ body.study-mode .global-sidebar { display: none; }
 .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
 .section-title { font-size: 18px; font-weight: 700; margin: 0; }
 
+/* Deck kind filter bar */
+.deck-kind-filter {
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap; margin-bottom: 20px;
+}
+.deck-kind-tab {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 16px; border-radius: 90px;
+    border: 1.5px solid var(--hp-border);
+    background: var(--hp-card); color: var(--hp-text-sub);
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all 0.15s;
+}
+.deck-kind-tab:hover { border-color: var(--hp-primary); color: var(--hp-primary); }
+.deck-kind-tab.active {
+    border-color: var(--hp-primary);
+    background: var(--hp-primary-soft);
+    color: var(--hp-primary);
+    box-shadow: 0 2px 8px rgba(9,105,218,0.10);
+}
+.deck-kind-tab[data-kind=""] { color: var(--hp-primary); }
+.deck-kind-tab[data-kind=""].active { background: var(--hp-primary); color: #fff; border-color: var(--hp-primary); }
+.deck-kind-tab i { font-size: 12px; }
+
 /* Deck Grid (max 3 columns) */
 .deck-grid {
     display: grid;
@@ -1015,8 +1039,81 @@ body.dark-mode {
 .sc-nav:active { transform: scale(0.92); }
 .sc-progress { text-align: center; font-size: 13px; color: var(--ink-3); font-weight: 600; margin: 0; min-width: 56px; }
 .sc-anim { animation: scFlash 0.28s ease; }
-@keyframes scFlash {
-    0% { opacity: 0; transform: translateY(10px) scale(0.97); }
+
+/* ===== 3D Resource Mode ===== */
+/* Hide sidebar + enlarge main area when in resource mode */
+body.resource-mode #study-view .sidebar { display: none; }
+body.resource-mode #study-view .main-content { flex: 1; }
+body.resource-mode #study-view .study-scroll { overflow: hidden; }
+.resource-stage {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 16px;
+    height: calc(100vh - 140px);
+    max-height: calc(100vh - 140px);
+    padding: 4px 0;
+    position: relative;
+    box-sizing: border-box;
+}
+.res-3d-wrap {
+    flex: 0 0 65%;
+    width: 65%;
+    min-height: 0;
+    background: #1a1f2e;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+.res-3d-wrap canvas { display: block; }
+/* Right side column: nav on top, info below */
+.res-side {
+    flex: 1; min-width: 0;
+    display: flex; flex-direction: column;
+    gap: 12px; min-height: 0;
+}
+.res-nav { flex-shrink: 0; }
+/* Info column: template-rendered card */
+.res-info-card {
+    flex: 1; min-height: 0;
+    background: var(--hp-card);
+    border: 1px solid var(--hp-border);
+    border-radius: 16px;
+    padding: 16px;
+    overflow-y: auto;
+    box-shadow: var(--hp-shadow);
+}
+.res-info-card .dino-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+}
+.res-info-card .dino-card:hover { transform: none; box-shadow: none; }
+.res-info-card .dino-index { color: var(--ink-3); }
+.res-info-card .dino-name { color: var(--ink); }
+.res-info-card .dino-section { background: var(--slate-soft); }
+.res-info-card .dino-label { color: var(--ink-3); }
+.res-info-card .dino-latin { color: var(--ink-2); }
+.res-info-card .dino-desc { color: var(--ink); }
+.res-info-card .dino-actions { display: none; }
+.res-placeholder {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 100%;
+    color: #94a3b8; font-size: 14px; text-align: center; padding: 20px;
+}
+
+/* Responsive: stack vertically on narrow screens */
+@media (max-width: 768px) {
+    .resource-stage { flex-direction: column; height: auto; max-height: none; }
+    .res-3d-wrap { flex: none; width: 100%; height: 45vh; }
+    .res-side { flex: none; }
+}
+
+@keyframes scFlash {    0% { opacity: 0; transform: translateY(10px) scale(0.97); }
     60% { opacity: 1; }
     100% { opacity: 1; transform: none; }
 }
@@ -1296,13 +1393,14 @@ body.dark-mode {
 /* Tooltip */
 #global-tooltip {
     position: fixed; padding: 5px 12px;
-    background: var(--ink); color: #fff;
+    background: rgba(15, 23, 42, 0.95); color: #f1f5f9;
     font-size: 11px; font-weight: 600;
     border-radius: 7px; white-space: nowrap;
     z-index: 99999; pointer-events: none;
     opacity: 0; visibility: hidden;
     transition: opacity 0.2s, visibility 0.2s;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.08);
 }
 #global-tooltip.show { opacity: 1; visibility: visible; }
 

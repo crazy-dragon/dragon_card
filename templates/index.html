@@ -10,6 +10,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/vendor/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="/static/styles.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "/static/vendor/three/three.module.js",
+                "three/addons/": "/static/vendor/three/jsm/"
+            }
+        }
+    </script>
     <script src="/static/vendor/tailwind/tailwind.browser.min.js"></script>
     <script src="/static/vendor/echarts/echarts.min.js"></script>
     <script src="/static/i18n.js"></script>
@@ -95,6 +103,7 @@
                         <div class="section-head">
                             <h3 class="section-title" data-i18n="home.title">我的卡组</h3>
                         </div>
+                        <div class="deck-kind-filter" id="deck-kind-filter"></div>
                         <div id="deck-grid" class="deck-grid"></div>
                     </div>
 
@@ -118,10 +127,10 @@
                                     <button class="stats-view-btn" data-view="monthly" data-i18n="stats.month">月</button>
                                 </div>
                                 <div class="stats-bar-right">
-                                    <button class="stats-nav-btn" id="stats-prev">&larr;</button>
+                                    <button class="stats-nav-btn" id="stats-prev" data-i18n-tooltip="stats.prev" title="上一页">&larr;</button>
                                     <span id="stats-date-display" class="stats-date"></span>
-                                    <button class="stats-nav-btn" id="stats-next">&rarr;</button>
-                                    <button class="stats-refresh-btn" id="stats-refresh">&#x21bb;</button>
+                                    <button class="stats-nav-btn" id="stats-next" data-i18n-tooltip="stats.next" title="下一页">&rarr;</button>
+                                    <button class="stats-refresh-btn" id="stats-refresh" data-i18n-tooltip="stats.refresh" title="刷新">&#x21bb;</button>
                                 </div>
                             </div>
                             <!-- Stats cards -->
@@ -185,6 +194,9 @@
                             <button id="card-view-btn" class="top-btn" data-i18n-tooltip="study.singleCard" data-tooltip="Single Card">
                                 <i class="fa-solid fa-grip"></i>
                             </button>
+                            <button id="resource-view-btn" class="top-btn" data-tooltip="3D 资源视图">
+                                <i class="fa-solid fa-cube"></i>
+                            </button>
                             <button id="refresh-stats" class="stats-text" data-i18n-tooltip="study.refresh" data-tooltip="Refresh">
                                 <i class="fa-solid fa-arrows-rotate"></i>
                                 <span>0 / 0</span>
@@ -192,7 +204,7 @@
                         </div>
                         <div class="study-scroll">
                             <div class="study-content">
-                                <div id="catalogue-view" style="padding:16px 20px 0;">
+                                <div id="catalogue-view" style="padding:16px 20px;">
                                     <div id="catalogue-grid" class="grid"></div>
                                 </div>
                                 <div id="study-pages-container"></div>
