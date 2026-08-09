@@ -276,7 +276,11 @@ body.study-mode .global-sidebar { display: none; }
     flex: 1;
     overflow-y: auto;
     padding: 24px;
+    display: flex;
+    flex-direction: column;
 }
+#home-content { flex-shrink: 0; }
+#ph-stats.visible { flex: 1; min-height: 0; }
 
 /* Stat Cards Row */
 .stat-cards-row {
@@ -511,7 +515,7 @@ body.study-mode .global-sidebar { display: none; }
 .stats-chart-empty { color: var(--hp-text-sub); font-size: 14px; text-align: center; padding: 60px 20px; }
 
 /* ===== Achievements Page ===== */
-#ph-achievements.visible { display: flex; flex-direction: column; padding: 0; text-align: left; }
+#ph-achievements.visible { display: flex; flex-direction: column; padding: 0; text-align: left; flex: 1; min-height: 0; }
 .ach-container {
     width: 100%; padding: 0 20px 24px;
     display: flex; flex-direction: column; gap: 18px;
@@ -595,6 +599,24 @@ body.study-mode .global-sidebar { display: none; }
     line-height: 1.8; padding: 12px 16px;
     background: var(--hp-primary-soft);
     border-radius: 10px; margin-bottom: 20px;
+}
+.docs-compare {
+    width: 100%; border-collapse: collapse; margin-top: 14px;
+    font-size: 13px;
+}
+.docs-compare th, .docs-compare td {
+    text-align: left; padding: 9px 12px;
+    border: 1px solid var(--line);
+    vertical-align: top; line-height: 1.6;
+}
+.docs-compare th {
+    background: var(--hp-primary-soft); color: var(--hp-primary-dark);
+    font-weight: 700; font-size: 12px;
+}
+.docs-compare tr:first-child th { border-top: 0; }
+.docs-compare td:first-child {
+    font-weight: 600; color: var(--hp-text); white-space: nowrap;
+    background: var(--slate-soft);
 }
 .docs-philosophy {
     margin-bottom: 24px; padding: 18px 20px;

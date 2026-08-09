@@ -12,6 +12,14 @@
                     '因为记忆的本质从来不是技巧，而是重复。艾宾浩斯用一生证明：记忆的关键就是重复。所以我们相信的是你——你的坚持本身。持之以恒，必有收获。',
                     '而这里还有一个更深的机制在起作用：大脑是一个极其擅长偷懒的器官。当你长期坚持做同一件事，它不会一直停留在最初吃力的状态，而会逐渐演变成一件越来越省力的事——原本需要刻意专注的动作，会慢慢变成自然的习惯，甚至成为本能。DragonCard 利用的，正是这个机制。',
                     '它提供的不是魔法，而是一个简单的容器：你把知识放进去，然后把"重复"这件最朴素的事，交给每天都来的自己。久而久之，你会发现记忆的潜力远比想象中更大——而这，正是探索自己记忆潜力的方式。'
+                ],
+                table: [
+                    ['维度', 'Anki', 'DragonCard'],
+                    ['调度单元', '单张卡片独立计算下次复习时间', '完整有序列表为单元，靠排序实现优先级'],
+                    ['时间约束', '严格日期驱动', '弹性，什么时候继续、间隔多久由使用者决定'],
+                    ['熟词处理', '达标后降低复习频率，甚至退出复习池', '全程保留在列表尾部，轻量刷一遍维持记忆'],
+                    ['优势', '理论记忆效率上限更高', '流程简单稳定、断卡后更容易续上、保留词条上下文顺序'],
+                    ['短板', '任务量不可控，断卡后维护成本高', '不会精准在遗忘临界点触发复习，单条记忆效率理论上限略低']
                 ]
             },
             sections: [
@@ -112,6 +120,14 @@
                     'Because the essence of memory is never technique—it is repetition. Ebbinghaus proved with a lifetime of work that repetition is the key to memory. So what we trust in is you—your own persistence. Keep at it, and the results will come.',
                     'There is a deeper mechanism at work here: the brain is an organ extremely good at taking the easy way out. When you persist at the same thing for a long time, it will not stay in that initial hard state—it gradually evolves into something easier and easier. Actions that once required deliberate focus slowly become natural habits, even instinct. DragonCard leverages exactly this mechanism.',
                     'What it offers is not magic, but a simple container: you put knowledge in, and leave the simplest act of all—repetition—to the self that shows up every day. Over time, you will discover that the potential of memory is far greater than you imagined. And this is exactly how you explore your own memory\'s potential.'
+                ],
+                table: [
+                    ['Aspect', 'Anki', 'DragonCard'],
+                    ['Scheduling unit', 'Each card independently computes its next review time', 'The whole ordered list is the unit; priority via sorting'],
+                    ['Time constraint', 'Strictly date-driven', 'Flexible — when and how often is up to the learner'],
+                    ['Mastered words', 'Lower review frequency, may leave the study pool', 'Stay at the list tail, lightly reviewed to maintain memory'],
+                    ['Strength', 'Higher theoretical memory efficiency', 'Simple & stable, easy to resume after a break, keeps context order'],
+                    ['Weakness', 'Unpredictable workload, costly to maintain after a break', 'No precise recall-at-edge-of-forgetting; slightly lower per-item theoretical ceiling']
                 ]
             },
             sections: [
@@ -235,6 +251,19 @@
             doc.philosophy.paragraphs.forEach(function (p) {
                 html += '<p>' + escapeHtml(p) + '</p>';
             });
+            if (doc.philosophy.table) {
+                html += '<table class="docs-compare">';
+                html += '<thead><tr><th>' + escapeHtml(doc.philosophy.table[0][0]) + '</th><th>' + escapeHtml(doc.philosophy.table[0][1]) + '</th><th>' + escapeHtml(doc.philosophy.table[0][2]) + '</th></tr></thead>';
+                html += '<tbody>';
+                for (var ti = 1; ti < doc.philosophy.table.length; ti++) {
+                    html += '<tr>';
+                    for (var tj = 0; tj < doc.philosophy.table[ti].length; tj++) {
+                        html += '<td>' + escapeHtml(doc.philosophy.table[ti][tj]) + '</td>';
+                    }
+                    html += '</tr>';
+                }
+                html += '</tbody></table>';
+            }
             html += '</div>';
         }
 
