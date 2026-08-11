@@ -1069,77 +1069,32 @@ body.dark-mode {
 .sc-progress { text-align: center; font-size: 13px; color: var(--ink-3); font-weight: 600; margin: 0; min-width: 56px; }
 .sc-anim { animation: scFlash 0.28s ease; }
 
-/* ===== 3D Resource Mode ===== */
-/* Hide sidebar + enlarge main area when in resource mode */
-body.resource-mode #study-view .sidebar { display: none; }
-body.resource-mode #study-view .main-content { flex: 1; }
-body.resource-mode #study-view .study-scroll { overflow: hidden; }
-.resource-stage {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    gap: 16px;
-    height: calc(100vh - 140px);
-    max-height: calc(100vh - 140px);
-    padding: 4px 0;
-    position: relative;
-    box-sizing: border-box;
+/* Single-card 3D preview button (right of nav row) */
+.sc-nav-gap { flex: 1; }
+.sc-3d-btn {
+    width: 46px; height: 46px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--btn-bg);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: var(--ink-2); transition: all 0.2s; flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
-.res-3d-wrap {
-    flex: 0 0 65%;
-    width: 65%;
-    min-height: 0;
+.sc-3d-btn i { font-size: 18px; }
+.sc-3d-btn:hover { background: var(--slate-soft); color: var(--primary); border-color: var(--primary-light); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(15,118,110,0.12); }
+.sc-3d-btn:active { transform: scale(0.92); }
+.sc-3d-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+/* 3D wrap inside single card area */
+.sc-3d-wrap {
+    width: 100%; height: 100%;
     background: #1a1f2e;
     border-radius: 16px;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
 }
-.res-3d-wrap canvas { display: block; }
-/* Right side column: nav on top, info below */
-.res-side {
-    flex: 1; min-width: 0;
-    display: flex; flex-direction: column;
-    gap: 12px; min-height: 0;
-}
-.res-nav { flex-shrink: 0; }
-/* Info column: template-rendered card */
-.res-info-card {
-    flex: 1; min-height: 0;
-    background: var(--hp-card);
-    border: 1px solid var(--hp-border);
-    border-radius: 16px;
-    padding: 16px;
-    overflow-y: auto;
-    box-shadow: var(--hp-shadow);
-}
-.res-info-card .dino-card {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    padding: 0;
-    margin: 0;
-    color: inherit;
-}
-.res-info-card .dino-card:hover { transform: none; box-shadow: none; }
-.res-info-card .dino-index { color: var(--ink-3); }
-.res-info-card .dino-name { color: var(--ink); }
-.res-info-card .dino-section { background: var(--slate-soft); }
-.res-info-card .dino-label { color: var(--ink-3); }
-.res-info-card .dino-latin { color: var(--ink-2); }
-.res-info-card .dino-desc { color: var(--ink); }
-.res-info-card .dino-actions { display: none; }
-.res-placeholder {
+.sc-3d-wrap canvas { display: block; }
+.sc-3d-err {
     display: flex; align-items: center; justify-content: center;
     width: 100%; height: 100%;
     color: #94a3b8; font-size: 14px; text-align: center; padding: 20px;
-}
-
-/* Responsive: stack vertically on narrow screens */
-@media (max-width: 768px) {
-    .resource-stage { flex-direction: column; height: auto; max-height: none; }
-    .res-3d-wrap { flex: none; width: 100%; height: 45vh; }
-    .res-side { flex: none; }
 }
 
 @keyframes scFlash {    0% { opacity: 0; transform: translateY(10px) scale(0.97); }

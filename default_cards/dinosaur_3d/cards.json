@@ -11,10 +11,10 @@
   {
     "item_order": 2,
     "data": {
-      "name": "化骨龙",
-      "model": "/static/media/boy.glb",
-      "latin": "Guu Gwat Lung",
-      "desc": "化骨龙是粤语中的方言词汇，指小朋友、小鬼头。广东人常用来称呼自家或熟人家的小孩，带着亲昵和玩笑的语气，取意\"调皮、精力旺盛、好像怎么都吃不胖\"的小孩子。"
+      "name": "翼龙",
+      "model": "/static/media/ptero.glb",
+      "latin": "Pteranodon",
+      "desc": "翼龙（学名 Pteranodon）是白垩纪的大型飞行动物，并非恐龙。它拥有巨大的翼展，以捕食鱼类为生。翼龙在天空翱翔的姿态，象征着自由与想象。"
     }
   }
 ]

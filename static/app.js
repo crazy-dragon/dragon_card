@@ -19,8 +19,7 @@ var state = {
     enteredPages: new Set(),
     singleCardMode: false,
     singleCardIndex: 0,
-    resourceMode: false,
-    resourceIndex: 0,
+    _singleCard3D: false,
 };
 
 /* ===== DOM helpers ===== */
@@ -249,37 +248,6 @@ var templateEngine = {
     }
 };
 
-/* Whether a template declares a 3D model field (fields entry with type 'model') */
-function templateSupports3D(templateId) {
-    var ct = templateEngine.getCardTemplate(templateId);
-    if (ct && Array.isArray(ct.fields)) {
-        for (var i = 0; i < ct.fields.length; i++) {
-            if (ct.fields[i] && ct.fields[i].type === 'model') return true;
-        }
-    }
-    return false;
-}
-
-/* Whether any loaded card data has a model/url field pointing to a 3D resource */
-function deckHasModelData() {
-    for (var pn in state.cards) {
-        var list = state.cards[pn] || [];
-        for (var i = 0; i < list.length; i++) {
-            var d = list[i].data || {};
-            if ((typeof d.model === 'string' && d.model) || (typeof d.url === 'string' && d.url)) return true;
-        }
-    }
-    return false;
-}
-
-/* Show/hide the 3D resource view button based on template fields or loaded data */
-function updateResourceBtn() {
-    var btn = $('#resource-view-btn');
-    if (!btn) return;
-    var show = templateSupports3D(state.templateId) || deckHasModelData();
-    btn.style.display = show ? '' : 'none';
-}
-
 /* ===== Batched observability tracking ===== */
 var _trackQueue = [];
 var _trackTimer = null;
@@ -336,7 +304,6 @@ function createApiForCard(cardData) {
         templateId: templateId,
         getCardData: function () { return cardData; },
         getViewMode: function () {
-            if (state.resourceMode) return 'resource';
             if (state.singleCardMode) return 'single';
             return 'list';
         },
@@ -763,7 +730,6 @@ function enterDeck(deckId) {
         if (!state.templateId) return;
         showStudyView();
         voiceMgr.setLang(templateLangOf(state.templateId));
-        updateResourceBtn();
         renderTabs();
         renderStudyPages();
         return loadInfo();
@@ -802,7 +768,6 @@ function loadPage(pageNum) {
                 if (c.data && c.data.examples) c.data.examples.forEach(function (e) { e._show = false; });
                 return c;
             });
-            updateResourceBtn();
             return state.cards[pageNum];
         });
 }
@@ -901,6 +866,8 @@ function currentStudyPageNum() {
 
 function resetSingleCardMode() {
     state.singleCardMode = false;
+    state._singleCard3D = false;
+    threeRenderer.dispose();
     var btn = $('#card-view-btn');
     if (btn) btn.classList.remove('active');
 }
@@ -908,14 +875,6 @@ function resetSingleCardMode() {
 function toggleSingleCardMode() {
     var pn = currentStudyPageNum();
     if (pn == null) { showToast('Open a page first', true); return; }
-    if (state.resourceMode) {
-        /* Exit resource mode first (mutually exclusive) */
-        state.resourceMode = false;
-        var rb = $('#resource-view-btn');
-        if (rb) rb.classList.remove('active');
-        document.body.classList.remove('resource-mode');
-        threeRenderer.dispose();
-    }
     state.singleCardMode = !state.singleCardMode;
     var btn = $('#card-view-btn');
     if (btn) btn.classList.toggle('active', state.singleCardMode);
@@ -949,6 +908,8 @@ function renderSingleCardStage(pageNum) {
                 '<button class="sc-nav sc-prev" data-sc="prev" data-tooltip="' + t('study.prev') + '" aria-label="Previous card">' + prevSvg + '</button>' +
                 '<div class="sc-progress"><span id="sc-idx">1</span> / ' + cards.length + '</div>' +
                 '<button class="sc-nav sc-next" data-sc="next" data-tooltip="' + t('study.next') + '" aria-label="Next card">' + nextSvg + '</button>' +
+                '<span class="sc-nav-gap"></span>' +
+                '<button class="sc-3d-btn" id="sc-3d-btn" data-sc-3d data-tooltip="3D 预览" style="display:none;"><i class="fa-solid fa-cube"></i></button>' +
             '</div>' +
         '</div>';
     renderSingleCardContent(pageNum, state.singleCardIndex, false);
@@ -963,6 +924,15 @@ function renderSingleCardContent(pageNum, idx, animate) {
     var wrap = $('#sc-card-wrap');
     if (!wrap) return;
     var card = cards[idx];
+
+    /* Show/hide 3D preview button based on current card having a model */
+    var btn3d = $('#sc-3d-btn');
+    if (btn3d) {
+        btn3d.style.display = cardHasModel(card) ? '' : 'none';
+        btn3d.classList.remove('active');
+    }
+    state._singleCard3D = false;
+
     wrap.innerHTML = templateEngine.renderCard(card, '');
     var el = wrap.querySelector('[data-card-id]:not(button)');
     if (el) templateEngine.initCard(el, card);
@@ -976,105 +946,82 @@ function renderSingleCardContent(pageNum, idx, animate) {
     }
 }
 
+/* Whether a card data contains a 3D model field */
+function cardHasModel(card) {
+    if (!card || !card.data) return false;
+    var d = card.data;
+    return (typeof d.model === 'string' && d.model) || (typeof d.url === 'string' && d.url);
+}
+
 function singleCardNav(delta) {
     var pn = currentStudyPageNum();
     if (pn == null) return;
-    renderSingleCardContent(pn, state.singleCardIndex + delta, true);
-}
+    var cards = state.cards[pn] || [];
+    if (!cards.length) return;
+    var newIdx = state.singleCardIndex + delta;
+    if (newIdx < 0) newIdx = cards.length - 1;
+    if (newIdx >= cards.length) newIdx = 0;
+    state.singleCardIndex = newIdx;
+    var card = cards[newIdx];
 
-/* ===== 3D Resource Mode ===== */
-function toggleResourceMode() {
-    var pn = currentStudyPageNum();
-    if (pn == null) { showToast(t('study.noDataPage'), true); return; }
-    if (state.singleCardMode) {
-        /* Exit single card mode first (mutually exclusive) */
-        state.singleCardMode = false;
-        var sb = $('#card-view-btn');
-        if (sb) sb.classList.remove('active');
-    }
-    state.resourceMode = !state.resourceMode;
-    var btn = $('#resource-view-btn');
-    if (btn) btn.classList.toggle('active', state.resourceMode);
-    document.body.classList.toggle('resource-mode', state.resourceMode);
-    if (state.resourceMode) {
-        /* Entering resource mode: ensure at least one card has a 3D model */
-        state.resourceIndex = 0;
-        var cards = state.cards[pn] || [];
-        if (!cards.length) {
-            loadPage(pn).then(function () { renderResourceStage(pn); });
+    var wrap = $('#sc-card-wrap');
+    if (!wrap) return;
+
+    /* If currently in 3D preview, keep 3D mode and load the new card's model */
+    if (state._singleCard3D) {
+        var btn3d = $('#sc-3d-btn');
+        if (btn3d) btn3d.style.display = cardHasModel(card) ? '' : 'none';
+        var idxEl = $('#sc-idx');
+        if (idxEl) idxEl.textContent = newIdx + 1;
+        if (cardHasModel(card)) {
+            /* Keep the existing 3D container/canvas in the DOM; just swap the model.
+               Removing the canvas (via innerHTML) loses the WebGL context and leaves a blank view. */
+            var sc3d = document.getElementById('sc-3d-wrap');
+            if (!sc3d) {
+                wrap.innerHTML = '<div class="sc-3d-wrap" id="sc-3d-wrap"></div>';
+                sc3d = document.getElementById('sc-3d-wrap');
+            }
+            var modelUrl = card.data.model || card.data.url;
+            threeRenderer.loadInto(sc3d, modelUrl);
         } else {
-            renderResourceStage(pn);
+            /* New card has no model: exit 3D back to text card */
+            state._singleCard3D = false;
+            if (btn3d) btn3d.classList.remove('active');
+            threeRenderer.dispose();
+            renderSingleCardContent(pn, newIdx, true);
         }
-    } else {
-        /* Leaving resource mode: dispose the 3D scene and re-render the page */
-        threeRenderer.dispose();
-        renderStudyPage(pn);
-    }
-}
-
-function renderResourceStage(pageNum) {
-    var container = $('#study-' + pageNum);
-    if (!container) return;
-    var cards = state.cards[pageNum] || [];
-    if (!cards.length) {
-        container.innerHTML = '<div class="empty-state" style="padding:60px 20px;">' + t('study.noDataPage') + '</div>';
         return;
     }
-    var prevSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
-    var nextSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
-    container.innerHTML =
-        '<div class="resource-stage">' +
-            '<div class="res-3d-wrap" id="res-3d-wrap"></div>' +
-            '<div class="res-side">' +
-                '<div class="sc-nav-row res-nav">' +
-                    '<button class="sc-nav sc-prev" data-res="prev" data-tooltip="' + t('study.prev') + '" aria-label="Previous card">' + prevSvg + '</button>' +
-                    '<div class="sc-progress"><span id="res-idx">1</span> / ' + cards.length + '</div>' +
-                    '<button class="sc-nav sc-next" data-res="next" data-tooltip="' + t('study.next') + '" aria-label="Next card">' + nextSvg + '</button>' +
-                '</div>' +
-                '<div class="res-info-card" id="res-info-card"></div>' +
-            '</div>' +
-        '</div>';
-    renderResourceContent(pageNum, state.resourceIndex, false);
+
+    renderSingleCardContent(pn, newIdx, true);
 }
 
-function renderResourceContent(pageNum, idx, animate) {
-    var cards = state.cards[pageNum] || [];
-    if (!cards.length) return;
-    if (idx < 0) idx = cards.length - 1;
-    if (idx >= cards.length) idx = 0;
-    state.resourceIndex = idx;
-
-    var wrap = $('#res-3d-wrap');
-    var info = $('#res-info-card');
-    if (!wrap || !info) return;
-
-    var card = cards[idx];
-
-    /* Info overlay card: template renders card (model hidden, no action buttons in resource mode) */
-    info.innerHTML = templateEngine.renderCard(card, '');
-    var infoEl = info.querySelector('[data-card-id]:not(button)');
-    if (infoEl) templateEngine.initCard(infoEl, card);
-
-    /* 3D section: load the model field from card data */
-    var modelUrl = '';
-    var d = card.data || {};
-    if (typeof d.model === 'string') modelUrl = d.model;
-    else if (typeof d.url === 'string') modelUrl = d.url;
-    if (modelUrl) {
-        threeRenderer.loadInto(wrap, modelUrl);
-    } else {
-        threeRenderer.dispose();
-        wrap.innerHTML = '<div class="res-placeholder">' + (t('res.noModel') || 'No 3D model') + '</div>';
-    }
-
-    var idxEl = $('#res-idx');
-    if (idxEl) idxEl.textContent = idx + 1;
-}
-
-function resourceNav(delta) {
+/* Toggle 3D preview inside single-card wrap */
+function toggleSingleCard3D() {
     var pn = currentStudyPageNum();
     if (pn == null) return;
-    renderResourceContent(pn, state.resourceIndex + delta, true);
+    var wrap = $('#sc-card-wrap');
+    var btn = $('#sc-3d-btn');
+    if (!wrap || !btn) return;
+    var cards = state.cards[pn] || [];
+    var card = cards[state.singleCardIndex];
+    if (!cardHasModel(card)) return;
+
+    if (state._singleCard3D) {
+        /* Back to card view */
+        state._singleCard3D = false;
+        btn.classList.remove('active');
+        threeRenderer.dispose();
+        renderSingleCardContent(pn, state.singleCardIndex, false);
+        return;
+    }
+
+    /* Show 3D */
+    state._singleCard3D = true;
+    btn.classList.add('active');
+    wrap.innerHTML = '<div class="sc-3d-wrap" id="sc-3d-wrap"></div>';
+    var modelUrl = card.data.model || card.data.url;
+    threeRenderer.loadInto($('#sc-3d-wrap'), modelUrl);
 }
 
 /* ===== Three.js renderer (lazy loaded via ES modules) ===== */
@@ -1092,7 +1039,7 @@ var threeRenderer = {
     autoRotate: true,
     _rotX: 0,
     _rotY: 0,
-    _zoom: 6,
+    _zoom: 8,
 
     /* Load three + GLTFLoader once (ES module dynamic import) */
     load: function () {
@@ -1120,13 +1067,17 @@ var threeRenderer = {
         var seq = this._loadSeq;
         this.load().then(function (ok) {
             if (seq !== self._loadSeq) return; /* stale request */
-            if (!ok) { container.innerHTML = '<div class="res-placeholder">Three.js load failed</div>'; return; }
+            if (!ok) { container.innerHTML = '<div class="sc-3d-err">Three.js load failed</div>'; return; }
             if (!self.renderer) {
                 self._init();
             } else {
-                /* Canvas may have been removed from DOM; re-attach it */
+                /* Reuse renderer: move existing canvas into the new container */
                 if (!self.renderer.domElement.parentNode) container.appendChild(self.renderer.domElement);
-                self._resize();
+                /* Wait one frame so the fresh container has its real size */
+                requestAnimationFrame(function () {
+                    if (seq !== self._loadSeq) return;
+                    self._resize();
+                });
             }
             self._loadModel(url, seq);
         });
@@ -1154,8 +1105,9 @@ var threeRenderer = {
 
         this.scene = new this.THREE.Scene();
         this.camera = new this.THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
-        this.camera.position.set(0, 1.5, 6);
+        this.camera.position.set(0, 1.2, 4.2);
         this.camera.lookAt(0, 0, 0);
+        this._zoom = 4.2;
 
         var ambient = new this.THREE.AmbientLight(0xffffff, 0.6);
         this.scene.add(ambient);
@@ -1168,7 +1120,11 @@ var threeRenderer = {
 
         this._setupControls();
         this.animId = requestAnimationFrame(this._animate.bind(this));
-        window.addEventListener('resize', this._onResize.bind(this));
+        if (!this._resizeBound) {
+            this._onResizeHandler = this._onResize.bind(this);
+            window.addEventListener('resize', this._onResizeHandler);
+            this._resizeBound = true;
+        }
     },
 
     _setupControls: function () {
@@ -1215,7 +1171,7 @@ var threeRenderer = {
             var box = new self.THREE.Box3().setFromObject(self.model);
             var size = box.getSize(new self.THREE.Vector3());
             var maxDim = Math.max(size.x, size.y, size.z);
-            var scale = maxDim > 0 ? 2.2 / maxDim : 1;
+            var scale = maxDim > 0 ? 3.2 / maxDim : 1;
             self.model.scale.setScalar(scale);
             var center = box.getCenter(new self.THREE.Vector3());
             self.model.position.sub(center);
@@ -1225,7 +1181,7 @@ var threeRenderer = {
         }, undefined, function (err) {
             if (seq !== self._loadSeq) return;
             console.error('model load error', err);
-            if (self.container) self.container.innerHTML = '<div class="res-placeholder">Failed to load model</div>';
+            if (self.container) self.container.innerHTML = '<div class="sc-3d-err">Failed to load model</div>';
         });
     },
 
@@ -1246,6 +1202,11 @@ var threeRenderer = {
     dispose: function () {
         if (this.animId) cancelAnimationFrame(this.animId);
         this.animId = null;
+        if (this._resizeBound && this._onResizeHandler) {
+            window.removeEventListener('resize', this._onResizeHandler);
+            this._resizeBound = false;
+            this._onResizeHandler = null;
+        }
         if (this.renderer) {
             this.renderer.dispose();
             if (this.renderer.domElement && this.renderer.domElement.parentNode) {
@@ -1259,7 +1220,7 @@ var threeRenderer = {
         this.container = null;
         this.currentUrl = null;
         this.autoRotate = true;
-        this._rotX = 0; this._rotY = 0; this._zoom = 6;
+        this._rotX = 0; this._rotY = 0; this._zoom = 4.2;
         this._loadSeq = (this._loadSeq || 0) + 1;
     }
 };
@@ -2472,13 +2433,6 @@ function doReorder(deckId) {
 /* ===== Back to Home ===== */
  function goHomeFromStudy() {
     resetSingleCardMode();
-    if (state.resourceMode) {
-        state.resourceMode = false;
-        var rb = $('#resource-view-btn');
-        if (rb) rb.classList.remove('active');
-        document.body.classList.remove('resource-mode');
-        threeRenderer.dispose();
-    }
     state.deckId = null;
     state.templateId = null;
     state.currentDeck = null;
@@ -2704,11 +2658,7 @@ function setupEventListeners() {
         if (target.closest('#card-view-btn')) { toggleSingleCardMode(); return; }
         if (target.closest('[data-sc="prev"]')) { singleCardNav(-1); return; }
         if (target.closest('[data-sc="next"]')) { singleCardNav(1); return; }
-
-        /* Resource (3D) mode toggle + navigation */
-        if (target.closest('#resource-view-btn')) { toggleResourceMode(); return; }
-        if (target.closest('[data-res="prev"]')) { resourceNav(-1); return; }
-        if (target.closest('[data-res="next"]')) { resourceNav(1); return; }
+        if (target.closest('[data-sc-3d]')) { toggleSingleCard3D(); return; }
 
         /* New Deck (home page) */
         if (target.closest('#new-deck-btn')) { doCreateDeck(); return; }
@@ -3100,7 +3050,9 @@ function setupEventListeners() {
     }
 
     document.addEventListener('mouseover', function (e) {
-        var el = e.target.closest('[data-tooltip]');
+        var t = e.target;
+        if (!t || typeof t.closest !== 'function') return;
+        var el = t.closest('[data-tooltip]');
         if (!el || el === _tipEl) return;
         _tipEl = el;
         clearTimeout(_tipTimer);
@@ -3124,7 +3076,9 @@ function setupEventListeners() {
         }, 300);
     });
     document.addEventListener('mouseleave', function (e) {
-        if (e.target.closest('[data-tooltip]')) hideTip();
+        var t = e.target;
+        if (!t || typeof t.closest !== 'function') { hideTip(); return; }
+        if (t.closest('[data-tooltip]')) hideTip();
     });
     document.addEventListener('mousedown', function () { hideTip(); });
     window.addEventListener('scroll', function () { hideTip(); }, true);
