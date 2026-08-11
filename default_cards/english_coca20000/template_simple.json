@@ -1,5 +1,5 @@
 {
-  "name": "English Word (Simple)",
+  "name": "English Word Card (Simple)",
   "lang": "en",
   "description": "Simplified English vocabulary card — shows word + phonetic, Chinese AND English definitions (no labels, no examples). Actions: pronunciation, mark, favorite.",
   "cardHtml": "<div class=\"dc-card ew\" data-card-id=\"{{id}}\"></div>",

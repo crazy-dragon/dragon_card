@@ -11,9 +11,6 @@ instance/*.db
 instance/*.db-*
 backups/
 
-# 大词汇数据（仅提交 2000 词精简版，完整版保留本地）
-default_templates/english_coca20000/vocabulary.json
-
 # 本地多媒体资源（3D 模型等大文件，不提交）
 static/media/*.glb
 static/media/*.obj

@@ -388,6 +388,13 @@ function createApiForCard(cardData) {
         hideTooltip: function () {
             var tip = document.getElementById('card-tooltip');
             if (tip) tip.classList.remove('show');
+        },
+        confirmDialog: function (anchorEl, message, onConfirm) {
+            if (typeof showPopoverConfirm === 'function') {
+                showPopoverConfirm(anchorEl, message, onConfirm);
+            } else if (onConfirm && window.confirm) {
+                if (window.confirm(message)) onConfirm();
+            }
         }
     };
 }
@@ -507,6 +514,7 @@ Called after card enters the DOM. \`cardElement\` is the root DOM element of the
 | \`rerender()\` | Re-render from template |
 | \`track(action)\` | Record action event (debounced 800ms) |
 | \`showTooltip(msg)\` / \`hideTooltip()\` | Show/hide tooltip near element |
+| \`confirmDialog(anchorEl, message, onConfirm)\` | Styled confirm popover near an element (callback on confirm) |
 
 ## Styling Rules
 
@@ -684,7 +692,7 @@ function renderDeckList() {
             /* Stats */
             html += '<div class="deck-stats">';
             html += '<span>' + t('home.mastered') + ' <b>' + (deck.mastered_count || 0).toLocaleString() + '</b> / ' + (deck.item_count || 0).toLocaleString() + '</span>';
-            html += '<span><i class="fa-regular fa-clock"></i> ' + (deck.last_studied || '—') + '</span>';
+            html += '<span class="deck-year-days"><i class="fa-solid fa-hand-fist"></i> ' + (deck.year_study_days || 0) + ' ' + t('home.yearDays') + '</span>';
             html += '</div>';
 
             /* Progress bar */

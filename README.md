@@ -149,14 +149,14 @@ dragoncard/
 ├── TEMPLATE_PACK.md           # 模板包发布规范（Gumroad 分发）
 ├── ui_design.md               # UI 界面设计文档
 │
-├── default_templates/         # 内置模板源（通过页面「上传模板」导入到数据库）
-│   ├── english_coca20000/
+├── default_cards/             # 内置卡组资产（模板 + 数据，通过页面「上传」导入）
+│   ├── english_coca20000/      # English Word Card + template_simple（精简版）
 │   ├── chinese_idiom/
 │   ├── history_chenyu/
 │   ├── japanese_gojuon/
 │   ├── prelude_yijing/
 │   ├── yijing/
-│   ├── english_word_simple/
+│   ├── checkin_date/           # 日期打卡（date/sunset/peach 三种样式）
 │   ├── dino_alphabet/
 │   └── dinosaur_3d/
 │

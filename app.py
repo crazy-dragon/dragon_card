@@ -290,7 +290,29 @@ def list_decks():
     if user_id:
         q = q.filter_by(user_id=user_id)
     decks = q.order_by(Deck.created_at.desc()).all()
-    return jsonify({'success': True, 'decks': [d.to_dict() for d in decks]})
+
+    # 各卡组今年有学习事件的天数（按卡组单独计算）
+    year_days_map = _year_study_days_map(user_id) if user_id else {}
+
+    result = []
+    for d in decks:
+        dd = d.to_dict()
+        dd['year_study_days'] = year_days_map.get(d.id, 0)
+        result.append(dd)
+    return jsonify({'success': True, 'decks': result})
+
+
+def _year_study_days_map(user_id):
+    """各卡组今年有学习事件的天数（按 deck_id 分组，日期去重）。"""
+    from datetime import date
+    rows = db.session.query(
+        LearningEvent.deck_id,
+        db.func.count(db.func.distinct(db.func.date(LearningEvent.created_at)))
+    ).filter(
+        LearningEvent.user_id == user_id,
+        db.func.date(LearningEvent.created_at) >= date(date.today().year, 1, 1),
+    ).group_by(LearningEvent.deck_id).all()
+    return {deck_id: days for deck_id, days in rows}
 
 
 @app.route('/v1/decks', methods=['POST'])
@@ -891,9 +913,10 @@ def get_achievements():
     ]
     decks.sort(key=lambda d: d['rounds'], reverse=True)
 
+    # 连续学习天数：按每天有学习事件（LearningEvent）判定
     study_dates = {r[0] for r in db.session.query(
-        db.func.date(StudyRound.end_time)
-    ).filter(StudyRound.user_id == user_id).distinct().all()}
+        db.func.date(LearningEvent.created_at)
+    ).filter(LearningEvent.user_id == user_id).distinct().all()}
     streak = 0
     anchor = date.today()
     if anchor.isoformat() not in study_dates:

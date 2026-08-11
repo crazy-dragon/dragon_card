@@ -47,4 +47,4 @@ DragonCard 模板格式，字段：
 
 ## 示例
 
-参考 `default_templates/reading_card/`（阅读卡）、`default_templates/dinosaur_3d/`（3D 卡片）等。
+参考 `default_cards/reading_card/`（阅读卡）、`default_cards/dinosaur_3d/`（3D 卡片）等。

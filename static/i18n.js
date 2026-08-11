@@ -28,6 +28,7 @@
         'home.notBound': '未绑定模版',
         'home.active': '当前',
         'home.filterAll': '全部',
+        'home.yearDays': '天',
 
         /* 侧边栏切换页标题 */
         'page.achievements': '成就中心',
@@ -277,6 +278,7 @@
         'home.notBound': 'No template',
         'home.active': 'Active',
         'home.filterAll': 'All',
+        'home.yearDays': 'days',
 
         /* 侧边栏切换页标题 */
         'page.achievements': 'Achievements',
