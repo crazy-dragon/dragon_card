@@ -274,8 +274,11 @@ function flushTrackQueue() {
 
 function trackEvent(evt) {
     var key = evt.user_id + ':' + evt.deck_id + ':' + evt.deck_item_id + ':' + evt.action;
-    if (_trackSeen[key]) return;
-    _trackSeen[key] = true;
+    /* Audio plays are real user actions during fast scanning; don't dedupe them. */
+    if (evt.action !== 'audio_play') {
+        if (_trackSeen[key]) return;
+        _trackSeen[key] = true;
+    }
     _trackQueue.push(evt);
     if (_trackTimer) clearTimeout(_trackTimer);
     _trackTimer = setTimeout(flushTrackQueue, 1500);
@@ -347,9 +350,12 @@ function createApiForCard(cardData) {
             if (!action || !action.trim()) return;
             action = action.trim();
             var key = cardItemId + ':' + action;
-            if (_debounce[key]) return;
-            _debounce[key] = true;
-            setTimeout(function () { delete _debounce[key]; }, 800);
+            /* Audio plays during fast scanning should all be counted. */
+            if (action !== 'audio_play') {
+                if (_debounce[key]) return;
+                _debounce[key] = true;
+                setTimeout(function () { delete _debounce[key]; }, 800);
+            }
             trackEvent({ user_id: state.userId, deck_id: deckId, deck_item_id: cardItemId, template_id: templateId, action: action });
         },
         showTooltip: function (text, x, y) {
