@@ -97,14 +97,14 @@ class Deck(db.Model):
         try:
             unknown_count = db.session.query(db.func.count(Progress.id)).filter(
                 Progress.deck_id == self.id, Progress.is_unknown == 1
-            ).scalar() or 0
+            ).join(DeckItem, Progress.deck_item_id == DeckItem.id).scalar() or 0
             round_count = db.session.query(db.func.count(StudyRound.id)).filter(
                 StudyRound.deck_id == self.id
             ).scalar() or 0
             if round_count > 0:
                 mastered_count = db.session.query(db.func.count(Progress.id)).filter(
                     Progress.deck_id == self.id, Progress.is_unknown == 0
-                ).scalar() or 0
+                ).join(DeckItem, Progress.deck_item_id == DeckItem.id).scalar() or 0
         except Exception:
             pass
 

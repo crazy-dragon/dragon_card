@@ -1160,6 +1160,8 @@ body.dark-mode {
     backdrop-filter: blur(4px);
     animation: modalFadeIn 0.2s ease;
 }
+/* Confirm overlays sit above regular modals (e.g. opened from the manage modal) */
+.modal-overlay#import-confirm-modal { z-index: 1200; }
 .modal {
     background: var(--modal-bg); border-radius: 16px; padding: 0;
     width: 320px; max-width: 90vw;
@@ -1447,6 +1449,57 @@ body.dark-mode {
     #catalogue-grid { grid-template-columns: repeat(5, 1fr); gap: 16px 12px; }
     .page-btn { font-size: 14px; padding: 10px 0; min-height: 38px; }
     .sidebar { width: 120px; min-width: 120px; }
+}
+
+/* ===== Mobile (< 768px): minimal study flow ===== */
+@media (max-width: 768px) {
+    /* Hide global sidebar + extra home UI: pure deck list */
+    .global-sidebar { display: none; }
+    .stat-cards-row { display: none; }
+    #deck-kind-filter { display: none; }
+    .section-head { display: none; }
+    .home-header-right { display: none; }
+    .home-header-left { flex: 1; }
+    .home-title { font-size: 20px; }
+    .home-body { padding: 16px; }
+    .deck-grid { grid-template-columns: 1fr; gap: 14px; max-width: none; margin-bottom: 20px; }
+    .deck-card { padding: 18px 16px; border-radius: 14px; }
+    .deck-card:active { transform: scale(0.98); }
+    .deck-manage-btn, .deck-stats-btn { display: none; }
+    .active-pill { top: 12px; right: 12px; }
+
+    /* Study view: hide sidebar/tabs, single column */
+    .sidebar { display: none; }
+    .study-top-bar { padding: 8px 12px; flex-wrap: nowrap; }
+    .study-top-bar .top-btn { width: 40px; height: 40px; }
+    /* Mobile is single-card only: hide the list/single toggle */
+    .study-top-bar #card-view-btn { display: none; }
+    .study-top-bar .top-btn:not(#study-back-btn):not(#card-view-btn):not(.stats-text) { display: none; }
+    .study-top-bar #refresh-stats { margin-left: auto; }
+    .study-deck-title { max-width: 40vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .study-content { padding: 16px 12px; }
+    .study-page { padding: 12px 4px; }
+
+    /* Page list: scrolling list rows instead of grid */
+    #catalogue-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    #catalogue-view { padding: 12px 4px !important; }
+    .page-btn { font-size: 15px; padding: 16px 0; min-height: 52px; border-radius: 12px; }
+
+    /* Single-card: bigger touch targets, thumb-friendly nav.
+       100dvh = visible viewport excluding mobile browser chrome (Edge etc.),
+       so the nav row stays on screen without scrolling. */
+    .single-card-stage { gap: 12px; justify-content: flex-start; }
+    .sc-card-wrap {
+        height: calc(100dvh - 190px);
+        max-width: none; border-radius: 14px;
+        flex: 0 0 auto;
+    }
+    .sc-nav-row { gap: 14px; flex-shrink: 0; }
+    .sc-nav, .sc-3d-btn { width: 58px; height: 58px; }
+    .sc-progress { font-size: 14px; min-width: 64px; }
+    .study-scroll { overflow: hidden; }
+    .study-content { padding: 12px 12px; overflow: hidden; }
+    .study-page { overflow: hidden; }
 }
 @media (max-width: 640px) {
     .stat-cards-row { grid-template-columns: 1fr; }

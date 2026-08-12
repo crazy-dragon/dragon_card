@@ -553,6 +553,12 @@ def import_deck_items(deck_id):
     incoming_orders = set()
     next_free = max_order + 1
 
+    # Cards present before this import that are NOT in the incoming set.
+    # They will be removed as items, but their study progress is kept
+    # (Progress/LearningEvent rows stay so statistics are not lost).
+    before_count = len(existing)
+    removed_orders = set(existing.keys())
+
     for i, item in enumerate(items):
         order = item.get('item_order')
         if order is None or order == 0:
@@ -561,6 +567,7 @@ def import_deck_items(deck_id):
         else:
             order = int(order)
         incoming_orders.add(order)
+        removed_orders.discard(order)
 
         if order in existing:
             di = existing[order]
@@ -575,14 +582,18 @@ def import_deck_items(deck_id):
             )
             db.session.add(di)
 
-    for order, di in existing.items():
-        if order not in incoming_orders:
-            Progress.query.filter_by(deck_item_id=di.id).delete()
-            LearningEvent.query.filter_by(deck_item_id=di.id).delete()
-            db.session.delete(di)
+    for order in removed_orders:
+        di = existing[order]
+        # Remove the card itself, but keep Progress/LearningEvent history.
+        db.session.delete(di)
 
     db.session.commit()
-    return jsonify({'success': True, 'count': len(items)})
+    return jsonify({
+        'success': True,
+        'count': len(items),
+        'removed': len(removed_orders),
+        'had_existing': before_count > 0,
+    })
 
 
 @app.route('/v1/decks/<int:deck_id>/import-excel', methods=['POST'])
@@ -613,9 +624,10 @@ def import_deck_items_excel(deck_id):
 
         headers = [str(h).strip() if h is not None else f'col_{i}' for i, h in enumerate(rows[0])]
 
+        # Replace all cards, but keep Progress/LearningEvent/StudyRound history
+        # so study statistics survive the re-import.
+        before_count = DeckItem.query.filter_by(deck_id=deck_id).count()
         DeckItem.query.filter_by(deck_id=deck_id).delete()
-        Progress.query.filter_by(deck_id=deck_id).delete()
-        StudyRound.query.filter_by(deck_id=deck_id).delete()
 
         count = 0
         for i, row in enumerate(rows[1:], start=1):
@@ -636,7 +648,12 @@ def import_deck_items_excel(deck_id):
                 count += 1
 
         db.session.commit()
-        return jsonify({'success': True, 'count': count})
+        return jsonify({
+            'success': True,
+            'count': count,
+            'removed': before_count,
+            'had_existing': before_count > 0,
+        })
 
     except Exception as e:
         return jsonify({'error': f'Excel parse error: {str(e)}'}), 400
@@ -672,7 +689,8 @@ def learn_info():
     total = DeckItem.query.filter_by(deck_id=deck_id).count()
     if user_id and deck_id:
         _init_progress(user_id, deck_id)
-        unknown = Progress.query.filter_by(user_id=user_id, deck_id=deck_id, is_unknown=1).count()
+        unknown = Progress.query.filter_by(user_id=user_id, deck_id=deck_id, is_unknown=1)\
+            .join(DeckItem, Progress.deck_item_id == DeckItem.id).count()
         known = total - unknown
     else:
         unknown = 0
@@ -698,7 +716,10 @@ def learn_page():
     _init_progress(user_id, deck_id)
 
     offset = (page - 1) * page_size
+    # Join against existing deck items so orphaned Progress records
+    # (from removed cards) are excluded from pagination.
     progress_query = Progress.query.filter_by(user_id=user_id, deck_id=deck_id)\
+        .join(DeckItem, Progress.deck_item_id == DeckItem.id)\
         .order_by(Progress.current_order)
     total = progress_query.count()
     progress_list = progress_query.offset(offset).limit(page_size).all()
@@ -734,7 +755,7 @@ def learn_page_status():
 
     unknown_count = Progress.query.filter_by(
         user_id=user_id, deck_id=deck_id, is_unknown=1
-    ).count()
+    ).join(DeckItem, Progress.deck_item_id == DeckItem.id).count()
     marked_pages = math.ceil(unknown_count / page_size) if unknown_count > 0 else 0
 
     return jsonify({
@@ -798,7 +819,7 @@ def reorder_cards():
 
     unknown_count = Progress.query.filter_by(
         user_id=user_id, deck_id=deck_id, is_unknown=1
-    ).count()
+    ).join(DeckItem, Progress.deck_item_id == DeckItem.id).count()
 
     max_round = db.session.query(db.func.max(StudyRound.round_number)).filter(
         StudyRound.user_id == user_id,
@@ -932,7 +953,7 @@ def get_achievements():
     mastered_cards = db.session.query(db.func.count(Progress.id)).filter(
         Progress.user_id == user_id,
         Progress.is_unknown == 0,
-    ).scalar() or 0
+    ).join(DeckItem, Progress.deck_item_id == DeckItem.id).scalar() or 0
 
     audio_play = db.session.query(db.func.count(LearningEvent.id)).filter(
         LearningEvent.user_id == user_id,

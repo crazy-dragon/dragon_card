@@ -22,6 +22,14 @@ var state = {
     _singleCard3D: false,
 };
 
+/* Callback held while the import-confirm modal is open */
+var _pendingImport = null;
+
+/* Detect small-screen devices (mobile/touch-friendly study flow) */
+function isMobile() {
+    return window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+}
+
 /* ===== DOM helpers ===== */
 function $(sel, root) { return (root || document).querySelector(sel); }
 function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -1277,6 +1285,26 @@ function openPage(n) {
     renderStudyPages();
 }
 
+/* Mobile: jump straight into single-card study for a page. */
+function openMobilePage(n) {
+    if (!state.tabs.find(function (t) { return t.type === 'study' && t.pageNum === n; })) {
+        state.tabs.push({ id: 's' + n, type: 'study', title: 'P' + String(n).padStart(3, '0'), pageNum: n });
+        state.tabs.sort(function (a, b) { return a.pageNum - b.pageNum; });
+        saveOpenTabs();
+    }
+    state.activeTab = 's' + n;
+    renderTabs();
+    renderStudyPages();
+    renderContent();
+    state.singleCardMode = true;
+    state.singleCardIndex = 0;
+    var btn = $('#card-view-btn');
+    if (btn) btn.classList.add('active');
+    var cards = state.cards[n] || [];
+    var loadOk = cards.length ? Promise.resolve(cards) : loadPage(n);
+    loadOk.then(function () { renderSingleCardStage(n); });
+}
+
 function closeTab(id) {
     state.tabs = state.tabs.filter(function (t) { return t.id !== id; });
     saveOpenTabs();
@@ -2300,41 +2328,60 @@ function doUploadDeckTemplate(deckId, replaceTid) {
     input.click();
 }
 
-function doUploadDeckData(deckId) {
+function doUploadDeckData(deckId, anchorEl) {
     var input = $('#deck-data-input');
     input.onchange = function () {
         if (!input.files || !input.files[0]) return;
         var file = input.files[0];
-        if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
-            var formData = new FormData();
-            formData.append('file', file);
-            fetch('/v1/decks/' + deckId + '/import-excel', { method: 'POST', body: formData })
-                .then(function (r) { return r.json(); }).then(function (d) {
-                    if (d.success) {
-                        showToast('Imported ' + d.count + ' items from Excel');
-                        if (_manageDeckId == deckId) openManageModal(deckId);
-                        else openManageModal(deckId);
-                        if (state.deckId == deckId) { state.cards = {}; loadInfo(); renderCatalogue(); }
-                    } else { showToast(d.error || t('toast.importFailed'), true); }
-                }).catch(function () { showToast(t('toast.importFailed'), true); });
-        } else {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                var jsonData;
-                try { jsonData = JSON.parse(e.target.result); } catch (err) { showToast(t('toast.invalidJson'), true); return; }
-                fetch('/v1/decks/' + deckId + '/import', {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(jsonData)
-                }).then(function (r) { return r.json(); }).then(function (d) {
-                    if (d.success) {
-                        showToast(t('manage.imported', { n: d.count }));
-                        if (_manageDeckId == deckId) openManageModal(deckId);
-                        else openManageModal(deckId);
-                        if (state.deckId == deckId) { state.cards = {}; loadInfo(); renderCatalogue(); }
-                    } else { showToast(d.error || t('toast.importFailed'), true); }
-                }).catch(function () { showToast(t('toast.importFailed'), true); });
-            };
-            reader.readAsText(file);
-        }
+        var doImport = function () {
+            if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
+                var formData = new FormData();
+                formData.append('file', file);
+                fetch('/v1/decks/' + deckId + '/import-excel', { method: 'POST', body: formData })
+                    .then(function (r) { return r.json(); }).then(function (d) {
+                        if (d.success) {
+                            showToast('Imported ' + d.count + ' items from Excel');
+                            if (_manageDeckId == deckId) openManageModal(deckId);
+                            else openManageModal(deckId);
+                            if (state.deckId == deckId) { state.cards = {}; loadInfo(); renderCatalogue(); }
+                        } else { showToast(d.error || t('toast.importFailed'), true); }
+                    }).catch(function () { showToast(t('toast.importFailed'), true); });
+            } else {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var jsonData;
+                    try { jsonData = JSON.parse(e.target.result); } catch (err) { showToast(t('toast.invalidJson'), true); return; }
+                    fetch('/v1/decks/' + deckId + '/import', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(jsonData)
+                    }).then(function (r) { return r.json(); }).then(function (d) {
+                        if (d.success) {
+                            showToast(t('manage.imported', { n: d.count }));
+                            if (_manageDeckId == deckId) openManageModal(deckId);
+                            else openManageModal(deckId);
+                            if (state.deckId == deckId) { state.cards = {}; loadInfo(); renderCatalogue(); }
+                        } else { showToast(d.error || t('toast.importFailed'), true); }
+                    }).catch(function () { showToast(t('toast.importFailed'), true); });
+                };
+                reader.readAsText(file);
+            }
+        };
+
+        /* If the deck already has data, warn the user before overwriting. */
+        fetch('/v1/decks/' + deckId)
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                var existingCount = d.success && d.deck && d.deck.item_count ? d.deck.item_count : 0;
+                if (existingCount > 0) {
+                    /* Show the centered confirm modal (matches project UI style). */
+                    var msg = $('#import-confirm-msg');
+                    if (msg) msg.textContent = t('manage.importWarn', { n: existingCount });
+                    showModal('import-confirm');
+                    _pendingImport = doImport;
+                } else {
+                    doImport();
+                }
+            })
+            .catch(function () { doImport(); });
         input.value = '';
     };
     input.click();
@@ -2628,6 +2675,18 @@ function setupEventListeners() {
 
         /* Back button (study -> home) */
         if (target.closest('#study-back-btn')) {
+            if (isMobile()) {
+                /* Mobile: minimal flow. Step back from single-card to the page
+                   list, then straight home on the next tap (no confirm dialog). */
+                if (state.singleCardMode) {
+                    resetSingleCardMode();
+                    state.activeTab = 'catalogue';
+                    renderContent();
+                } else {
+                    goHomeFromStudy();
+                }
+                return;
+            }
             if (state.mode === 'study') {
                 showPopoverConfirm(target.closest('#study-back-btn'), t('toast.returnHome'), goHomeFromStudy);
             } else {
@@ -2847,7 +2906,8 @@ function setupEventListeners() {
             return;
         }
         if (target.closest('[data-upload-data]')) {
-            doUploadDeckData(parseInt(target.closest('[data-upload-data]').dataset.uploadData));
+            var udBtn = target.closest('[data-upload-data]');
+            doUploadDeckData(parseInt(udBtn.dataset.uploadData), udBtn);
             return;
         }
         if (target.closest('[data-preview-deck]')) {
@@ -2900,16 +2960,26 @@ function setupEventListeners() {
             .finally(function () { btn.disabled = false; btn.textContent = 'Confirm'; });
             return;
         }
+        if (target.closest('#import-confirm-cancel')) { hideModal('import-confirm'); return; }
+        if (target.closest('#import-confirm-ok')) {
+            hideModal('import-confirm');
+            if (typeof _pendingImport === 'function') { _pendingImport(); _pendingImport = null; }
+            return;
+        }
 
         /* Catalogue page click */
         if (target.closest('.page-btn')) {
             var page = parseInt(target.closest('.page-btn').dataset.page);
-            var alreadyOpen = state.tabs.find(function (t) { return t.type === 'study' && t.pageNum === page; });
-            if (alreadyOpen) {
-                var tabEl = document.querySelector('[data-tab="' + alreadyOpen.id + '"]');
-                if (tabEl) { tabEl.classList.add('shake'); setTimeout(function () { tabEl.classList.remove('shake'); }, 300); }
+            if (isMobile()) {
+                openMobilePage(page);
             } else {
-                openPage(page);
+                var alreadyOpen = state.tabs.find(function (t) { return t.type === 'study' && t.pageNum === page; });
+                if (alreadyOpen) {
+                    var tabEl = document.querySelector('[data-tab="' + alreadyOpen.id + '"]');
+                    if (tabEl) { tabEl.classList.add('shake'); setTimeout(function () { tabEl.classList.remove('shake'); }, 300); }
+                } else {
+                    openPage(page);
+                }
             }
             return;
         }
@@ -3093,6 +3163,26 @@ function setupEventListeners() {
         else if (e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); singleCardNav(1); }
         else if (e.key === 'Escape') { toggleSingleCardMode(); }
     });
+
+    /* Swipe to navigate cards in single-card mode (mobile) */
+    var _touchStartX = null, _touchStartY = null;
+    document.addEventListener('touchstart', function (e) {
+        if (!isMobile() || !state.singleCardMode) return;
+        if (e.touches.length !== 1) return;
+        var t = e.touches[0];
+        _touchStartX = t.clientX; _touchStartY = t.clientY;
+    }, { passive: true });
+    document.addEventListener('touchend', function (e) {
+        if (_touchStartX == null || !isMobile() || !state.singleCardMode) return;
+        var t = e.changedTouches && e.changedTouches[0];
+        if (!t) return;
+        var dx = t.clientX - _touchStartX;
+        var dy = t.clientY - _touchStartY;
+        _touchStartX = null; _touchStartY = null;
+        /* Require horizontal intent and a decent swipe distance */
+        if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+        singleCardNav(dx < 0 ? 1 : -1);
+    }, { passive: true });
 }
 
 /* ===== Finish Modal ===== */
