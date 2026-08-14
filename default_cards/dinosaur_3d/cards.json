@@ -1,21 +1,4 @@
 [
-  {
-    "item_order": 1,
-    "data": {
-      "name": "霸王龙",
-      "model": "/static/media/trex.glb",
-      "latin": "Tyrannosaurus rex",
-      "desc": "霸王龙（学名 Tyrannosaurus rex）是暴龙科中体型最大的一种，生活在白垩纪末期，是著名的肉食性恐龙。它的后肢强壮有力，前肢短小，头部巨大，咬合力极强。"
-    }
-  },
-  {
-    "item_order": 2,
-    "data": {
-      "name": "翼龙",
-      "model": "/static/media/ptero.glb",
-      "latin": "Pteranodon",
-      "desc": "翼龙（学名 Pteranodon）是白垩纪的大型飞行动物，并非恐龙。它拥有巨大的翼展，以捕食鱼类为生。翼龙在天空翱翔的姿态，象征着自由与想象。"
-    }
-  }
+{"item_order": 1, "data": {"name": "霸王龙", "model": "/static/media/trex.glb", "latin": "Tyrannosaurus rex", "desc": "霸王龙（学名 Tyrannosaurus rex）是暴龙科中体型最大的一种，生活在白垩纪末期，是著名的肉食性恐龙。它的后肢强壮有力，前肢短小，头部巨大，咬合力极强。"}},
+{"item_order": 2, "data": {"name": "翼龙", "model": "/static/media/ptero.glb", "latin": "Pteranodon", "desc": "翼龙（学名 Pteranodon）是白垩纪的大型飞行动物，并非恐龙。它拥有巨大的翼展，以捕食鱼类为生。翼龙在天空翱翔的姿态，象征着自由与想象。"}}
 ]
-
