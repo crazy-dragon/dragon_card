@@ -2340,36 +2340,22 @@ function doUploadDeckData(deckId, anchorEl) {
         if (!input.files || !input.files[0]) return;
         var file = input.files[0];
         var doImport = function () {
-            if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
-                var formData = new FormData();
-                formData.append('file', file);
-                fetch('/v1/decks/' + deckId + '/import-excel', { method: 'POST', body: formData })
-                    .then(function (r) { return r.json(); }).then(function (d) {
-                        if (d.success) {
-                            showToast('Imported ' + d.count + ' items from Excel');
-                            if (_manageDeckId == deckId) openManageModal(deckId);
-                            else openManageModal(deckId);
-                            if (state.deckId == deckId) { state.cards = {}; loadInfo(); renderCatalogue(); }
-                        } else { showToast(d.error || t('toast.importFailed'), true); }
-                    }).catch(function () { showToast(t('toast.importFailed'), true); });
-            } else {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    var jsonData;
-                    try { jsonData = JSON.parse(e.target.result); } catch (err) { showToast(t('toast.invalidJson'), true); return; }
-                    fetch('/v1/decks/' + deckId + '/import', {
-                        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(jsonData)
-                    }).then(function (r) { return r.json(); }).then(function (d) {
-                        if (d.success) {
-                            showToast(t('manage.imported', { n: d.count }));
-                            if (_manageDeckId == deckId) openManageModal(deckId);
-                            else openManageModal(deckId);
-                            if (state.deckId == deckId) { state.cards = {}; loadInfo(); renderCatalogue(); }
-                        } else { showToast(d.error || t('toast.importFailed'), true); }
-                    }).catch(function () { showToast(t('toast.importFailed'), true); });
-                };
-                reader.readAsText(file);
-            }
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var jsonData;
+                try { jsonData = JSON.parse(e.target.result); } catch (err) { showToast(t('toast.invalidJson'), true); return; }
+                fetch('/v1/decks/' + deckId + '/import', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(jsonData)
+                }).then(function (r) { return r.json(); }).then(function (d) {
+                    if (d.success) {
+                        showToast(t('manage.imported', { n: d.count }));
+                        if (_manageDeckId == deckId) openManageModal(deckId);
+                        else openManageModal(deckId);
+                        if (state.deckId == deckId) { state.cards = {}; loadInfo(); renderCatalogue(); }
+                    } else { showToast(d.error || t('toast.importFailed'), true); }
+                }).catch(function () { showToast(t('toast.importFailed'), true); });
+            };
+            reader.readAsText(file);
         };
 
         /* If the deck already has data, warn the user before overwriting. */

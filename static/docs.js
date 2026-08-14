@@ -29,7 +29,7 @@
                         { type: 'steps', items: [
                             '点击「新建卡组」，填写名称并选择类型（语言 / 知识 / 逻辑 / 技能 / 其它）。',
                             '进入卡组 → 点击「管理卡组」→ 在「模板」区上传模板文件（JSON）。',
-                            '在「数据」区上传数据文件（JSON 或 Excel），然后返回目录开始学习。'
+                            '在「数据」区上传数据文件（JSON），然后返回目录开始学习。'
                         ] }
                     ]
                 },
@@ -40,7 +40,7 @@
                         { type: 'ul', items: [
                             '类型与图标：每种类型有专属图标与配色，可在管理面板中修改类型。',
                             '模板区：每个卡组最多绑定 3 个模板，点击卡片可预览渲染效果，点击底部圆点可设为当前模板。',
-                            '数据区：显示数据条数，支持上传（JSON/Excel）、导出、重新打乱。'
+                            '数据区：显示数据条数，支持上传（JSON）、导出、重新打乱。'
                         ] }
                     ]
                 },
@@ -73,7 +73,7 @@
                     blocks: [
                         { type: 'ul', items: [
                             '导出数据：管理面板数据区「下载」按钮，导出当前卡组的 JSON 数据。',
-                            '导入数据：支持 JSON 与 Excel（.xlsx/.xls），同名数据会覆盖更新。',
+                            '导入数据：支持 JSON，按 item_order 同名数据会覆盖更新。',
                             '模板备份：删除模板时自动备份到服务器的 backups/ 目录，可恢复。'
                         ] }
                     ]
@@ -105,7 +105,7 @@
                             '卡片空白 / 未渲染：模板未正确加载。请确认已上传模板且设为当前模板，刷新页面重试。',
                             '发音不对：确认模板的 lang 字段（如 en/ja/zh），并在语音选择中为该语言选择可用语音。',
                             '没有声音：浏览器需支持 speechSynthesis，且需在支持的网络环境中（部分语音为在线服务）。',
-                            '数据导入失败：JSON 需为对象数组或 { items: [...] } 结构；Excel 首行需为表头。'
+                            '数据导入失败：JSON 需为对象数组或 { items: [...] } 结构。'
                         ] }
                     ]
                 }
@@ -137,7 +137,7 @@
                         { type: 'steps', items: [
                             'Click "New Deck", enter a name and pick a type (Language / Knowledge / Logic / Skill / Other).',
                             'Open the deck → click "Manage deck" → upload a template file (JSON) in the Templates area.',
-                            'Upload a data file (JSON or Excel) in the Data area, then return to the catalogue to start studying.'
+                            'Upload a data file (JSON) in the Data area, then return to the catalogue to start studying.'
                         ] }
                     ]
                 },
@@ -148,7 +148,7 @@
                         { type: 'ul', items: [
                             'Type & icon: each type has its own icon and color; you can change the type in the management panel.',
                             'Templates: up to 3 templates per deck. Click a card to preview, click the dot at the bottom to set it active.',
-                            'Data: shows item count; supports upload (JSON/Excel), export, and shuffle.'
+                            'Data: shows item count; supports upload (JSON), export, and shuffle.'
                         ] }
                     ]
                 },
@@ -181,7 +181,7 @@
                     blocks: [
                         { type: 'ul', items: [
                             'Export data: the download button in the Data area exports the deck as JSON.',
-                            'Import data: supports JSON and Excel (.xlsx/.xls); same-named entries are overwritten.',
+                            'Import data: supports JSON; entries are aligned by item_order and overwritten.',
                             'Template backup: deleting a template auto-backups it to the server backups/ directory.'
                         ] }
                     ]
@@ -213,7 +213,7 @@
                             'Blank / unrendered cards: the template may not be loaded. Make sure a template is uploaded and set active, then refresh.',
                             'Wrong pronunciation: check the template lang field (e.g. en/ja/zh) and pick an available voice for that language.',
                             'No sound: your browser must support speechSynthesis; some voices are online services and need network access.',
-                            'Import fails: JSON must be an array of objects or { items: [...] }; Excel needs a header row.'
+                            'Import fails: JSON must be an array of objects or { items: [...] }.'
                         ] }
                     ]
                 }

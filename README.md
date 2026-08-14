@@ -30,7 +30,7 @@
 - **分类卡组**：语言 / 知识 / 逻辑 / 技能 / 其它 五种类型，各有专属图标与配色
 - **简单的学习引擎**：标记未掌握 → 重排 → 多轮学习，进度自动持久化
 - **统计与成就**：活动热力图、掌握分布、轮次金字塔、称号与成就系统
-- **数据导入导出**：JSON / Excel 导入，JSON 导出，模板删除自动备份
+- **数据导入导出**：JSON 导入（按 item_order 对齐覆盖），JSON 导出，模板删除自动备份
 - **模板预览**：管理面板内实时预览卡片渲染效果，支持字段隐藏勾选
 - **本地优先**：SQLite 存储，开箱即用，无需外部服务
 
@@ -59,7 +59,7 @@ python app.py
 
 1. 点击「新建卡组」，填写名称并选择类型
 2. 进入卡组 → 「管理卡组」→ 在模板区上传模板文件（JSON）
-3. 在数据区上传数据文件（JSON 或 Excel）
+3. 在数据区上传数据文件（JSON）
 4. 返回目录，点击页码开始学习
 
 ## 🎪 在线 Demo / 商店
@@ -138,7 +138,7 @@ DragonCard 不决定卡片长什么样、怎么交互——这些全由模板定
 
 - **后端**：Flask + SQLAlchemy + SQLite
 - **前端**：原生 JS 单页应用 + Tailwind CSS（本地 Play CDN）+ Font Awesome
-- **数据导入**：openpyxl（Excel）、JSON
+- **数据导入**：JSON（按 item_order 对齐覆盖更新）
 
 ### 项目结构
 
@@ -187,8 +187,7 @@ dragoncard/
 | 卡组 | `GET/POST /v1/decks`、`GET/PUT/DEL /v1/decks/:id` | 卡组 CRUD |
 | 卡组 | `POST /v1/decks/:id/templates`、`PUT /v1/decks/:id/active-template` | 绑定模板 / 设当前模板 |
 | 卡组 | `GET /v1/decks/:id/preview`、`GET /v1/decks/:id/mastery` | 卡组预览 / 掌握统计 |
-| 数据 | `GET /v1/decks/:id/items`、`POST /v1/decks/:id/import` | 数据列表 / 导入 |
-| 数据 | `POST /v1/decks/:id/import-excel`、`GET /v1/decks/:id/export` | Excel 导入 / 导出 |
+| 数据 | `GET /v1/decks/:id/items`、`POST /v1/decks/:id/import`、`GET /v1/decks/:id/export` | 数据列表 / 导入 / 导出 |
 | 学习 | `GET /v1/learn/info`、`GET /v1/learn/page` | 学习统计 / 分页卡片 |
 | 学习 | `POST /v1/learn/mark`、`POST /v1/learn/favorite` | 标记 / 收藏 |
 | 学习 | `POST /v1/reorder`、`GET /v1/rounds` | 重新打乱 / 轮次 |

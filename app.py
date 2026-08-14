@@ -1,6 +1,5 @@
 import math
 import os
-import io
 import json
 import re
 from datetime import datetime
@@ -594,69 +593,6 @@ def import_deck_items(deck_id):
         'removed': len(removed_orders),
         'had_existing': before_count > 0,
     })
-
-
-@app.route('/v1/decks/<int:deck_id>/import-excel', methods=['POST'])
-def import_deck_items_excel(deck_id):
-    d = db.session.get(Deck, deck_id)
-    if not d:
-        return jsonify({'error': 'Deck not found'}), 404
-
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file uploaded'}), 400
-
-    file = request.files['file']
-    if not file.filename:
-        return jsonify({'error': 'No filename'}), 400
-
-    try:
-        from openpyxl import load_workbook
-    except ImportError:
-        return jsonify({'error': 'openpyxl not installed. Run: pip install openpyxl'}), 500
-
-    try:
-        wb = load_workbook(filename=io.BytesIO(file.read()), read_only=True)
-        ws = wb.active
-
-        rows = list(ws.iter_rows(values_only=True))
-        if not rows:
-            return jsonify({'error': 'Excel file is empty'}), 400
-
-        headers = [str(h).strip() if h is not None else f'col_{i}' for i, h in enumerate(rows[0])]
-
-        # Replace all cards, but keep Progress/LearningEvent/StudyRound history
-        # so study statistics survive the re-import.
-        before_count = DeckItem.query.filter_by(deck_id=deck_id).count()
-        DeckItem.query.filter_by(deck_id=deck_id).delete()
-
-        count = 0
-        for i, row in enumerate(rows[1:], start=1):
-            if all(v is None for v in row):
-                continue
-            item_data = {}
-            for j, val in enumerate(row):
-                if j < len(headers) and val is not None:
-                    item_data[headers[j]] = val if not isinstance(val, str) else val.strip()
-            if item_data:
-                di = DeckItem(
-                    deck_id=deck_id,
-                    item_order=i,
-                    data=item_data,
-                    debug=False,
-                )
-                db.session.add(di)
-                count += 1
-
-        db.session.commit()
-        return jsonify({
-            'success': True,
-            'count': count,
-            'removed': before_count,
-            'had_existing': before_count > 0,
-        })
-
-    except Exception as e:
-        return jsonify({'error': f'Excel parse error: {str(e)}'}), 400
 
 
 # ==================== Learning ====================

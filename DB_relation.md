@@ -99,7 +99,7 @@ User ──┬── Deck ──── DeckTemplate ──── Template   (卡
 | created_at | DateTime | default now | |
 | updated_at | DateTime | onupdate now | |
 
-`data` 是 JSON 列，结构由模板决定。导入时支持 JSON 数组和 Excel（首行为字段名）。同名 item_order 的数据会覆盖更新，多余条目删除。
+`data` 是 JSON 列，结构由模板决定。导入时支持 JSON 数组（每条可含 `item_order` 与 `data`）。按 `item_order` 对齐：同名序号覆盖更新，新数据未包含的旧序号删除（保留学习进度记录）。
 
 ---
 
@@ -222,7 +222,7 @@ User ──┬── Deck ──── DeckTemplate ──── Template   (卡
 ```
 1. 创建卡组    POST /v1/decks            → t_deck (active_template_id = null)
 2. 上传模板    POST /v1/decks/<id>/templates → t_template + t_deck_template + 更新 active_template_id
-3. 上传数据    POST /v1/decks/<id>/import   → t_deck_item × N（支持 JSON / Excel）
+3. 上传数据    POST /v1/decks/<id>/import   → t_deck_item × N（JSON）
 4. 开始学习    GET  /v1/learn/info      → 自动创建 t_progress × N
 5. 标记/收藏   POST /v1/learn/mark      → 更新 t_progress.is_unknown
                POST /v1/learn/favorite  → 更新 t_progress.is_favorite
