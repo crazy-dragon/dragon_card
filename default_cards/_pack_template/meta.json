@@ -1,0 +1,10 @@
+{
+  "name": "你的卡组名称（如：COCA Core 2000 英语高频词）",
+  "description": "卡组简介：内容、语言、适合人群。",
+  "version": "1.0.0",
+  "author": "Alfred Long",
+  "email": "alfred.long@qq.com",
+  "source": "数据来源（如：COCA 语料库 / HSK 3.0 官方词表 / 自编）",
+  "license": "DragonCard Data License v1.0",
+  "updated": "2026-08-15"
+}
