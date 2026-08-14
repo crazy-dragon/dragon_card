@@ -18,9 +18,6 @@ static/media/*.stl
 static/media/*.usdz
 static/media/*.gltf
 
-# 独立静态 demo（GitHub Pages 单独部署，不入主仓库）
-demo/
-
 # 临时设计稿
 designs/
 

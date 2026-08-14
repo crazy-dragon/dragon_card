@@ -62,13 +62,17 @@ python app.py
 3. 在数据区上传数据文件（JSON 或 Excel）
 4. 返回目录，点击页码开始学习
 
-## 🎪 在线 Demo
+## 🎪 在线 Demo / 商店
 
-`demo/` 目录是一个**独立可交互的静态演示**，可在 GitHub Pages 等纯静态环境部署（无需后端）。
+独立静态站点（与主应用分离，部署于 **Cloudflare Pages**）：
+
+> 仓库：`dragon-memory-market`（[GitHub](https://github.com/)/同级目录）
+> 包含：交互演示 `index.html` + 卡片商店 `store.html`
 
 ```bash
 # 本地预览（需 HTTP 服务，file:// 打开会因 fetch JSON 失败）
-cd demo
+git clone <dragon-memory-market-repo>
+cd dragon-memory-market
 python3 -m http.server 8888
 # 访问 http://localhost:8888
 ```
@@ -80,14 +84,14 @@ Demo 包含：
 - 中/EN 语言切换
 - 前端库使用 CDN 加载（公网场景；本地应用则用 `static/vendor/` 离线加载）
 
-部署到 GitHub Pages 时，将 `demo/` 目录内容作为站点根目录即可。
+部署到 Cloudflare Pages 时，将仓库内容作为站点根目录即可（纯静态，无构建步骤）。
 
 ## 📦 模板发布
 
-付费模板/数据包通过 **Gumroad** 分发，展示页为 demo 站的 `store.html`。
+付费模板/数据包通过 **Gumroad** 分发，展示页为独立站点的 `store.html`。
 
 - 模板包轻量格式见 [`TEMPLATE_PACK.md`](./TEMPLATE_PACK.md)
-- 商品数据配置在 `demo/data/store-data.json`（名称/描述/价格/Gumroad 链接/预览图）
+- 商品数据配置在 `dragon-memory-market/data/store-data.json`（名称/描述/价格/Gumroad 链接/预览图）
 - 购买后分别导入：管理卡组 → 上传模版（template.json）→ 上传数据（cards.json）
 
 > 详细操作见应用内「使用文档」（侧边栏进入，支持中英切换）。
@@ -159,11 +163,6 @@ dragoncard/
 │   ├── checkin_date/           # 日期打卡（date/sunset/peach 三种样式）
 │   ├── dino_alphabet/
 │   └── dinosaur_3d/
-│
-├── demo/                      # 独立可交互静态演示（GitHub Pages 可部署）
-│   ├── index.html
-│   ├── assets/
-│   └── data/
 │
 ├── templates/
 │   └── index.html             # SPA 主页面

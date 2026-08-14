@@ -43,7 +43,7 @@ DragonCard 模板格式，字段：
 
 1. 将模板包目录压缩为 zip（可选，或直接上传 template.json + cards.json）
 2. Gumroad 上传商品：文件 + 描述 + preview.png
-3. 展示页（demo/模板商店）的商品条目指向该 Gumroad 链接
+3. 展示页（独立站点 `dragon-memory-market` 的商店页）的商品条目指向该 Gumroad 链接
 
 ## 示例
 
