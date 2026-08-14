@@ -8,6 +8,8 @@ DragonCard 的模板以**轻量格式**发布与分发：一个模板包就是�
 template-pack-name/
 ├── template.json    # 模板定义（必填，导入方式：管理卡组 → 上传模版）
 ├── cards.json       # 示例数据（可选，导入方式：管理卡组 → 上传数据）
+├── meta.json        # 卡组元信息（推荐：作者/版本/许可等）
+├── LICENSE          # 版权声明（推荐，自定义数据许可）
 ├── preview.png      # 预览图（可选，展示页 / Gumroad 商品页用）
 └── README.md        # 使用说明（可选）
 ```
@@ -38,6 +40,26 @@ DragonCard 模板格式，字段：
   { "item_order": 1, "data": { "word": "serendipity", "meaning": "意外发现" } }
 ]
 ```
+
+### meta.json
+
+卡组元信息（可选，推荐）。用于标识作者、版本、来源与许可：
+
+```json
+{
+  "name": "英语词汇卡组",
+  "description": "COCA 前 2000 高频词。",
+  "version": "1.0.0",
+  "author": "Alfred Long",
+  "email": "alfred.long@qq.com",
+  "license": "DragonCard Data License v1.0",
+  "updated": "2026-08-15"
+}
+```
+
+### LICENSE
+
+版权许可声明。本项目的卡组数据默认采用 **DragonCard Data License v1.0**（见各卡组目录 `LICENSE`）：允许个人学习使用，禁止转售/商业再分发。付费数据包发布时请保留此文件。
 
 ## 商品发布流程（Gumroad）
 

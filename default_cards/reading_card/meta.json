@@ -1,0 +1,9 @@
+{
+  "name": "Reading Card 阅读卡组",
+  "description": "Flashcard-style reading: original on front, Chinese translation on flip. 闪卡式阅读：正面原文，翻面看翻译。",
+  "version": "1.0.0",
+  "author": "Alfred Long",
+  "email": "alfred.long@qq.com",
+  "license": "DragonCard Data License v1.0",
+  "updated": "2026-08-15"
+}

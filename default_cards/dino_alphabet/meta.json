@@ -1,0 +1,9 @@
+{
+  "name": "Dino Alphabet 恐龙字母卡组",
+  "description": "26 letters A-Z with a dinosaur per letter, for young kids (3-6). 26个字母，每字母配一只恐龙，适合幼儿(3-6岁)。",
+  "version": "1.0.0",
+  "author": "Alfred Long",
+  "email": "alfred.long@qq.com",
+  "license": "DragonCard Data License v1.0",
+  "updated": "2026-08-15"
+}

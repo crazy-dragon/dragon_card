@@ -1,0 +1,9 @@
+{
+  "name": "Dinosaur 3D Card 恐龙3D卡组",
+  "description": "3D dinosaur model cards with .glb models and bilingual text. 3D恐龙模型卡片：glb模型+中英介绍。",
+  "version": "1.0.0",
+  "author": "Alfred Long",
+  "email": "alfred.long@qq.com",
+  "license": "DragonCard Data License v1.0",
+  "updated": "2026-08-15"
+}
