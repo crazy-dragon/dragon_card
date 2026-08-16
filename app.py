@@ -189,6 +189,41 @@ def delete_template(template_id):
     return jsonify({'success': True, 'backup': backup_path})
 
 
+def _auto_complete_tracked_actions(card_js, tracked_actions):
+    """Ensure every api.track('action') call is declared in tracked_actions.
+
+    Auto-appends any action referenced in cardJs that isn't already declared,
+    so statistics can always show every recorded event. Returns the updated
+    tracked_actions JSON string."""
+    if not card_js:
+        return tracked_actions
+
+    declared = set()
+    try:
+        existing = json.loads(tracked_actions) if tracked_actions else []
+        if not isinstance(existing, list):
+            existing = []
+    except (json.JSONDecodeError, TypeError):
+        existing = []
+    for item in existing:
+        if isinstance(item, dict) and item.get('action'):
+            declared.add(item['action'])
+        elif isinstance(item, str):
+            declared.add(item)
+
+    referenced = set()
+    for m in re.finditer(r'\.track\(\s*["\']([^"\']+)["\']', card_js):
+        referenced.add(m.group(1))
+
+    missing = [a for a in sorted(referenced) if a not in declared]
+    if not missing:
+        return tracked_actions
+
+    for a in missing:
+        existing.append({'action': a, 'label': a})
+    return json.dumps(existing, ensure_ascii=False)
+
+
 def _parse_template(text):
     """Parse a JSON-format template file."""
     data = json.loads(text.strip())
@@ -200,13 +235,15 @@ def _parse_template(text):
         tracked_actions = json.dumps(tracked, ensure_ascii=False)
     else:
         tracked_actions = ''
+    card_js = data.get('cardJs', '')
+    tracked_actions = _auto_complete_tracked_actions(card_js, tracked_actions)
     return {
         'name': data.get('name', ''),
         'description': data.get('description', ''),
         'lang': data.get('lang', 'en') or 'en',
         'cardHtml': data.get('cardHtml', ''),
         'cardCss': data.get('cardCss', ''),
-        'cardJs': data.get('cardJs', ''),
+        'cardJs': card_js,
         'sampleData': sample_data or '',
         'trackedActions': tracked_actions,
     }

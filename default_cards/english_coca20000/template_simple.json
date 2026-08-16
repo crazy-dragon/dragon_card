@@ -17,6 +17,10 @@
     {
       "action": "favorite_toggle",
       "label": "收藏"
+    },
+    {
+      "action": "definition_view",
+      "label": "查看释义"
     }
   ],
   "sampleData": [

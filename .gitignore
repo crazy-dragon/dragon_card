@@ -21,6 +21,9 @@ static/media/*.gltf
 # 临时设计稿
 designs/
 
+# 宣传资料（小红书等草稿，不提交）
+marketing/
+
 # 系统文件
 .DS_Store
 Thumbs.db
