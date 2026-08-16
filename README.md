@@ -1,6 +1,6 @@
 # 🐉 DragonCard
 
-> **DragonCard is not Anki.** — [中文文档](README_zh.md) | [Interactive Demo & Store](https://github.com/crazy-dragon/dragon-memory-market)
+> **DragonCard is not Anki.** — [中文文档](README_zh.md) | [Interactive Demo & Store](https://dragon-memory-market.pages.dev/)
 
 DragonCard has no complex spaced-repetition algorithm. It uses one simple, categorized approach: show knowledge to you quickly — mark what you don't know, and mastered words fall behind while difficult ones stay ahead. That's all.
 
@@ -62,38 +62,18 @@ On first launch, the app automatically creates the database tables, a default us
 3. Upload a data file (JSON) in the Data area
 4. Return to the catalogue and click a page number to start studying
 
-## 🎪 Online Demo & Store
+## 🎪 Online Store
 
-The interactive demo and card store live in a **separate static site** (deployed on **Cloudflare Pages**, no commercial-use restriction):
+Try the live demo and browse premium decks at **[dragon-memory-market.pages.dev](https://dragon-memory-market.pages.dev/)**.
 
-> Repository: [`dragon-memory-market`](https://github.com/crazy-dragon/dragon-memory-market) — interactive demo `index.html` + card store `store.html`
+- **Interactive demo**: sample cards with pronunciation, marking, and 3D preview — right in your browser
+- **Premium decks**: ready-made, AI-assisted packs available for **one-time purchase** (no subscription)
 
-```bash
-# Local preview (needs an HTTP server; file:// fails because of fetch JSON)
-git clone https://github.com/crazy-dragon/dragon-memory-market.git
-cd dragon-memory-market
-python3 -m http.server 8888
-# Visit http://localhost:8888
-```
+## 📦 Premium Decks
 
-The demo includes:
-- `index.html`: philosophy intro + 3 sample decks with interactive study + store entry
-- `store.html`: template store showing paid templates/data packs, linking to purchase
-- Card interactions: pronunciation (browser TTS), mark, favorite, prev/next
-- 中/EN language switching
-- Front-end libraries loaded via CDN (for the public site; the local app uses `static/vendor/` offline)
+Premium template/data packs are one-time purchases. See the store for available decks; after purchase you get the `template.json` + `cards.json` files and import them through the app: **Manage deck → upload template → upload data**.
 
-To deploy on Cloudflare Pages, serve the repository contents as the site root (pure static, no build step).
-
-## 📦 Publishing Templates
-
-Paid templates/data packs are distributed through **Gumroad**; the showcase page is `store.html` in the separate site.
-
-- Lightweight pack format: see [`TEMPLATE_PACK.md`](./TEMPLATE_PACK.md)
-- Product data lives in `dragon-memory-market/data/store-data.json` (name / description / price / Gumroad link / preview image)
-- After purchase: Manage deck → upload template (`template.json`) → upload data (`cards.json`)
-
-> Detailed operations are in the in-app "Docs" (sidebar, 中/EN switchable).
+> Full details are in the in-app "Docs" (sidebar, 中/EN switchable).
 
 ## 🎴 Custom Templates
 
@@ -150,7 +130,7 @@ dragoncard/
 ├── DB_relation.md             # Database relationship docs
 ├── README.md
 ├── README_zh.md               # Chinese README
-├── TEMPLATE_PACK.md           # Template pack publishing spec (Gumroad)
+├── TEMPLATE_PACK.md           # Template pack publishing spec
 ├── ui_design.md               # UI design doc
 │
 ├── default_cards/             # Bundled deck assets (templates + data, imported via upload)

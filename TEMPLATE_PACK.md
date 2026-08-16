@@ -10,7 +10,7 @@ template-pack-name/
 ├── cards.json       # 示例数据（可选，导入方式：管理卡组 → 上传数据）
 ├── meta.json        # 卡组元信息（推荐：作者/版本/许可等）
 ├── LICENSE          # 版权声明（推荐，自定义数据许可）
-├── preview.png      # 预览图（可选，展示页 / Gumroad 商品页用）
+├── preview.png      # 预览图（可选，展示页 / 付费平台商品页用）
 └── README.md        # 使用说明（可选）
 ```
 
@@ -61,11 +61,11 @@ DragonCard 模板格式，字段：
 
 版权许可声明。本项目的卡组数据默认采用 **DragonCard Data License v1.0**（见各卡组目录 `LICENSE`）：允许个人学习使用，禁止转售/商业再分发。付费数据包发布时请保留此文件。
 
-## 商品发布流程（Gumroad）
+## 商品发布流程
 
 1. 将模板包目录压缩为 zip（可选，或直接上传 template.json + cards.json）
-2. Gumroad 上传商品：文件 + 描述 + preview.png
-3. 展示页（独立站点 `dragon-memory-market` 的商店页）的商品条目指向该 Gumroad 链接
+2. 在付费平台上传商品：文件 + 描述 + preview.png
+3. 展示页（独立站点 `dragon-memory-market` 的商店页）的商品条目指向该付费链接
 
 ## 示例
 

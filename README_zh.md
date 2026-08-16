@@ -62,37 +62,16 @@ python app.py
 3. 在数据区上传数据文件（JSON）
 4. 返回目录，点击页码开始学习
 
-## 🎪 在线 Demo / 商店
+## 🎪 在线商店
 
-独立静态站点（与主应用分离，部署于 **Cloudflare Pages**）：
+在线演示与精品卡组商店：[**dragon-memory-market.pages.dev**](https://dragon-memory-market.pages.dev/)
 
-> 仓库：[`dragon-memory-market`](https://github.com/crazy-dragon/dragon-memory-market)
-> 包含：交互演示 `index.html` + 卡片商店 `store.html`
+- **交互演示**：样卡发音、标记、3D 预览，浏览器直接体验
+- **精品卡组**：预制 AI 辅助精校卡组，**一次性购买**（无订阅）
 
-```bash
-# 本地预览（需 HTTP 服务，file:// 打开会因 fetch JSON 失败）
-git clone https://github.com/crazy-dragon/dragon-memory-market.git
-cd dragon-memory-market
-python3 -m http.server 8888
-# 访问 http://localhost:8888
-```
+## 📦 精品卡组
 
-Demo 包含：
-- `index.html`：理念介绍（简单·不强迫·慢慢来）+ 3 个示例卡组交互演示 + 商店入口
-- `store.html`：独立模板商店页，展示付费模板/数据包，点击跳转 Gumroad 购买
-- 卡片交互：发音（浏览器 TTS）、标记、收藏、左右切换
-- 中/EN 语言切换
-- 前端库使用 CDN 加载（公网场景；本地应用则用 `static/vendor/` 离线加载）
-
-部署到 Cloudflare Pages 时，将仓库内容作为站点根目录即可（纯静态，无构建步骤）。
-
-## 📦 模板发布
-
-付费模板/数据包通过 **Gumroad** 分发，展示页为独立站点的 `store.html`。
-
-- 模板包轻量格式见 [`TEMPLATE_PACK.md`](./TEMPLATE_PACK.md)
-- 商品数据配置在 `dragon-memory-market/data/store-data.json`（名称/描述/价格/Gumroad 链接/预览图）
-- 购买后分别导入：管理卡组 → 上传模版（template.json）→ 上传数据（cards.json）
+精品模板/数据包为一次性付费内容，详见商店。购买后获得 `template.json` + `cards.json`，在应用内导入即可：**管理卡组 → 上传模版 → 上传数据**。
 
 > 详细操作见应用内「使用文档」（侧边栏进入，支持中英切换）。
 
@@ -150,7 +129,7 @@ dragoncard/
 ├── requirements.txt
 ├── DB_relation.md             # 数据库关系说明
 ├── README.md
-├── TEMPLATE_PACK.md           # 模板包发布规范（Gumroad 分发）
+├── TEMPLATE_PACK.md           # 模板包发布规范
 ├── ui_design.md               # UI 界面设计文档
 │
 ├── default_cards/             # 内置卡组资产（模板 + 数据，通过页面「上传」导入）
