@@ -29,6 +29,9 @@
         'home.active': '当前',
         'home.filterAll': '全部',
         'home.yearDays': '天',
+        'skin.title': '皮肤',
+        'skin.default': '默认',
+        'skin.dark': '深色',
 
         /* 侧边栏切换页标题 */
         'page.achievements': '成就中心',
@@ -281,6 +284,9 @@
         'home.active': 'Active',
         'home.filterAll': 'All',
         'home.yearDays': 'days',
+        'skin.title': 'Skin',
+        'skin.default': 'Default',
+        'skin.dark': 'Dark',
 
         /* 侧边栏切换页标题 */
         'page.achievements': 'Achievements',

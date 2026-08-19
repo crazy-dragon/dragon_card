@@ -329,11 +329,14 @@ def list_decks():
 
     # 各卡组今年有学习事件的天数（按卡组单独计算）
     year_days_map = _year_study_days_map(user_id) if user_id else {}
+    # 各卡组最近一次学习时间
+    last_study_map = _last_study_at_map(user_id) if user_id else {}
 
     result = []
     for d in decks:
         dd = d.to_dict()
         dd['year_study_days'] = year_days_map.get(d.id, 0)
+        dd['last_studied_at'] = last_study_map.get(d.id)
         result.append(dd)
     return jsonify({'success': True, 'decks': result})
 
@@ -349,6 +352,20 @@ def _year_study_days_map(user_id):
         db.func.date(LearningEvent.created_at) >= date(date.today().year, 1, 1),
     ).group_by(LearningEvent.deck_id).all()
     return {deck_id: days for deck_id, days in rows}
+
+
+def _last_study_at_map(user_id):
+    """各卡组最近一次学习事件的时间（ISO 字符串；无记录则为 None）。"""
+    rows = db.session.query(
+        LearningEvent.deck_id,
+        db.func.max(LearningEvent.created_at)
+    ).filter(
+        LearningEvent.user_id == user_id
+    ).group_by(LearningEvent.deck_id).all()
+    return {
+        deck_id: (ts.isoformat() if ts else None)
+        for deck_id, ts in rows
+    }
 
 
 @app.route('/v1/decks', methods=['POST'])

@@ -15,6 +15,7 @@ var state = {
     voices: [],
     selectedVoice: null,
     darkTheme: localStorage.getItem('dc-dark-theme') === '1',
+    skinId: localStorage.getItem('dc-skin-id') || (localStorage.getItem('dc-dark-theme') === '1' ? 'dark' : 'default'),
     soundEnabled: localStorage.getItem('dc-sound') !== '0',
     enteredPages: new Set(),
     singleCardMode: false,
@@ -508,12 +509,84 @@ Called after card enters the DOM. \`cardElement\` is the root DOM element of the
 - Max **5** \`data-action\` per template.
 `;
 
-/* ===== Dark Theme ===== */
-function applyDarkTheme() {
+/* ===== Skin System =====
+   default = light (no decor), dark = dark mode (no decor).
+   Custom skins can add side-gutter decor + optional CSS overrides.
+   Skins are independent; switching to a skin fully replaces the previous one. */
+var SKINS = {
+    default: { id: 'default', name: 'Default', icon: 'fa-sun', dark: false, css: '', html: '', js: '' },
+    dark:    { id: 'dark', name: 'Dark', icon: 'fa-moon', dark: true, css: '', html: '', js: '' }
+};
+
+var _skinStyleEl = null;
+var _skinDecoEl = null;
+var _skinJsFn = null;
+
+function applySkin() {
+    var id = state.skinId;
+    var skin = SKINS[id] || SKINS['default'];
+    state.skinId = skin.id;
+    state.darkTheme = !!skin.dark;
+
+    /* body class + attribute for CSS scoping */
     document.body.classList.toggle('dark-mode', state.darkTheme);
+    document.body.dataset.skin = skin.id;
+
+    /* inject skin CSS */
+    if (skin.css) {
+        if (!_skinStyleEl) {
+            _skinStyleEl = document.createElement('style');
+            _skinStyleEl.id = 'skin-css';
+            document.head.appendChild(_skinStyleEl);
+        }
+        _skinStyleEl.textContent = skin.css;
+    } else if (_skinStyleEl) {
+        _skinStyleEl.textContent = '';
+    }
+
+    /* inject decoration layer */
+    if (skin.html) {
+        if (!_skinDecoEl) {
+            _skinDecoEl = document.createElement('div');
+            _skinDecoEl.id = 'skin-deco';
+            _skinDecoEl.className = 'skin-deco';
+            document.body.appendChild(_skinDecoEl);
+        }
+        _skinDecoEl.innerHTML = skin.html;
+    } else if (_skinDecoEl) {
+        _skinDecoEl.innerHTML = '';
+    }
+
+    /* run optional skin JS */
+    if (_skinJsFn) { try { _skinJsFn(); } catch (e) {} }
+    _skinJsFn = null;
+    if (skin.js) {
+        try { _skinJsFn = new Function(skin.js)(); } catch (e) {}
+    }
+
+    localStorage.setItem('dc-skin-id', skin.id);
     localStorage.setItem('dc-dark-theme', state.darkTheme ? '1' : '0');
-    document.querySelectorAll('.dark-icon-light').forEach(function (el) { el.style.display = state.darkTheme ? 'none' : 'inline-block'; });
-    document.querySelectorAll('.dark-icon-dark').forEach(function (el) { el.style.display = state.darkTheme ? 'inline-block' : 'none'; });
+    renderSkinList();
+}
+
+function renderSkinList() {
+    var list = $('#skin-list');
+    if (!list) return;
+    var html = '';
+    Object.keys(SKINS).forEach(function (id) {
+        var s = SKINS[id];
+        var active = state.skinId === id ? ' active' : '';
+        html += '<div class="skin-option' + active + '" data-skin-option="' + id + '"><i class="fa-solid ' + s.icon + '"></i><span>' + (t('skin.' + id) || s.name) + '</span></div>';
+    });
+    list.innerHTML = html;
+}
+
+function toggleSkinDropdown(force) {
+    var dd = $('#skin-dropdown');
+    if (!dd) return;
+    var show = force !== undefined ? force : dd.style.display === 'none';
+    dd.style.display = show ? 'block' : 'none';
+    if (show) renderSkinList();
 }
 
 /* ===== i18n ===== */
@@ -539,6 +612,7 @@ function toggleLang() {
     if (!window.i18n) return;
     window.i18n.toggle();
     applyStaticI18n();
+    renderSkinList();
     updateLangBtn();
     renderSagesPop();
     /* Re-render current view so dynamic text updates */
@@ -629,6 +703,13 @@ function renderDeckList() {
 
     fetch('/v1/decks?user_id=' + state.userId).then(function (r) { return r.json(); }).then(function (d) {
         var decks = d.decks || [];
+        /* Sort by most recent study time, freshly-used decks on top. */
+        decks.sort(function (a, b) {
+            var at = a.last_studied_at || '';
+            var bt = b.last_studied_at || '';
+            if (at === bt) return 0;
+            return at > bt ? -1 : 1;
+        });
         if (_deckKindFilter) {
             decks = decks.filter(function (dk) { return (dk.kind || 'other') === _deckKindFilter; });
         }
@@ -793,8 +874,9 @@ function initApp() {
         state.userId = defaultUser ? defaultUser.id : (d.users[0] ? d.users[0].id : null);
         if (state.userId) showDeckView();
     });
-    applyDarkTheme();
+    applySkin();
     applyStaticI18n();
+    renderSkinList();
     updateLangBtn();
     localStorage.removeItem('dc-card-font-weight');
     applyCardFont();
@@ -2658,6 +2740,12 @@ function setupEventListeners() {
     document.addEventListener('click', function (e) {
         var target = e.target;
 
+        /* Close skin dropdown when clicking outside it */
+        if (!target.closest('#skin-toggle-wrap')) {
+            var skinDd = $('#skin-dropdown');
+            if (skinDd && skinDd.style.display === 'block') toggleSkinDropdown(false);
+        }
+
         /* Global sidebar navigation */
         var gsItem = target.closest('.gs-nav-item');
         if (gsItem) {
@@ -3021,10 +3109,22 @@ function setupEventListeners() {
             return;
         }
 
-        /* Dark theme */
-        if (target.closest('#dark-theme-btn') || target.closest('#dark-theme-btn-study')) {
-            state.darkTheme = !state.darkTheme;
-            applyDarkTheme();
+        /* Skin selector */
+        if (target.closest('#dark-theme-btn')) {
+            toggleSkinDropdown();
+            return;
+        }
+        if (target.closest('[data-skin-option]')) {
+            var optEl = target.closest('[data-skin-option]');
+            var skinId = optEl.dataset.skinOption;
+            if (SKINS[skinId]) {
+                state.skinId = skinId;
+                applySkin();
+            }
+            toggleSkinDropdown(false);
+            return;
+        }
+        if (target.closest('#skin-dropdown')) {
             return;
         }
 

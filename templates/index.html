@@ -54,10 +54,15 @@
                         <button id="settings-btn" class="hh-btn" data-i18n-tooltip="common.about" data-tooltip="关于" title="关于">
                             <i class="fa-solid fa-circle-info"></i>
                         </button>
-                        <button id="dark-theme-btn" class="hh-btn" data-i18n-tooltip="home.darkMode" data-tooltip="深色模式" title="深色模式">
-                            <i class="fa-solid fa-moon dark-icon-light"></i>
-                            <i class="fa-solid fa-sun dark-icon-dark" style="display:none;"></i>
-                        </button>
+                        <div class="skin-toggle-wrap" id="skin-toggle-wrap">
+                            <button id="dark-theme-btn" class="hh-btn" data-i18n-tooltip="skin.title" data-tooltip="皮肤" title="皮肤">
+                                <i class="fa-solid fa-palette"></i>
+                            </button>
+                            <div class="skin-dropdown" id="skin-dropdown" style="display:none;">
+                                <div class="skin-dropdown-header"><i class="fa-solid fa-palette"></i> <span data-i18n="skin.title">皮肤</span></div>
+                                <div class="skin-list" id="skin-list"></div>
+                            </div>
+                        </div>
                         <button id="lang-toggle-btn" class="hh-btn" data-tooltip="切换语言 / Switch Language" title="切换语言 / Switch Language">
                             <span class="lang-label">中/EN</span>
                         </button>

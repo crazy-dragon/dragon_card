@@ -1115,6 +1115,43 @@ body.dark-mode {
 .page-btn.marked { background: var(--tab-study-bg); border-color: var(--tab-study-border); color: var(--tab-study-fg); }
 .page-btn.mastered { background: var(--tab-review-bg); border-color: var(--tab-review-border); color: var(--tab-review-fg); }
 
+/* Skin selector dropdown */
+.skin-toggle-wrap { position: relative; }
+.skin-dropdown {
+    position: absolute; z-index: 200; width: 200px;
+    background: var(--dropdown-bg); border: 1px solid var(--line);
+    border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    top: 100%; right: 0; margin-top: 4px;
+}
+.skin-dropdown-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 12px; font-size: 12px; font-weight: 600;
+    border-bottom: 1px solid var(--line); color: var(--ink-2);
+}
+.skin-list { padding: 4px; max-height: 220px; overflow-y: auto; }
+.skin-option {
+    padding: 8px 10px; font-size: 12px; border-radius: 6px;
+    cursor: pointer; display: flex; align-items: center; gap: 8px;
+    transition: background 0.15s;
+}
+.skin-option:hover { background: var(--slate-soft); }
+.skin-option.active { background: var(--primary-soft); color: var(--primary); }
+.skin-option i { width: 16px; text-align: center; }
+
+/* ===== Skin decoration layer (fixed, non-interactive, both sides) =====
+   Custom skins inject their decorative elements into #skin-deco;
+   scope their styles with body[data-skin="..."] .skin-deco ... */
+.skin-deco {
+    position: fixed; inset: 0; z-index: 5;
+    pointer-events: none;
+    overflow: hidden;
+}
+.skin-deco img, .skin-deco i, .skin-deco div { pointer-events: none; }
+/* Hide side decorations on narrow screens (no gutter space) */
+@media (max-width: 1240px) {
+    .skin-deco { display: none; }
+}
+
 /* Voice dropdown */
 .voice-dropdown {
     position: absolute; z-index: 100; width: 220px;
