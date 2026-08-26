@@ -64,7 +64,7 @@ python app.py
 
 ## 🎪 在线商店
 
-在线演示与精品卡组商店：[**dragon-memory-market.pages.dev**](https://dragon-memory-market.pages.dev/)
+在线演示与精品卡组商店：[**dragoncard.top**](https://dragoncard.top/)（备用：[dragon-memory-market.pages.dev](https://dragon-memory-market.pages.dev/)）
 
 - **交互演示**：样卡发音、标记、3D 预览，浏览器直接体验
 - **精品卡组**：预制 AI 辅助精校卡组，**一次性购买**（无订阅）
@@ -129,6 +129,7 @@ dragoncard/
 ├── requirements.txt
 ├── DB_relation.md             # 数据库关系说明
 ├── README.md
+├── SKIN.md                    # 皮肤系统开发文档
 ├── TEMPLATE_PACK.md           # 模板包发布规范
 ├── ui_design.md               # UI 界面设计文档
 │
@@ -179,6 +180,7 @@ dragoncard/
 | 文档 | 用途 |
 |------|------|
 | [`DB_relation.md`](./DB_relation.md) | 数据库表结构与关系 |
+| [`SKIN.md`](./SKIN.md) | 皮肤系统开发文档 |
 | [`ui_design.md`](./ui_design.md) | UI 界面设计文档 |
 | 应用内「模板 API 参考」 | 模板格式与 `window.cardTemplate` 契约（主页顶栏 `</>` 按钮） |
 | 应用内「使用文档」 | 面向最终用户的操作指南（中英双语） |

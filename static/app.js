@@ -515,7 +515,10 @@ Called after card enters the DOM. \`cardElement\` is the root DOM element of the
    Skins are independent; switching to a skin fully replaces the previous one. */
 var SKINS = {
     default: { id: 'default', name: 'Default', icon: 'fa-sun', dark: false, css: '', html: '', js: '' },
-    dark:    { id: 'dark', name: 'Dark', icon: 'fa-moon', dark: true, css: '', html: '', js: '' }
+    dark:    { id: 'dark', name: 'Dark', icon: 'fa-moon', dark: true, css: '', html: '', js: '' },
+    ocean: { id: 'ocean', name: 'Ocean', icon: 'fa-water', dark: false, css: 'body[data-skin="ocean"]{--hp-primary:#1f7fbf;--hp-primary-soft:rgba(31,127,191,.10);--hp-success:#1f9d6b;--hp-warning:#d9a441;--hp-danger:#d24d57;--hp-bg:#dcf0f6;--hp-card:#f4fbfd;--hp-sidebar:#e3f2f6;--hp-header:#f4fbfd;--hp-border:#b7d8e2;--hp-text:#123d50;--hp-text-sub:#3d667a;--hp-text-light:#7ea3b3;--hp-shadow:0 4px 24px rgba(0,0,0,.05);--hp-shadow-hover:0 8px 30px rgba(31,127,191,.15);--study-bg:#d9eef4;--study-bg-end:#c8e6ef;--study-sidebar:#f0fafd;--study-card-bg:#ffffff;--study-content-bg:#d9edf3;--study-shadow:0 4px 20px rgba(0,0,0,.06);--study-shadow-hover:0 8px 30px rgba(31,127,191,.15)}body[data-skin="ocean"] .app-main{background:linear-gradient(180deg,#e8f6fa,#cfe9f2)}', html: '', js: '' },
+    starry: { id: 'starry', name: 'Starry', icon: 'fa-star', dark: true, css: 'body[data-skin="starry"]{--hp-bg:#0e1430;--hp-card:#1a2140;--hp-sidebar:#111735;--hp-header:#161e3a;--hp-border:#2b3560;--hp-text:#e8ecff;--hp-text-sub:#a6b0d8;--hp-text-light:#7e89b5;--hp-primary:#8ba0f0;--hp-primary-soft:rgba(139,160,240,.16);--hp-success:#5ad6a0;--hp-warning:#e0b352;--hp-danger:#f0697a;--hp-shadow:0 4px 24px rgba(0,0,0,.45);--hp-shadow-hover:0 8px 30px rgba(139,160,240,.25);--study-bg:#0c1128;--study-bg-end:#0c1128;--study-sidebar:#141b38;--study-card-bg:#1c2344;--study-content-bg:#121a34;--study-shadow:0 4px 20px rgba(0,0,0,.35);--study-shadow-hover:0 8px 30px rgba(0,0,0,.45)}body[data-skin="starry"] .app-main{background:radial-gradient(circle at 50% 0%,#2a3566,#0e1430 70%)}', html: '', js: '' },
+    scifi: { id: 'scifi', name: 'Sci-Fi', icon: 'fa-microchip', dark: true, css: 'body[data-skin="scifi"]{--hp-bg:#0a0f1a;--hp-card:#10161f;--hp-sidebar:#0c1119;--hp-header:#0f1620;--hp-border:#1f3341;--hp-text:#d6f5f5;--hp-text-sub:#8fb6bd;--hp-text-light:#5f838c;--hp-primary:#22d3ee;--hp-primary-soft:rgba(34,211,238,.15);--hp-success:#34d399;--hp-warning:#f0b857;--hp-danger:#f87171;--hp-shadow:0 4px 24px rgba(0,0,0,.5);--hp-shadow-hover:0 8px 30px rgba(34,211,238,.28);--study-bg:#08101a;--study-bg-end:#08101a;--study-sidebar:#0f1a26;--study-card-bg:#122233;--study-content-bg:#0d1a26;--study-shadow:0 4px 20px rgba(0,0,0,.4);--study-shadow-hover:0 8px 30px rgba(0,0,0,.5)}body[data-skin="scifi"] .app-main{background:linear-gradient(180deg,#0b141f,#08101a)}', html: '', js: '' },
 };
 
 var _skinStyleEl = null;
@@ -2723,7 +2726,7 @@ function switchGlobalPage(page) {
         if (_stats.actionsLoaded) destroyStatsPage();
         if (_ach.loaded) destroyAchievementsPage();
     } else {
-        var titles = { achievements: 'page.achievements', stats: 'page.stats', market: 'page.market', docs: 'page.docs' };
+        var titles = { achievements: 'page.achievements', stats: 'page.stats', docs: 'page.docs' };
         document.getElementById('home-title').textContent = t(titles[page] || page);
         document.getElementById('home-content').style.display = 'none';
 
@@ -3136,6 +3139,12 @@ function setupEventListeners() {
 
         /* Settings */
         if (target.closest('#settings-btn')) { showModal('about'); return; }
+
+        /* Online store (opens official site in a new tab) */
+        if (target.closest('#store-btn')) {
+            window.open('https://dragoncard.top/', '_blank', 'noopener');
+            return;
+        }
 
         /* Finish modal */
         if (target.closest('#modal-finish-cancel')) { hideModal('finish'); return; }
