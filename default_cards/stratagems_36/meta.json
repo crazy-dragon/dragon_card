@@ -1,0 +1,18 @@
+{
+  "name": "三十六计卡组（古朴版）",
+  "name_en": "36 Stratagems (Classical)",
+  "description": "36 张计策卡 + 6 张总览卡。中文版含原文/释义/典故/现代应用；英文版含 Source/Meaning/Story/Reflection。支持翻面、朗读、标记、收藏。",
+  "count": 42,
+  "count_stratagem": 36,
+  "count_overview": 6,
+  "license": "Public domain — 三十六计原文与通行英译属公版文本，可自由使用。本卡组的现代应用 / 哲思原创层 © 作者，随卡组分发，请勿单独盗售。",
+  "source": "三十六计（公版）；英译采用通行译法（Ralph Sawyer 等常见译名）",
+  "files": [
+    "template.json",
+    "cards.json",
+    "template_en.json",
+    "cards_en.json",
+    "preview.html",
+    "preview_en.html"
+  ]
+}

@@ -9,7 +9,6 @@
         'nav.home': '我的卡组',
         'nav.achievements': '成就',
         'nav.stats': '统计',
-        'nav.market': '市场',
         'nav.docs': '使用文档',
         'nav.sages': '先贤的智慧',
 
@@ -29,11 +28,17 @@
         'home.active': '当前',
         'home.filterAll': '全部',
         'home.yearDays': '天',
+        'home.store': '商店',
+        'skin.title': '皮肤',
+        'skin.default': '默认',
+        'skin.dark': '深色',
+        'skin.ocean': '海洋',
+        'skin.starry': '星空',
+        'skin.scifi': '科幻',
 
         /* 侧边栏切换页标题 */
         'page.achievements': '成就中心',
         'page.stats': '数据统计',
-        'page.market': '卡组市场',
         'page.docs': '使用文档',
 
         /* 通用 */
@@ -261,7 +266,6 @@
         'nav.home': 'My Decks',
         'nav.achievements': 'Achievements',
         'nav.stats': 'Stats',
-        'nav.market': 'Market',
         'nav.docs': 'Docs',
         'nav.sages': 'Wisdom of Sages',
 
@@ -281,11 +285,17 @@
         'home.active': 'Active',
         'home.filterAll': 'All',
         'home.yearDays': 'days',
+        'home.store': 'Store',
+        'skin.title': 'Skin',
+        'skin.default': 'Default',
+        'skin.dark': 'Dark',
+        'skin.ocean': 'Ocean',
+        'skin.starry': 'Starry',
+        'skin.scifi': 'Sci-Fi',
 
         /* 侧边栏切换页标题 */
         'page.achievements': 'Achievements',
         'page.stats': 'Statistics',
-        'page.market': 'Deck Market',
         'page.docs': 'Documentation',
 
         /* 通用 */

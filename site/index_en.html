@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DragonCard · A Universal Card Learning Framework</title>
+<meta name="description" content="DragonCard is a universal card learning framework: data, template and engine are decoupled into three layers. Learn anything with your own templates.">
+<style>
+:root{
+  /* ---- dark page chrome ---- */
+  --bg:#0e1c22; --surface:#16272f; --surface-2:#1c313a; --surface-3:#243d47;
+  --ink:#e8f1ef; --ink-2:#a6bfbc; --muted:#7c9a97;
+  --line:#243a43; --line-2:#31505b;
+  --accent:#5cbcd9; --accent-2:#e89276; --accent-soft:#16333c;
+  --deep:#0a151a; --deep-2:#132730;
+  /* ---- light card mockups (these mirror the REAL app cards) ---- */
+  --card-bg:#f5f9f6; --card-surface:#fff; --card-surface-2:#eef4ef;
+  --card-ink:#2e444e; --card-ink-2:#56696e; --card-muted:#93a5a1;
+  --card-line:#dde7e0; --card-accent:#5a7d94;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px}
+h1,h2,h3{line-height:1.3;font-weight:700;letter-spacing:-.2px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font-family:var(--mono);font-size:.9em;background:var(--surface-2);padding:1px 5px;border-radius:4px}
+
+/* ---------- topbar ---------- */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(14,28,34,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:58px;gap:12px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:16px;color:var(--ink)}
+.brand svg{flex:0 0 auto}
+.tb-right{display:flex;align-items:center;gap:8px}
+.langbtn{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:5px 11px}
+.langbtn:hover{text-decoration:none;background:var(--surface-2);color:var(--ink)}
+.langbtn.on{background:var(--accent);color:#08222a;border-color:var(--accent)}
+
+/* ---------- hero ---------- */
+.hero{padding:64px 0 56px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:5px 13px;margin-bottom:20px}
+h1{font-size:clamp(33px,5.4vw,52px);margin:0 0 14px;letter-spacing:-1px}
+.tagline{font-size:clamp(17px,2.4vw,21px);color:var(--ink-2);margin:0 0 10px;font-weight:600}
+.tagline b{color:var(--ink);font-weight:700}
+.hero-sub{font-size:15px;color:var(--ink-2);margin:0 0 26px;max-width:46ch}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;padding:11px 18px;border-radius:10px;border:1px solid transparent;transition:all .18s ease;font-family:inherit;cursor:pointer}
+.btn:hover{text-decoration:none;transform:translateY(-1px)}
+.btn-primary{background:var(--accent);color:#08222a}
+.btn-primary:hover{background:#7fcede}
+.btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--line-2)}
+.btn-ghost:hover{background:var(--surface-2)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-size:12.5px;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+.kchip{display:inline-flex;align-items:center;gap:6px}
+.kdot{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--kc);flex:0 0 auto}
+
+/* hero card = a LIGHT real-app card floating on the dark page */
+.hero-card{perspective:1400px;height:270px;cursor:pointer}
+.hero-card-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.hero-card.flipped .hero-card-inner{transform:rotateY(180deg)}
+.hface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--card-surface);border:1px solid var(--card-line);border-radius:16px;box-shadow:0 20px 48px rgba(0,0,0,.45);padding:26px 24px;display:flex;flex-direction:column}
+.hface-back{transform:rotateY(180deg);background:var(--card-surface-2)}
+.hroot{font-size:42px;font-weight:800;color:var(--card-ink);letter-spacing:-.5px}
+.horigin{font-size:11.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--card-accent);display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.hdot{width:7px;height:7px;border-radius:50%;background:var(--card-accent);display:inline-block}
+.hmean{font-size:17px;color:var(--card-ink-2);margin-top:8px}
+.hhint{margin-top:auto;font-size:12px;color:var(--card-muted);text-align:right}
+.hderiv{display:flex;align-items:baseline;gap:9px;padding:6px 0;border-top:1px solid var(--card-line)}
+.hderiv:first-of-type{border-top:none}
+.hword{font-weight:700;font-size:15px;color:var(--card-ink)}
+.htier{font-size:10px;color:#fff;background:var(--card-accent);border-radius:6px;padding:1px 6px}
+.hpara{font-size:13.5px;color:var(--card-ink-2)}
+.hetym{margin-top:auto;font-size:13px;color:var(--card-ink-2);background:var(--card-surface);border-left:3px solid var(--card-accent);border-radius:0 8px 8px 0;padding:7px 10px}
+
+/* ---------- sections ---------- */
+section{padding:60px 0;border-top:1px solid var(--line)}
+.sec-num{font-size:12px;font-weight:700;letter-spacing:1.4px;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+h2{font-size:clamp(24px,3.4vw,32px);margin:0 0 14px}
+.lede{font-size:16px;color:var(--ink-2);margin:0 0 28px;max-width:62ch}
+
+.creed{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:var(--radius);padding:26px 28px;margin-bottom:20px}
+.creed p{margin:0 0 14px;font-size:16px;color:var(--ink-2)}
+.creed p:last-child{margin-bottom:0}
+.creed .lead{font-size:22px;font-weight:700;color:var(--ink);line-height:1.45}
+.creed em{font-style:normal;background:rgba(92,188,217,.18);font-weight:700;color:#fff;border-radius:3px;padding:0 3px}
+.anchor-quote{text-align:center;font-size:clamp(22px,3.6vw,34px);font-weight:800;color:var(--ink);line-height:1.35;margin:34px 0 8px;letter-spacing:-.5px}
+.anchor-sub{text-align:center;font-size:15px;color:var(--muted);margin:0 0 34px}
+
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14.5px}
+th,td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);font-weight:700;background:var(--surface-2)}
+td:first-child{font-weight:700;color:var(--ink);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.dc{background:rgba(92,188,217,.10);color:var(--ink)}
+td.anki{color:var(--ink-2)}
+.note{font-size:13px;color:var(--muted);margin-top:10px}
+
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.tab{background:var(--surface);border:1px solid var(--line-2);border-radius:10px;padding:14px 12px;cursor:pointer;text-align:left;font-family:inherit;color:var(--ink);transition:all .18s ease}
+.tab:hover{background:var(--surface-2)}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#08222a}
+.tab .tname{font-weight:700;font-size:15px;display:block}
+.tab .tdesc{font-size:12px;opacity:.78;display:block;margin-top:2px}
+.panel{display:none;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px}
+.panel.on{display:block}
+.panel h3{margin:0 0 8px;font-size:18px}
+.panel p{margin:0 0 16px;color:var(--ink-2);font-size:15px}
+pre{background:var(--deep);color:#cfe4e2;border-radius:10px;padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.65;margin:0;border:1px solid var(--line)}
+pre .k{color:#7fd6c0}
+pre .s{color:#e9c98a}
+pre .c{color:#6f8f8c}
+.stack{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.stack-item{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:14px;color:var(--ink-2)}
+.stack-item b{color:var(--ink)}
+.arrowdown{text-align:center;color:var(--muted);font-size:16px;line-height:1}
+
+/* study demo rows = light, like the real app list */
+.demo{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px}
+.demo-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.demo-stats{display:flex;gap:16px;font-size:13px;color:var(--ink-2)}
+.demo-stats b{color:var(--ink)}
+.slist{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.sitem{display:flex;align-items:center;gap:14px;background:var(--card-surface);border:1px solid var(--card-line);border-radius:10px;padding:12px 16px;transition:background .25s ease,border-color .25s ease,transform .35s ease,opacity .25s ease}
+.sitem.unknown{background:#e7f2f6;border-color:#8fc7d8}
+.sitem.known{opacity:.72}
+.sword{font-weight:700;font-size:16px;flex:0 0 auto;min-width:110px;color:var(--card-ink)}
+.smean{font-size:13.5px;color:var(--card-ink-2);flex:1}
+.smark{font-family:inherit;font-size:12.5px;font-weight:600;border:1px solid var(--card-line);background:var(--card-surface-2);color:var(--card-ink-2);border-radius:999px;padding:5px 13px;cursor:pointer;transition:all .18s ease;flex:0 0 auto}
+.smark:hover{background:#e2ece7}
+.sitem.unknown .smark{background:var(--card-accent);border-color:var(--card-accent);color:#fff}
+.sitem.justmoved{animation:pop .5s ease}
+@keyframes pop{0%{transform:translateY(-8px);opacity:.4}100%{transform:none;opacity:1}}
+.demo-actions{display:flex;gap:10px;flex-wrap:wrap}
+.demo-hint{font-size:13px;color:var(--muted);margin:14px 0 0}
+
+/* gallery cards = light, like the real decks */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(164px,1fr));gap:14px}
+.gcard{perspective:1200px;height:186px;cursor:pointer}
+.gcard-inner{position:relative;width:100%;height:100%;transition:transform .55s;transform-style:preserve-3d}
+.gcard.flipped .gcard-inner{transform:rotateY(180deg)}
+.gface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--card-surface);border:1px solid var(--card-line);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.28);border-top:3px solid var(--kc,var(--card-line))}
+.gback{transform:rotateY(180deg);background:var(--card-surface-2)}
+.gkind{font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--kc,var(--card-accent));margin-bottom:8px}
+.gbig{font-size:32px;font-weight:800;line-height:1.15;color:var(--card-ink);letter-spacing:-.5px}
+.gsub{font-size:13px;color:var(--card-ink-2);margin-top:6px}
+.gflip{margin-top:auto;font-size:11px;color:var(--card-muted)}
+.gback .gsmall{font-size:13px;color:var(--card-ink-2);line-height:1.6}
+.gback strong{display:block;font-size:14px;color:var(--card-ink);margin-bottom:4px}
+
+.powers{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:20px}
+.power{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px}
+.power h3{font-size:15px;margin:0 0 6px}
+.power p{margin:0;font-size:13.5px;color:var(--ink-2)}
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px}
+.stat h3{font-size:14px;margin:0 0 14px}
+.heatmap{display:grid;grid-template-columns:repeat(14,1fr);gap:3px}
+.heatmap i{display:block;aspect-ratio:1;border-radius:2px;background:var(--surface-3)}
+.bars{display:flex;align-items:flex-end;gap:6px;height:64px}
+.bars span{flex:1;background:var(--accent);border-radius:3px 3px 0 0;opacity:.88}
+.pyr{display:flex;flex-direction:column;gap:4px;align-items:center}
+.pyr span{height:14px;background:var(--surface-3);border-radius:3px;border:1px solid var(--line)}
+.legend-row{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:10px;flex-wrap:wrap}
+
+.start-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.tool{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;display:block;transition:all .18s ease}
+.tool:hover{text-decoration:none;border-color:var(--accent);transform:translateY(-2px)}
+.tool h3{font-size:15px;margin:0 0 5px;color:var(--ink)}
+.tool p{margin:0;font-size:13px;color:var(--ink-2)}
+.start-note{font-size:14px;color:var(--ink-2);background:var(--accent-soft);border:1px solid var(--line);border-radius:var(--radius);padding:16px 20px;margin-top:20px}
+
+/* ---- closing band: deeper than the page, so it reads as a distinct finale ---- */
+.band{background:var(--deep);color:#cddcda;padding:66px 0;border-top:1px solid var(--line)}
+.band h2{color:#fff}
+.band .lede{color:#a3bcbc}
+.band .sec-num{color:#7d9a99}
+.band p{color:#cddcda}
+.band b{color:#fff}
+.band ul{margin:0 0 22px;padding-left:20px;font-size:15px;color:#cddcda}
+.band li{margin-bottom:9px}
+.band a{color:#e89276;font-weight:700}
+.band-cta{font-size:17px;color:#e6efee;margin:0;line-height:1.8}
+.band .tool{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14)}
+.band .tool h3{color:#fff}
+.band .tool p{color:#a3bcbc}
+.band .tool:hover{border-color:var(--accent-2);background:rgba(255,255,255,.1)}
+.band-foot{margin-top:24px;font-size:14px;color:#8fadad}
+
+footer{border-top:1px solid var(--line);padding:34px 0;color:var(--ink-2);font-size:13.5px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+.flinks{display:flex;gap:16px;flex-wrap:wrap}
+
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+
+@media (max-width:760px){
+  .hero-grid{grid-template-columns:1fr;gap:30px}
+  .hero{padding:40px 0 36px}
+  .tabs{grid-template-columns:1fr}
+  section{padding:44px 0}
+  .hroot{font-size:34px}
+  .hero-card{height:238px}
+  .gallery{grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:11px}
+  .gcard{height:172px}
+  .sitem{flex-wrap:wrap;gap:8px 12px}
+  .sword{min-width:0}
+  .smean{flex:1 1 58%}
+  .topbar .wrap{height:52px}
+  .langbtn{font-size:12px;padding:4px 9px}
+  .band{padding:48px 0}
+  .creed{padding:20px 20px}
+  .creed .lead{font-size:19px}
+  .anchor-quote{margin:26px 0 6px}
+  pre{font-size:11.5px;padding:13px 14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="3" width="13" height="13" rx="3" fill="#5cbcd9"/>
+        <rect x="8" y="8" width="13" height="13" rx="3" fill="#a8d8e8" fill-opacity=".55"/>
+      </svg>
+      DragonCard
+    </a>
+    <div class="tb-right">
+      <a class="langbtn" href="index.html">中文</a>
+      <a class="langbtn on" href="index_en.html">EN</a>
+      <a class="langbtn" href="https://github.com/crazy-dragon/dragon_card" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero" style="border-top:none">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Universal card learning framework</span>
+      <h1>Put knowledge in.<br>Leave repetition to yourself.</h1>
+      <p class="tagline">Data, template and engine <b>decoupled into three layers</b> — learn <b>anything</b> with your own templates.</p>
+      <p class="hero-sub">DragonCard doesn't decide what your cards look like, and it doesn't schedule your reviews. It offers one stable container: you put knowledge in, and you show up every day.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://github.com/crazy-dragon/dragon_card" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-1.94c-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.06.78 2.14v3.17c0 .3.2.67.8.55A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
+          View source
+        </a>
+        <a class="btn btn-ghost" href="https://dragoncard.top/" target="_blank" rel="noopener">Live demo →</a>
+      </div>
+      <div class="chips">
+        <span class="chip">Three-layer decoupling</span>
+        <span class="chip">The template is everything</span>
+        <span class="chip">Local-first · SQLite</span>
+        <span class="chip">MIT licensed</span>
+      </div>
+    </div>
+
+    <div class="hero-card" id="heroCard" role="button" tabindex="0" aria-label="Click to flip the sample card">
+      <div class="hero-card-inner">
+        <div class="hface">
+          <div class="horigin"><span class="hdot"></span>Latin</div>
+          <div class="hroot">spect / spic</div>
+          <div class="hmean">Root · No. 001</div>
+          <div class="hhint">Click to flip ↻</div>
+        </div>
+        <div class="hface hface-back">
+          <div class="horigin"><span class="hdot"></span>to look, to see</div>
+          <div class="hderiv"><span class="hword">inspect</span><span class="htier">TOP2k</span><span class="hpara">to look at closely</span></div>
+          <div class="hderiv"><span class="hword">respect</span><span class="htier">TOP2k</span><span class="hpara">to admire</span></div>
+          <div class="hderiv"><span class="hword">spectator</span><span class="htier">SUPP</span><span class="hpara">a viewer</span></div>
+          <div class="hetym">Etymology: Latin <em style="font-style:italic;font-weight:700">spectare</em> — “to look”.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PHILOSOPHY ============ -->
+<section id="philosophy" class="reveal">
+  <div class="wrap">
+    <div class="sec-num">01 · Philosophy</div>
+    <h2>DragonCard is not Anki.</h2>
+    <p class="lede">It has no complex spaced-repetition algorithm — just one simple, categorized approach.</p>
+
+    <div class="creed">
+      <p class="lead">Show knowledge to you quickly: <em>mark what you don't know</em>, and <em>difficult ones stay ahead</em> while <em>mastered words fall behind</em>. That's all.</p>
+      <p>It doesn't schedule your reviews, and it makes no promise of "remember it in N days". Because memory was never about tricks; it's about <em>repetition</em>.</p>
+    </div>
+
+    <p class="anchor-quote">Memory was never about tricks.<br>It's about repetition.</p>
+    <p class="anchor-sub">Ebbinghaus proved it with a lifetime of research. So we believe in you — in your consistency.</p>
+
+    <div class="creed">
+      <p>The brain is remarkably good at being lazy. When you do the same thing consistently over time, it stops feeling hard and gradually becomes easier.</p>
+      <p>DragonCard taps into exactly this mechanism — it offers no magic, just a simple container: <em>put knowledge in, and leave the most basic act of "repetition" to the self that shows up every day.</em></p>
+    </div>
+
+    <p class="anchor-quote" style="font-size:clamp(20px,3vw,26px)">Persistence pays off.</p>
+    <p class="anchor-sub">We make no promises. We just build the container.</p>
+
+    <h3 style="font-size:19px;margin:38px 0 14px">DragonCard vs Anki</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Dimension</th><th>Anki</th><th>DragonCard</th></tr></thead>
+        <tbody>
+          <tr><td>Scheduling unit</td><td class="anki">Each card independently computes its next review time</td><td class="dc">A complete ordered list as the unit; priority via sorting</td></tr>
+          <tr><td>Time constraint</td><td class="anki">Strictly date-driven</td><td class="dc">Elastic — when to continue and how long to wait is up to you</td></tr>
+          <tr><td>Known words</td><td class="anki">Lower review frequency after mastery, or leave the pool</td><td class="dc">Kept at the tail of the list, refreshed with a light pass</td></tr>
+          <tr><td>Strength</td><td class="anki">Higher theoretical ceiling for memory efficiency</td><td class="dc">Simple, stable flow; easy to resume after a break; keeps word context order</td></tr>
+          <tr><td>Weakness</td><td class="anki">Uncontrollable workload, high maintenance after breaks</td><td class="dc">No precise review at the forgetting threshold; slightly lower theoretical single-item ceiling</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">We list our own weakness in the table too. DragonCard doesn't chase the theoretical ceiling — it chases one thing: that you still come back tomorrow.</p>
+  </div>
+</section>
+
+<!-- ============ ARCHITECTURE ============ -->
+<section id="architecture" class="reveal">
+  <div class="wrap">
+    <div class="sec-num">02 · Architecture</div>
+    <h2>Data, template, engine — three decoupled layers</h2>
+    <p class="lede">One JSON template file defines everything about a card. The framework only provides the "shelf": the study flow and backend APIs stay fixed.</p>
+
+    <div class="stack">
+      <div class="stack-item"><b>You provide</b> — template.json (HTML + CSS + JS + lang + trackedActions)</div>
+      <div class="arrowdown">↓</div>
+      <div class="stack-item"><b>DragonCard</b> — loads the template → renders the card → injects an api object; the study engine (mark / reshuffle / pagination) stays fixed</div>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab on" data-tab="data" role="tab">
+        <span class="tname">Data</span><span class="tdesc">Pure content · fields are yours</span>
+      </button>
+      <button class="tab" data-tab="template" role="tab">
+        <span class="tname">Template</span><span class="tdesc">Look and behaviour</span>
+      </button>
+      <button class="tab" data-tab="engine" role="tab">
+        <span class="tname">Engine</span><span class="tdesc">Study flow · fixed</span>
+      </button>
+    </div>
+
+    <div class="panel on" id="panel-data">
+      <h3>Data is just data</h3>
+      <p>Card content is a plain JSON array, and the field names are defined by your own template. Learn whatever you want — there is no preset schema.</p>
+      <pre><span class="c">// cards.json — one entry per item</span>
+[
+  { <span class="k">"item_order"</span>: <span class="s">1</span>, <span class="k">"word"</span>: <span class="s">"spect / spic"</span>,
+    <span class="k">"meaning_en"</span>: <span class="s">"to look, to see"</span> },
+  { <span class="k">"item_order"</span>: <span class="s">2</span>, <span class="k">"word"</span>: <span class="s">"dict"</span>,
+    <span class="k">"meaning_en"</span>: <span class="s">"to say, to speak"</span> }
+]</pre>
+    </div>
+
+    <div class="panel" id="panel-template">
+      <h3>The template defines everything</h3>
+      <p>Structure, styles, interaction, pronunciation language and telemetry events — all wrapped in a single JSON file. The framework talks to it through <code>window.cardTemplate</code>'s <code>render</code> / <code>init</code> / <code>update</code>.</p>
+      <pre><span class="c">// template.json</span>
+{
+  <span class="k">"name"</span>: <span class="s">"My Card"</span>,
+  <span class="k">"lang"</span>: <span class="s">"en"</span>,                 <span class="c">// selects the TTS voice</span>
+  <span class="k">"cardHtml"</span>: <span class="s">"&lt;div class=\"card\"&gt;…&lt;/div&gt;"</span>,
+  <span class="k">"cardCss"</span>: <span class="s">".card { padding: 16px }"</span>,
+  <span class="k">"cardJs"</span>: <span class="s">"window.cardTemplate = { render, init }"</span>,
+  <span class="k">"trackedActions"</span>: [
+    { <span class="k">"action"</span>: <span class="s">"audio_play"</span>, <span class="k">"label"</span>: <span class="s">"Pronounce"</span> }
+  ]
+}</pre>
+    </div>
+
+    <div class="panel" id="panel-engine">
+      <h3>The engine does one thing: makes you repeat</h3>
+      <p>Mark unknown → reshuffle → study in rounds; progress persists automatically. It doesn't know your content and doesn't care whether you're studying English or chemistry — it maintains one ordered list, and your place in it.</p>
+      <pre><span class="c">// the fixed study flow</span>
+GET  /v1/learn/page   <span class="c">→ fetch a page of cards</span>
+POST /v1/learn/mark   <span class="c">→ mark as unknown</span>
+POST /v1/reorder      <span class="c">→ reshuffle: difficult ahead, known behind</span>
+GET  /v1/rounds       <span class="c">→ enter the next round</span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ENGINE DEMO ============ -->
+<section id="engine" class="reveal">
+  <div class="wrap">
+    <div class="sec-num">03 · Study engine</div>
+    <h2>The whole mechanism, in four steps</h2>
+    <p class="lede">This list actually works. Mark a few items as unknown, then hit reshuffle and watch what happens.</p>
+
+    <div class="demo">
+      <div class="demo-head">
+        <div class="demo-stats">
+          <span>Unknown <b id="cntUnknown">0</b></span>
+          <span>Known <b id="cntKnown">5</b></span>
+          <span>Round <b>1</b></span>
+        </div>
+        <div class="demo-actions">
+          <button class="btn btn-ghost" id="btnReorder" style="padding:8px 15px;font-size:13.5px">Reshuffle</button>
+          <button class="btn btn-ghost" id="btnReset" style="padding:8px 15px;font-size:13.5px">Reset</button>
+        </div>
+      </div>
+      <div class="slist" id="slist"></div>
+      <p class="demo-hint">After reshuffling: <b>unknown items float to the front</b>, known ones sink to the tail — but they never disappear. They simply wait their turn for a light pass in the next round.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section id="gallery" class="reveal">
+  <div class="wrap">
+    <div class="sec-num">04 · Freedom</div>
+    <h2>One engine. Radically different content.</h2>
+    <p class="lede">Every card below comes from a real deck. The content has nothing in common — yet all of it runs on the same engine. Click any card to flip it.</p>
+
+    <div class="gallery" id="gallery"></div>
+
+    <div class="chips" style="margin-top:24px">
+      <span class="chip kchip" style="--kc:#60a5fa"><i class="kdot"></i>Language</span>
+      <span class="chip kchip" style="--kc:#4ade80"><i class="kdot"></i>Knowledge</span>
+      <span class="chip kchip" style="--kc:#a78bfa"><i class="kdot"></i>Logic</span>
+      <span class="chip kchip" style="--kc:#fbbf24"><i class="kdot"></i>Skill</span>
+      <span class="chip kchip" style="--kc:#94a3b8"><i class="kdot"></i>Other</span>
+    </div>
+    <p class="note">11 decks ship with the app, plus 7 curated decks (Periodic Table, Greek &amp; Latin Roots, HSK 3.0, high-frequency English, Thirty-Six Stratagems and more). You can, of course, build your own.</p>
+  </div>
+</section>
+
+<!-- ============ TEMPLATE POWERS ============ -->
+<section id="template" class="reveal">
+  <div class="wrap">
+    <div class="sec-num">05 · Template powers</div>
+    <h2>How far can a card be customised?</h2>
+    <p class="lede">Short answer: almost entirely. The framework only asks your template to expose <code>render</code> — the rest is yours.</p>
+
+    <div class="powers">
+      <div class="power"><h3>Your own HTML / CSS / JS</h3><p>Structure, styles and interaction are all in your hands. Tailwind utility classes and Font Awesome work out of the box.</p></div>
+      <div class="power"><h3>Language-aware TTS</h3><p>The template declares <code>lang</code> (en / ja / zh …); pronunciation picks the matching voice, remembered per language.</p></div>
+      <div class="power"><h3>Up to 5 actions + telemetry</h3><p>Declare events via <code>trackedActions</code>; the framework aggregates them per template and shows them in the observability view.</p></div>
+      <div class="power"><h3>Hideable fields</h3><p>Declare <code>fields</code> and toggle each one while studying — or lock the ones that must never be hidden.</p></div>
+      <div class="power"><h3>Live preview</h3><p>Upload a template and see the real card render instantly in the management panel — no need to enter study mode.</p></div>
+      <div class="power"><h3>Local-first</h3><p>Flask + SQLite, works out of the box. Your data stays on your own machine; no external service required.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section id="stats" class="reveal">
+  <div class="wrap">
+    <div class="sec-num">06 · Stats &amp; achievements</div>
+    <h2>Your consistency, made visible</h2>
+    <p class="lede">Not designed to make you anxious — just an honest picture of how often you showed up.</p>
+    <div class="stats-grid">
+      <div class="stat">
+        <h3>Activity heatmap</h3>
+        <div class="heatmap" id="heatmap"></div>
+        <div class="legend-row"><span>Less</span><span>More</span></div>
+      </div>
+      <div class="stat">
+        <h3>Mastery distribution</h3>
+        <div class="bars" id="bars"></div>
+        <div class="legend-row"><span class="kchip" style="--kc:#fb923c"><i class="kdot"></i>Unknown</span><span class="kchip" style="--kc:#60a5fa"><i class="kdot"></i>Fuzzy</span><span class="kchip" style="--kc:#4ade80"><i class="kdot"></i>Mastered</span></div>
+      </div>
+      <div class="stat">
+        <h3>Round pyramid</h3>
+        <div class="pyr" id="pyr"></div>
+        <div class="legend-row"><span>Higher means further along</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GET STARTED ============ -->
+<section id="start" class="reveal">
+  <div class="wrap">
+    <div class="sec-num">07 · Get started</div>
+    <h2>Getting it running takes one sentence</h2>
+    <p class="lede">Installing dependencies, creating a virtualenv, changing ports — let an AI tool handle that. Hand the repo to any one of these and ask it to run the project.</p>
+    <div class="start-grid">
+      <a class="tool" href="https://www.workbuddy.ai/" target="_blank" rel="noopener">
+        <h3>WorkBuddy</h3>
+        <p>Hand it the repo, say "run this for me", and it does the rest.</p>
+      </a>
+      <a class="tool" href="https://openai.com/codex/" target="_blank" rel="noopener">
+        <h3>Codex</h3>
+        <p>An AI assistant in your terminal, ideal for working right inside the repo.</p>
+      </a>
+      <a class="tool" href="https://opencode.ai/" target="_blank" rel="noopener">
+        <h3>OpenCode</h3>
+        <p>Open-source terminal agent — bring your own model to deploy and debug.</p>
+      </a>
+    </div>
+    <div class="start-note">
+      Once it's running, open <b>http://localhost:5001</b> — on first launch the app creates the database, a default user and a set of starter templates automatically. Then just make a deck.
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ EXTEND ============ -->
+<section id="extend" class="band reveal">
+  <div class="wrap">
+    <div class="sec-num">08 · Only the beginning</div>
+    <h2>It's deliberately simple</h2>
+    <p class="lede">DragonCard is not a “feature-complete” product. It's a simple version the author built around one plain belief: put knowledge in, and show up every day.</p>
+    <p>It doesn't decide what you should learn, and it doesn't ship a pile of features you'll never use. Which is exactly why <b>it can be yours</b>.</p>
+    <ul>
+      <li>Data is JSON. Templates are JSON. <b>Swap the template and it becomes a different learning tool.</b></li>
+      <li>Want to study something new? Have AI generate it — template plus data in one go, import and go.</li>
+      <li>Not happy with it? Have AI restyle it, add fields, change the interaction — no waiting for the author.</li>
+    </ul>
+    <p>If you like the direction but it doesn't do what you need yet — hand it over.</p>
+    <p class="band-cta">Give the repo to <a href="https://www.workbuddy.ai/" target="_blank" rel="noopener">WorkBuddy</a>, <a href="https://openai.com/codex/" target="_blank" rel="noopener">Codex</a> or <a href="https://opencode.ai/" target="_blank" rel="noopener">OpenCode</a> and simply tell it: <b>what do you want to learn?</b></p>
+    <p class="band-foot">The data and template format is universal — with a small adaptation, it becomes any learning tool you want.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>DragonCard · A universal card learning framework</div>
+    <div class="flinks">
+      <a href="https://github.com/crazy-dragon/dragon_card" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://dragoncard.top/" target="_blank" rel="noopener">Live demo</a>
+      <a href="index.html">中文</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  var hero=document.getElementById('heroCard');
+  if(hero){
+    var flip=function(){ hero.classList.toggle('flipped'); };
+    hero.addEventListener('click',flip);
+    hero.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); flip(); } });
+  }
+
+  var tabs=document.querySelectorAll('.tab');
+  tabs.forEach(function(t){
+    t.addEventListener('click',function(){
+      tabs.forEach(function(x){ x.classList.remove('on'); });
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('on'); });
+      t.classList.add('on');
+      var p=document.getElementById('panel-'+t.dataset.tab);
+      if(p) p.classList.add('on');
+    });
+  });
+
+  var ITEMS=[
+    {w:'serendipity', m:'finding something good by chance'},
+    {w:'ephemeral',   m:'lasting a very short time'},
+    {w:'tenacious',   m:'holding firmly; persistent'},
+    {w:'ubiquitous',  m:'present everywhere'},
+    {w:'candid',      m:'honest and straightforward'}
+  ];
+  var state=ITEMS.map(function(it){ return {w:it.w,m:it.m,u:false}; });
+  var slist=document.getElementById('slist');
+  var cU=document.getElementById('cntUnknown'), cK=document.getElementById('cntKnown');
+
+  function renderStudy(moved){
+    slist.innerHTML='';
+    state.forEach(function(it,i){
+      var row=document.createElement('div');
+      row.className='sitem '+(it.u?'unknown':'known')+(moved?' justmoved':'');
+      var w=document.createElement('span'); w.className='sword'; w.textContent=it.w;
+      var m=document.createElement('span'); m.className='smean'; m.textContent=it.m;
+      var b=document.createElement('button'); b.className='smark';
+      b.textContent=it.u?'Unknown':'Known';
+      b.addEventListener('click',function(){ it.u=!it.u; renderStudy(false); });
+      row.appendChild(w); row.appendChild(m); row.appendChild(b);
+      slist.appendChild(row);
+    });
+    var unk=state.filter(function(x){return x.u;}).length;
+    if(cU) cU.textContent=unk;
+    if(cK) cK.textContent=state.length-unk;
+  }
+  document.getElementById('btnReorder').addEventListener('click',function(){
+    state.sort(function(a,b){ return (b.u?1:0)-(a.u?1:0); });
+    renderStudy(true);
+  });
+  document.getElementById('btnReset').addEventListener('click',function(){
+    state=ITEMS.map(function(it){ return {w:it.w,m:it.m,u:false}; });
+    renderStudy(false);
+  });
+  renderStudy(false);
+
+  var DECKS=[
+    {kind:'Knowledge', c:'#15803d', big:'Fe', sub:'Iron · 铁', back:'<strong>Relative atomic mass 56 (55.845)</strong>Forged by stellar fusion. From the Periodic Table deck — 128 cards.'},
+    {kind:'Language', c:'#1d4ed8', big:'spect', sub:'root · to look', back:'<strong>inspect / respect / spectator</strong>One root, a whole family of words. From the Greek &amp; Latin Roots deck — 152 roots.'},
+    {kind:'Language', c:'#1d4ed8', big:'あ', sub:'ア · a', back:'<strong>あか (red)</strong>The very first sound of the kana syllabary. From the Japanese Gojuon deck.'},
+    {kind:'Other', c:'#475569', big:'乾', sub:'qián · Hexagram 1', back:'<strong>元，亨，利，貞。</strong>Supreme success, furthering through perseverance. Symbolises heaven. From the I Ching deck.'},
+    {kind:'Language', c:'#1d4ed8', big:'爱', sub:'ài · verb', back:'<strong>Traditional: 愛</strong>to love; to be fond of; to like. From the HSK 3.0 deck, levels 1–9.'},
+    {kind:'Knowledge', c:'#15803d', big:'画蛇添足', sub:'huà shé tiān zú', back:'<strong>To draw legs on a snake</strong>Ruin something by adding what is superfluous. From the Chinese Idioms deck.'}
+  ];
+  var g=document.getElementById('gallery');
+  DECKS.forEach(function(d){
+    var c=document.createElement('div');
+    c.className='gcard'; c.setAttribute('role','button'); c.setAttribute('tabindex','0');
+    if(d.c) c.style.setProperty('--kc', d.c);
+    c.innerHTML=
+      '<div class="gcard-inner">'+
+        '<div class="gface"><div class="gkind">'+d.kind+'</div>'+
+          '<div class="gbig">'+d.big+'</div><div class="gsub">'+d.sub+'</div>'+
+          '<div class="gflip">Click to flip ↻</div></div>'+
+        '<div class="gface gback"><div class="gkind">'+d.big+'</div>'+
+          '<div class="gsmall">'+d.back+'</div>'+
+          '<div class="gflip">Click to flip back ↻</div></div>'+
+      '</div>';
+    var f=function(){ c.classList.toggle('flipped'); };
+    c.addEventListener('click',f);
+    c.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); f(); } });
+    g.appendChild(c);
+  });
+
+  var hm=document.getElementById('heatmap');
+  if(hm){ for(var i=0;i<70;i++){
+    var el=document.createElement('i');
+    var r=Math.random();
+    el.style.background = r>0.82 ? '#5cbcd9' : (r>0.6 ? '#2f6a76' : (r>0.35 ? '#224a55' : '#1c313a'));
+    hm.appendChild(el);
+  }}
+  var bars=document.getElementById('bars');
+  if(bars){ [[46,'#fb923c'],[28,'#60a5fa'],[74,'#4ade80']].forEach(function(p){
+    var s=document.createElement('span'); s.style.height=p[0]+'%'; s.style.background=p[1]; bars.appendChild(s);
+  });}
+  var pyr=document.getElementById('pyr');
+  if(pyr){ [24,40,58,78,100].forEach(function(w){
+    var s=document.createElement('span'); s.style.width=w+'%'; pyr.appendChild(s);
+  });}
+
+  var els=document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:.12});
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('in'); });
+  }
+})();
+</script>
+</body>
+</html>

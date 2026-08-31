@@ -1,0 +1,164 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+.st-card{ font-family: Georgia, "Songti SC", "STSong", "Noto Serif SC", "Times New Roman", serif; background:#f3e9d2; color:#3a2e22; border:1px solid #b89b6a; border-radius:12px; padding:16px; margin-bottom:16px; position:relative; max-width:920px; margin:0 auto 16px; box-shadow: inset 0 0 0 1px rgba(158,59,46,.10); }
+.st-front,.st-back{ }
+.st-stratagem.flipped .st-front{ display:none; }
+.st-stratagem:not(.flipped) .st-back{ display:none; }
+.st-order{ font-size:13px; color:#8a6a3a; letter-spacing:1px; }
+.st-pill{ position:absolute; top:16px; right:16px; background:#9e3b2e; color:#f7efe0; font-size:12px; padding:3px 10px; border-radius:12px; }
+.st-name{ font-size:36px; font-weight:bold; color:#3a2e22; margin:8px 44px 4px 0; letter-spacing:3px; }
+.st-pinyin{ font-size:15px; color:#7a6a52; font-style:italic; }
+.st-source{ margin-top:12px; padding:10px 12px; background:rgba(158,59,46,.07); border-radius:8px; font-size:15px; line-height:1.7; border-left:3px solid #9e3b2e; }
+.st-hint{ margin-top:12px; font-size:11px; color:#a08a66; text-align:right; }
+.st-sec{ margin-top:12px; }
+.st-sec-h{ font-size:15px; color:#9e3b2e; border-left:3px solid #9e3b2e; padding-left:7px; margin-bottom:4px; letter-spacing:1px; }
+.st-sec-b{ font-size:18px; line-height:1.75; }
+.st-actions{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; margin-top:14px; }
+.st-act{ display:inline-flex; align-items:center; gap:6px; padding:6px 13px; border-radius:18px; border:1px solid #b89b6a; background:#fbf3e0; color:#9e3b2e; cursor:pointer; font-size:15px; line-height:1.4; }
+.st-act:hover{ background:#f0e2c4; }
+.st-act i{ font-size:15px; }
+.st-act.on{ background:#9e3b2e; color:#fff; border-color:#9e3b2e; }
+.st-seal{ position:absolute; top:16px; right:16px; width:42px; height:42px; border:2px solid #9e3b2e; border-radius:8px; color:#9e3b2e; font-size:12px; display:flex; align-items:center; justify-content:center; transform:rotate(-7deg); font-weight:bold; }
+.st-ov-title{ font-size:32px; font-weight:bold; margin:6px 50px 4px 0; letter-spacing:2px; }
+.st-ov-theme{ font-size:15px; color:#9e3b2e; margin-bottom:10px; letter-spacing:1px; }
+.st-ov-body{ font-size:16px; line-height:1.8; }
+ body{background:#efe6d2;padding:24px;font-family:Georgia,'Songti SC','STSong',serif;}.stage{display:flex;flex-wrap:wrap;gap:18px;}.note{margin:0 0 18px;color:#7a6a52;font-size:14px;}
+.st-egg{ margin-top:12px; position:relative; }
+.st-egg-stamp{ position:absolute; top:-4px; right:0; width:64px; height:64px; border:2px solid #9e3b2e; border-radius:8px; color:#9e3b2e; display:flex; flex-direction:column; align-items:center; justify-content:center; transform:rotate(-12deg); font-weight:bold; font-size:22px; opacity:.85; box-shadow:0 0 0 2px rgba(158,59,46,.15); }
+.st-egg-stamp-sub{ font-size:9px; font-weight:normal; letter-spacing:1px; margin-top:3px; }
+.st-egg-note{ margin-top:14px; font-size:14px; color:#9e3b2e; line-height:1.7; border-top:1px dashed #b89b6a; padding-top:8px; }
+@keyframes st-run-away{ 0%{transform:translateX(0) rotate(0);opacity:1} 25%{transform:translateX(34px) rotate(6deg);opacity:.5} 50%{transform:translateX(34px) rotate(6deg);opacity:.5} 65%{transform:translateX(-26px) rotate(-5deg);opacity:.6} 100%{transform:translateX(0) rotate(0);opacity:1} }
+.st-run{ animation:st-run-away .7s ease; }
+@keyframes st-whoosh{ 0%{opacity:0;transform:translateX(0)} 30%{opacity:.9;transform:translateX(40px)} 100%{opacity:0;transform:translateX(95px)} }
+.st-run::after{ content:'嗖——'; position:absolute; top:38%; left:58%; color:#9e3b2e; font-size:15px; opacity:.8; pointer-events:none; animation:st-whoosh .7s ease; }
+</style>
+</head><body>
+<div class="note">点击卡片右下角按钮翻面 / 朗读 / 标记 / 收藏（预览用假数据，发音不会真响）。</div>
+<div id="stage" class="stage"></div>
+<script>
+window.cardTemplate = {
+  name: '三十六计 · 古朴',
+  lang: 'zh',
+  fields: [
+    {key:'order',label:'序号',hideable:false},
+    {key:'set',label:'套别',hideable:false},
+    {key:'set_order',label:'套内序号'},
+    {key:'name',label:'计名',hideable:false},
+    {key:'pinyin',label:'拼音'},
+    {key:'source',label:'原文'},
+    {key:'explanation',label:'释义'},
+    {key:'story',label:'典故'},
+    {key:'modern',label:'现代应用'},
+    {key:'type',label:'类型',hideable:false},
+    {key:'title',label:'总览标题'},
+    {key:'theme',label:'总览主题'},
+    {key:'body',label:'总览正文'}
+  ],
+  render: function(cardHtml, cardData, api){
+    function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+    var d = cardData.data;
+    var id = cardData.id;
+    var hidden = api.getHiddenFields ? api.getHiddenFields() : null;
+    function isHidden(k){ return hidden && hidden.has && hidden.has(k); }
+    function show(k, html){ return isHidden(k) ? '' : html; }
+    var root = '';
+    if(d.type === 'overview'){
+      root = ''
+      + '<div class="st-card st-overview" data-card-id="'+id+'">'
+      + '<div class="st-seal">'+esc(d.set)+'</div>'
+      + '<div class="st-ov-title">'+esc(d.title)+'</div>'
+      + '<div class="st-ov-theme">'+esc(d.theme)+'</div>'
+      + show('body','<div class="st-ov-body">'+esc(d.body)+'</div>')
+      + '<div class="st-actions">'
+      +   '<button class="st-act" data-action="audio" title="朗读"><i class="fas fa-volume-up"></i><span>朗读</span></button>'
+      +   '<button class="st-act" data-action="mark" title="标记"><i class="fas fa-bookmark"></i><span>标记</span></button>'
+      +   '<button class="st-act" data-action="favorite" title="收藏"><i class="fas fa-star"></i><span>收藏</span></button>'
+      + '</div>'
+      + '</div>';
+    } else {
+      var back = ''
+        + show('explanation','<div class="st-sec"><div class="st-sec-h">释义</div><div class="st-sec-b">'+esc(d.explanation)+'</div></div>')
+        + show('story','<div class="st-sec"><div class="st-sec-h">典故</div><div class="st-sec-b">'+esc(d.story)+'</div></div>')
+        + show('modern','<div class="st-sec"><div class="st-sec-h">现代应用</div><div class="st-sec-b">'+esc(d.modern)+'</div></div>');
+      var isLast = (d.order === 36);
+      var egg = isLast ? ('<div class="st-egg">' + '<div class="st-egg-stamp">通关<div class="st-egg-stamp-sub">第卅六计</div></div>' + '<div class="st-egg-note">—— 三十六计，走为上。你已读完最后一计，恭喜通关！</div>' + '</div>') : '';
+
+      root = ''
+      + '<div class="st-card st-stratagem" data-card-id="'+id+'">'
+      +   '<div class="st-front">'
+      +     '<div class="st-order">第 '+d.order+' 计</div>'
+      +     '<div class="st-pill">'+esc(d.set)+'</div>'
+      +     '<div class="st-name">'+esc(d.name)+'</div>'
+      +     show('pinyin','<div class="st-pinyin">'+esc(d.pinyin)+'</div>')
+      +     show('source','<div class="st-source">'+esc(d.source)+'</div>')
+      +     '<div class="st-hint">点击翻面看释义 ›</div>'
+      +   '</div>'
+      +   '<div class="st-back">'
+      +     back
+      +     '<div class="st-hint">‹ 点击翻回</div>'
+      +     egg
+      +   '</div>'
+      +   '<div class="st-actions">'
+      +     '<button class="st-act" data-action="audio" title="朗读"><i class="fas fa-volume-up"></i><span>朗读</span></button>'
+      +     '<button class="st-act" data-action="flip" title="翻面"><i class="fas fa-sync-alt"></i><span>翻面</span></button>'
+      +     '<button class="st-act" data-action="mark" title="标记"><i class="fas fa-bookmark"></i><span>标记</span></button>'
+      +     '<button class="st-act" data-action="favorite" title="收藏"><i class="fas fa-star"></i><span>收藏</span></button>'
+      +   '</div>'
+      + '</div>';
+    }
+    return root;
+  },
+  init: function(el, cardData, api){
+    var d = cardData.data;
+    el.querySelectorAll('.st-act').forEach(function(btn){
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        var a = btn.getAttribute('data-action');
+        if(a==='flip'){
+          el.classList.toggle('flipped');
+          if(api.track) api.track('flip');
+          if(d.order === 36){
+            el.classList.remove('st-run');
+            void el.offsetWidth;
+            el.classList.add('st-run');
+            if(api.track) api.track('easter_egg');
+          }
+        } else if(a==='audio'){
+          var txt = d.type==='overview' ? (d.title||'') : (d.name||'');
+          api.playAudio(txt);
+          if(api.track) api.track('audio_play');
+        } else if(a==='mark'){
+          if(api.toggleMark) api.toggleMark();
+          btn.classList.toggle('on');
+          if(api.track) api.track('word_mark');
+        } else if(a==='favorite'){
+          if(api.toggleFavorite) api.toggleFavorite();
+          btn.classList.toggle('on');
+          if(api.track) api.track('favorite_toggle');
+        }
+      });
+    });
+  }
+};
+</script>
+<script>
+var apiMock = {
+  getHiddenFields: function(){ return { has: function(){ return false; } }; },
+  playAudio: function(t){ console.log('audio:', t); },
+  toggleMark: function(){}, toggleFavorite: function(){}, track: function(){}
+};
+var samples = [{"id": 1, "data": {"type": "stratagem", "order": 1, "set": "胜战计", "set_order": 1, "name": "瞒天过海", "pinyin": "mán tiān guò hǎi", "source": "备周则意怠，常见则不疑。阴在阳之内，不在阳之对。", "explanation": "示敌以平常，掩其真实意图，使对手在习以为常中失去戒备。", "story": "薛仁贵为惧海的唐太宗造\"大宅\"宴饮，实则巨舟渡海，瞒过君王而成的奇袭。", "modern": "越想做成大事，越要把动作做得\"像日常一样\"。谈判、转型时，把关键一步包装成例行流程，阻力最小。"}}, {"id": 2, "data": {"type": "stratagem", "order": 2, "set": "胜战计", "set_order": 2, "name": "围魏救赵", "pinyin": "wéi wèi jiù zhào", "source": "共敌不如分敌，敌阳不如敌阴。", "explanation": "不直接救赵，而攻魏都大梁，迫使庞涓回师，于归途设伏取胜。", "story": "桂陵之战，孙膑围魏都大梁，解赵围并生擒庞涓。", "modern": "正面冲突成本高时，绕到对方必救之处施压，逼其自撤，比硬碰硬省力得多。"}}, {"id": 3, "data": {"type": "stratagem", "order": 31, "set": "败战计", "set_order": 1, "name": "美人计", "pinyin": "měi rén jì", "source": "兵强者，攻其将；将智者，伐其情。", "explanation": "以美色接近关键人物，乱其心智、松其防备。", "story": "越王勾践献西施于夫差，乱其政而终灭吴。", "modern": "现代隐喻：用\"讨好/顺意\"软化决策者警惕——识破他人用美色或甜头接近你时保持清醒。"}}, {"id": 4, "data": {"type": "stratagem", "order": 36, "set": "败战计", "set_order": 6, "name": "走为上", "pinyin": "zǒu wéi shàng", "source": "全师避敌。左次无咎，未失常也。", "explanation": "势不敌时主动撤退保全实力，留得青山，再图后举。", "story": "晋文公\"退避三舍\"避楚锋芒，终城濮一战而霸。", "modern": "及时止损、体面退出，是成年人最被低估的能力：退出不等于输。"}}, {"id": 5, "data": {"type": "overview", "order": 0, "set": "胜战计", "set_order": 0, "title": "胜战计", "theme": "优势下的进攻之道", "body": "计在敌明我强、主动权在握之时。核心是\"以正合、以奇胜\"：用伪装与调度把优势转化为致命一击，而非蛮力硬碰。"}}];
+var stage = document.getElementById('stage');
+samples.forEach(function(s){
+  var html = window.cardTemplate.render('', {id:s.id, data:s.data}, apiMock);
+  var wrap = document.createElement('div');
+  wrap.innerHTML = html;
+  var el = wrap.firstElementChild;
+  window.cardTemplate.init(el, {id:s.id, data:s.data}, apiMock);
+  stage.appendChild(el);
+});
+</script>
+</body></html>

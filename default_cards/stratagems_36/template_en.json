@@ -1,0 +1,65 @@
+{
+  "name": "36 Stratagems · Classical",
+  "lang": "en",
+  "description": "36 Stratagems classical deck: 36 stratagem cards + 6 overview cards with source, meaning, story and reflection. Flip, read, mark, favorite.",
+  "cardHtml": "<div class=\"st-card\" data-card-id=\"{{id}}\"></div>",
+  "cardCss": "\n.st-card{ font-family: Georgia, \"Songti SC\", \"STSong\", \"Noto Serif SC\", \"Times New Roman\", serif; background:#f3e9d2; color:#3a2e22; border:1px solid #b89b6a; border-radius:12px; padding:16px; margin-bottom:16px; position:relative; max-width:920px; margin:0 auto 16px; box-shadow: inset 0 0 0 1px rgba(158,59,46,.10); }\n.st-front,.st-back{ }\n.st-stratagem.flipped .st-front{ display:none; }\n.st-stratagem:not(.flipped) .st-back{ display:none; }\n.st-order{ font-size:13px; color:#8a6a3a; letter-spacing:1px; }\n.st-pill{ position:absolute; top:16px; right:16px; background:#9e3b2e; color:#f7efe0; font-size:12px; padding:3px 10px; border-radius:12px; }\n.st-name{ font-size:36px; font-weight:bold; color:#3a2e22; margin:8px 44px 4px 0; letter-spacing:3px; }\n.st-pinyin{ font-size:15px; color:#7a6a52; font-style:italic; }\n.st-source{ margin-top:12px; padding:10px 12px; background:rgba(158,59,46,.07); border-radius:8px; font-size:15px; line-height:1.7; border-left:3px solid #9e3b2e; }\n.st-hint{ margin-top:12px; font-size:11px; color:#a08a66; text-align:right; }\n.st-sec{ margin-top:12px; }\n.st-sec-h{ font-size:15px; color:#9e3b2e; border-left:3px solid #9e3b2e; padding-left:7px; margin-bottom:4px; letter-spacing:1px; }\n.st-sec-b{ font-size:18px; line-height:1.75; }\n.st-actions{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; margin-top:14px; }\n.st-act{ display:inline-flex; align-items:center; gap:6px; padding:6px 13px; border-radius:18px; border:1px solid #b89b6a; background:#fbf3e0; color:#9e3b2e; cursor:pointer; font-size:15px; line-height:1.4; }\n.st-act:hover{ background:#f0e2c4; }\n.st-act i{ font-size:15px; }\n.st-act.on{ background:#9e3b2e; color:#fff; border-color:#9e3b2e; }\n.st-seal{ position:absolute; top:16px; right:16px; width:42px; height:42px; border:2px solid #9e3b2e; border-radius:8px; color:#9e3b2e; font-size:12px; display:flex; align-items:center; justify-content:center; transform:rotate(-7deg); font-weight:bold; }\n.st-ov-title{ font-size:32px; font-weight:bold; margin:6px 50px 4px 0; letter-spacing:2px; }\n.st-ov-theme{ font-size:15px; color:#9e3b2e; margin-bottom:10px; letter-spacing:1px; }\n.st-ov-body{ font-size:16px; line-height:1.8; }\n.st-egg{ margin-top:12px; position:relative; }\n.st-egg-stamp{ position:absolute; top:-4px; right:0; width:64px; height:64px; border:2px solid #9e3b2e; border-radius:8px; color:#9e3b2e; display:flex; flex-direction:column; align-items:center; justify-content:center; transform:rotate(-12deg); font-weight:bold; font-size:22px; opacity:.85; box-shadow:0 0 0 2px rgba(158,59,46,.15); }\n.st-egg-stamp-sub{ font-size:9px; font-weight:normal; letter-spacing:1px; margin-top:3px; }\n.st-egg-note{ margin-top:14px; font-size:14px; color:#9e3b2e; line-height:1.7; border-top:1px dashed #b89b6a; padding-top:8px; }\n@keyframes st-run-away{ 0%{transform:translateX(0) rotate(0);opacity:1} 25%{transform:translateX(34px) rotate(6deg);opacity:.5} 50%{transform:translateX(34px) rotate(6deg);opacity:.5} 65%{transform:translateX(-26px) rotate(-5deg);opacity:.6} 100%{transform:translateX(0) rotate(0);opacity:1} }\n.st-run{ animation:st-run-away .7s ease; }\n@keyframes st-whoosh{ 0%{opacity:0;transform:translateX(0)} 30%{opacity:.9;transform:translateX(40px)} 100%{opacity:0;transform:translateX(95px)} }\n.st-run::after{ content:'whoosh——'; position:absolute; top:38%; left:58%; color:#9e3b2e; font-size:15px; opacity:.8; pointer-events:none; animation:st-whoosh .7s ease; }\n",
+  "cardJs": "\nwindow.cardTemplate = {\n  name: '36 Stratagems · Classical',\n  lang: 'en',\n  fields: [\n    {key:'order',label:'No.',hideable:false},\n    {key:'set',label:'Set',hideable:false},\n    {key:'set_order',label:'In-set #'},\n    {key:'name',label:'Name',hideable:false},\n    {key:'pinyin',label:'Pinyin'},\n    {key:'source',label:'Source'},\n    {key:'explanation',label:'Meaning'},\n    {key:'story',label:'Story'},\n    {key:'reflection',label:'Reflection'},\n    {key:'type',label:'Type',hideable:false},\n    {key:'title',label:'Overview title'},\n    {key:'theme',label:'Theme'},\n    {key:'body',label:'Overview body'}\n  ],\n  render: function(cardHtml, cardData, api){\n    function esc(s){ return (s==null?'':String(s)).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c];}); }\n    var d = cardData.data;\n    var id = cardData.id;\n    var hidden = api.getHiddenFields ? api.getHiddenFields() : null;\n    function isHidden(k){ return hidden && hidden.has && hidden.has(k); }\n    function show(k, html){ return isHidden(k) ? '' : html; }\n    var root = '';\n    if(d.type === 'overview'){\n      root = ''\n      + '<div class=\"st-card st-overview\" data-card-id=\"'+id+'\">'\n      + '<div class=\"st-seal\">'+esc(d.set)+'</div>'\n      + '<div class=\"st-ov-title\">'+esc(d.title)+'</div>'\n      + '<div class=\"st-ov-theme\">'+esc(d.theme)+'</div>'\n      + show('body','<div class=\"st-ov-body\">'+esc(d.body)+'</div>')\n      + '<div class=\"st-actions\">'\n      +   '<button class=\"st-act\" data-action=\"audio\" title=\"Read\"><i class=\"fas fa-volume-up\"></i><span>Read</span></button>'\n      +   '<button class=\"st-act\" data-action=\"mark\" title=\"Mark\"><i class=\"fas fa-bookmark\"></i><span>Mark</span></button>'\n      +   '<button class=\"st-act\" data-action=\"favorite\" title=\"Favorite\"><i class=\"fas fa-star\"></i><span>Favorite</span></button>'\n      + '</div>'\n      + '</div>';\n    } else {\n      var back = ''\n        + show('explanation','<div class=\"st-sec\"><div class=\"st-sec-h\">Meaning</div><div class=\"st-sec-b\">'+esc(d.explanation)+'</div></div>')\n        + show('story','<div class=\"st-sec\"><div class=\"st-sec-h\">Story</div><div class=\"st-sec-b\">'+esc(d.story)+'</div></div>')\n        + show('reflection','<div class=\"st-sec\"><div class=\"st-sec-h\">Reflection</div><div class=\"st-sec-b\">'+esc(d.reflection)+'</div></div>');\n      var isLast = (d.order === 36);\n      var egg = isLast ? ('<div class=\"st-egg\">' + '<div class=\"st-egg-stamp\">CLEAR<div class=\"st-egg-stamp-sub\">No.36</div></div>' + '<div class=\"st-egg-note\">— The best strategy is to retreat. You\\'ve reached the 36th and final stratagem. Congratulations, you\\'ve completed all 36!</div>' + '</div>') : '';\n\n      root = ''\n      + '<div class=\"st-card st-stratagem\" data-card-id=\"'+id+'\">'\n      +   '<div class=\"st-front\">'\n      +     '<div class=\"st-order\">Stratagem '+d.order+'</div>'\n      +     '<div class=\"st-pill\">'+esc(d.set)+'</div>'\n      +     '<div class=\"st-name\">'+esc(d.name)+'</div>'\n      +     show('pinyin','<div class=\"st-pinyin\">'+esc(d.pinyin)+'</div>')\n      +     show('source','<div class=\"st-source\">'+esc(d.source)+'</div>')\n      +     '<div class=\"st-hint\">Click to flip for meaning ›</div>'\n      +   '</div>'\n      +   '<div class=\"st-back\">'\n      +     back\n      +     '<div class=\"st-hint\">‹ Click to flip back</div>'\n      +     egg\n      +   '</div>'\n      +   '<div class=\"st-actions\">'\n      +     '<button class=\"st-act\" data-action=\"audio\" title=\"Read\"><i class=\"fas fa-volume-up\"></i><span>Read</span></button>'\n      +     '<button class=\"st-act\" data-action=\"flip\" title=\"Flip\"><i class=\"fas fa-sync-alt\"></i><span>Flip</span></button>'\n      +     '<button class=\"st-act\" data-action=\"mark\" title=\"Mark\"><i class=\"fas fa-bookmark\"></i><span>Mark</span></button>'\n      +     '<button class=\"st-act\" data-action=\"favorite\" title=\"Favorite\"><i class=\"fas fa-star\"></i><span>Favorite</span></button>'\n      +   '</div>'\n      + '</div>';\n    }\n    return root;\n  },\n  init: function(el, cardData, api){\n    var d = cardData.data;\n    el.querySelectorAll('.st-act').forEach(function(btn){\n      btn.addEventListener('click', function(e){\n        e.stopPropagation();\n        var a = btn.getAttribute('data-action');\n        if(a==='flip'){\n          el.classList.toggle('flipped');\n          if(api.track) api.track('flip');\n          if(d.order === 36){\n            el.classList.remove('st-run');\n            void el.offsetWidth;\n            el.classList.add('st-run');\n            if(api.track) api.track('easter_egg');\n          }\n        } else if(a==='audio'){\n          var txt = d.type==='overview' ? (d.title||'') : (d.name||'');\n          api.playAudio(txt);\n          if(api.track) api.track('audio_play');\n        } else if(a==='mark'){\n          if(api.toggleMark) api.toggleMark();\n          btn.classList.toggle('on');\n          if(api.track) api.track('word_mark');\n        } else if(a==='favorite'){\n          if(api.toggleFavorite) api.toggleFavorite();\n          btn.classList.toggle('on');\n          if(api.track) api.track('favorite_toggle');\n        }\n      });\n    });\n  }\n};\n",
+  "trackedActions": [
+    {
+      "action": "flip",
+      "label": "Flip"
+    },
+    {
+      "action": "audio_play",
+      "label": "Read"
+    },
+    {
+      "action": "word_mark",
+      "label": "Mark"
+    },
+    {
+      "action": "favorite_toggle",
+      "label": "Favorite"
+    },
+    {
+      "action": "easter_egg",
+      "label": "Easter egg"
+    }
+  ],
+  "sampleData": [
+    {
+      "type": "stratagem",
+      "order": 1,
+      "set": "Winning Stratagems",
+      "set_order": 1,
+      "name": "Cross the Sea Under Camouflage",
+      "pinyin": "mán tiān guò hǎi",
+      "source": "When precautions are complete, vigilance slackens; the familiar is trusted. The hidden lies within the obvious, not apart from it.",
+      "explanation": "Show the ordinary to hide the extraordinary, so the enemy drops its guard through sheer familiarity.",
+      "story": "Xue Rengui built a \"mansion\" for the sea-fearing Emperor Taizong and feasted him while a great ship carried them across — a surprise landing hidden in plain sight.",
+      "reflection": "The enduring truth: what is shown openly is rarely questioned. Mastery is making the decisive move look like routine."
+    },
+    {
+      "type": "stratagem",
+      "order": 2,
+      "set": "Winning Stratagems",
+      "set_order": 2,
+      "name": "Besiege Wei to Rescue Zhao",
+      "pinyin": "wéi wèi jiù zhào",
+      "source": "To attack a massed enemy, divide it; strike where it is weak rather than meet its strength head-on.",
+      "explanation": "Instead of relieving Zhao directly, strike Wei’s capital so the enemy must turn back — then ambush it worn and divided.",
+      "story": "At Guiling, Sun Bin besieged Wei’s capital, broke the siege of Zhao, and captured Pang Juan on the march.",
+      "reflection": "Pressure the point your opponent cannot abandon; they will retreat from where you are weak to defend where they are weak."
+    },
+    {
+      "type": "overview",
+      "order": 0,
+      "set": "Winning Stratagems",
+      "set_order": 0,
+      "title": "Winning Stratagems",
+      "theme": "The Art of Offense from Strength",
+      "body": "These are used when you hold the initiative. The theme is turning strength into a decisive blow through disguise and timing, not brute force."
+    }
+  ]
+}

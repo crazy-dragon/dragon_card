@@ -1,0 +1,10 @@
+{
+  "name": "化学元素周期表 (元素+科普)",
+  "description": "118 个化学元素卡（可翻面看详情/宇宙来源）+ 10 张从宇宙大爆炸到元素生成的科普故事卡。118 chemical element cards with flip details & cosmic origin + 10 science story cards. ",
+  "version": "1.0.0",
+  "author": "Alfred Long",
+  "email": "alfred.long@qq.com",
+  "source": "自编整理（元素数据 + 科普内容）",
+  "license": "DragonCard Data License v1.0",
+  "updated": "2026-08-19"
+}

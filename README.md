@@ -1,6 +1,6 @@
 # 🐉 DragonCard
 
-> **DragonCard is not Anki.** — [中文文档](README_zh.md) | [Interactive Demo & Store](https://dragon-memory-market.pages.dev/)
+> **DragonCard is not Anki.** — [中文文档](README_zh.md) | [Interactive Demo & Store](https://dragoncard.top/)
 
 DragonCard has no complex spaced-repetition algorithm. It uses one simple, categorized approach: show knowledge to you quickly — mark what you don't know, and mastered words fall behind while difficult ones stay ahead. That's all.
 
@@ -64,7 +64,7 @@ On first launch, the app automatically creates the database tables, a default us
 
 ## 🎪 Online Store
 
-Try the live demo and browse premium decks at **[dragon-memory-market.pages.dev](https://dragon-memory-market.pages.dev/)**.
+Try the live demo and browse premium decks at **[dragoncard.top](https://dragoncard.top/)** (backup: [dragon-memory-market.pages.dev](https://dragon-memory-market.pages.dev/)).
 
 - **Interactive demo**: sample cards with pronunciation, marking, and 3D preview — right in your browser
 - **Premium decks**: ready-made, AI-assisted packs available for **one-time purchase** (no subscription)
@@ -130,6 +130,7 @@ dragoncard/
 ├── DB_relation.md             # Database relationship docs
 ├── README.md
 ├── README_zh.md               # Chinese README
+├── SKIN.md                    # Skin system dev doc
 ├── TEMPLATE_PACK.md           # Template pack publishing spec
 ├── ui_design.md               # UI design doc
 │
@@ -180,6 +181,7 @@ dragoncard/
 | Doc | Purpose |
 |-----|---------|
 | [`DB_relation.md`](./DB_relation.md) | Database tables & relationships |
+| [`SKIN.md`](./SKIN.md) | Skin system developer doc |
 | [`ui_design.md`](./ui_design.md) | UI design document |
 | In-app "Template API Reference" | Template format & `window.cardTemplate` contract (top-bar `</>` button) |
 | In-app "Docs" | End-user operations guide (bilingual) |

@@ -15,6 +15,7 @@ var state = {
     voices: [],
     selectedVoice: null,
     darkTheme: localStorage.getItem('dc-dark-theme') === '1',
+    skinId: localStorage.getItem('dc-skin-id') || (localStorage.getItem('dc-dark-theme') === '1' ? 'dark' : 'default'),
     soundEnabled: localStorage.getItem('dc-sound') !== '0',
     enteredPages: new Set(),
     singleCardMode: false,
@@ -508,12 +509,87 @@ Called after card enters the DOM. \`cardElement\` is the root DOM element of the
 - Max **5** \`data-action\` per template.
 `;
 
-/* ===== Dark Theme ===== */
-function applyDarkTheme() {
+/* ===== Skin System =====
+   default = light (no decor), dark = dark mode (no decor).
+   Custom skins can add side-gutter decor + optional CSS overrides.
+   Skins are independent; switching to a skin fully replaces the previous one. */
+var SKINS = {
+    default: { id: 'default', name: 'Default', icon: 'fa-sun', dark: false, css: '', html: '', js: '' },
+    dark:    { id: 'dark', name: 'Dark', icon: 'fa-moon', dark: true, css: '', html: '', js: '' },
+    ocean: { id: 'ocean', name: 'Ocean', icon: 'fa-water', dark: false, css: 'body[data-skin="ocean"]{--hp-primary:#1f7fbf;--hp-primary-soft:rgba(31,127,191,.10);--hp-success:#1f9d6b;--hp-warning:#d9a441;--hp-danger:#d24d57;--hp-bg:#dcf0f6;--hp-card:#f4fbfd;--hp-sidebar:#e3f2f6;--hp-header:#f4fbfd;--hp-border:#b7d8e2;--hp-text:#123d50;--hp-text-sub:#3d667a;--hp-text-light:#7ea3b3;--hp-shadow:0 4px 24px rgba(0,0,0,.05);--hp-shadow-hover:0 8px 30px rgba(31,127,191,.15);--study-bg:#d9eef4;--study-bg-end:#c8e6ef;--study-sidebar:#f0fafd;--study-card-bg:#ffffff;--study-content-bg:#d9edf3;--study-shadow:0 4px 20px rgba(0,0,0,.06);--study-shadow-hover:0 8px 30px rgba(31,127,191,.15)}body[data-skin="ocean"] .app-main{background:linear-gradient(180deg,#e8f6fa,#cfe9f2)}', html: '', js: '' },
+    starry: { id: 'starry', name: 'Starry', icon: 'fa-star', dark: true, css: 'body[data-skin="starry"]{--hp-bg:#0e1430;--hp-card:#1a2140;--hp-sidebar:#111735;--hp-header:#161e3a;--hp-border:#2b3560;--hp-text:#e8ecff;--hp-text-sub:#a6b0d8;--hp-text-light:#7e89b5;--hp-primary:#8ba0f0;--hp-primary-soft:rgba(139,160,240,.16);--hp-success:#5ad6a0;--hp-warning:#e0b352;--hp-danger:#f0697a;--hp-shadow:0 4px 24px rgba(0,0,0,.45);--hp-shadow-hover:0 8px 30px rgba(139,160,240,.25);--study-bg:#0c1128;--study-bg-end:#0c1128;--study-sidebar:#141b38;--study-card-bg:#1c2344;--study-content-bg:#121a34;--study-shadow:0 4px 20px rgba(0,0,0,.35);--study-shadow-hover:0 8px 30px rgba(0,0,0,.45)}body[data-skin="starry"] .app-main{background:radial-gradient(circle at 50% 0%,#2a3566,#0e1430 70%)}', html: '', js: '' },
+    scifi: { id: 'scifi', name: 'Sci-Fi', icon: 'fa-microchip', dark: true, css: 'body[data-skin="scifi"]{--hp-bg:#0a0f1a;--hp-card:#10161f;--hp-sidebar:#0c1119;--hp-header:#0f1620;--hp-border:#1f3341;--hp-text:#d6f5f5;--hp-text-sub:#8fb6bd;--hp-text-light:#5f838c;--hp-primary:#22d3ee;--hp-primary-soft:rgba(34,211,238,.15);--hp-success:#34d399;--hp-warning:#f0b857;--hp-danger:#f87171;--hp-shadow:0 4px 24px rgba(0,0,0,.5);--hp-shadow-hover:0 8px 30px rgba(34,211,238,.28);--study-bg:#08101a;--study-bg-end:#08101a;--study-sidebar:#0f1a26;--study-card-bg:#122233;--study-content-bg:#0d1a26;--study-shadow:0 4px 20px rgba(0,0,0,.4);--study-shadow-hover:0 8px 30px rgba(0,0,0,.5)}body[data-skin="scifi"] .app-main{background:linear-gradient(180deg,#0b141f,#08101a)}', html: '', js: '' },
+};
+
+var _skinStyleEl = null;
+var _skinDecoEl = null;
+var _skinJsFn = null;
+
+function applySkin() {
+    var id = state.skinId;
+    var skin = SKINS[id] || SKINS['default'];
+    state.skinId = skin.id;
+    state.darkTheme = !!skin.dark;
+
+    /* body class + attribute for CSS scoping */
     document.body.classList.toggle('dark-mode', state.darkTheme);
+    document.body.dataset.skin = skin.id;
+
+    /* inject skin CSS */
+    if (skin.css) {
+        if (!_skinStyleEl) {
+            _skinStyleEl = document.createElement('style');
+            _skinStyleEl.id = 'skin-css';
+            document.head.appendChild(_skinStyleEl);
+        }
+        _skinStyleEl.textContent = skin.css;
+    } else if (_skinStyleEl) {
+        _skinStyleEl.textContent = '';
+    }
+
+    /* inject decoration layer */
+    if (skin.html) {
+        if (!_skinDecoEl) {
+            _skinDecoEl = document.createElement('div');
+            _skinDecoEl.id = 'skin-deco';
+            _skinDecoEl.className = 'skin-deco';
+            document.body.appendChild(_skinDecoEl);
+        }
+        _skinDecoEl.innerHTML = skin.html;
+    } else if (_skinDecoEl) {
+        _skinDecoEl.innerHTML = '';
+    }
+
+    /* run optional skin JS */
+    if (_skinJsFn) { try { _skinJsFn(); } catch (e) {} }
+    _skinJsFn = null;
+    if (skin.js) {
+        try { _skinJsFn = new Function(skin.js)(); } catch (e) {}
+    }
+
+    localStorage.setItem('dc-skin-id', skin.id);
     localStorage.setItem('dc-dark-theme', state.darkTheme ? '1' : '0');
-    document.querySelectorAll('.dark-icon-light').forEach(function (el) { el.style.display = state.darkTheme ? 'none' : 'inline-block'; });
-    document.querySelectorAll('.dark-icon-dark').forEach(function (el) { el.style.display = state.darkTheme ? 'inline-block' : 'none'; });
+    renderSkinList();
+}
+
+function renderSkinList() {
+    var list = $('#skin-list');
+    if (!list) return;
+    var html = '';
+    Object.keys(SKINS).forEach(function (id) {
+        var s = SKINS[id];
+        var active = state.skinId === id ? ' active' : '';
+        html += '<div class="skin-option' + active + '" data-skin-option="' + id + '"><i class="fa-solid ' + s.icon + '"></i><span>' + (t('skin.' + id) || s.name) + '</span></div>';
+    });
+    list.innerHTML = html;
+}
+
+function toggleSkinDropdown(force) {
+    var dd = $('#skin-dropdown');
+    if (!dd) return;
+    var show = force !== undefined ? force : dd.style.display === 'none';
+    dd.style.display = show ? 'block' : 'none';
+    if (show) renderSkinList();
 }
 
 /* ===== i18n ===== */
@@ -539,6 +615,7 @@ function toggleLang() {
     if (!window.i18n) return;
     window.i18n.toggle();
     applyStaticI18n();
+    renderSkinList();
     updateLangBtn();
     renderSagesPop();
     /* Re-render current view so dynamic text updates */
@@ -629,6 +706,13 @@ function renderDeckList() {
 
     fetch('/v1/decks?user_id=' + state.userId).then(function (r) { return r.json(); }).then(function (d) {
         var decks = d.decks || [];
+        /* Sort by most recent study time, freshly-used decks on top. */
+        decks.sort(function (a, b) {
+            var at = a.last_studied_at || '';
+            var bt = b.last_studied_at || '';
+            if (at === bt) return 0;
+            return at > bt ? -1 : 1;
+        });
         if (_deckKindFilter) {
             decks = decks.filter(function (dk) { return (dk.kind || 'other') === _deckKindFilter; });
         }
@@ -793,8 +877,9 @@ function initApp() {
         state.userId = defaultUser ? defaultUser.id : (d.users[0] ? d.users[0].id : null);
         if (state.userId) showDeckView();
     });
-    applyDarkTheme();
+    applySkin();
     applyStaticI18n();
+    renderSkinList();
     updateLangBtn();
     localStorage.removeItem('dc-card-font-weight');
     applyCardFont();
@@ -2641,7 +2726,7 @@ function switchGlobalPage(page) {
         if (_stats.actionsLoaded) destroyStatsPage();
         if (_ach.loaded) destroyAchievementsPage();
     } else {
-        var titles = { achievements: 'page.achievements', stats: 'page.stats', market: 'page.market', docs: 'page.docs' };
+        var titles = { achievements: 'page.achievements', stats: 'page.stats', docs: 'page.docs' };
         document.getElementById('home-title').textContent = t(titles[page] || page);
         document.getElementById('home-content').style.display = 'none';
 
@@ -2657,6 +2742,12 @@ function switchGlobalPage(page) {
 function setupEventListeners() {
     document.addEventListener('click', function (e) {
         var target = e.target;
+
+        /* Close skin dropdown when clicking outside it */
+        if (!target.closest('#skin-toggle-wrap')) {
+            var skinDd = $('#skin-dropdown');
+            if (skinDd && skinDd.style.display === 'block') toggleSkinDropdown(false);
+        }
 
         /* Global sidebar navigation */
         var gsItem = target.closest('.gs-nav-item');
@@ -3021,10 +3112,22 @@ function setupEventListeners() {
             return;
         }
 
-        /* Dark theme */
-        if (target.closest('#dark-theme-btn') || target.closest('#dark-theme-btn-study')) {
-            state.darkTheme = !state.darkTheme;
-            applyDarkTheme();
+        /* Skin selector */
+        if (target.closest('#dark-theme-btn')) {
+            toggleSkinDropdown();
+            return;
+        }
+        if (target.closest('[data-skin-option]')) {
+            var optEl = target.closest('[data-skin-option]');
+            var skinId = optEl.dataset.skinOption;
+            if (SKINS[skinId]) {
+                state.skinId = skinId;
+                applySkin();
+            }
+            toggleSkinDropdown(false);
+            return;
+        }
+        if (target.closest('#skin-dropdown')) {
             return;
         }
 
@@ -3036,6 +3139,12 @@ function setupEventListeners() {
 
         /* Settings */
         if (target.closest('#settings-btn')) { showModal('about'); return; }
+
+        /* Online store (opens official site in a new tab) */
+        if (target.closest('#store-btn')) {
+            window.open('https://dragoncard.top/', '_blank', 'noopener');
+            return;
+        }
 
         /* Finish modal */
         if (target.closest('#modal-finish-cancel')) { hideModal('finish'); return; }
