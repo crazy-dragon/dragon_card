@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Chemistry Periodic Table (EN) Preview</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<style>
+:root { --card-bg:#ffffff; --ink:#0f172a; --ink-2:#475569; --ink-3:#64748b; --line:#e2e8f0; --action-btn-bg:#eef2f7; }
+body { background:#f1f5f9; padding:28px; font-family: system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+.preview-note { max-width:920px; margin:0 auto 18px; color:#475569; font-size:14px; line-height:1.7; }
+.stage { max-width:920px; margin:0 auto; }
+
+.dc-act { width:55px;height:55px;border-radius:9999px;display:inline-flex;align-items:center;justify-content:center;background:var(--action-btn-bg,#eef2f7);color:var(--ink-3,#64748b);border:none;cursor:pointer;transition:all .18s ease;font-size:22px; }
+.dc-act:hover { background:var(--cat,#3b82f6); color:#fff; transform:translateY(-2px); }
+.dc-act:active { transform:scale(.9); }
+.dc-act.is-active { background:var(--cat,#3b82f6); color:#fff; }
+.dc-act.act-mark.is-active { background:#f43f5e; color:#fff; }
+.dc-act.act-fav.is-active { background:#d97706; color:#fff; }
+.dc-scroll { scrollbar-width:thin; }
+.chem-card { border-left:5px solid var(--cat,#3b82f6); }
+.chem-num { font-size:13px; color:var(--ink-3,#64748b); }
+.chem-flip { perspective:1000px; height:230px; margin-top:6px; }
+.chem-inner { position:relative; width:100%; height:100%; transition:transform .55s; transform-style:preserve-3d; }
+.chem-inner.flipped { transform:rotateY(180deg); }
+.chem-front, .chem-back { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; }
+.chem-front { align-items:center; justify-content:center; gap:6px; padding-top:14px; }
+.chem-back { transform:rotateY(180deg); overflow:auto; padding-right:4px; }
+.chem-top { display:flex; align-items:flex-end; justify-content:center; gap:14px; }
+.chem-meta { display:flex; align-items:center; justify-content:center; gap:14px; margin-top:8px; }
+
+.chem-symbol { font-size:94px; font-weight:800; line-height:1; }
+.chem-name { font-size:24px; font-weight:700; }
+.chem-name-en { font-size:14px; color:var(--ink-3,#64748b); }
+.chem-mass { font-size:16px; color:var(--ink-3,#64748b); }
+.chem-cat { display:inline-block; color:#fff; font-size:14px; padding:3px 13px; border-radius:9999px; margin-top:6px; }
+.chem-row { display:flex; gap:10px; font-size:16px; line-height:1.55; padding:3px 0; }
+.chem-k { color:var(--ink-3,#64748b); flex:0 0 78px; font-size:15px; }
+.chem-row-pair { display:flex; gap:24px; font-size:16px; line-height:1.55; padding:3px 0; }
+.chem-row-pair .pk { color:var(--ink-3,#64748b); margin-right:5px; }
+.chem-row-pair .pv { color:var(--ink,#0f172a); }
+.chem-grp + .chem-grp { margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); }
+.chem-origin { display:flex; gap:10px; font-size:16px; line-height:1.55; margin-top:5px; padding:7px 12px; border-radius:10px; background:rgba(59,130,246,.08); }
+.chem-origin .chem-k { color:#2563eb; }
+.chem-fun { margin-top:10px; font-size:15.5px; line-height:1.7; color:var(--ink-2,#475569); background:#f8fafc; border-radius:10px; padding:9px 12px; }
+body.dark-mode .chem-fun { background:#1f2937; }
+.sci-card { border-top:4px solid #6366f1; }
+.sci-era { font-size:12px; color:#6366f1; font-weight:600; }
+.sci-title { font-size:20px; font-weight:800; margin-top:2px; }
+.sci-body { margin-top:10px; font-size:15px; line-height:1.8; color:var(--ink-2,#475569); white-space:pre-wrap; }
+.sci-foot { margin-top:10px; font-size:12px; color:var(--ink-3,#64748b); }
+
+
+.chem-exact{ font-size:14px; opacity:.72; }
+</style>
+</head>
+<body>
+<div class="preview-note">
+  <b>English Periodic Table deck preview</b> &mdash; element cards (flip with the &#8635; button to see details / cosmic origin) + 2 science story cards. Clicking buttons will NOT trigger any tracking in this static preview.
+</div>
+<div class="stage" id="stage"></div>
+<script>
+
+(function () {
+  'use strict';
+  window.cardTemplate = {
+    name: 'Periodic Table of Elements',
+    fields: [
+      { key: 'type', label: 'Type', hideable: false },
+      { key: 'atomic_number', label: 'Atomic number', hideable: false },
+      { key: 'symbol', label: 'Symbol', hideable: false },
+      { key: 'name_zh', label: 'Chinese name' },
+      { key: 'name_en', label: 'English name' },
+      { key: 'atomic_mass', label: 'Atomic mass' },
+      { key: 'category', label: 'Category' },
+      { key: 'group', label: 'Group' },
+      { key: 'period', label: 'Period' },
+      { key: 'phase', label: 'Phase' },
+      { key: 'discovery', label: 'Discovered by' },
+      { key: 'origin', label: 'Cosmic origin' },
+      { key: 'fun_fact', label: 'Fun fact' },
+      { key: 'science_order', label: 'Order', hideable: false },
+      { key: 'era', label: 'Era' },
+      { key: 'title', label: 'Title' },
+      { key: 'body', label: 'Body' },
+      { key: 'related', label: 'Related elements' }
+    ],
+    render: function (cardHtml, cardData, api) {
+      var data = api.getCardData ? api.getCardData() : cardData;
+      var d = data.data || {};
+      var hidden = (api.getHiddenFields && api.getHiddenFields()) || {};
+      function isHidden(k) { return hidden.has && hidden.has(k); }
+      function val(k) { var v = d[k]; return (v === undefined || v === null || v === '') ? null : v; }
+      function esc(s) { if (s == null) return ''; return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+      function massText(v) {
+        if (v == null || v === '') return '';
+        var num = parseFloat(v);
+        if (isNaN(num)) return esc(String(v));
+        var SCHOOL = { Cl: '35.5' };
+        var sym = val('symbol');
+        var approx = (sym && SCHOOL[sym]) ? SCHOOL[sym] : String(Math.round(num));
+        var precise = String(parseFloat(num.toFixed(3)));
+        if (parseFloat(precise) === parseFloat(approx)) return esc(approx);
+        return esc(approx) + ' <span class="chem-exact">(' + esc(precise) + ')</span>';
+      }
+
+      function show(k, html) { return (val(k) == null || isHidden(k)) ? '' : html; }
+      function row(k, label) { var v = val(k); if (v == null || isHidden(k)) return ''; return '<div class="chem-row"><span class="chem-k">' + label + '</span><span>' + esc(v) + '</span></div>'; }
+      function rowPair(k1,l1,k2,l2){ var v1=val(k1),v2=val(k2); if((v1==null||isHidden(k1))&&(v2==null||isHidden(k2))) return ''; var s='<div class="chem-row-pair">'; if(v1!=null&&!isHidden(k1)) s+='<span><span class="pk">'+l1+'</span><span class="pv">'+esc(v1)+'</span></span>'; if(v2!=null&&!isHidden(k2)) s+='<span><span class="pk">'+l2+'</span><span class="pv">'+esc(v2)+'</span></span>'; s+='</div>'; return s; }
+
+      function elemActions(ma, fa) {
+        return ''
+          + '<button class="dc-act act-audio" data-action="audio" title="Read"><i class="fa-solid fa-volume-high"></i></button>'
+          + '<button class="dc-act act-flip" data-action="flip" title="Flip"><i class="fa-solid fa-rotate"></i></button>'
+          + '<button class="dc-act act-mark' + ma + '" data-action="mark" title="Mark"><i class="fa-solid fa-bookmark"></i></button>'
+          + '<button class="dc-act act-fav' + fa + '" data-action="fav" title="Favorite"><i class="fa-solid fa-star"></i></button>';
+      }
+      function sciActions(ma, fa) {
+        return ''
+          + '<button class="dc-act act-audio" data-action="audio" title="Read"><i class="fa-solid fa-volume-high"></i></button>'
+          + '<button class="dc-act act-mark' + ma + '" data-action="mark" title="Mark"><i class="fa-solid fa-bookmark"></i></button>'
+          + '<button class="dc-act act-fav' + fa + '" data-action="fav" title="Favorite"><i class="fa-solid fa-star"></i></button>';
+      }
+
+      var html = '';
+      if (d.type === 'science') {
+        var sma = data.is_unknown === 1 ? ' is-active' : '';
+        var sfa = data.is_favorite === 1 ? ' is-active' : '';
+        html += '<div class="dc-card sci-card bg-[var(--card-bg)] text-[var(--ink)] border border-[var(--line)] rounded-2xl p-4 shadow-sm mb-4" data-card-id="' + data.id + '">';
+        html += '  <div class="sci-head flex items-start justify-between gap-2">';
+        html += '    <div><div class="sci-era">' + esc(val('era')) + '</div><div class="sci-title">' + esc(val('title')) + '</div></div>';
+        html += '    <div class="chem-actions flex gap-2">' + sciActions(sma, sfa) + '</div>';
+        html += '  </div>';
+        html += show('body', '<div class="sci-body">' + esc(val('body')) + '</div>');
+        html += show('related', '<div class="sci-foot">Related elements: ' + esc(val('related')) + ' · No. ' + esc(val('science_order')) + ' / 10</div>');
+        html += '</div>';
+      } else {
+        var ma = data.is_unknown === 1 ? ' is-active' : '';
+        var fa = data.is_favorite === 1 ? ' is-active' : '';
+        var cat = val('category_color') || '#3b82f6';
+        html += '<div class="dc-card chem-card bg-[var(--card-bg)] text-[var(--ink)] border border-[var(--line)] rounded-2xl p-4 shadow-sm mb-4" style="--cat:' + esc(cat) + '" data-card-id="' + data.id + '">';
+        html += '  <div class="chem-head flex items-start justify-between">';
+        html += '    <div class="chem-num">Atomic number ' + esc(val('atomic_number')) + '</div>';
+        html += '    <div class="chem-actions flex gap-2">' + elemActions(ma, fa) + '</div>';
+        html += '  </div>';
+        html += '  <div class="chem-flip"><div class="chem-inner">';
+        html += '    <div class="chem-front">';
+        html += '      <div class="chem-top">';
+        html += '        <div class="chem-symbol" style="color:var(--cat)">' + esc(val('symbol')) + '</div>';
+        html += show('name_en', '<div class="chem-name">' + esc(val('name_en')) + '</div>');
+        html += '      </div>';
+        html += '      <div class="chem-meta">';
+        html += show('atomic_mass', '<div class="chem-mass">Atomic mass ' + massText(val('atomic_mass')) + '</div>');
+        html += show('category', '<div class="chem-cat" style="background:var(--cat)">' + esc(val('category')) + '</div>');
+        html += '      </div>';
+        html += '    </div>';
+        html += '    <div class="chem-back dc-scroll">';
+        html += '<div class="chem-grp">';
+        html += row('phase', 'Phase');
+        html += rowPair('group', 'Group', 'period', 'Period');
+        html += '</div>';
+        html += '<div class="chem-grp">';
+        html += row('discovery', 'Discovered by');
+        html += show('origin', '<div class="chem-origin"><span class="chem-k">Cosmic origin</span><span>' + esc(val('origin')) + '</span></div>');
+        html += '</div>';
+        html += show('fun_fact', '<div class="chem-fun">' + esc(val('fun_fact')) + '</div>');
+        html += '    </div>';
+        html += '  </div></div>';
+        html += '</div>';
+      }
+      return html;
+    },
+    init: function (el, cardData, api) {
+      var data = api.getCardData ? api.getCardData() : cardData;
+      var flipBtn = el.querySelector('.act-flip');
+      if (flipBtn) {
+        flipBtn.addEventListener('click', function () {
+          var inner = el.querySelector('.chem-inner');
+          if (inner) { inner.classList.toggle('flipped'); api.track('flip'); }
+        });
+      }
+      var audioBtn = el.querySelector('.act-audio');
+      if (audioBtn) {
+        audioBtn.addEventListener('click', function () {
+          var dd = (api.getCardData ? api.getCardData() : cardData).data || {};
+          var txt = dd.type === 'science' ? (dd.title || '') : (dd.name_en || '');
+          api.playAudio(txt);
+          api.track('audio_play');
+        });
+      }
+      var markBtn = el.querySelector('.act-mark');
+      if (markBtn) {
+        markBtn.addEventListener('click', function () {
+          api.toggleMark();
+          markBtn.classList.toggle('is-active');
+          api.track('word_mark');
+        });
+      }
+      var favBtn = el.querySelector('.act-fav');
+      if (favBtn) {
+        favBtn.addEventListener('click', function () {
+          api.toggleFavorite();
+          favBtn.classList.toggle('is-active');
+          api.track('favorite_toggle');
+        });
+      }
+    }
+  };
+})();
+
+</script>
+<script>
+(function(){
+  var tpl = window.cardTemplate;
+  var samples = [{"data": {"type": "element", "atomic_number": 1, "symbol": "H", "name_en": "Hydrogen", "atomic_mass": 1.008, "category": "diatomic nonmetal", "category_color": "#80deea", "group": 1, "period": 1, "electron_config": "1s1", "phase": "Gas", "discovery": "Henry Cavendish", "origin": "Big Bang nucleosynthesis", "fun_fact": "The most abundant element in the universe, making up about 75% of its mass.", "item_order": 1}}, {"data": {"type": "element", "atomic_number": 26, "symbol": "Fe", "name_en": "Iron", "atomic_mass": 55.8452, "category": "transition metal", "category_color": "#ffd180", "group": 8, "period": 4, "electron_config": "1s2 2s2 2p6 3s2 3p6 4s2 3d6", "phase": "Solid", "discovery": "5000 BC", "origin": "Stellar fusion", "fun_fact": "Earth's core is mostly iron, and your blood uses iron in hemoglobin to carry oxygen.", "item_order": 26}}, {"data": {"type": "element", "atomic_number": 79, "symbol": "Au", "name_en": "Gold", "atomic_mass": 196.9665695, "category": "transition metal", "category_color": "#ffd180", "group": 11, "period": 6, "electron_config": "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s1 4f14 5d10", "phase": "Solid", "discovery": "Middle East", "origin": "Supernova / neutron-star merger (r-process)", "fun_fact": "Extremely unreactive — it stays untarnished for millennia in the ground.", "item_order": 79}}, {"data": {"type": "element", "atomic_number": 118, "symbol": "Og", "name_en": "Oganesson", "atomic_mass": 294, "category": "unknown, predicted to be noble gas", "category_color": "#b39ddb", "group": 18, "period": 7, "electron_config": "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10 7p6", "phase": "Solid", "discovery": "Joint Institute for Nuclear Research", "origin": "Human-made (synthetic)", "fun_fact": "The heaviest known element so far, predicted to be a noble gas.", "item_order": 118}}, {"data": {"science_order": 1, "era": "Big Bang", "title": "The beginning: the first few minutes", "related": "H, He, Li", "body": "Within about 3-20 minutes after the birth of the universe, temperatures dropped enough for protons and neutrons to combine, producing hydrogen (~75% of mass), helium (~25%), and trace amounts of lithium and beryllium. Heavier elements could not yet form - nuclei of mass 5 and 8 are too unstable, so fusion hit a 'dead end' here. Roughly 90% of the atoms in your body came from those first minutes.", "type": "science", "item_order": 119}}, {"data": {"science_order": 10, "era": "Frontier", "title": "We are all children of stardust: elements & life", "related": "C, O, H, Fe", "body": "The human body is ~65% oxygen, 18% carbon, 10% hydrogen, plus nitrogen, calcium, phosphorus ... These atoms that make us up - the light ones from the Big Bang, carbon and oxygen from stars, heavy metals from supernovae and neutron stars. Every time you look up at the night sky, you are also looking at your own origin - the stars burned out and left ashes, and those ashes are the stardust we were born from.", "type": "science", "item_order": 128}}];
+  function makeApi(card){
+    return {
+      getCardData: function(){ return card; },
+      getHiddenFields: function(){ return { has: function(){ return false; } }; },
+      playAudio: function(){},
+      toggleMark: function(){},
+      toggleFavorite: function(){},
+      rerender: function(){},
+      track: function(){},
+      showTooltip: function(){}, hideTooltip: function(){}
+    };
+  }
+  var stage = document.getElementById('stage');
+  samples.forEach(function(raw, i){
+    var card = { id: 1000+i, current_order: i, is_unknown: 0, is_favorite: 0, data: raw.data };
+    var html = tpl.render('', card, makeApi(card));
+    var wrap = document.createElement('div');
+    wrap.innerHTML = html;
+    var el = wrap.firstElementChild;
+    stage.appendChild(el);
+    tpl.init(el, card, makeApi(card));
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DragonCard · 通用卡片学习框架</title>
+<meta name="description" content="DragonCard 是一款通用卡片学习框架：数据、模板、引擎三层解耦。用自定义模板学习任何内容。">
+<style>
+:root{
+  /* ---- dark page chrome ---- */
+  --bg:#0e1c22; --surface:#16272f; --surface-2:#1c313a; --surface-3:#243d47;
+  --ink:#e8f1ef; --ink-2:#a6bfbc; --muted:#7c9a97;
+  --line:#243a43; --line-2:#31505b;
+  --accent:#5cbcd9; --accent-2:#e89276; --accent-soft:#16333c;
+  --deep:#0a151a; --deep-2:#132730;
+  /* ---- light card mockups (these mirror the REAL app cards) ---- */
+  --card-bg:#f5f9f6; --card-surface:#fff; --card-surface-2:#eef4ef;
+  --card-ink:#2e444e; --card-ink-2:#56696e; --card-muted:#93a5a1;
+  --card-line:#dde7e0; --card-accent:#5a7d94;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px}
+h1,h2,h3{line-height:1.3;font-weight:700;letter-spacing:-.2px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font-family:var(--mono);font-size:.9em;background:var(--surface-2);padding:1px 5px;border-radius:4px}
+
+/* ---------- topbar ---------- */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(14,28,34,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:58px;gap:12px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:16px;color:var(--ink)}
+.brand svg{flex:0 0 auto}
+.tb-right{display:flex;align-items:center;gap:8px}
+.langbtn{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:5px 11px}
+.langbtn:hover{text-decoration:none;background:var(--surface-2);color:var(--ink)}
+.langbtn.on{background:var(--accent);color:#08222a;border-color:var(--accent)}
+
+/* ---------- hero ---------- */
+.hero{padding:64px 0 56px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:5px 13px;margin-bottom:20px}
+h1{font-size:clamp(33px,5.4vw,52px);margin:0 0 14px;letter-spacing:-1px}
+.tagline{font-size:clamp(17px,2.4vw,21px);color:var(--ink-2);margin:0 0 10px;font-weight:600}
+.tagline b{color:var(--ink);font-weight:700}
+.hero-sub{font-size:15px;color:var(--ink-2);margin:0 0 26px;max-width:46ch}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;padding:11px 18px;border-radius:10px;border:1px solid transparent;transition:all .18s ease;font-family:inherit;cursor:pointer}
+.btn:hover{text-decoration:none;transform:translateY(-1px)}
+.btn-primary{background:var(--accent);color:#08222a}
+.btn-primary:hover{background:#7fcede}
+.btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--line-2)}
+.btn-ghost:hover{background:var(--surface-2)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-size:12.5px;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+.kchip{display:inline-flex;align-items:center;gap:6px}
+.kdot{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--kc);flex:0 0 auto}
+
+/* hero card = a LIGHT real-app card floating on the dark page */
+.hero-card{perspective:1400px;height:270px;cursor:pointer}
+.hero-card-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.hero-card.flipped .hero-card-inner{transform:rotateY(180deg)}
+.hface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--card-surface);border:1px solid var(--card-line);border-radius:16px;box-shadow:0 20px 48px rgba(0,0,0,.45);padding:26px 24px;display:flex;flex-direction:column}
+.hface-back{transform:rotateY(180deg);background:var(--card-surface-2)}
+.hroot{font-size:42px;font-weight:800;color:var(--card-ink);letter-spacing:-.5px}
+.horigin{font-size:11.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--card-accent);display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.hdot{width:7px;height:7px;border-radius:50%;background:var(--card-accent);display:inline-block}
+.hmean{font-size:17px;color:var(--card-ink-2);margin-top:8px}
+.hhint{margin-top:auto;font-size:12px;color:var(--card-muted);text-align:right}
+.hderiv{display:flex;align-items:baseline;gap:9px;padding:6px 0;border-top:1px solid var(--card-line)}
+.hderiv:first-of-type{border-top:none}
+.hword{font-weight:700;font-size:15px;color:var(--card-ink)}
+.htier{font-size:10px;color:#fff;background:var(--card-accent);border-radius:6px;padding:1px 6px}
+.hpara{font-size:13.5px;color:var(--card-ink-2)}
+.hetym{margin-top:auto;font-size:13px;color:var(--card-ink-2);background:var(--card-surface);border-left:3px solid var(--card-accent);border-radius:0 8px 8px 0;padding:7px 10px}
+
+/* ---------- sections ---------- */
+section{padding:60px 0;border-top:1px solid var(--line)}
+.sec-num{font-size:12px;font-weight:700;letter-spacing:1.4px;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+h2{font-size:clamp(24px,3.4vw,32px);margin:0 0 14px}
+.lede{font-size:16px;color:var(--ink-2);margin:0 0 28px;max-width:62ch}
+
+.creed{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:var(--radius);padding:26px 28px;margin-bottom:20px}
+.creed p{margin:0 0 14px;font-size:16px;color:var(--ink-2)}
+.creed p:last-child{margin-bottom:0}
+.creed .lead{font-size:22px;font-weight:700;color:var(--ink);line-height:1.45}
+.creed em{font-style:normal;background:rgba(92,188,217,.18);font-weight:700;color:#fff;border-radius:3px;padding:0 3px}
+.anchor-quote{text-align:center;font-size:clamp(22px,3.6vw,34px);font-weight:800;color:var(--ink);line-height:1.35;margin:34px 0 8px;letter-spacing:-.5px}
+.anchor-sub{text-align:center;font-size:15px;color:var(--muted);margin:0 0 34px}
+
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14.5px}
+th,td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);font-weight:700;background:var(--surface-2)}
+td:first-child{font-weight:700;color:var(--ink);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.dc{background:rgba(92,188,217,.10);color:var(--ink)}
+td.anki{color:var(--ink-2)}
+.note{font-size:13px;color:var(--muted);margin-top:10px}
+
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.tab{background:var(--surface);border:1px solid var(--line-2);border-radius:10px;padding:14px 12px;cursor:pointer;text-align:left;font-family:inherit;color:var(--ink);transition:all .18s ease}
+.tab:hover{background:var(--surface-2)}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#08222a}
+.tab .tname{font-weight:700;font-size:15px;display:block}
+.tab .tdesc{font-size:12px;opacity:.78;display:block;margin-top:2px}
+.panel{display:none;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px}
+.panel.on{display:block}
+.panel h3{margin:0 0 8px;font-size:18px}
+.panel p{margin:0 0 16px;color:var(--ink-2);font-size:15px}
+pre{background:var(--deep);color:#cfe4e2;border-radius:10px;padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.65;margin:0;border:1px solid var(--line)}
+pre .k{color:#7fd6c0}
+pre .s{color:#e9c98a}
+pre .c{color:#6f8f8c}
+.stack{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.stack-item{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:14px;color:var(--ink-2)}
+.stack-item b{color:var(--ink)}
+.arrowdown{text-align:center;color:var(--muted);font-size:16px;line-height:1}
+
+/* study demo rows = light, like the real app list */
+.demo{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px}
+.demo-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.demo-stats{display:flex;gap:16px;font-size:13px;color:var(--ink-2)}
+.demo-stats b{color:var(--ink)}
+.slist{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.sitem{display:flex;align-items:center;gap:14px;background:var(--card-surface);border:1px solid var(--card-line);border-radius:10px;padding:12px 16px;transition:background .25s ease,border-color .25s ease,transform .35s ease,opacity .25s ease}
+.sitem.unknown{background:#e7f2f6;border-color:#8fc7d8}
+.sitem.known{opacity:.72}
+.sword{font-weight:700;font-size:16px;flex:0 0 auto;min-width:110px;color:var(--card-ink)}
+.smean{font-size:13.5px;color:var(--card-ink-2);flex:1}
+.smark{font-family:inherit;font-size:12.5px;font-weight:600;border:1px solid var(--card-line);background:var(--card-surface-2);color:var(--card-ink-2);border-radius:999px;padding:5px 13px;cursor:pointer;transition:all .18s ease;flex:0 0 auto}
+.smark:hover{background:#e2ece7}
+.sitem.unknown .smark{background:var(--card-accent);border-color:var(--card-accent);color:#fff}
+.sitem.justmoved{animation:pop .5s ease}
+@keyframes pop{0%{transform:translateY(-8px);opacity:.4}100%{transform:none;opacity:1}}
+.demo-actions{display:flex;gap:10px;flex-wrap:wrap}
+.demo-hint{font-size:13px;color:var(--muted);margin:14px 0 0}
+
+/* gallery cards = light, like the real decks */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(164px,1fr));gap:14px}
+.gcard{perspective:1200px;height:186px;cursor:pointer}
+.gcard-inner{position:relative;width:100%;height:100%;transition:transform .55s;transform-style:preserve-3d}
+.gcard.flipped .gcard-inner{transform:rotateY(180deg)}
+.gface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--card-surface);border:1px solid var(--card-line);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.28);border-top:3px solid var(--kc,var(--card-line))}
+.gback{transform:rotateY(180deg);background:var(--card-surface-2)}
+.gkind{font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--kc,var(--card-accent));margin-bottom:8px}
+.gbig{font-size:32px;font-weight:800;line-height:1.15;color:var(--card-ink);letter-spacing:-.5px}
+.gsub{font-size:13px;color:var(--card-ink-2);margin-top:6px}
+.gflip{margin-top:auto;font-size:11px;color:var(--card-muted)}
+.gback .gsmall{font-size:13px;color:var(--card-ink-2);line-height:1.6}
+.gback strong{display:block;font-size:14px;color:var(--card-ink);margin-bottom:4px}
+
+.powers{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:20px}
+.power{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px}
+.power h3{font-size:15px;margin:0 0 6px}
+.power p{margin:0;font-size:13.5px;color:var(--ink-2)}
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px}
+.stat h3{font-size:14px;margin:0 0 14px}
+.heatmap{display:grid;grid-template-columns:repeat(14,1fr);gap:3px}
+.heatmap i{display:block;aspect-ratio:1;border-radius:2px;background:var(--surface-3)}
+.bars{display:flex;align-items:flex-end;gap:6px;height:64px}
+.bars span{flex:1;background:var(--accent);border-radius:3px 3px 0 0;opacity:.88}
+.pyr{display:flex;flex-direction:column;gap:4px;align-items:center}
+.pyr span{height:14px;background:var(--surface-3);border-radius:3px;border:1px solid var(--line)}
+.legend-row{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:10px;flex-wrap:wrap}
+
+.start-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.tool{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;display:block;transition:all .18s ease}
+.tool:hover{text-decoration:none;border-color:var(--accent);transform:translateY(-2px)}
+.tool h3{font-size:15px;margin:0 0 5px;color:var(--ink)}
+.tool p{margin:0;font-size:13px;color:var(--ink-2)}
+.start-note{font-size:14px;color:var(--ink-2);background:var(--accent-soft);border:1px solid var(--line);border-radius:var(--radius);padding:16px 20px;margin-top:20px}
+
+/* ---- closing band: deeper than the page, so it reads as a distinct finale ---- */
+.band{background:var(--deep);color:#cddcda;padding:66px 0;border-top:1px solid var(--line)}
+.band h2{color:#fff}
+.band .lede{color:#a3bcbc}
+.band .sec-num{color:#7d9a99}
+.band p{color:#cddcda}
+.band b{color:#fff}
+.band ul{margin:0 0 22px;padding-left:20px;font-size:15px;color:#cddcda}
+.band li{margin-bottom:9px}
+.band a{color:#e89276;font-weight:700}
+.band-cta{font-size:17px;color:#e6efee;margin:0;line-height:1.8}
+.band .tool{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14)}
+.band .tool h3{color:#fff}
+.band .tool p{color:#a3bcbc}
+.band .tool:hover{border-color:var(--accent-2);background:rgba(255,255,255,.1)}
+.band-foot{margin-top:24px;font-size:14px;color:#8fadad}
+
+footer{border-top:1px solid var(--line);padding:34px 0;color:var(--ink-2);font-size:13.5px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+.flinks{display:flex;gap:16px;flex-wrap:wrap}
+
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+
+@media (max-width:760px){
+  .hero-grid{grid-template-columns:1fr;gap:30px}
+  .hero{padding:40px 0 36px}
+  .tabs{grid-template-columns:1fr}
+  section{padding:44px 0}
+  .hroot{font-size:34px}
+  .hero-card{height:238px}
+  .gallery{grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:11px}
+  .gcard{height:172px}
+  .sitem{flex-wrap:wrap;gap:8px 12px}
+  .sword{min-width:0}
+  .smean{flex:1 1 58%}
+  .topbar .wrap{height:52px}
+  .langbtn{font-size:12px;padding:4px 9px}
+  .band{padding:48px 0}
+  .creed{padding:20px 20px}
+  .creed .lead{font-size:19px}
+  .anchor-quote{margin:26px 0 6px}
+  pre{font-size:11.5px;padding:13px 14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="3" width="13" height="13" rx="3" fill="#5cbcd9"/>
+        <rect x="8" y="8" width="13" height="13" rx="3" fill="#a8d8e8" fill-opacity=".55"/>
+      </svg>
+      DragonCard
+    </a>
+    <div class="tb-right">
+      <a class="langbtn on" href="index.html">中文</a>
+      <a class="langbtn" href="index_en.html">EN</a>
+      <a class="langbtn" href="https://github.com/crazy-dragon/dragon_card" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero" style="border-top:none">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">通用卡片学习框架</span>
+      <h1>把知识放进去，<br>剩下的交给重复。</h1>
+      <p class="tagline">数据、模板、引擎<b>三层解耦</b>——<br>用自定义模板学习<b>任何内容</b>。</p>
+      <p class="hero-sub">DragonCard 不决定你的卡片长什么样，也不替你安排复习节奏。它只提供一个稳定的容器：你把知识放进去，然后每天来。</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://github.com/crazy-dragon/dragon_card" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-1.94c-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.06.78 2.14v3.17c0 .3.2.67.8.55A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
+          查看源码
+        </a>
+        <a class="btn btn-ghost" href="https://dragoncard.top/" target="_blank" rel="noopener">在线体验 →</a>
+      </div>
+      <div class="chips">
+        <span class="chip">三层解耦</span>
+        <span class="chip">模板即一切</span>
+        <span class="chip">本地优先 · SQLite</span>
+        <span class="chip">MIT 开源</span>
+      </div>
+    </div>
+
+    <div class="hero-card" id="heroCard" role="button" tabindex="0" aria-label="点击翻转示例卡片">
+      <div class="hero-card-inner">
+        <div class="hface">
+          <div class="horigin"><span class="hdot"></span>Latin</div>
+          <div class="hroot">spect / spic</div>
+          <div class="hmean">词根 · 第 001 号</div>
+          <div class="hhint">点击翻转 ↻</div>
+        </div>
+        <div class="hface hface-back">
+          <div class="horigin"><span class="hdot"></span>to look, to see</div>
+          <div class="hderiv"><span class="hword">inspect</span><span class="htier">TOP2k</span><span class="hpara">仔细检查</span></div>
+          <div class="hderiv"><span class="hword">respect</span><span class="htier">TOP2k</span><span class="hpara">尊重</span></div>
+          <div class="hderiv"><span class="hword">spectator</span><span class="htier">SUPP</span><span class="hpara">观众</span></div>
+          <div class="hetym">词源：Latin <em style="font-style:italic;font-weight:700">spectare</em> — “to look”.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 理念 ============ -->
+<section id="philosophy" class="reveal">
+  <div class="wrap">
+    <div class="sec-num">01 · 理念</div>
+    <h2>DragonCard 不是 Anki。</h2>
+    <p class="lede">它没有复杂的间隔重复算法，只有一种很简单的分类学习方法。</p>
+
+    <div class="creed">
+      <p class="lead">把知识快速呈现在你面前：<em>标记未掌握的内容</em>，<em>难点靠前</em>，<em>熟词靠后</em>。仅此而已。</p>
+      <p>它不替你安排复习节奏，也不承诺"多少天记住"。因为记忆的本质从来不是技巧，而是<em>重复</em>。</p>
+    </div>
+
+    <p class="anchor-quote">记忆的本质从来不是技巧，<br>而是重复。</p>
+    <p class="anchor-sub">艾宾浩斯用一生证明：记忆的关键就是重复。所以我们相信的是你——你的坚持本身。</p>
+
+    <div class="creed">
+      <p>大脑是一个极其擅长偷懒的器官。当你长期坚持做同一件事，它不会一直停留在最初吃力的状态，而会逐渐演变成一件越来越省力的事。</p>
+      <p>DragonCard 利用的，正是这个机制——它提供的不是魔法，而是一个简单的容器：<em>你把知识放进去，然后把"重复"这件最朴素的事，交给每天都来的自己。</em></p>
+    </div>
+
+    <p class="anchor-quote" style="font-size:clamp(20px,3vw,26px)">持之以恒，必有收获。</p>
+    <p class="anchor-sub">我们不做承诺，只做容器。</p>
+
+    <h3 style="font-size:19px;margin:38px 0 14px">DragonCard vs Anki</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>维度</th><th>Anki</th><th>DragonCard</th></tr></thead>
+        <tbody>
+          <tr><td>调度单元</td><td class="anki">单张卡片独立计算下次复习时间</td><td class="dc">完整有序列表为单元，靠排序实现优先级</td></tr>
+          <tr><td>时间约束</td><td class="anki">严格日期驱动</td><td class="dc">弹性，什么时候继续、间隔多久由使用者决定</td></tr>
+          <tr><td>熟词处理</td><td class="anki">达标后降低复习频率，甚至退出复习池</td><td class="dc">全程保留在列表尾部，轻量刷一遍维持记忆</td></tr>
+          <tr><td>优势</td><td class="anki">理论记忆效率上限更高</td><td class="dc">流程简单稳定、断卡后更容易续上、保留词条上下文顺序</td></tr>
+          <tr><td>短板</td><td class="anki">任务量不可控，断卡后维护成本高</td><td class="dc">不会精准在遗忘临界点触发复习，单条记忆效率理论上限略低</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">我们把自己的短板也写在表里。DragonCard 不追求理论上限，它追求的是——你还能坚持明天再来一次。</p>
+  </div>
+</section>
+
+<!-- ============ 三层解耦 ============ -->
+<section id="architecture" class="reveal">
+  <div class="wrap">
+    <div class="sec-num">02 · 架构</div>
+    <h2>数据、模板、引擎，三层解耦</h2>
+    <p class="lede">一个 JSON 模板文件，定义一张卡片的一切。框架只提供"货架"：学习流程与后端 API 固定不变。</p>
+
+    <div class="stack">
+      <div class="stack-item"><b>用户提供</b> template.json（HTML + CSS + JS + lang + trackedActions）</div>
+      <div class="arrowdown">↓</div>
+      <div class="stack-item"><b>DragonCard</b> 加载模板 → 渲染卡片 → 注入 api 对象；学习引擎（标记 / 重排 / 分页）保持不变</div>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab on" data-tab="data" role="tab">
+        <span class="tname">数据 Data</span><span class="tdesc">纯内容 · 字段即一切</span>
+      </button>
+      <button class="tab" data-tab="template" role="tab">
+        <span class="tname">模板 Template</span><span class="tdesc">外观与交互</span>
+      </button>
+      <button class="tab" data-tab="engine" role="tab">
+        <span class="tname">引擎 Engine</span><span class="tdesc">学习流程 · 固定不变</span>
+      </button>
+    </div>
+
+    <div class="panel on" id="panel-data">
+      <h3>数据只是数据</h3>
+      <p>卡片内容是纯 JSON 数组，字段名由模板自己定义。想学什么，就填什么——没有任何预设的字段结构。</p>
+      <pre><span class="c">// cards.json —— 一个词条就是一条</span>
+[
+  { <span class="k">"item_order"</span>: <span class="s">1</span>, <span class="k">"word"</span>: <span class="s">"spect / spic"</span>,
+    <span class="k">"meaning_en"</span>: <span class="s">"to look, to see"</span> },
+  { <span class="k">"item_order"</span>: <span class="s">2</span>, <span class="k">"word"</span>: <span class="s">"dict"</span>,
+    <span class="k">"meaning_en"</span>: <span class="s">"to say, to speak"</span> }
+]</pre>
+    </div>
+
+    <div class="panel" id="panel-template">
+      <h3>模板定义卡片的一切</h3>
+      <p>HTML 结构、CSS 样式、交互逻辑、发音语言、埋点事件——全部封装在一个 JSON 文件里。框架通过 <code>window.cardTemplate</code> 的 <code>render</code> / <code>init</code> / <code>update</code> 与它对话。</p>
+      <pre><span class="c">// template.json</span>
+{
+  <span class="k">"name"</span>: <span class="s">"My Card"</span>,
+  <span class="k">"lang"</span>: <span class="s">"en"</span>,                 <span class="c">// 决定 TTS 语音</span>
+  <span class="k">"cardHtml"</span>: <span class="s">"&lt;div class=\"card\"&gt;…&lt;/div&gt;"</span>,
+  <span class="k">"cardCss"</span>: <span class="s">".card { padding: 16px }"</span>,
+  <span class="k">"cardJs"</span>: <span class="s">"window.cardTemplate = { render, init }"</span>,
+  <span class="k">"trackedActions"</span>: [
+    { <span class="k">"action"</span>: <span class="s">"audio_play"</span>, <span class="k">"label"</span>: <span class="s">"发音"</span> }
+  ]
+}</pre>
+    </div>
+
+    <div class="panel" id="panel-engine">
+      <h3>引擎只做一件事：让你重复</h3>
+      <p>标记未掌握 → 重排 → 多轮学习，进度自动持久化。它不认识你的内容，也不知道你在学英语还是化学——它只维护一个有序列表，和你在其中的位置。</p>
+      <pre><span class="c">// 学习引擎的固定流程</span>
+GET  /v1/learn/page   <span class="c">→ 取一页卡片</span>
+POST /v1/learn/mark   <span class="c">→ 标记未掌握</span>
+POST /v1/reorder      <span class="c">→ 重排：难点靠前，熟词靠后</span>
+GET  /v1/rounds       <span class="c">→ 进入下一轮</span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 学习引擎 ============ -->
+<section id="engine" class="reveal">
+  <div class="wrap">
+    <div class="sec-num">03 · 学习引擎</div>
+    <h2>整套机制，就是这四步</h2>
+    <p class="lede">下面这个列表是可以真的操作的。点几张卡标记为"未掌握"，再点重排，看看会发生什么。</p>
+
+    <div class="demo">
+      <div class="demo-head">
+        <div class="demo-stats">
+          <span>未掌握 <b id="cntUnknown">0</b></span>
+          <span>已掌握 <b id="cntKnown">5</b></span>
+          <span>轮次 <b>1</b></span>
+        </div>
+        <div class="demo-actions">
+          <button class="btn btn-ghost" id="btnReorder" style="padding:8px 15px;font-size:13.5px">重排列表</button>
+          <button class="btn btn-ghost" id="btnReset" style="padding:8px 15px;font-size:13.5px">重置</button>
+        </div>
+      </div>
+      <div class="slist" id="slist"></div>
+      <p class="demo-hint">重排之后：<b>未掌握的词条浮到前面</b>，已掌握的沉到列表尾部——但不会消失，它们只是排在你后面，等下一轮轻刷一遍。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 卡组画廊 ============ -->
+<section id="gallery" class="reveal">
+  <div class="wrap">
+    <div class="sec-num">04 · 自由度</div>
+    <h2>同一个引擎，装得下完全不同的东西</h2>
+    <p class="lede">下面每一张卡都来自真实卡组，内容完全不同，却跑在同一套引擎上。点击任意卡片翻面。</p>
+
+    <div class="gallery" id="gallery"></div>
+
+    <div class="chips" style="margin-top:24px">
+      <span class="chip kchip" style="--kc:#60a5fa"><i class="kdot"></i>语言 Language</span>
+      <span class="chip kchip" style="--kc:#4ade80"><i class="kdot"></i>知识 Knowledge</span>
+      <span class="chip kchip" style="--kc:#a78bfa"><i class="kdot"></i>逻辑 Logic</span>
+      <span class="chip kchip" style="--kc:#fbbf24"><i class="kdot"></i>技能 Skill</span>
+      <span class="chip kchip" style="--kc:#94a3b8"><i class="kdot"></i>其它 Other</span>
+    </div>
+    <p class="note">目前已内置 11 套卡组，另有 7 套精选卡组（化学元素周期表、希腊拉丁词根、HSK 3.0、英语高频词、三十六计等）。你当然也可以自己做一套。</p>
+  </div>
+</section>
+
+<!-- ============ 模板能力 ============ -->
+<section id="template" class="reveal">
+  <div class="wrap">
+    <div class="sec-num">05 · 模板能力</div>
+    <h2>一张卡片能自定义到什么程度</h2>
+    <p class="lede">答案是：几乎全部。框架只要求你的模板暴露 <code>render</code>，其余交给你。</p>
+
+    <div class="powers">
+      <div class="power"><h3>自定义 HTML / CSS / JS</h3><p>结构、样式、交互全在你手里。Tailwind 工具类与 Font Awesome 开箱可用。</p></div>
+      <div class="power"><h3>语言感知 TTS</h3><p>模板声明 <code>lang</code>（en / ja / zh…），发音自动匹配对应语音，并按语言分组记忆。</p></div>
+      <div class="power"><h3>最多 5 个动作 + 埋点</h3><p><code>trackedActions</code> 声明事件，框架自动统计，按模板隔离，可在观测页查看。</p></div>
+      <div class="power"><h3>字段可隐藏</h3><p>模板声明 <code>fields</code>，学习时可在字段抽屉里逐项开关，也可锁定不可隐藏的字段。</p></div>
+      <div class="power"><h3>管理面板实时预览</h3><p>上传模板即刻渲染真实卡片效果，边改边看，不用进学习模式。</p></div>
+      <div class="power"><h3>本地优先</h3><p>Flask + SQLite，开箱即用，数据在你自己的机器上，无需任何外部服务。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 统计 ============ -->
+<section id="stats" class="reveal">
+  <div class="wrap">
+    <div class="sec-num">06 · 统计与成就</div>
+    <h2>你的坚持，应该看得见</h2>
+    <p class="lede">不为焦虑而设计，只是把"你来了多少次"如实画出来。</p>
+    <div class="stats-grid">
+      <div class="stat">
+        <h3>活动热力图</h3>
+        <div class="heatmap" id="heatmap"></div>
+        <div class="legend-row"><span>少</span><span>多</span></div>
+      </div>
+      <div class="stat">
+        <h3>掌握度分布</h3>
+        <div class="bars" id="bars"></div>
+        <div class="legend-row"><span class="kchip" style="--kc:#fb923c"><i class="kdot"></i>未掌握</span><span class="kchip" style="--kc:#60a5fa"><i class="kdot"></i>模糊</span><span class="kchip" style="--kc:#4ade80"><i class="kdot"></i>已掌握</span></div>
+      </div>
+      <div class="stat">
+        <h3>轮次金字塔</h3>
+        <div class="pyr" id="pyr"></div>
+        <div class="legend-row"><span>越往上，走得越远</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 开始 ============ -->
+<section id="start" class="reveal">
+  <div class="wrap">
+    <div class="sec-num">07 · 开始</div>
+    <h2>让它跑起来，只需要一句话</h2>
+    <p class="lede">安装依赖、建虚拟环境、改端口这些事，交给 AI 工具就好。把仓库交给下面任意一个，让它帮你跑起来。</p>
+    <div class="start-grid">
+      <a class="tool" href="https://www.workbuddy.ai/" target="_blank" rel="noopener">
+        <h3>WorkBuddy</h3>
+        <p>把仓库丢给它，说"帮我跑起来"，剩下的它来做。</p>
+      </a>
+      <a class="tool" href="https://openai.com/codex/" target="_blank" rel="noopener">
+        <h3>Codex</h3>
+        <p>命令行里的 AI 助手，适合直接在仓库目录里操作。</p>
+      </a>
+      <a class="tool" href="https://opencode.ai/" target="_blank" rel="noopener">
+        <h3>OpenCode</h3>
+        <p>开源终端 Agent，可自由选择模型来部署和调试。</p>
+      </a>
+    </div>
+    <div class="start-note">
+      跑起来之后，浏览器打开 <b>http://localhost:5001</b> ——首次启动会自动建库、创建默认用户和一批入门模板，然后就可以新建卡组了。
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ EXTEND ============ -->
+<section id="extend" class="band reveal">
+  <div class="wrap">
+    <div class="sec-num">08 · 这只是开始</div>
+    <h2>它很简陋，而且是有意的</h2>
+    <p class="lede">DragonCard 不是一款“功能齐全”的产品。它是作者基于一个朴素信念做出来的简单版本：把知识放进去，然后每天来。</p>
+    <p>它没有替你决定该学什么，也没有塞给你一堆用不上的功能。正因如此——<b>它也可以是属于你的那一款</b>。</p>
+    <ul>
+      <li>数据是 JSON，模板也是 JSON。<b>换一套模板，它就是另一款学习工具。</b></li>
+      <li>想学什么，就让 AI 帮你生成：模板 + 数据一次给全，导入即用。</li>
+      <li>不满意？让 AI 改样式、加字段、换交互——不用等作者更新。</li>
+    </ul>
+    <p>如果你认同这个方向，但它还没有你想要的样子——那就把它交下去。</p>
+    <p class="band-cta">把仓库交给 <a href="https://www.workbuddy.ai/" target="_blank" rel="noopener">WorkBuddy</a>、<a href="https://openai.com/codex/" target="_blank" rel="noopener">Codex</a> 或 <a href="https://opencode.ai/" target="_blank" rel="noopener">OpenCode</a>，直接告诉它：<b>你想学什么</b>。</p>
+    <p class="band-foot">数据和模板是通用的——简单改造，它就能变成任何你想要的学习工具。</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>DragonCard · 通用卡片学习框架</div>
+    <div class="flinks">
+      <a href="https://github.com/crazy-dragon/dragon_card" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://dragoncard.top/" target="_blank" rel="noopener">在线 Demo</a>
+      <a href="index_en.html">English</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---- hero card flip ---- */
+  var hero=document.getElementById('heroCard');
+  if(hero){
+    var flip=function(){ hero.classList.toggle('flipped'); };
+    hero.addEventListener('click',flip);
+    hero.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); flip(); } });
+  }
+
+  /* ---- layer tabs ---- */
+  var tabs=document.querySelectorAll('.tab');
+  tabs.forEach(function(t){
+    t.addEventListener('click',function(){
+      tabs.forEach(function(x){ x.classList.remove('on'); });
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('on'); });
+      t.classList.add('on');
+      var p=document.getElementById('panel-'+t.dataset.tab);
+      if(p) p.classList.add('on');
+    });
+  });
+
+  /* ---- study loop demo ---- */
+  var ITEMS=[
+    {w:'serendipity', m:'意外发现珍奇事物的运气'},
+    {w:'ephemeral',  m:'短暂的，转瞬即逝的'},
+    {w:'tenacious',  m:'坚韧的，坚持不懈的'},
+    {w:'ubiquitous', m:'无处不在的'},
+    {w:'candid',     m:'坦率的，直言不讳的'}
+  ];
+  var state=ITEMS.map(function(it){ return {w:it.w,m:it.m,u:false}; });
+  var slist=document.getElementById('slist');
+  var cU=document.getElementById('cntUnknown'), cK=document.getElementById('cntKnown');
+
+  function renderStudy(moved){
+    slist.innerHTML='';
+    state.forEach(function(it,i){
+      var row=document.createElement('div');
+      row.className='sitem '+(it.u?'unknown':'known')+(moved?' justmoved':'');
+      var w=document.createElement('span'); w.className='sword'; w.textContent=it.w;
+      var m=document.createElement('span'); m.className='smean'; m.textContent=it.m;
+      var b=document.createElement('button'); b.className='smark';
+      b.textContent=it.u?'未掌握':'已掌握';
+      b.addEventListener('click',function(){ it.u=!it.u; renderStudy(false); });
+      row.appendChild(w); row.appendChild(m); row.appendChild(b);
+      slist.appendChild(row);
+    });
+    var unk=state.filter(function(x){return x.u;}).length;
+    if(cU) cU.textContent=unk;
+    if(cK) cK.textContent=state.length-unk;
+  }
+  document.getElementById('btnReorder').addEventListener('click',function(){
+    state.sort(function(a,b){ return (b.u?1:0)-(a.u?1:0); });
+    renderStudy(true);
+  });
+  document.getElementById('btnReset').addEventListener('click',function(){
+    state=ITEMS.map(function(it){ return {w:it.w,m:it.m,u:false}; });
+    renderStudy(false);
+  });
+  renderStudy(false);
+
+  /* ---- gallery (real deck data) ---- */
+  var DECKS=[
+    {kind:'知识', c:'#15803d', big:'Fe', sub:'铁 · Iron', back:'<strong>相对原子质量 56 (55.845)</strong>来自恒星核聚变。选自「化学元素周期表」卡组，共 128 张。'},
+    {kind:'语言', c:'#1d4ed8', big:'spect', sub:'词根 · to look', back:'<strong>inspect / respect / spectator</strong>一个词根串起一串词。选自「希腊拉丁词根」卡组，152 个词根。'},
+    {kind:'语言', c:'#1d4ed8', big:'あ', sub:'ア · a', back:'<strong>あか（红色）</strong>五十音图的第一音。选自「日语五十音」卡组。'},
+    {kind:'其它', c:'#475569', big:'乾', sub:'qián · 第 1 卦', back:'<strong>元，亨，利，贞。</strong>刚健中正，自强不息。象征天。选自「易经」卡组。'},
+    {kind:'语言', c:'#1d4ed8', big:'爱', sub:'ài · 動', back:'<strong>繁体：愛</strong>to love; to be fond of。选自「HSK 3.0」卡组，含 1–9 级。'},
+    {kind:'知识', c:'#15803d', big:'画蛇添足', sub:'huà shé tiān zú', back:'<strong>比喻做了多余的事</strong>非但无益，反而不合适。选自「成语」卡组。'}
+  ];
+  var g=document.getElementById('gallery');
+  DECKS.forEach(function(d){
+    var c=document.createElement('div');
+    c.className='gcard'; c.setAttribute('role','button'); c.setAttribute('tabindex','0');
+    if(d.c) c.style.setProperty('--kc', d.c);
+    c.innerHTML=
+      '<div class="gcard-inner">'+
+        '<div class="gface"><div class="gkind">'+d.kind+'</div>'+
+          '<div class="gbig">'+d.big+'</div><div class="gsub">'+d.sub+'</div>'+
+          '<div class="gflip">点击翻面 ↻</div></div>'+
+        '<div class="gface gback"><div class="gkind">'+d.big+'</div>'+
+          '<div class="gsmall">'+d.back+'</div>'+
+          '<div class="gflip">点击返回 ↻</div></div>'+
+      '</div>';
+    var f=function(){ c.classList.toggle('flipped'); };
+    c.addEventListener('click',f);
+    c.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); f(); } });
+    g.appendChild(c);
+  });
+
+  /* ---- stats decorations ---- */
+  var hm=document.getElementById('heatmap');
+  if(hm){ for(var i=0;i<70;i++){
+    var el=document.createElement('i');
+    var r=Math.random();
+    el.style.background = r>0.82 ? '#5cbcd9' : (r>0.6 ? '#2f6a76' : (r>0.35 ? '#224a55' : '#1c313a'));
+    hm.appendChild(el);
+  }}
+  var bars=document.getElementById('bars');
+  if(bars){ [[46,'#fb923c'],[28,'#60a5fa'],[74,'#4ade80']].forEach(function(p){
+    var s=document.createElement('span'); s.style.height=p[0]+'%'; s.style.background=p[1]; bars.appendChild(s);
+  });}
+  var pyr=document.getElementById('pyr');
+  if(pyr){ [24,40,58,78,100].forEach(function(w){
+    var s=document.createElement('span'); s.style.width=w+'%'; pyr.appendChild(s);
+  });}
+
+  /* ---- reveal on scroll ---- */
+  var els=document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:.12});
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('in'); });
+  }
+})();
+</script>
+</body>
+</html>
