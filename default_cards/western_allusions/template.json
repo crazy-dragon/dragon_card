@@ -1,0 +1,80 @@
+{
+  "name": "西方典故 · Western Allusions",
+  "lang": "zh",
+  "description": "西方典故双语卡：中文为主 + English Corner，平铺阅读（希腊神话/罗马与历史/圣经/文学与童话，37 张）。",
+  "cardHtml": "",
+  "cardCss": "\n:root{\n  --card:#ffffff; --border:#e7e2d4; --ink:#211d15; --body:#403a2f; --ink2:#57503f; --ink3:#6d6451;\n  --chip:#f1ece0; --gold:#a67c00; --rose:#b3436f; --tagbg:#fbf7ea; --tagfg:#5a4f33;\n}\n.wa-greek     { --grp:#2f6ac0; --grpsoft:#e7f0fc; --grpbdr:#c4d8f3; --grptxt:#2a5fae; }\n.wa-history   { --grp:#c2572d; --grpsoft:#fdeee7; --grpbdr:#f2cfbe; --grptxt:#b14e26; }\n.wa-bible     { --grp:#a1841c; --grpsoft:#f7f3de; --grpbdr:#e5d9a9; --grptxt:#917717; }\n.wa-literature{ --grp:#7c44b4; --grpsoft:#f2ebfb; --grpbdr:#ddc9f1; --grptxt:#6f3ba8; }\nbody.dark-mode{\n  --card:#221e16; --border:#3c362a; --ink:#f4ecd6; --body:#d7ccb2; --ink2:#b6aa8c; --ink3:#a2957a;\n  --chip:#3a3323; --gold:#d4a92c; --rose:#d96b98; --tagbg:#332d1d; --tagfg:#d5c79f;\n}\nbody.dark-mode .wa-greek     { --grp:#7fa9e8; --grpsoft:#232c3d; --grpbdr:#3d4a66; --grptxt:#a9c6f2; }\nbody.dark-mode .wa-history   { --grp:#e08a5f; --grpsoft:#3a2a22; --grpbdr:#5a3d30; --grptxt:#f0b08f; }\nbody.dark-mode .wa-bible     { --grp:#cbb553; --grpsoft:#38331e; --grpbdr:#5a4f28; --grptxt:#e0d08a; }\nbody.dark-mode .wa-literature{ --grp:#c19bf0; --grpsoft:#322a40; --grpbdr:#4c3d63; --grptxt:#d8c0f7; }\nbody.dark-mode .wa-badge{ color:#19140c; }\nbody.dark-mode .wa-act::after{ background:#f4ecd6; color:#221e16; }\n\n\n.wa-root{ background:var(--card); border:1px solid var(--border); border-top:5px solid var(--grp); border-radius:18px; box-shadow:0 6px 18px rgba(45,35,15,.08); margin-bottom:18px; padding:16px 20px 14px; overflow:hidden; transition:box-shadow .2s ease, transform .2s ease; }\n.wa-root:hover{ box-shadow:0 10px 26px rgba(45,35,15,.13); transform:translateY(-1px); }\n.wa-top{ display:flex; align-items:center; justify-content:space-between; gap:12px; }\n.wa-badge{ display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:800; letter-spacing:.8px; padding:4px 12px; border-radius:9999px; color:#fff; background:var(--grp); box-shadow:0 2px 7px rgba(0,0,0,.14); white-space:nowrap; }\n.wa-badge .fa{ font-size:9.5px; opacity:.9; }\n.wa-actions{ display:flex; gap:7px; }\n.wa-act{ position:relative; width:40px; height:40px; border-radius:9999px; border:1px solid var(--border); cursor:pointer; background:var(--card); color:var(--ink3); font-size:15px; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 1px 3px rgba(0,0,0,.04); transition:all .18s ease; }\n.wa-act:hover{ background:var(--grp); border-color:var(--grp); color:#fff; }\n.wa-act:active{ transform:scale(.92); }\n.wa-act.act-mark.is-active{ background:var(--gold); border-color:var(--gold); color:#fff; }\n.wa-act.act-fav.is-active{ background:var(--rose); border-color:var(--rose); color:#fff; }\n.wa-act::after{ content:attr(data-tip); position:absolute; top:100%; left:50%; transform:translateX(-50%) translateY(3px); background:var(--ink); color:var(--card); font-size:11.5px; font-weight:600; padding:4px 9px; border-radius:7px; white-space:nowrap; opacity:0; visibility:hidden; pointer-events:none; z-index:20; transition:opacity .18s ease, transform .18s ease, visibility .18s; }\n.wa-act:hover::after{ opacity:1; visibility:visible; transform:translateX(-50%) translateY(7px); }\n.wa-title{ margin-top:12px; }\n.wa-name{ font-size:31px; font-weight:900; color:var(--ink); line-height:1.25; letter-spacing:-.4px; }\n.wa-name-en{ margin-top:4px; font-family:Georgia,'Times New Roman',serif; font-size:14px; font-weight:600; color:var(--grptxt); text-transform:uppercase; letter-spacing:2.2px; }\n.wa-tag{ margin-top:12px; border-left:4px solid var(--grp); border-radius:0 8px 8px 0; background:var(--grpsoft); padding:8px 13px; font-size:14.5px; line-height:1.7; color:var(--tagfg); font-weight:600; }\n.wa-body{ margin-top:6px; }\n.wa-sec{ margin-top:15px; }\n.wa-sec-label{ display:flex; align-items:center; gap:7px; font-size:10.5px; font-weight:800; letter-spacing:2.4px; color:var(--grptxt); text-transform:uppercase; }\n.wa-sec-label::before{ content:''; width:16px; height:3px; background:var(--grp); border-radius:3px; flex:0 0 auto; }\n.wa-para{ margin-top:7px; font-size:15px; line-height:1.9; color:var(--body); }\n.wa-para + .wa-para{ margin-top:8px; }\n.wa-ec{ margin-top:15px; background:var(--grpsoft); border:1px solid var(--grpbdr); border-left:4px solid var(--grp); border-radius:12px; padding:12px 15px 13px; }\n.wa-ec-head{ font-size:10.5px; font-weight:800; letter-spacing:2.6px; text-transform:uppercase; color:var(--grptxt); margin-bottom:7px; }\n.wa-ec-text{ font-size:15px; font-weight:700; color:var(--ink); line-height:1.55; font-family:Georgia,'Times New Roman',serif; }\n.wa-ec-ex{ margin-top:7px; font-size:15px; font-style:italic; color:var(--body); line-height:1.6; font-family:Georgia,'Times New Roman',serif; }\n.wa-ec-ex::before{ content:'e.g. '; font-style:normal; font-size:11px; font-weight:700; letter-spacing:.8px; color:var(--grptxt); }\n.wa-ec-zh{ margin-top:6px; font-size:13px; color:var(--ink3); line-height:1.6; }\n.wa-source{ margin-top:14px; padding-top:9px; border-top:1px dashed var(--border); font-size:11px; color:var(--ink3); letter-spacing:.4px; }\n.wa-source b{ font-weight:700; letter-spacing:1.2px; }\n",
+  "cardJs": "(function () {\n  'use strict';\n  function esc(s){ if(s==null) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }\n  window.cardTemplate = {\n    name: '西方典故 · Western Allusions',\n    fields: [\n      { key:'group',      label:'分组(内部)',   hideable:false },\n      { key:'groupZh',    label:'分组名',       hideable:false },\n      { key:'nameZh',     label:'典故名',       hideable:false },\n      { key:'nameEn',     label:'英文典故名',   hideable:false },\n      { key:'tagline',    label:'一句话速记',   hideable:true  },\n      { key:'story',      label:'典故故事',     hideable:false },\n      { key:'usageZh',    label:'现代用法',     hideable:true  },\n      { key:'ecText',     label:'English Corner', hideable:true  },\n      { key:'ecExample',  label:'英文例句',     hideable:true  },\n      { key:'ecZh',       label:'例句翻译',     hideable:true  },\n      { key:'sourceZh',   label:'出处',         hideable:true  }\n    ],\n    render: function (cardHtml, cardData, api) {\n      var data = (api && api.getCardData) ? api.getCardData() : cardData;\n      var d = data.data || {};\n      var hidden = (api.getHiddenFields && api.getHiddenFields()) || {};\n      function h(k, html){ return (hidden.has && hidden.has(k)) ? '' : html; }\n      var g = (d.group === 'history' || d.group === 'bible' || d.group === 'literature') ? d.group : 'greek';\n      return '<div class=\"wa-root wa-'+esc(g)+'\" data-card-id=\"'+esc(data.id)+'\">'\n        + '<div class=\"wa-top\">'\n        +   '<span class=\"wa-badge\"><i class=\"fa-solid fa-scroll\"></i>'+esc(d.groupZh || '')+'</span>'\n        +   '<div class=\"wa-actions\">'\n        +     '<button class=\"wa-act act-audio\" data-action=\"audio\" data-tip=\"朗读\"><i class=\"fa-solid fa-volume-high\"></i></button>'\n        +     '<button class=\"wa-act act-mark\" data-action=\"mark\" data-tip=\"标记\"><i class=\"fa-regular fa-star\"></i></button>'\n        +     '<button class=\"wa-act act-fav\" data-action=\"favorite\" data-tip=\"收藏\"><i class=\"fa-regular fa-bookmark\"></i></button>'\n        +   '</div>'\n        + '</div>'\n        + '<div class=\"wa-title\">'\n        +   '<div class=\"wa-name\">'+esc(d.nameZh)+'</div>'\n        +   h('nameEn', '<div class=\"wa-name-en\">'+esc(d.nameEn)+'</div>')\n        + '</div>'\n        + h('tagline', '<div class=\"wa-tag\">'+esc(d.tagline)+'</div>')\n        + '<div class=\"wa-body\">'\n        +   h('story', '<div class=\"wa-sec\"><div class=\"wa-sec-label\">故事 Story</div>'\n        +     '<div class=\"wa-para\">'+esc(d.story)+'</div></div>')\n        +   h('usageZh', '<div class=\"wa-sec\"><div class=\"wa-sec-label\">现代用法 Today</div>'\n        +     '<div class=\"wa-para\">'+esc(d.usageZh)+'</div></div>')\n        +   '<div class=\"wa-sec\">'\n        +     '<div class=\"wa-sec-label\">English Corner</div>'\n        +     '<div class=\"wa-ec\">'\n        +       h('ecText', '<div class=\"wa-ec-text\">'+esc(d.ecText)+'</div>')\n        +       h('ecExample', '<div class=\"wa-ec-ex\">'+esc(d.ecExample)+'</div>')\n        +       h('ecZh', '<div class=\"wa-ec-zh\">'+esc(d.ecZh)+'</div>')\n        +     '</div>'\n        +   '</div>'\n        + '</div>'\n        + h('sourceZh', '<div class=\"wa-source\"><b>出处 Source</b> · '+esc(d.sourceZh)+'</div>')\n        + '</div>';\n    },\n    init: function (el, cardData, api) {\n      var data = (api && api.getCardData) ? api.getCardData() : cardData;\n      var d = data.data || {};\n      var ab = el.querySelector('.act-audio');\n      if (ab) ab.addEventListener('click', function(){ if(api&&api.playAudio) api.playAudio(d.nameZh || ''); if(api&&api.track) api.track('audio_play'); });\n      var mb = el.querySelector('.act-mark');\n      if (mb) mb.addEventListener('click', function(){ if(api&&api.toggleMark) api.toggleMark(); mb.classList.toggle('is-active'); var i=mb.querySelector('i'); if(i){ i.classList.toggle('fa-regular'); i.classList.toggle('fa-solid'); } if(api&&api.track) api.track('word_mark'); });\n      var vb = el.querySelector('.act-fav');\n      if (vb) vb.addEventListener('click', function(){ if(api&&api.toggleFavorite) api.toggleFavorite(); vb.classList.toggle('is-active'); var i=vb.querySelector('i'); if(i){ i.classList.toggle('fa-regular'); i.classList.toggle('fa-solid'); } if(api&&api.track) api.track('favorite_toggle'); });\n    }\n  };\n})();",
+  "trackedActions": [
+    {
+      "action": "audio_play",
+      "label": "朗读"
+    },
+    {
+      "action": "word_mark",
+      "label": "标记"
+    },
+    {
+      "action": "favorite_toggle",
+      "label": "收藏"
+    }
+  ],
+  "sampleData": [
+    {
+      "item_order": 1,
+      "group": "greek",
+      "groupZh": "希腊神话",
+      "nameZh": "阿喀琉斯之踵",
+      "nameEn": "Achilles' Heel",
+      "tagline": "刀枪不入的英雄，唯一的弱点在脚后跟。",
+      "story": "英雄阿喀琉斯出生时，被母亲握着他的脚踝浸入冥河斯提克斯，全身刀枪不入，唯独被握住的那处脚后跟没沾到神水。特洛伊战争中他战无不胜，最终被一支毒箭射中脚踝而亡。",
+      "usageZh": "中文用它比喻强者身上唯一的、致命的弱点，常说「XX 的阿喀琉斯之踵」。",
+      "ecText": "one's Achilles' heel = the one fatal weakness of a powerful person",
+      "ecExample": "His pride is the Achilles' heel that may cost him the deal.",
+      "ecZh": "骄傲是可能让他丢掉这笔生意的阿喀琉斯之踵。",
+      "sourceZh": "希腊神话 · 公有领域"
+    },
+    {
+      "item_order": 14,
+      "group": "history",
+      "groupZh": "罗马与历史",
+      "nameZh": "达摩克利斯之剑",
+      "nameEn": "Sword of Damocles",
+      "tagline": "王座上方，悬着一柄仅由一根马鬃系住的利剑。",
+      "story": "叙拉古僭主狄奥尼修斯让羡慕王权的宠臣达摩克利斯坐上宝座体验一天，却在他头顶悬一柄仅用一根马鬃系住的利剑。达摩克利斯这才明白：权势与享乐之上，永远悬着致命的危险。",
+      "usageZh": "「达摩克利斯之剑」喻指随时可能降临的危机，中文常写「头顶悬着一把达摩克利斯之剑」。",
+      "ecText": "to hang by a thread = to be in imminent, ever-present danger",
+      "ecExample": "The lawsuit hung over the company like the sword of Damocles.",
+      "ecZh": "那场诉讼像达摩克利斯之剑一样悬在公司头顶。",
+      "sourceZh": "古罗马典故（西塞罗）· 公有领域"
+    },
+    {
+      "item_order": 18,
+      "group": "bible",
+      "groupZh": "圣经",
+      "nameZh": "诺亚方舟",
+      "nameEn": "Noah's Ark",
+      "tagline": "洪水灭世时，一艘载着万物希望的大船。",
+      "story": "上帝见人间充满罪恶，决意降下洪水。义人诺亚受命造一艘大船，携家人与各类飞禽走兽各一对登舟。洪水退后，方舟停泊在亚拉腊山，人类与万物由此延续。",
+      "usageZh": "「诺亚方舟」喻指灾难中最后的避难所或救赎，中文也常说「最后的救命稻草」。",
+      "ecText": "Noah's Ark = a refuge that saves life in catastrophe",
+      "ecExample": "The seed bank is a modern Noah's Ark for endangered crops.",
+      "ecZh": "那座种子库是濒危作物的一艘现代诺亚方舟。",
+      "sourceZh": "《圣经·创世记》· 公有领域"
+    },
+    {
+      "item_order": 26,
+      "group": "literature",
+      "groupZh": "文学与童话",
+      "nameZh": "堂吉诃德",
+      "nameEn": "Don Quixote",
+      "tagline": "把风车当巨人、把客栈当城堡的「疯骑士」。",
+      "story": "乡绅堂吉诃德读了太多骑士小说，披上旧铠甲出门行侠仗义。他冲向风车、解救苦役、向羊群宣战，处处碰壁却始终不改其志。塞万提斯本想讽刺骑士文学，却塑造出一个令人又笑又敬的理想主义者。",
+      "usageZh": "「堂吉诃德式」形容脱离现实、一厢情愿的理想主义；也含知其不可而为之的悲壮。",
+      "ecText": "quixotic = idealistic but impractical",
+      "ecExample": "His quixotic plan to save the library won few supporters.",
+      "ecZh": "他那拯救图书馆的堂吉诃德式计划，应者寥寥。",
+      "sourceZh": "塞万提斯《堂吉诃德》(1605) · 公有领域"
+    }
+  ]
+}

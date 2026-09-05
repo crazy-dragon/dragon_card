@@ -1,0 +1,198 @@
+{
+  "name": "English Phonics · 自然拼读规则",
+  "lang": "en",
+  "description": "英语自然拼读 109 条规则（含 1 张引导卡）：字母基础 32 + 字母组合 49 + 音节重音 10 + 人名地名 18。每条配 3 个高频例词（可点击朗读）、规则说明与中文要领。人名地名专章覆盖 -ham/-bury/-cester 后缀规律与 Leicester/Sean/Thames 等经典特例。朗读英文例词（lang: en），可隐藏规则或要领作自测。",
+  "cardHtml": "",
+  "cardCss": "\n.ph-root{box-sizing:border-box;border-radius:16px;padding:13px 16px 15px;margin-bottom:16px;\n border:1px solid #dfe3e9;background:#f4f6f9;box-shadow:0 1px 2px rgba(20,24,33,.04)}\n@supports (background:color-mix(in srgb,red 10%,white)){\n.ph-root{background:color-mix(in srgb,var(--cat) 8%,white);\n border-color:color-mix(in srgb,var(--cat) 24%,white)}\n}\n.ph-top{display:flex;align-items:center;gap:8px;margin-bottom:9px;flex-wrap:wrap}\n.ph-sec{font-size:calc(14px * var(--card-font-scale,1));line-height:1;padding:5px 11px;border-radius:999px;\n background:var(--cat);color:#fff;font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.08)}\n.ph-en{font-size:calc(14px * var(--card-font-scale,1));line-height:1;padding:5px 10px;border-radius:999px;\n background:#fff;color:#454e5c;font-weight:700;border:0.5px solid rgba(0,0,0,.05)}\n.ph-space{flex:1}\n.ph-actions{display:flex;gap:2px}\n.ph-actions button{border:0;background:transparent;color:#5b6472;cursor:pointer;padding:6px 8px;\n border-radius:8px;font-size:15px;line-height:1;transition:background .15s}\n.ph-actions button:hover{background:rgba(255,255,255,.85);color:var(--cat,#333)}\n.ph-main{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}\n.ph-pat{font-size:calc(38px * var(--card-font-scale,1));line-height:1.15;font-weight:800;\n color:var(--ink,#18202b);letter-spacing:.5px}\n.ph-sound{font-size:calc(19px * var(--card-font-scale,1));font-weight:700;color:var(--cat,#454e5c);\n font-family:\"Charis SIL\",\"Gentium Plus\",\"Doulos SIL\",Georgia,serif}\n.ph-rule{margin-top:6px;font-size:14px;line-height:1.55;color:var(--ink,#41506b)}\n.ph-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}\n.ph-chip{border:1px solid #c6cdd9;background:#fff;color:#333a45;border-radius:12px;padding:6px 12px;\n font-size:15px;font-weight:600;cursor:pointer;user-select:none;transition:transform .1s}\n.ph-chip:active{transform:scale(.96)}\n.ph-chip .w{margin-right:7px}\n.ph-chip .p{font-size:13px;font-weight:500;color:#8a8f98;\n font-family:\"Charis SIL\",\"Gentium Plus\",Georgia,serif}\n@supports (background:color-mix(in srgb,red 10%,white)){\n.ph-chip{border-color:color-mix(in srgb,var(--cat) 40%,white)}\n}\n.ph-tip{margin-top:12px;padding:1px 0 1px 12px;border-left:3px solid var(--cat);\n font-size:calc(16px * var(--card-font-scale,1));line-height:1.6;color:var(--ink,#22303f)}\nbody.dark-mode .ph-root{border-color:#39404d}\nbody.dark-mode .ph-en{background:#2a2f38;color:#d7dbe2;border-color:#39404d}\nbody.dark-mode .ph-actions button{color:#c7cdd8}\nbody.dark-mode .ph-actions button:hover{background:rgba(255,255,255,.08)}\nbody.dark-mode .ph-chip{background:#2a2f38;border-color:#4a5260;color:#e6e9f0}\nbody.dark-mode .ph-chip .p{color:#9aa3b2}\n@supports (background:color-mix(in srgb,red 10%,#20242c)){\nbody.dark-mode .ph-root{background:color-mix(in srgb,var(--cat) 13%,#20242c)}\nbody.dark-mode .ph-chip{background:color-mix(in srgb,var(--cat) 15%,#262b34);\n border-color:color-mix(in srgb,var(--cat) 38%,#4a5260);color:#e8ebf2}\n}\n/* intro */\n.ph-intro{border:0;box-shadow:none;padding:0;background:transparent}\n.ph-intro .ph-intro-body{background:var(--card-bg,#fff);border:1px solid var(--line,#e6e4dd);\n border-radius:16px;padding:20px 22px}\n.ph-intro h2{margin:0 0 4px;font-size:calc(26px * var(--card-font-scale,1));color:var(--ink,#161b22)}\n.ph-intro .ph-i-en{font-size:14px;color:var(--ink,#8a8f98);margin-bottom:14px}\n.ph-i-formula{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 14px;\n font-size:17px;color:var(--ink,#2c3140)}\n.ph-i-formula b{padding:4px 10px;border-radius:8px;background:#eef1f6;border:1px solid #d5dbe4}\n.ph-intro .ph-i-sec{margin:14px 0 6px;font-weight:800;color:var(--ink,#161b22);font-size:15px}\n.ph-intro table{border-collapse:collapse;width:100%;font-size:15px;margin:4px 0 6px}\n.ph-intro td{padding:5px 10px;border-bottom:1px dashed var(--line,#e6e4dd);color:var(--ink,#2c3140)}\n.ph-intro td.zh{font-weight:700;width:150px}\n.ph-intro td.en{color:var(--ink,#8a8f98);font-size:13px}\n.ph-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}\n.ph-legend .lg{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line,#e6e4dd);\n border-radius:999px;padding:6px 13px;font-size:15px;font-weight:600;color:var(--ink,#3c4452);\n background:var(--card-bg,#fff)}\n.ph-legend .lg i{width:10px;height:10px;border-radius:50%;display:inline-block}\n",
+  "cardJs": "(function(){\nvar NAME='English Phonics · 自然拼读规则';\nvar SEC_MAP={'字母基础':'#2f6ac0','字母组合':'#7c44b4','音节重音':'#0e8f84','人名地名':'#c2572d'};\nvar SEC_EN={'字母基础':'single letters','字母组合':'letter teams','音节重音':'syllables & stress','人名地名':'names & places'};\nfunction esc(s){return String(s==null?'':s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c];});}\nfunction iconBtn(kind, on){return '<button type=\"button\" data-action=\"'+kind+'\" title=\"'+({play:'朗读例词',mark:'标记',favorite:'收藏'}[kind])+'\">'\n  + (kind==='play' ? '<i class=\"fa-solid fa-volume-high\"></i>'\n     : kind==='mark' ? '<i class=\"'+(on?'fa-solid':'fa-regular')+' fa-star\"></i>'\n     : '<i class=\"'+(on?'fa-solid':'fa-regular')+' fa-bookmark\"></i>') + '</button>';}\nfunction actionBar(api){var cd=api.getCardData?api.getCardData():{};\n  return '<div class=\"ph-actions\">'\n   + iconBtn('play',0) + iconBtn('mark',!!(cd.is_unknown)) + iconBtn('favorite',!!(cd.is_favorite))\n   + '</div>';}\nfunction renderIntro(){\n  var traps=[['-ough','though /ðəʊ/ · through /θruː/ · tough /tʌf/ · cough /kɒf/'],\n    ['-cester','Leicester /ˈlestə/ · Worcester /ˈwʊstə/ · Gloucester /ˈɡlɒstə/'],\n    ['-wich','Greenwich /ˈɡrenɪtʃ/ · Norwich /ˈnɒrɪdʒ/ · Ipswich /ˈɪpswɪtʃ/'],\n    ['爱尔兰名','Sean /ʃɔːn/ · Siobhán /ʃɪˈvɔːn/ · Niamh /niːv/ · Aoife /ˈiːfə/'],\n    ['ou / ow','soup /suːp/ · young /jʌŋ/ · cow /kaʊ/ · snow /snəʊ/'],\n    ['贵族姓氏','Cholmondeley /ˈtʃʌmli/ · Featherstonehaugh /ˈfænʃɔː/ · St. John /ˈsɪndʒən/']];\n  var t=traps.map(function(r){return '<tr><td class=\"zh\">'+r[0]+'</td><td class=\"en\">'+r[1]+'</td></tr>';}).join('');\n  var keys=['字母基础','字母组合','音节重音','人名地名'];\n  var leg=keys.map(function(k){return '<span class=\"lg\"><i style=\"background:'+SEC_MAP[k]+'\"></i>'+k+' · '+SEC_EN[k]+'</span>';}).join('');\n  return '<div class=\"ph-root ph-intro\" data-card-id=\"{{ID}}\"><div class=\"ph-intro-body\">'\n   +'<h2>自然拼读 · Phonics Rules</h2>'\n   +'<div class=\"ph-i-en\">Phonics maps spelling to sound: not \"what a word means\" but \"how it is pronounced\". IPA tells you the sound; phonics tells you why the letters make it — including names like Leicester and Sean.</div>'\n   +'<div class=\"ph-i-formula\"><b>109 条</b><span>=</span><b>字母基础 32</b><span>+</span><b>字母组合 49</b><span>+</span><b>音节重音 10</b><span>+</span><b>人名地名 18</b></div>'\n   +'<div class=\"ph-i-sec\">高频陷阱 · Famous traps in this deck</div>'+t\n   +'<div class=\"ph-i-sec\">四章结构 · The 4 sections</div><div class=\"ph-legend\">'+leg+'</div>'\n   +'<div class=\"ph-i-en\" style=\"margin-top:12px;margin-bottom:0\">Every card shows the pattern, its sound(s), 3 example words (click to hear), the rule, and a Chinese tip. 例词可点击朗读。</div>'\n   +'</div></div>';}\nfunction renderCard(d, api){\n  var col=SEC_MAP[d.sec]||'#64748b';\n  var chips=(d.ex||[]).map(function(p){\n    return '<span class=\"ph-chip\" data-word=\"'+esc(p[0])+'\"><span class=\"w\">'+esc(p[0])+'</span><span class=\"p\">/'+esc(p[1])+'/</span></span>';\n  }).join('');\n  return '<div class=\"ph-root\" data-card-id=\"{{ID}}\" style=\"--cat:'+col+'\">'\n   +'<div class=\"ph-top\"><span class=\"ph-sec\">'+esc(d.sec)+'</span><span class=\"ph-en\">'+esc(SEC_EN[d.sec]||'')+'</span>'\n   +'<span class=\"ph-space\"></span>'+actionBar(api)+'</div>'\n   +'<div class=\"ph-main\"><span class=\"ph-pat\">'+esc(d.pattern)+'</span><span class=\"ph-sound\">'+esc(d.sound)+'</span></div>'\n   +'<div class=\"ph-rule\">'+esc(d.rule)+'</div>'\n   +'<div class=\"ph-chips\">'+chips+'</div>'\n   +'<div class=\"ph-tip\">'+esc(d.tip)+'</div>'\n   +'</div>';}\nwindow.cardTemplate={\n  name:NAME,\n  fields:[\n    {key:'pattern',label:'拼读模式',hideable:false},\n    {key:'sound',label:'读音',hideable:false},\n    {key:'sec',label:'章节',hideable:false},\n    {key:'rule',label:'规则',hideable:true},\n    {key:'ex',label:'例词',hideable:true},\n    {key:'tip',label:'中文要领',hideable:true}\n  ],\n  render:function(cardHtml,cardData,api){var d=cardData.data||cardData;\n    var id=String((cardData.id!=null)?cardData.id:d.item_order);\n    var html=(d.type==='intro')?renderIntro():renderCard(d,api||{});\n    return html.split('{{ID}}').join(id);},\n  init:function(el,cardData,api){var d=cardData.data||cardData;\n    el.querySelectorAll('[data-action]').forEach(function(b){\n      b.addEventListener('click',function(ev){ev.preventDefault();ev.stopPropagation();\n        var a=b.getAttribute('data-action');\n        if(a==='play'){var w=(d.ex&&d.ex[0])?d.ex[0][0]:'';api.playAudio(w,'en');api.track&&api.track('audio_play');}\n        else if(a==='mark'){api.toggleMark&&api.toggleMark();api.rerender&&api.rerender();}\n        else if(a==='favorite'){api.toggleFavorite&&api.toggleFavorite();api.rerender&&api.rerender();}\n      });});\n    el.querySelectorAll('[data-word]').forEach(function(c){\n      c.addEventListener('click',function(ev){ev.preventDefault();ev.stopPropagation();\n        api.playAudio(c.getAttribute('data-word'),'en');api.track&&api.track('audio_play');});});}\n};\n})();\n",
+  "trackedActions": [
+    {
+      "action": "audio_play",
+      "label": "朗读例词"
+    },
+    {
+      "action": "word_mark",
+      "label": "标记"
+    },
+    {
+      "action": "favorite_toggle",
+      "label": "收藏"
+    }
+  ],
+  "sampleData": [
+    {
+      "type": "intro",
+      "nameZh": "自然拼读",
+      "nameEn": "English Phonics",
+      "item_order": 1
+    },
+    {
+      "sec": "字母基础",
+      "pattern": "a",
+      "sound": "/æ/",
+      "ex": [
+        [
+          "cat",
+          "kæt"
+        ],
+        [
+          "map",
+          "mæp"
+        ],
+        [
+          "hand",
+          "hænd"
+        ]
+      ],
+      "rule": "Short a in closed syllables — consonant ending, no magic e. Sharp and open, like \"aaah\" but short.",
+      "tip": "闭音节（辅音结尾、无 magic e）中的 a 读短音 /æ/；遇到词尾 magic e 才变 /eɪ/（cat → cake）。"
+    },
+    {
+      "sec": "字母基础",
+      "pattern": "c (软音)",
+      "sound": "/s/",
+      "ex": [
+        [
+          "city",
+          "sɪti"
+        ],
+        [
+          "cell",
+          "sel"
+        ],
+        [
+          "nice",
+          "naɪs"
+        ]
+      ],
+      "rule": "C before e, i, y softens to /s/: city, dance, cycle.",
+      "tip": "c 在 e/i/y 前软读 /s/（city、cycle）；a/o/u 前才是 /k/。"
+    },
+    {
+      "sec": "字母组合",
+      "pattern": "th (浊)",
+      "sound": "/ð/",
+      "ex": [
+        [
+          "this",
+          "ðɪs"
+        ],
+        [
+          "mother",
+          "mʌðə"
+        ],
+        [
+          "weather",
+          "weðə"
+        ]
+      ],
+      "rule": "Voiced th: this, other, smooth. Same tongue position, vocal cords on.",
+      "tip": "浊 th /ð/：舌位同 /θ/ 但声带振动（this、mother）；虚词多为浊（the、that）。"
+    },
+    {
+      "sec": "字母组合",
+      "pattern": "-ough",
+      "sound": "六读陷阱",
+      "ex": [
+        [
+          "though",
+          "ðəʊ"
+        ],
+        [
+          "through",
+          "θruː"
+        ],
+        [
+          "tough",
+          "tʌf"
+        ]
+      ],
+      "rule": "The famous trap: though /ðəʊ/, through /θruː/, tough /tʌf/, cough /kɒf/, bough /baʊ/, thought /θɔːt/.",
+      "tip": "-ough 六种读法全靠单词记：though、through、tough、cough、bough、thought —— 一个都不能推。"
+    },
+    {
+      "sec": "字母组合",
+      "pattern": "ou",
+      "sound": "/ʌ/",
+      "ex": [
+        [
+          "young",
+          "jʌŋ"
+        ],
+        [
+          "country",
+          "kʌntri"
+        ],
+        [
+          "touch",
+          "tʌtʃ"
+        ]
+      ],
+      "rule": "Trap: ou = /ʌ/ — young, country, enough, touch, trouble.",
+      "tip": "ou 陷阱二：/ʌ/（young、country、touch）——死记。"
+    },
+    {
+      "sec": "音节重音",
+      "pattern": "schwa /ə/",
+      "sound": "弱读之王",
+      "ex": [
+        [
+          "banana",
+          "bəˈnɑːnə"
+        ],
+        [
+          "sofa",
+          "səʊfə"
+        ],
+        [
+          "about",
+          "əˈbaʊt"
+        ]
+      ],
+      "rule": "Any vowel can reduce to /ə/ in unstressed syllables: banana has three a’s, none is /æ/ or /ɑː/... except the stressed one.",
+      "tip": "非重读元音一律弱化成 /ə/（banana、sofa）——英语听感的灵魂音。"
+    },
+    {
+      "sec": "人名地名",
+      "pattern": "-cester",
+      "sound": "/stə/",
+      "ex": [
+        [
+          "Leicester",
+          "lestə"
+        ],
+        [
+          "Worcester",
+          "wʊstə"
+        ],
+        [
+          "Gloucester",
+          "ɡlɒstə"
+        ]
+      ],
+      "rule": "The famous squeeze: -cester = /stə/ — Lester, WUster, GLOSter.",
+      "tip": "-cester 读 /stə/：Leicester=“莱斯特”、Worcester=“伍斯特” —— c 整段静音。"
+    },
+    {
+      "sec": "人名地名",
+      "pattern": "爱尔兰名 I",
+      "sound": "静音字母堆",
+      "ex": [
+        [
+          "Sean",
+          "ʃɔːn"
+        ],
+        [
+          "Siobhán",
+          "ʃɪˈvɔːn"
+        ],
+        [
+          "Niamh",
+          "niːv"
+        ]
+      ],
+      "rule": "Irish spelling is its own system: Sean = Shawn, Siobhán = shi-VAWN, Niamh = NEEV.",
+      "tip": "Sean 读 /ʃɔːn/（=Shawn）、Siobhán 读 /ʃɪˈvɔːn/、Niamh 读 /niːv/ —— 按爱尔兰规则别按字母拼。"
+    }
+  ]
+}

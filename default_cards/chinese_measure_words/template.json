@@ -1,0 +1,150 @@
+{
+  "name": "Chinese Measure Words · 汉语量词",
+  "lang": "zh",
+  "description": "汉语量词 195 个（含 1 张引导卡）：按 HSK 等级升序平铺，每词配英文用法说明、典型搭配（数词+量词+名词）与自撰例句。量词按七类着色（个体/集合/容器/度量/时间/动作/类别），等级徽章 HSK1-9（HSK+ = 词表外高频补充）。朗读中文量词（lang: zh），可隐藏搭配作自测。",
+  "cardHtml": "",
+  "cardCss": "\n.mw-root{box-sizing:border-box;border-radius:16px;padding:13px 16px 15px;margin-bottom:16px;\n border:1px solid #dfe3e9;background:#f4f6f9;box-shadow:0 1px 2px rgba(20,24,33,.04)}\n@supports (background:color-mix(in srgb,red 10%,white)){\n.mw-root{background:color-mix(in srgb,var(--cat) 8%,white);\n border-color:color-mix(in srgb,var(--cat) 24%,white)}\n}\n.mw-top{display:flex;align-items:center;gap:7px;margin-bottom:9px;flex-wrap:wrap}\n.mw-lv{font-size:11px;line-height:1;padding:4px 8px;border-radius:999px;background:#fff;\n color:#5b6472;font-weight:700;letter-spacing:.3px;border:0.5px solid rgba(0,0,0,.05)}\n.mw-cat{font-size:11px;line-height:1;padding:4px 9px;border-radius:999px;background:var(--cat);\n color:#fff;font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.08)}\n.mw-space{flex:1}\n.mw-actions{display:flex;gap:2px}\n.mw-actions button{border:0;background:transparent;color:#5b6472;cursor:pointer;padding:6px 8px;\n border-radius:8px;font-size:15px;line-height:1;transition:background .15s}\n.mw-actions button:hover{background:rgba(255,255,255,.85);color:var(--cat,#333)}\n.mw-word{font-size:calc(48px * var(--card-font-scale,1));line-height:1.12;font-weight:800;\n color:var(--ink,#18202b);letter-spacing:1px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}\n.mw-word .mw-py{font-size:calc(18px * var(--card-font-scale,1));font-weight:500;color:var(--ink,#8a8f98);\n letter-spacing:.5px}\n.mw-usage{margin-top:3px;font-size:14px;line-height:1.55;color:var(--ink,#41506b)}\n.mw-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}\n.mw-chip{border:1px solid #c6cdd9;background:#fff;color:#333a45;border-radius:999px;padding:5px 13px;\n font-size:15px;font-weight:600}\n@supports (background:color-mix(in srgb,red 10%,white)){\n.mw-chip{border-color:color-mix(in srgb,var(--cat) 40%,white);\n color:color-mix(in srgb,var(--cat) 72%,#14181f)}\n}\n.mw-ex{margin-top:12px;padding:1px 0 1px 12px;border-left:3px solid var(--cat);\n font-size:calc(18px * var(--card-font-scale,1));line-height:1.6;color:var(--ink,#22303f)}\n.mw-exen{font-size:14px;line-height:1.5;color:var(--ink,#8a8f98);margin-top:3px;padding-left:12px}\nbody.dark-mode .mw-root{border-color:#39404d}\nbody.dark-mode .mw-lv{background:#2a2f38;color:#d7dbe2}\nbody.dark-mode .mw-actions button{color:#c7cdd8}\nbody.dark-mode .mw-actions button:hover{background:rgba(255,255,255,.08)}\nbody.dark-mode .mw-chip{background:#2a2f38;border-color:#4a5260;color:#e6e9f0}\n@supports (background:color-mix(in srgb,red 10%,#20242c)){\nbody.dark-mode .mw-root{background:color-mix(in srgb,var(--cat) 13%,#20242c)}\nbody.dark-mode .mw-chip{background:color-mix(in srgb,var(--cat) 15%,#262b34);\n border-color:color-mix(in srgb,var(--cat) 38%,#4a5260);color:#e8ebf2}\n}\n/* intro */\n.mw-intro{border:0;box-shadow:none;padding:0;background:transparent}\n.mw-intro .mw-intro-body{background:var(--card-bg,#fff);border:1px solid var(--line,#e2e0da);\n border-radius:16px;padding:20px 22px}\n.mw-intro h2{margin:0 0 4px;font-size:calc(26px * var(--card-font-scale,1));color:var(--ink,#161b22)}\n.mw-intro .mw-i-en{font-size:14px;color:var(--ink,#8a8f98);margin-bottom:14px}\n.mw-i-formula{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 14px;\n font-size:17px;color:var(--ink,#2c3140)}\n.mw-i-formula b{padding:4px 10px;border-radius:8px;background:#eef1f6;border:1px solid #d5dbe4}\n.mw-intro .mw-i-sec{margin:14px 0 6px;font-weight:800;color:var(--ink,#161b22);font-size:15px}\n.mw-intro table{border-collapse:collapse;width:100%;font-size:15px;margin:4px 0 6px}\n.mw-intro td{padding:5px 10px;border-bottom:1px dashed var(--line,#e2e0da);color:var(--ink,#2c3140)}\n.mw-intro td.zh{font-weight:700;width:120px}\n.mw-intro td.en{color:var(--ink,#8a8f98);font-size:13px}\n.mw-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}\n.mw-legend .lg{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line,#e2e0da);\n border-radius:999px;padding:4px 10px;font-size:12.5px;color:var(--ink,#5b6472);background:var(--card-bg,#fff)}\n.mw-legend .lg i{width:9px;height:9px;border-radius:50%;display:inline-block}\n",
+  "cardJs": "(function(){\nvar NAME='Chinese Measure Words · 汉语量词';\nvar CAT_MAP={'个体':'#2f6ac0','集合':'#7c44b4','容器':'#0e8f84','度量':'#c2572d','时间':'#5a8a1f','动作':'#b03a48','类别':'#64748b'};\nvar LV_TEXT={'1':'HSK1','2':'HSK2','3':'HSK3','4':'HSK4','5':'HSK5','6':'HSK6','7-9':'HSK7-9','Extra':'HSK+'};\nfunction esc(s){return String(s==null?'':s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c];});}\nfunction iconBtn(kind, on){return '<button type=\"button\" data-action=\"'+kind+'\" title=\"'+({play:'朗读',mark:'标记',favorite:'收藏'}[kind])+'\">'\n  + (kind==='play' ? '<i class=\"fa-solid fa-volume-high\"></i>'\n     : kind==='mark' ? '<i class=\"'+(on?'fa-solid':'fa-regular')+' fa-star\"></i>'\n     : '<i class=\"'+(on?'fa-solid':'fa-regular')+' fa-bookmark\"></i>') + '</button>';}\nfunction actionBar(api){var cd=api.getCardData?api.getCardData():{};\n  return '<div class=\"mw-actions\">'\n   + iconBtn('play',0) + iconBtn('mark',!!(cd.is_unknown)) + iconBtn('favorite',!!(cd.is_favorite))\n   + '</div>';}\nfunction renderIntro(){\n  var rows=[\n    ['一张纸','a sheet of paper'],['三本书','three books'],['两只猫','two cats'],\n    ['五个人','five people'],['一杯茶','a cup of tea'],['看了一遍','read once through']];\n  var table=rows.map(function(r){return '<tr><td class=\"zh\">'+r[0]+'</td><td class=\"en\">'+r[1]+'</td></tr>';}).join('');\n  var keys=['个体','集合','容器','度量','时间','动作','类别'];\n  var en={'个体':'individual objects','集合':'pairs, sets & groups','容器':'containerfuls','度量':'units & measures','时间':'time spans','动作':'counting actions','类别':'kinds & types'};\n  var leg=keys.map(function(k){return '<span class=\"lg\"><i style=\"background:'+CAT_MAP[k]+'\"></i>'+k+' · '+en[k]+'</span>';}).join('');\n  return '<div class=\"mw-root mw-intro\" data-card-id=\"{{ID}}\"><div class=\"mw-intro-body\">'\n   +'<h2>量词 · Measure Words</h2>'\n   +'<div class=\"mw-i-en\">Chinese nouns are not counted directly. Between a number (or 这/那/每) and a noun you must put a <b>measure word</b> chosen for that noun — one of the hardest habits for learners to build.</div>'\n   +'<div class=\"mw-i-formula\"><b>数词</b><span>+</span><b>量词</b><span>+</span><b>名词</b><span style=\"color:#8a8f98\">number + measure word + noun</span></div>'\n   +'<div class=\"mw-i-sec\">基础搭配 · Core collocations</div>'+table\n   +'<div class=\"mw-i-sec\">七类量词 · The 7 kinds in this deck</div><div class=\"mw-legend\">'+leg+'</div>'\n   +'<div class=\"mw-i-en\" style=\"margin-top:12px;margin-bottom:0\">Every card shows the measure word, its HSK level, an English usage note, typical collocations (一+量+名), and a self-written example sentence.</div>'\n   +'</div></div>';}\nfunction renderCard(d, api){\n  var col=CAT_MAP[d.category]||'#64748b';\n  var chips=(d.collocations||[]).map(function(s){return '<span class=\"mw-chip\">'+esc(s)+'</span>';}).join('');\n  var lv=LV_TEXT[d.level]||d.level;\n  return '<div class=\"mw-root\" data-card-id=\"{{ID}}\" style=\"--cat:'+col+'\">'\n   +'<div class=\"mw-top\"><span class=\"mw-lv\">'+lv+'</span><span class=\"mw-cat\">'+esc(d.category)+'</span>'\n   +'<span class=\"mw-space\"></span>'+actionBar(api)+'</div>'\n   +'<div class=\"mw-word\">'+esc(d.mw)+'<span class=\"mw-py\">'+esc(d.pinyin)+'</span></div>'\n   +'<div class=\"mw-usage\">'+esc(d.usage)+'</div>'\n   +'<div class=\"mw-chips\">'+chips+'</div>'\n   +'<div class=\"mw-ex\">'+esc(d.example)+'</div>'\n   +'<div class=\"mw-exen\">'+esc(d.exampleEn)+'</div>'\n   +'</div>';}\nwindow.cardTemplate={\n  name:NAME,\n  fields:[\n    {key:'mw',label:'量词',hideable:false},\n    {key:'pinyin',label:'拼音',hideable:true},\n    {key:'usage',label:'用法说明',hideable:true},\n    {key:'collocations',label:'典型搭配',hideable:true},\n    {key:'example',label:'例句',hideable:true},\n    {key:'exampleEn',label:'例句译文',hideable:true},\n    {key:'level',label:'HSK 等级',hideable:true}\n  ],\n  render:function(cardHtml,cardData,api){var d=cardData.data||cardData;\n    var id=String((cardData.id!=null)?cardData.id:d.item_order);\n    var html=(d.type==='intro')?renderIntro():renderCard(d,api||{});\n    return html.split('{{ID}}').join(id);},\n  init:function(el,cardData,api){var d=cardData.data||cardData;\n    el.querySelectorAll('[data-action]').forEach(function(b){\n      b.addEventListener('click',function(ev){ev.preventDefault();ev.stopPropagation();\n        var a=b.getAttribute('data-action');\n        if(a==='play'){api.playAudio(d.mw||'');api.track&&api.track('audio_play');}\n        else if(a==='mark'){api.toggleMark&&api.toggleMark();api.rerender&&api.rerender();}\n        else if(a==='favorite'){api.toggleFavorite&&api.toggleFavorite();api.rerender&&api.rerender();}\n      });});}\n};\n})();\n",
+  "trackedActions": [
+    {
+      "action": "audio_play",
+      "label": "朗读"
+    },
+    {
+      "action": "word_mark",
+      "label": "标记"
+    },
+    {
+      "action": "favorite_toggle",
+      "label": "收藏"
+    }
+  ],
+  "sampleData": [
+    {
+      "type": "intro",
+      "nameZh": "量词",
+      "nameEn": "Measure Words",
+      "item_order": 1
+    },
+    {
+      "mw": "个",
+      "pinyin": "gè",
+      "category": "个体",
+      "level": "1",
+      "usage": "the all-purpose measure word: people, everyday objects, and most nouns that have no special measure word (一个星期).",
+      "collocations": [
+        "一个人",
+        "一个苹果",
+        "一个星期"
+      ],
+      "example": "我有一个哥哥和一个妹妹。",
+      "exampleEn": "I have an older brother and a younger sister.",
+      "item_order": 2
+    },
+    {
+      "mw": "杯",
+      "pinyin": "bēi",
+      "category": "容器",
+      "level": "1",
+      "usage": "a cup or glass of (一杯茶, 一杯水).",
+      "collocations": [
+        "一杯茶",
+        "一杯水",
+        "一杯咖啡"
+      ],
+      "example": "我想喝一杯热茶。",
+      "exampleEn": "I would like a cup of hot tea.",
+      "item_order": 21
+    },
+    {
+      "mw": "次",
+      "pinyin": "cì",
+      "category": "动作",
+      "level": "2",
+      "usage": "time, occasion — counts how many times something happens (第一次 = the first time).",
+      "collocations": [
+        "一次",
+        "两次",
+        "第一次"
+      ],
+      "example": "我去过两次北京。",
+      "exampleEn": "I have been to Beijing twice.",
+      "item_order": 29
+    },
+    {
+      "mw": "张",
+      "pinyin": "zhāng",
+      "category": "个体",
+      "level": "3",
+      "usage": "for flat, sheet-like objects: paper, tables, beds, photos and tickets.",
+      "collocations": [
+        "一张纸",
+        "一张桌子",
+        "一张照片"
+      ],
+      "example": "我想买一张桌子。",
+      "exampleEn": "I want to buy a table.",
+      "item_order": 33
+    },
+    {
+      "mw": "双",
+      "pinyin": "shuāng",
+      "category": "集合",
+      "level": "3",
+      "usage": "for pairs of things that come in twos (a pair of shoes, socks, chopsticks).",
+      "collocations": [
+        "一双鞋",
+        "一双袜子",
+        "一双筷子"
+      ],
+      "example": "我买了一双新鞋。",
+      "exampleEn": "I bought a new pair of shoes.",
+      "item_order": 44
+    },
+    {
+      "mw": "斤",
+      "pinyin": "jīn",
+      "category": "度量",
+      "level": "3",
+      "usage": "jin, a Chinese weight unit equal to 500 grams (half a kilogram); 半斤 = half a jin.",
+      "collocations": [
+        "一斤苹果",
+        "两斤肉",
+        "半斤"
+      ],
+      "example": "我买了两斤苹果。",
+      "exampleEn": "I bought two jin of apples.",
+      "item_order": 45
+    },
+    {
+      "mw": "颗",
+      "pinyin": "kē",
+      "category": "个体",
+      "level": "5",
+      "usage": "for small round objects: stars, teeth, pieces of candy and pearls (一颗星星, 一颗糖).",
+      "collocations": [
+        "一颗星星",
+        "一颗糖",
+        "一颗牙"
+      ],
+      "example": "天上有一颗最亮的星星。",
+      "exampleEn": "There is one brightest star in the sky.",
+      "item_order": 99
+    },
+    {
+      "mw": "串",
+      "pinyin": "chuàn",
+      "category": "集合",
+      "level": "6",
+      "usage": "a string or bunch of items threaded or clustered together (一串葡萄, 一串钥匙).",
+      "collocations": [
+        "一串葡萄",
+        "一串钥匙",
+        "一串珍珠"
+      ],
+      "example": "他手里拿着一串钥匙。",
+      "exampleEn": "He is holding a bunch of keys.",
+      "item_order": 136
+    }
+  ]
+}

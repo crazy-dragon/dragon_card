@@ -1,0 +1,173 @@
+{
+  "name": "英语句子成分与五种基本句型",
+  "lang": "zh",
+  "description": "英语语法卡：五种基本句型（主谓/主系表/主谓宾/主谓双宾/主谓宾补）+ 句子成分 + 易混辨析。理解型平铺卡，例句按成分着色，附句型公式、逐词拆解、中英双语讲解。",
+  "cardHtml": "<div class=\"sp-root\" data-card-id=\"{{id}}\"></div>",
+  "cardCss": "\n.sp-root{ background:#f7f9fc; border:1px solid #e2e8f0; border-radius:14px; box-shadow:0 1px 3px rgba(30,41,59,.06); margin-bottom:16px; overflow:hidden; }\n.sp-bar{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 16px; border-bottom:1px solid #e9eef4; background:#eef2f7; }\n.sp-bar-left{ display:inline-flex; align-items:center; gap:8px; min-width:0; }\n.sp-badge{ display:inline-flex; align-items:center; font-size:11px; font-weight:700; letter-spacing:.5px; padding:3px 9px; border-radius:9999px; color:#fff; white-space:nowrap; }\n.sp-label{ font-size:13px; font-weight:600; color:#33415c; }\n.sp-actions{ display:flex; gap:7px; }\n.sp-act{ position:relative; width:44px; height:44px; border-radius:9999px; border:none; cursor:pointer; background:#e2e9f1; color:#5a6b7d; font-size:17px; display:inline-flex; align-items:center; justify-content:center; transition:all .18s ease; }\n.sp-act:hover{ background:#3b82f6; color:#fff; }\n.sp-act:active{ transform:scale(.92); }\n.sp-act.is-active{ background:#3b82f6; color:#fff; }\n.sp-act.act-mark.is-active{ background:#f59e0b; color:#fff; }\n.sp-act.act-fav.is-active{ background:#ec4899; color:#fff; }\n.sp-act::after{ content:attr(data-tip); position:absolute; top:100%; left:50%; transform:translateX(-50%) translateY(3px); background:#33415c; color:#fff; font-size:11.5px; font-weight:600; padding:4px 9px; border-radius:7px; white-space:nowrap; opacity:0; visibility:hidden; pointer-events:none; z-index:20; transition:opacity .18s ease, transform .18s ease, visibility .18s; }\n.sp-act:hover::after{ opacity:1; visibility:visible; transform:translateX(-50%) translateY(7px); }\n.sp-body{ padding:20px 22px; display:flex; flex-direction:column; }\n.sp-tok{ padding:0 2px; border-radius:3px; font-weight:700; border-bottom:3px solid transparent; }\n.sp-sentence{ font-size:34px; font-weight:800; color:#1e293b; line-height:1.4; letter-spacing:-.4px; margin-bottom:14px; }\n.sp-formula-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:6px; }\n.sp-formula{ display:inline-flex; align-items:center; gap:5px; flex-wrap:wrap; }\n.sp-part{ font-size:21px; font-weight:800; padding:5px 12px; border-radius:8px; color:#fff; }\n.sp-plus{ font-size:21px; font-weight:700; color:#cbd5e1; }\n.sp-name{ font-size:26px; font-weight:800; color:#1e293b; }\n.sp-name-en{ font-size:14px; color:#94a3b8; margin-bottom:14px; letter-spacing:.3px; }\n.sp-sec{ font-size:11px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:#94a3b8; margin-bottom:7px; }\n.sp-breakdown{ display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }\n.sp-row{ display:flex; align-items:center; gap:9px; font-size:15px; }\n.sp-dot{ width:10px; height:10px; border-radius:50%; flex:0 0 auto; }\n.sp-role{ font-size:12.5px; color:#64748b; }\n.sp-note{ font-size:14px; color:#475569; line-height:1.65; background:#eef2f7; border-left:3px solid #3b82f6; border-radius:0 8px 8px 0; padding:9px 12px; }\n.sp-note-en{ font-size:14px; color:#475569; line-height:1.65; background:#f3f0fa; border-left:3px solid #8b5cf6; border-radius:0 8px 8px 0; padding:9px 12px; font-style:italic; }\n.sp-note + .sp-note-en{ margin-top:8px; }\n.sp-trans{ margin-top:12px; font-size:14px; color:#64748b; }\n.sp-trans b{ color:#475569; }\n.sp-example{ font-size:22px; font-weight:700; color:#1e293b; line-height:1.5; margin-bottom:12px; }\n.sp-contrast{ display:flex; flex-direction:column; gap:16px; }\n.sp-c-item{ }\n.sp-c-tag{ display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:.5px; color:#94a3b8; margin-bottom:5px; }\n.sp-c-sentence{ font-size:21px; font-weight:800; color:#1e293b; line-height:1.45; letter-spacing:-.2px; margin-bottom:6px; }\n.sp-divider{ height:1px; background:#e9eef4; margin:6px 0; }\n.sp-overview{ display:flex; flex-direction:column; margin-bottom:14px; }\n.sp-ov-item{ display:flex; align-items:flex-start; gap:11px; padding:8px 0; }\n.sp-ov-item + .sp-ov-item{ border-top:1px dashed #e9eef4; }\n.sp-ov-num{ flex:0 0 auto; width:22px; height:22px; border-radius:50%; background:#e2e9f1; color:#5a6b7d; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:4px; }\n.sp-ov-body{ flex:1; min-width:0; }\n.sp-ov-head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:3px; }\n.sp-overview .sp-part{ font-size:14px; padding:3px 8px; }\n.sp-overview .sp-plus{ font-size:14px; }\n.sp-ov-name{ font-size:15px; font-weight:700; color:#1e293b; }\n.sp-ov-sentence{ font-size:13.5px; color:#64748b; }\n\n.sp-rule{ font-size:14px; color:#2f5a5e; line-height:1.7; background:#eef7f7; border-left:3px solid #14b8a6; border-radius:0 8px 8px 0; padding:9px 13px; margin-bottom:14px; }\n.sp-rule b{ color:#0d9488; }\n.sp-checks{ display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }\n.sp-check{ background:#fbfcfd; border:1px solid #e4eaf1; border-radius:10px; padding:10px 13px; }\n.sp-chk-top{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:7px; }\n.sp-chk-before{ font-size:16px; font-weight:700; color:#64748b; }\n.sp-chk-arrow{ font-size:11px; font-weight:700; color:#0d9488; background:#e6f4f3; border-radius:6px; padding:2px 7px; white-space:nowrap; }\n.sp-chk-after{ font-size:17px; font-weight:800; color:#1e293b; }\n.sp-chk-mark{ font-size:11.5px; font-weight:700; padding:3px 8px; border-radius:9999px; color:#fff; background:#33415c; white-space:nowrap; }\n.sp-chk-mark.no{ background:#94a3b8; }\n.sp-chk-verdict{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:13px; color:#475569; }\n.sp-check .sp-part{ font-size:13px; padding:3px 8px; }\n.sp-check .sp-plus{ font-size:13px; }\n.sp-chk-name{ font-weight:800; font-size:15px; color:#1e293b; }\n.sp-chk-why{ color:#64748b; font-size:12.5px; }\n/* dark mode */\n/* dark mode */\nbody.dark-mode .sp-root{ background:#1f262a; border-color:#2e363b; }\nbody.dark-mode .sp-bar{ background:#232b30; border-bottom-color:#2e363b; }\nbody.dark-mode .sp-label, body.dark-mode .sp-name, body.dark-mode .sp-sentence, body.dark-mode .sp-c-sentence, body.dark-mode .sp-example{ color:#e2e8f0; }\nbody.dark-mode .sp-note{ background:#252e33; color:#a3b5b4; }\nbody.dark-mode .sp-note-en{ background:#2a2633; color:#b8adcc; }\nbody.dark-mode .sp-trans, body.dark-mode .sp-role, body.dark-mode .sp-name-en, body.dark-mode .sp-sec, body.dark-mode .sp-c-tag{ color:#7d8f8e; }\nbody.dark-mode .sp-act{ background:#2b343a; color:#a3b5b4; }\nbody.dark-mode .sp-act:hover{ background:#3b82f6; color:#fff; }\nbody.dark-mode .sp-plus{ color:#475569; }\nbody.dark-mode .sp-divider{ background:#2e363b; }\nbody.dark-mode .sp-ov-item + .sp-ov-item{ border-top-color:#2e363b; }\nbody.dark-mode .sp-ov-num{ background:#2b343a; color:#a3b5b4; }\nbody.dark-mode .sp-ov-name{ color:#e2e8f0; }\nbody.dark-mode .sp-ov-sentence{ color:#7d8f8e; }\nbody.dark-mode .sp-rule{ background:#1e2c2c; color:#9fc6c4; }\nbody.dark-mode .sp-check{ background:#232b30; border-color:#2e363b; }\nbody.dark-mode .sp-chk-before{ color:#7d8f8e; }\nbody.dark-mode .sp-chk-arrow{ background:#24393a; color:#5eead4; }\nbody.dark-mode .sp-chk-after, body.dark-mode .sp-chk-name{ color:#e2e8f0; }\nbody.dark-mode .sp-chk-why{ color:#7d8f8e; }\nbody.dark-mode .sp-chk-mark{ background:#3d4a58; }\nbody.dark-mode .sp-chk-mark.no{ background:#64748b; }\n",
+  "cardJs": "(function () {\n  'use strict';\n  function esc(s){ if(s==null) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }\n  var ROLE = {\n    'S':    { c:'#3b82f6', n:'主语' },\n    'V':    { c:'#22c55e', n:'谓语' },\n    'P':    { c:'#8b5cf6', n:'表语' },\n    'O':    { c:'#f59e0b', n:'宾语' },\n    'IO':   { c:'#fbbf24', n:'间接宾语' },\n    'DO':   { c:'#f59e0b', n:'直接宾语' },\n    'OC':   { c:'#ec4899', n:'宾补' },\n    'A':    { c:'#94a3b8', n:'状语' },\n    'Attr': { c:'#94a3b8', n:'定语' }\n  };\n  var BADGE = {\n    'overview':  { c:'#0ea5e9', t:'总览' },\n    'pattern':   { c:'#3b82f6', t:'句型' },\n    'component': { c:'#22c55e', t:'成分' },\n    'contrast':  { c:'#8b5cf6', t:'辨析' },\n    'check':     { c:'#e11d48', t:'检验' }\n  };\n  function rl(r){ return ROLE[r] || { c:'#64748b', n:'' }; }\n  function tok(t){ var r=rl(t.role); return '<span class=\"sp-tok\" style=\"color:'+r.c+';border-bottom-color:'+r.c+'\">'+esc(t.text)+'</span>'; }\n  function sentence(bd, cls){\n    if(!bd || !bd.length) return '';\n    var parts=[]; for(var i=0;i<bd.length;i++) parts.push(tok(bd[i]));\n    return '<span class=\"'+cls+'\">'+parts.join(' ')+'</span>';\n  }\n  function formula(p){\n    if(!p) return '';\n    var toks=p.split('+'); var out='';\n    for(var i=0;i<toks.length;i++){\n      var t=toks[i].trim(); var r=ROLE[t];\n      out += r ? '<span class=\"sp-part\" style=\"background:'+r.c+'\">'+esc(t)+'</span>'\n               : '<span class=\"sp-plus\">'+esc(t)+'</span>';\n    }\n    return out;\n  }\n  function breakdown(bd){\n    if(!bd || !bd.length) return '';\n    var out='';\n    for(var i=0;i<bd.length;i++){\n      var r=rl(bd[i].role);\n      out += '<div class=\"sp-row\"><span class=\"sp-dot\" style=\"background:'+r.c+'\"></span>'\n           + '<span class=\"sp-tok\" style=\"color:'+r.c+';border-bottom-color:'+r.c+'\">'+esc(bd[i].text)+'</span>'\n           + '<span class=\"sp-role\">'+esc(r.n)+'</span></div>';\n    }\n    return out;\n  }\n  function actionBar(){\n    return '<div class=\"sp-actions\">'\n      + '<button class=\"sp-act act-audio\" data-action=\"audio\" data-tip=\"朗读\"><i class=\"fa-solid fa-volume-high\"></i></button>'\n      + '<button class=\"sp-act act-mark\" data-action=\"mark\" data-tip=\"标记\"><i class=\"fa-regular fa-star\"></i></button>'\n      + '<button class=\"sp-act act-fav\" data-action=\"favorite\" data-tip=\"收藏\"><i class=\"fa-regular fa-bookmark\"></i></button>'\n      + '</div>';\n  }\n  window.cardTemplate = {\n    name: '英语句子成分与五种基本句型',\n    fields: [\n      { key:'type',       label:'类型',       hideable:false },\n      { key:'rows',       label:'句型列表',   hideable:false },\n      { key:'labelZh',    label:'中文名',     hideable:false },\n      { key:'labelEn',    label:'英文名',     hideable:true  },\n      { key:'pattern',    label:'句型公式',   hideable:false },\n      { key:'pattern2',   label:'句型公式2',  hideable:true  },\n      { key:'sentence',   label:'例句',       hideable:false },\n      { key:'breakdown',  label:'成分拆解',   hideable:false },\n      { key:'sentence2',  label:'对比例句',   hideable:true  },\n      { key:'breakdown2', label:'对比拆解',   hideable:true  },\n      { key:'sentenceZh', label:'中文释义',   hideable:true  },\n      { key:'note',       label:'讲解',       hideable:true  },\n      { key:'noteEn',     label:'英文解释',   hideable:true  },\n      { key:'rule',       label:'检验规则',   hideable:false },\n      { key:'checks',     label:'检验示例',   hideable:false }\n    ],\n    render: function (cardHtml, cardData, api) {\n      var data = (api && api.getCardData) ? api.getCardData() : cardData;\n      var d = data.data || {};\n      var hidden = (api.getHiddenFields && api.getHiddenFields()) || {};\n      function h(k, html){ return (hidden.has && hidden.has(k)) ? '' : html; }\n      var b = BADGE[d.type] || { c:'#64748b', t:'' };\n      var body = '';\n      if (d.type === 'overview') {\n        var rows = d.rows || [];\n        var ovHtml = '';\n        for (var i=0;i<rows.length;i++){\n          var r = rows[i] || {};\n          ovHtml += '<div class=\"sp-ov-item\"><span class=\"sp-ov-num\">'+(i+1)+'</span>'\n                  + '<div class=\"sp-ov-body\">'\n                  +   '<div class=\"sp-ov-head\"><span class=\"sp-formula\">'+formula(r.pattern)+'</span>'\n                  +   '<span class=\"sp-ov-name\">'+esc(r.labelZh)+'</span></div>'\n                  +   '<div class=\"sp-ov-sentence\">'+esc(r.sentence)+'</div>'\n                  + '</div></div>';\n        }\n        body = '<div class=\"sp-name\" style=\"font-size:30px\">'+esc(d.labelZh)+'</div>'\n             + h('labelEn', '<div class=\"sp-name-en\" style=\"font-size:15px\">'+esc(d.labelEn)+'</div>')\n             + '<div class=\"sp-overview\">'+ovHtml+'</div>'\n             + h('note', '<div class=\"sp-note\">'+esc(d.note)+'</div>');\n      } else if (d.type === 'component') {\n        body = '<div class=\"sp-name\" style=\"font-size:32px\">'+esc(d.labelZh)+'</div>'\n             + h('labelEn', '<div class=\"sp-name-en\" style=\"font-size:15px\">'+esc(d.labelEn)+'</div>')\n             + h('note', '<div class=\"sp-note\">'+esc(d.note)+'</div>')\n             + h('noteEn', '<div class=\"sp-note-en\">'+esc(d.noteEn)+'</div>')\n             + '<div class=\"sp-sec\" style=\"margin-top:16px\">Example</div>'\n             + h('breakdown', '<div class=\"sp-example\">'+sentence(d.breakdown,'')+'</div>')\n             + h('breakdown', '<div class=\"sp-breakdown\">'+breakdown(d.breakdown)+'</div>')\n             + h('sentenceZh', '<div class=\"sp-trans\"><b>译：</b>'+esc(d.sentenceZh)+'</div>');\n      } else if (d.type === 'contrast') {\n        body = '<div class=\"sp-name\" style=\"font-size:21px\">'+esc(d.labelZh)+'</div>'\n             + h('labelEn', '<div class=\"sp-name-en\">'+esc(d.labelEn)+'</div>')\n             + '<div class=\"sp-contrast\">'\n             + '<div class=\"sp-c-item\"><div class=\"sp-c-tag\">句子 A</div>'\n             + h('breakdown', '<div class=\"sp-c-sentence\">'+sentence(d.breakdown,'')+'</div>')\n             + h('pattern', '<div class=\"sp-formula\">'+formula(d.pattern)+'</div>')\n             + h('breakdown', '<div class=\"sp-breakdown\">'+breakdown(d.breakdown)+'</div>')\n             + '</div>'\n             + '<div class=\"sp-c-item\"><div class=\"sp-c-tag\">句子 B</div>'\n             + h('breakdown2', '<div class=\"sp-c-sentence\">'+sentence(d.breakdown2,'')+'</div>')\n             + h('pattern2', '<div class=\"sp-formula\">'+formula(d.pattern2)+'</div>')\n             + h('breakdown2', '<div class=\"sp-breakdown\">'+breakdown(d.breakdown2)+'</div>')\n             + '</div>'\n             + '</div>'\n             + h('note', '<div class=\"sp-note\" style=\"margin-top:14px\">'+esc(d.note)+'</div>')\n             + h('sentenceZh', '<div class=\"sp-trans\"><b>译：</b>'+esc(d.sentenceZh)+'</div>');\n      } else if (d.type === 'check') {\n        var checks = d.checks || [];\n        var chkHtml = '';\n        for (var ci=0; ci<checks.length; ci++){\n          var ck = checks[ci] || {};\n          var mk = ck.ok\n            ? '<span class=\"sp-chk-mark\">&#10003; 说得通</span>'\n            : '<span class=\"sp-chk-mark no\">&#10007; 说不通</span>';\n          chkHtml += '<div class=\"sp-check\">'\n              + '<div class=\"sp-chk-top\"><span class=\"sp-chk-before\">'+esc(ck.before)+'</span>'\n              + '<span class=\"sp-chk-arrow\">换成 be</span>'\n              + '<span class=\"sp-chk-after\">'+esc(ck.after)+'</span>'\n              + mk + '</div>'\n              + '<div class=\"sp-chk-verdict\"><span class=\"sp-formula\">'+formula(ck.pattern)+'</span>'\n              + '<span class=\"sp-chk-name\">'+esc(ck.name)+'</span>'\n              + (ck.why ? '<span class=\"sp-chk-why\">'+esc(ck.why)+'</span>' : '')\n              + '</div></div>';\n        }\n        body = '<div class=\"sp-name\" style=\"font-size:28px\">'+esc(d.labelZh)+'</div>'\n             + h('labelEn', '<div class=\"sp-name-en\" style=\"font-size:15px\">'+esc(d.labelEn)+'</div>')\n             + h('rule', '<div class=\"sp-rule\">'+esc(d.rule)+'</div>')\n             + h('checks', '<div class=\"sp-checks\">'+chkHtml+'</div>')\n             + h('note', '<div class=\"sp-note\">'+esc(d.note)+'</div>');\n      } else { // pattern\n        body = h('breakdown', '<div class=\"sp-sentence\">'+sentence(d.breakdown,'')+'</div>')\n             + '<div class=\"sp-formula-row\">'\n             +   h('pattern', '<div class=\"sp-formula\">'+formula(d.pattern)+'</div>')\n             +   '<div class=\"sp-name\">'+esc(d.labelZh)+'</div>'\n             + '</div>'\n             + h('labelEn', '<div class=\"sp-name-en\">'+esc(d.labelEn)+'</div>')\n             + '<div class=\"sp-sec\">成分拆解</div>'\n             + h('breakdown', '<div class=\"sp-breakdown\">'+breakdown(d.breakdown)+'</div>')\n             + h('note', '<div class=\"sp-note\">'+esc(d.note)+'</div>')\n             + h('sentenceZh', '<div class=\"sp-trans\"><b>译：</b>'+esc(d.sentenceZh)+'</div>');\n      }\n      return '<div class=\"sp-root\" data-card-id=\"'+esc(data.id)+'\">'\n           + '<div class=\"sp-bar\">'\n           +   '<span class=\"sp-bar-left\"><span class=\"sp-badge\" style=\"background:'+b.c+'\">'+esc(b.t)+'</span>'\n           +     h('labelZh', '<span class=\"sp-label\">'+esc(d.labelZh)+'</span>') + '</span>'\n           +   actionBar()\n           + '</div>'\n           + '<div class=\"sp-body\">'+body+'</div>'\n           + '</div>';\n    },\n    init: function (el, cardData, api) {\n      var data = (api && api.getCardData) ? api.getCardData() : cardData;\n      var d = data.data || {};\n      var ab = el.querySelector('.act-audio');\n      if (ab) ab.addEventListener('click', function(){ if(api&&api.playAudio) api.playAudio(d.labelZh || ''); if(api&&api.track) api.track('audio_play'); });\n      var mb = el.querySelector('.act-mark');\n      if (mb) mb.addEventListener('click', function(){ if(api&&api.toggleMark) api.toggleMark(); mb.classList.toggle('is-active'); var i=mb.querySelector('i'); if(i){ i.classList.toggle('fa-regular'); i.classList.toggle('fa-solid'); } if(api&&api.track) api.track('word_mark'); });\n      var vb = el.querySelector('.act-fav');\n      if (vb) vb.addEventListener('click', function(){ if(api&&api.toggleFavorite) api.toggleFavorite(); vb.classList.toggle('is-active'); var i=vb.querySelector('i'); if(i){ i.classList.toggle('fa-regular'); i.classList.toggle('fa-solid'); } if(api&&api.track) api.track('favorite_toggle'); });\n    }\n  };\n})();",
+  "trackedActions": [
+    {
+      "action": "audio_play",
+      "label": "朗读"
+    },
+    {
+      "action": "word_mark",
+      "label": "标记"
+    },
+    {
+      "action": "favorite_toggle",
+      "label": "收藏"
+    }
+  ],
+  "sampleData": [
+    {
+      "type": "overview",
+      "labelZh": "五种基本句型",
+      "labelEn": "Five Basic Sentence Patterns",
+      "rows": [
+        {
+          "pattern": "S + V",
+          "labelZh": "主谓结构",
+          "sentence": "Birds fly."
+        },
+        {
+          "pattern": "S + V + P",
+          "labelZh": "主系表结构",
+          "sentence": "She is a teacher."
+        },
+        {
+          "pattern": "S + V + O",
+          "labelZh": "主谓宾结构",
+          "sentence": "I love music."
+        },
+        {
+          "pattern": "S + V + IO + DO",
+          "labelZh": "主谓双宾结构",
+          "sentence": "He gave me a book."
+        },
+        {
+          "pattern": "S + V + O + OC",
+          "labelZh": "主谓宾补结构",
+          "sentence": "They made him monitor."
+        }
+      ],
+      "note": "英语句子看似千变万化，其实都由这五种基本句型扩展而来。从最简单的「主谓」到最复杂的「主谓宾补」，记住这条主线，任何长难句都能拆回骨架。"
+    },
+    {
+      "type": "pattern",
+      "labelZh": "主谓宾结构",
+      "labelEn": "Subject + Verb + Object",
+      "pattern": "S + V + O",
+      "sentence": "I love music.",
+      "breakdown": [
+        {
+          "text": "I",
+          "role": "S"
+        },
+        {
+          "text": "love",
+          "role": "V"
+        },
+        {
+          "text": "music.",
+          "role": "O"
+        }
+      ],
+      "sentenceZh": "我爱音乐。",
+      "note": "谓语 love 是及物动词（vt.），后面必须接宾语。music 就是 love 这个动作的承受者。"
+    },
+    {
+      "type": "pattern",
+      "labelZh": "主系表结构",
+      "labelEn": "Subject + Link Verb + Predicative",
+      "pattern": "S + V + P",
+      "sentence": "He looks happy.",
+      "breakdown": [
+        {
+          "text": "He",
+          "role": "S"
+        },
+        {
+          "text": "looks",
+          "role": "V"
+        },
+        {
+          "text": "happy.",
+          "role": "P"
+        }
+      ],
+      "sentenceZh": "他看起来很开心。",
+      "note": "look 在这里是系动词（link v.），不表示\"看\"，而是\"看起来\"。happy 是表语，用来说明主语的状态。"
+    },
+    {
+      "type": "component",
+      "labelZh": "宾语",
+      "labelEn": "Object",
+      "sentence": "I love music.",
+      "breakdown": [
+        {
+          "text": "I",
+          "role": "S"
+        },
+        {
+          "text": "love",
+          "role": "V"
+        },
+        {
+          "text": "music.",
+          "role": "O"
+        }
+      ],
+      "sentenceZh": "我爱音乐。",
+      "note": "宾语是动作的承受者，放在及物动词之后。句中 music 承受了 love 这个动作，所以它是宾语。",
+      "noteEn": "The object is the person or thing that receives the action of a transitive verb. Here, music receives the action of love."
+    },
+    {
+      "type": "contrast",
+      "labelZh": "双宾语 vs 复合宾语",
+      "labelEn": "Double Object vs Complex Object",
+      "pattern": "S + V + IO + DO",
+      "pattern2": "S + V + O + OC",
+      "sentence": "He gave me a book.",
+      "breakdown": [
+        {
+          "text": "He",
+          "role": "S"
+        },
+        {
+          "text": "gave",
+          "role": "V"
+        },
+        {
+          "text": "me",
+          "role": "IO"
+        },
+        {
+          "text": "a book.",
+          "role": "DO"
+        }
+      ],
+      "sentence2": "They made him monitor.",
+      "breakdown2": [
+        {
+          "text": "They",
+          "role": "S"
+        },
+        {
+          "text": "made",
+          "role": "V"
+        },
+        {
+          "text": "him",
+          "role": "O"
+        },
+        {
+          "text": "monitor.",
+          "role": "OC"
+        }
+      ],
+      "sentenceZh": "他给了我一本书。",
+      "note": "双宾语：me（人）和 a book（物）都是宾语，两者之间没有主谓关系。复合宾语：him 是宾语，monitor 补充说明 him 的身份，两者暗含\"他是班长\"的主谓关系。"
+    }
+  ]
+}
