@@ -38,7 +38,3 @@ Thumbs.db
 
 # 日志
 *.log
-
-# 误放的截图（如 --full-page）
---full-page
---full-*
