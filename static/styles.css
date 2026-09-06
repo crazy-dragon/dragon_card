@@ -6,6 +6,7 @@
 :root {
     --hp-primary: #0969da;
     --hp-primary-soft: rgba(9,105,218,.08);
+    --hp-primary-dark: #07509f;
     --hp-success: #2da44e;
     --hp-warning: #d4a72c;
     --hp-danger: #cf222e;
@@ -78,6 +79,7 @@ body.dark-mode {
     --hp-text-light: #6e7681;
     --hp-primary: #2f81f7;
     --hp-primary-soft: rgba(47,129,247,.15);
+    --hp-primary-dark: #1f6feb;
     --hp-success: #3fb950;
     --hp-warning: #d29922;
     --hp-danger: #f85149;
