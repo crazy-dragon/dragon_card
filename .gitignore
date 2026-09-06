@@ -35,6 +35,7 @@ Thumbs.db
 
 # AI 工具记忆
 .workbuddy/
+.skill/
 
 # 日志
 *.log
