@@ -754,25 +754,22 @@ function renderDeckList() {
             /* Description: show TEMPLATE description (deck description removed) */
             html += '<div class="deck-desc">' + (deck.template_description ? escapeHtml(deck.template_description) : t('home.notBound')) + '</div>';
 
-            /* Stats */
+            /* Stats (mastered count only, near bottom) */
             html += '<div class="deck-stats">';
             html += '<span>' + t('home.mastered') + ' <b>' + (deck.mastered_count || 0).toLocaleString() + '</b> / ' + (deck.item_count || 0).toLocaleString() + '</span>';
-            html += '<span class="deck-year-days"><i class="fa-solid fa-hand-fist"></i> ' + (deck.year_study_days || 0) + ' ' + t('home.yearDays') + '</span>';
             html += '</div>';
 
             /* Progress bar */
             html += '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%;background:' + progressColor(pct) + '"></div></div>';
 
-            /* Badges placeholder */
-            html += '<div class="badges-row"></div>';
-
-            /* Template binding footer */
+            /* Template binding footer: template name left, study days right */
             html += '<div class="deck-tpl-row">';
             if (hasTpl) {
                 html += '<span class="deck-tpl-badge">' + escapeHtml(deck.template_name) + '</span>';
             } else {
                 html += '<span class="deck-tpl-badge unbind">' + t('home.notBound') + '</span>';
             }
+            html += '<span class="deck-year-days"><i class="fa-solid fa-hand-fist"></i> <b>' + (deck.year_study_days || 0) + '</b> ' + t('home.yearDays') + '</span>';
             html += '</div>';
 
             html += '</div>';
