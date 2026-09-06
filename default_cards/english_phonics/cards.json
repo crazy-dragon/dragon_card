@@ -1,0 +1,2406 @@
+[
+  {
+    "type": "intro",
+    "nameZh": "自然拼读",
+    "nameEn": "English Phonics",
+    "item_order": 1
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "a",
+    "sound": "/æ/",
+    "ex": [
+      [
+        "cat",
+        "kæt"
+      ],
+      [
+        "map",
+        "mæp"
+      ],
+      [
+        "hand",
+        "hænd"
+      ]
+    ],
+    "rule": "Short a in closed syllables — consonant ending, no magic e. Sharp and open, like \"aaah\" but short.",
+    "tip": "闭音节（辅音结尾、无 magic e）中的 a 读短音 /æ/；遇到词尾 magic e 才变 /eɪ/（cat → cake）。",
+    "item_order": 2
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "e",
+    "sound": "/e/",
+    "ex": [
+      [
+        "bed",
+        "bed"
+      ],
+      [
+        "red",
+        "red"
+      ],
+      [
+        "ten",
+        "ten"
+      ]
+    ],
+    "rule": "E in closed syllables: bed, pen, leg, well.",
+    "tip": "闭音节 e 读 /e/，开口中等；对比词尾开音节 he / hiː /。",
+    "item_order": 3
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "i",
+    "sound": "/ɪ/",
+    "ex": [
+      [
+        "sit",
+        "sɪt"
+      ],
+      [
+        "big",
+        "bɪɡ"
+      ],
+      [
+        "ship",
+        "ʃɪp"
+      ]
+    ],
+    "rule": "Short i: sit, big, win. Looser and shorter than Chinese \"yi\".",
+    "tip": "/ɪ/ 比中文“衣”更松更短，嘴微开；对比长音 iː（seat vs sit）。",
+    "item_order": 4
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "o",
+    "sound": "/ɒ/",
+    "ex": [
+      [
+        "hot",
+        "hɒt"
+      ],
+      [
+        "dog",
+        "dɒɡ"
+      ],
+      [
+        "box",
+        "bɒks"
+      ]
+    ],
+    "rule": "Short o (British): hot, dog, stop. American English is closer to /ɑː/.",
+    "tip": "英式 /ɒ/ 圆唇短音；美式 hot 更接近 /ɑː/。",
+    "item_order": 5
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "u",
+    "sound": "/ʌ/",
+    "ex": [
+      [
+        "cup",
+        "kʌp"
+      ],
+      [
+        "bus",
+        "bʌs"
+      ],
+      [
+        "run",
+        "rʌn"
+      ]
+    ],
+    "rule": "U in closed syllables: cup, bus, fun, sun.",
+    "tip": "u 短音 /ʌ/，中央松元音；不要读成太开的“啊”。",
+    "item_order": 6
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "a_e",
+    "sound": "/eɪ/",
+    "ex": [
+      [
+        "name",
+        "neɪm"
+      ],
+      [
+        "cake",
+        "keɪk"
+      ],
+      [
+        "late",
+        "leɪt"
+      ]
+    ],
+    "rule": "Magic e: a + consonant + e → a says its name (cake, game, brave).",
+    "tip": "magic e（不发音的词尾 e）让前面的 a 念字母名 /eɪ/。",
+    "item_order": 7
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "e (词尾)",
+    "sound": "/iː/",
+    "ex": [
+      [
+        "he",
+        "hiː"
+      ],
+      [
+        "we",
+        "wiː"
+      ],
+      [
+        "these",
+        "ðiːz"
+      ]
+    ],
+    "rule": "Open syllable e at word end is /iː/: he, she, we, be, these.",
+    "tip": "词尾开音节 e 读 /iː/（he、these）；闭音节里才是 /e/（bed）。",
+    "item_order": 8
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "i_e",
+    "sound": "/aɪ/",
+    "ex": [
+      [
+        "time",
+        "taɪm"
+      ],
+      [
+        "five",
+        "faɪv"
+      ],
+      [
+        "bike",
+        "baɪk"
+      ]
+    ],
+    "rule": "Magic e: i + consonant + e → /aɪ/ (time, like, drive).",
+    "tip": "magic e 让 i 念 /aɪ/（sit → site 一词之差）。",
+    "item_order": 9
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "o_e",
+    "sound": "/əʊ/",
+    "ex": [
+      [
+        "home",
+        "həʊm"
+      ],
+      [
+        "note",
+        "nəʊt"
+      ],
+      [
+        "rose",
+        "rəʊz"
+      ]
+    ],
+    "rule": "Magic e: o + consonant + e → /əʊ/ (note, phone, smoke).",
+    "tip": "magic e 让 o 念 /əʊ/（美式 /oʊ/）。",
+    "item_order": 10
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "u_e",
+    "sound": "/juː/",
+    "ex": [
+      [
+        "cute",
+        "kjuːt"
+      ],
+      [
+        "use",
+        "juːz"
+      ],
+      [
+        "music",
+        "mjuːzɪk"
+      ]
+    ],
+    "rule": "Magic e: u + consonant + e → /juː/. After r/l/j it reduces to /uː/: rule, flute, June.",
+    "tip": "u 的长音是 /juː/；在 r、l、j 之后常掉 j 读 /uː/（rule、June）。",
+    "item_order": 11
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "b",
+    "sound": "/b/",
+    "ex": [
+      [
+        "book",
+        "bʊk"
+      ],
+      [
+        "big",
+        "bɪɡ"
+      ],
+      [
+        "web",
+        "web"
+      ]
+    ],
+    "rule": "B at the start or end of a syllable. Silent in -mb: climb, thumb.",
+    "tip": "b 常规；但 -mb 组合里 b 静音（climb、thumb，见字母组合篇）。",
+    "item_order": 12
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "c (硬音)",
+    "sound": "/k/",
+    "ex": [
+      [
+        "cat",
+        "kæt"
+      ],
+      [
+        "cup",
+        "kʌp"
+      ],
+      [
+        "come",
+        "kʌm"
+      ]
+    ],
+    "rule": "C before a, o, u → /k/. Also /k/ in consonant clusters: clap, cry.",
+    "tip": "c 在 a/o/u 前读硬音 /k/（cat、cup）。",
+    "item_order": 13
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "c (软音)",
+    "sound": "/s/",
+    "ex": [
+      [
+        "city",
+        "sɪti"
+      ],
+      [
+        "cell",
+        "sel"
+      ],
+      [
+        "nice",
+        "naɪs"
+      ]
+    ],
+    "rule": "C before e, i, y softens to /s/: city, dance, cycle.",
+    "tip": "c 在 e/i/y 前软读 /s/（city、cycle）；a/o/u 前才是 /k/。",
+    "item_order": 14
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "d",
+    "sound": "/d/",
+    "ex": [
+      [
+        "dog",
+        "dɒɡ"
+      ],
+      [
+        "red",
+        "red"
+      ],
+      [
+        "hand",
+        "hænd"
+      ]
+    ],
+    "rule": "D as expected. -ed endings: /d/ after voiced sounds (played), /t/ after voiceless (stopped), /ɪd/ after t/d (wanted).",
+    "tip": "d 常规；词尾 -ed 三读：浊后 /d/、清后 /t/、t/d 后 /ɪd/。",
+    "item_order": 15
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "f",
+    "sound": "/f/",
+    "ex": [
+      [
+        "five",
+        "faɪv"
+      ],
+      [
+        "fish",
+        "fɪʃ"
+      ],
+      [
+        "leaf",
+        "liːf"
+      ]
+    ],
+    "rule": "F is always voiceless /f/ — at the start, middle or end.",
+    "tip": "f 清唇齿音；全词唯一读 /v/ 的 f 在 of 里。",
+    "item_order": 16
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "g (硬音)",
+    "sound": "/ɡ/",
+    "ex": [
+      [
+        "go",
+        "ɡəʊ"
+      ],
+      [
+        "big",
+        "bɪɡ"
+      ],
+      [
+        "game",
+        "ɡeɪm"
+      ]
+    ],
+    "rule": "G before a, o, u → /ɡ/. Also in clusters: grass, great.",
+    "tip": "g 在 a/o/u 前硬读 /ɡ/（go、big）。",
+    "item_order": 17
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "g (软音)",
+    "sound": "/dʒ/",
+    "ex": [
+      [
+        "gem",
+        "dʒem"
+      ],
+      [
+        "giant",
+        "dʒaɪənt"
+      ],
+      [
+        "page",
+        "peɪdʒ"
+      ]
+    ],
+    "rule": "G before e, i, y → /dʒ/: gem, magic, gym. Exceptions: get, give, girl.",
+    "tip": "g 在 e/i/y 前软读 /dʒ/；get/give/girl 是高频例外，仍读 /ɡ/。",
+    "item_order": 18
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "h",
+    "sound": "/h/",
+    "ex": [
+      [
+        "hat",
+        "hæt"
+      ],
+      [
+        "home",
+        "həʊm"
+      ],
+      [
+        "behind",
+        "bɪˈhaɪnd"
+      ]
+    ],
+    "rule": "H as expected. Silent in: honest, hour, honour (French borrowings).",
+    "tip": "h 常规；honest、hour 等法语借词里 h 静音。",
+    "item_order": 19
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "j",
+    "sound": "/dʒ/",
+    "ex": [
+      [
+        "job",
+        "dʒɒb"
+      ],
+      [
+        "jet",
+        "dʒet"
+      ],
+      [
+        "jump",
+        "dʒʌmp"
+      ]
+    ],
+    "rule": "J is always /dʒ/ — no exceptions in native English words.",
+    "tip": "j 恒读 /dʒ/，没有例外；别读成中文“日”的声母。",
+    "item_order": 20
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "k",
+    "sound": "/k/",
+    "ex": [
+      [
+        "key",
+        "kiː"
+      ],
+      [
+        "kite",
+        "kaɪt"
+      ],
+      [
+        "book",
+        "bʊk"
+      ]
+    ],
+    "rule": "K alone → /k/. In kn- the k is silent: know, knife (see letter teams).",
+    "tip": "k 单独读 /k/；kn- 组合里 k 静音（knee）。",
+    "item_order": 21
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "l",
+    "sound": "/l/",
+    "ex": [
+      [
+        "leg",
+        "leɡ"
+      ],
+      [
+        "light",
+        "laɪt"
+      ],
+      [
+        "ball",
+        "bɔːl"
+      ]
+    ],
+    "rule": "Light l at the start (leg); dark l /ɫ/ at the end (ball, feel) — tongue back raised.",
+    "tip": "词首 clear l、词尾 dark l：舌根抬起，像含着一口水收尾。",
+    "item_order": 22
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "m",
+    "sound": "/m/",
+    "ex": [
+      [
+        "map",
+        "mæp"
+      ],
+      [
+        "moon",
+        "muːn"
+      ],
+      [
+        "some",
+        "sʌm"
+      ]
+    ],
+    "rule": "M everywhere, including final -mb: climb /klaɪm/.",
+    "tip": "m 常规，闭唇鼻音。",
+    "item_order": 23
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "n",
+    "sound": "/n/",
+    "ex": [
+      [
+        "net",
+        "net"
+      ],
+      [
+        "nine",
+        "naɪn"
+      ],
+      [
+        "sun",
+        "sʌn"
+      ]
+    ],
+    "rule": "N before k or g becomes /ŋ/: think, bank, sing (see letter teams).",
+    "tip": "n 在 k/g 前同化为后鼻音 /ŋ/（think、sing）。",
+    "item_order": 24
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "p",
+    "sound": "/p/",
+    "ex": [
+      [
+        "pen",
+        "pen"
+      ],
+      [
+        "pig",
+        "pɪɡ"
+      ],
+      [
+        "stop",
+        "stɒp"
+      ]
+    ],
+    "rule": "P is aspirated at the start (pen). After s it is unaspirated: spy, stop sound close to /b/.",
+    "tip": "词首 p 送气；s 之后的 p/t/k 不送气，听感近似 b/d/g（spy、stop）。",
+    "item_order": 25
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "r",
+    "sound": "/r/",
+    "ex": [
+      [
+        "red",
+        "red"
+      ],
+      [
+        "run",
+        "rʌn"
+      ],
+      [
+        "car",
+        "kɑː"
+      ]
+    ],
+    "rule": "British English: r is pronounced only before a vowel (red yes; car no). American English always rhotic.",
+    "tip": "英式 r 只在元音前发音，词尾 r 不卷舌（car /kɑː/）；美式全部卷舌。",
+    "item_order": 26
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "s",
+    "sound": "/s/ · /z/",
+    "ex": [
+      [
+        "sun",
+        "sʌn"
+      ],
+      [
+        "is",
+        "ɪz"
+      ],
+      [
+        "dogs",
+        "dɒɡz"
+      ]
+    ],
+    "rule": "S usually /s/, but between vowels or after voiced sounds → /z/: is, music, dogs, rose.",
+    "tip": "词中/词尾的 s 常浊化成 /z/（is、dogs、music、rose）；复数 -s 同理三读。",
+    "item_order": 27
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "t",
+    "sound": "/t/",
+    "ex": [
+      [
+        "top",
+        "tɒp"
+      ],
+      [
+        "ten",
+        "ten"
+      ],
+      [
+        "cat",
+        "kæt"
+      ]
+    ],
+    "rule": "T as expected; unaspirated after s (stop). But -tion /ʃən/, -ture /tʃə/ (see letter teams).",
+    "tip": "t 常规；-tion 读 /ʃən/、-ture 读 /tʃə/，是重头组合，见字母组合篇。",
+    "item_order": 28
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "v",
+    "sound": "/v/",
+    "ex": [
+      [
+        "very",
+        "veri"
+      ],
+      [
+        "five",
+        "faɪv"
+      ],
+      [
+        "love",
+        "lʌv"
+      ]
+    ],
+    "rule": "V is voiced — top teeth on bottom lip, vibrate. Do not replace it with /w/.",
+    "tip": "v 浊唇齿音：上齿咬下唇并振动；中文没有这个音，别读成“我”的声母 w。",
+    "item_order": 29
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "w",
+    "sound": "/w/",
+    "ex": [
+      [
+        "we",
+        "wiː"
+      ],
+      [
+        "water",
+        "wɔːtə"
+      ],
+      [
+        "away",
+        "əˈweɪ"
+      ]
+    ],
+    "rule": "W as expected. Silent in wr-: write, wrong (see letter teams).",
+    "tip": "w 常规；wr- 组合里 w 静音（write / raɪt /）。",
+    "item_order": 30
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "x",
+    "sound": "/ks/",
+    "ex": [
+      [
+        "box",
+        "bɒks"
+      ],
+      [
+        "six",
+        "sɪks"
+      ],
+      [
+        "next",
+        "nekst"
+      ]
+    ],
+    "rule": "X = /ks/; between voiced sounds /ɡz/: exam /ɪɡˈzæm/, exact.",
+    "tip": "x 多数读 /ks/；浊音环境读 /ɡz/（exam、exact）。",
+    "item_order": 31
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "y (辅音)",
+    "sound": "/j/",
+    "ex": [
+      [
+        "yes",
+        "jes"
+      ],
+      [
+        "yellow",
+        "jeləʊ"
+      ],
+      [
+        "beyond",
+        "bɪˈjɒnd"
+      ]
+    ],
+    "rule": "Y at the start of a syllable is the consonant /j/: yes, you, young.",
+    "tip": "词首 y 是辅音 /j/（yes、you）。",
+    "item_order": 32
+  },
+  {
+    "sec": "字母基础",
+    "pattern": "y (元音)",
+    "sound": "/ɪ/ · /aɪ/",
+    "ex": [
+      [
+        "happy",
+        "hæpi"
+      ],
+      [
+        "my",
+        "maɪ"
+      ],
+      [
+        "gym",
+        "dʒɪm"
+      ]
+    ],
+    "rule": "Three jobs: word-final in long words → /i/ (happy); stressed open syllable → /aɪ/ (my, fly); closed syllable → /ɪ/ (gym).",
+    "tip": "y 三读：多音节词尾 /i/（happy）、重读开音节 /aɪ/（my）、闭音节 /ɪ/（gym）。",
+    "item_order": 33
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "sh",
+    "sound": "/ʃ/",
+    "ex": [
+      [
+        "she",
+        "ʃiː"
+      ],
+      [
+        "ship",
+        "ʃɪp"
+      ],
+      [
+        "wash",
+        "wɒʃ"
+      ]
+    ],
+    "rule": "SH = /ʃ/ everywhere: ship, wish, station (ti also /ʃ/).",
+    "tip": "sh 恒读 /ʃ/（汉语“诗”的声母，但双唇更圆）。",
+    "item_order": 34
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ch",
+    "sound": "/tʃ/",
+    "ex": [
+      [
+        "chair",
+        "tʃeə"
+      ],
+      [
+        "lunch",
+        "lʌntʃ"
+      ],
+      [
+        "teach",
+        "tiːtʃ"
+      ]
+    ],
+    "rule": "Default ch = /tʃ/: chair, much, teacher.",
+    "tip": "ch 默认读 /tʃ/（“吃”的声母，不卷舌）。",
+    "item_order": 35
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ch",
+    "sound": "/k/",
+    "ex": [
+      [
+        "school",
+        "skuːl"
+      ],
+      [
+        "Christmas",
+        "krɪsməs"
+      ],
+      [
+        "chemistry",
+        "kemɪstri"
+      ]
+    ],
+    "rule": "Greek-origin ch = /k/: school, chorus, character.",
+    "tip": "希腊词源的 ch 读 /k/（school、character、echo）。",
+    "item_order": 36
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ch",
+    "sound": "/ʃ/",
+    "ex": [
+      [
+        "chef",
+        "ʃef"
+      ],
+      [
+        "machine",
+        "məˈʃiːn"
+      ],
+      [
+        "chic",
+        "ʃiːk"
+      ]
+    ],
+    "rule": "French-origin ch = /ʃ/: chef, machine, moustache.",
+    "tip": "法语借词 ch 读 /ʃ/（chef、machine）——词源判断。",
+    "item_order": 37
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "th (清)",
+    "sound": "/θ/",
+    "ex": [
+      [
+        "think",
+        "θɪŋk"
+      ],
+      [
+        "three",
+        "θriː"
+      ],
+      [
+        "teeth",
+        "tiːθ"
+      ]
+    ],
+    "rule": "Voiceless th: think, path, nothing. Tongue between teeth, no voice.",
+    "tip": "清 th /θ/：舌尖伸到上下齿之间吹气，不振动（think、three）。",
+    "item_order": 38
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "th (浊)",
+    "sound": "/ð/",
+    "ex": [
+      [
+        "this",
+        "ðɪs"
+      ],
+      [
+        "mother",
+        "mʌðə"
+      ],
+      [
+        "weather",
+        "weðə"
+      ]
+    ],
+    "rule": "Voiced th: this, other, smooth. Same tongue position, vocal cords on.",
+    "tip": "浊 th /ð/：舌位同 /θ/ 但声带振动（this、mother）；虚词多为浊（the、that）。",
+    "item_order": 39
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ph",
+    "sound": "/f/",
+    "ex": [
+      [
+        "phone",
+        "fəʊn"
+      ],
+      [
+        "photo",
+        "fəʊtəʊ"
+      ],
+      [
+        "elephant",
+        "elɪfənt"
+      ]
+    ],
+    "rule": "Greek-origin ph = /f/: phone, graph, dolphin.",
+    "tip": "ph（希腊词源）一律读 /f/。",
+    "item_order": 40
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "wh",
+    "sound": "/w/",
+    "ex": [
+      [
+        "what",
+        "wɒt"
+      ],
+      [
+        "white",
+        "waɪt"
+      ],
+      [
+        "when",
+        "wen"
+      ]
+    ],
+    "rule": "wh = /w/ mostly. Exception: wh + o → /h/: who, whose, whole.",
+    "tip": "wh 默认 /w/；wh+o 读 /h/（who、whole、whose）。",
+    "item_order": 41
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ng",
+    "sound": "/ŋ/",
+    "ex": [
+      [
+        "sing",
+        "sɪŋ"
+      ],
+      [
+        "long",
+        "lɒŋ"
+      ],
+      [
+        "king",
+        "kɪŋ"
+      ]
+    ],
+    "rule": "Final ng = /ŋ/ only — no /ɡ/ sound. But comparative: longer /ˈlɒŋɡə/.",
+    "tip": "词尾 ng 只读后鼻音 /ŋ/，没有 /ɡ/（sing ≠ “星+格”）；加后缀才出 /ɡ/（longer）。",
+    "item_order": 42
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "nk",
+    "sound": "/ŋk/",
+    "ex": [
+      [
+        "bank",
+        "bæŋk"
+      ],
+      [
+        "think",
+        "θɪŋk"
+      ],
+      [
+        "thank",
+        "θæŋk"
+      ]
+    ],
+    "rule": "nk = /ŋk/ — nasal plus k: pink, uncle, blanket.",
+    "tip": "nk 读 /ŋk/ 两个音（bank、pink）。",
+    "item_order": 43
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ck",
+    "sound": "/k/",
+    "ex": [
+      [
+        "back",
+        "bæk"
+      ],
+      [
+        "clock",
+        "klɒk"
+      ],
+      [
+        "duck",
+        "dʌk"
+      ]
+    ],
+    "rule": "ck = /k/, always after short vowels: kick, lock, pocket.",
+    "tip": "ck 只出现在短元音后，读 /k/（单写 k 的防混淆写法）。",
+    "item_order": 44
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "qu",
+    "sound": "/kw/",
+    "ex": [
+      [
+        "queen",
+        "kwiːn"
+      ],
+      [
+        "quick",
+        "kwɪk"
+      ],
+      [
+        "quite",
+        "kwaɪt"
+      ]
+    ],
+    "rule": "qu = /kw/: question, quiet, squash. French loanwords: bouquet /bʊˈkeɪ/.",
+    "tip": "qu 读 /kw/（queen、quick）；法语借词除外（bouquet、enquete 类）。",
+    "item_order": 45
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "gh",
+    "sound": "/f/",
+    "ex": [
+      [
+        "laugh",
+        "lɑːf"
+      ],
+      [
+        "enough",
+        "ɪˈnʌf"
+      ],
+      [
+        "cough",
+        "kɒf"
+      ]
+    ],
+    "rule": "gh usually silent (night, high) but /f/ in a handful: laugh, enough, rough, cough.",
+    "tip": "gh 多数静音（见 igh 卡）；laugh/enough/rough/cough 等少数读 /f/。",
+    "item_order": 46
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "-ough",
+    "sound": "六读陷阱",
+    "ex": [
+      [
+        "though",
+        "ðəʊ"
+      ],
+      [
+        "through",
+        "θruː"
+      ],
+      [
+        "tough",
+        "tʌf"
+      ]
+    ],
+    "rule": "The famous trap: though /ðəʊ/, through /θruː/, tough /tʌf/, cough /kɒf/, bough /baʊ/, thought /θɔːt/.",
+    "tip": "-ough 六种读法全靠单词记：though、through、tough、cough、bough、thought —— 一个都不能推。",
+    "item_order": 47
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ai / ay",
+    "sound": "/eɪ/",
+    "ex": [
+      [
+        "rain",
+        "reɪn"
+      ],
+      [
+        "play",
+        "pleɪ"
+      ],
+      [
+        "day",
+        "deɪ"
+      ]
+    ],
+    "rule": "ai in the middle, ay at the end: rain, train, play, stay.",
+    "tip": "ai 词中、ay 词尾，都读 /eɪ/（rain、play）。",
+    "item_order": 48
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ee",
+    "sound": "/iː/",
+    "ex": [
+      [
+        "see",
+        "siː"
+      ],
+      [
+        "tree",
+        "triː"
+      ],
+      [
+        "green",
+        "ɡriːn"
+      ]
+    ],
+    "rule": "ee = /iː/ everywhere: see, sleep, between.",
+    "tip": "ee 恒读长音 /iː/（see、between），没有陷阱。",
+    "item_order": 49
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ea",
+    "sound": "/iː/",
+    "ex": [
+      [
+        "eat",
+        "iːt"
+      ],
+      [
+        "sea",
+        "siː"
+      ],
+      [
+        "team",
+        "tiːm"
+      ]
+    ],
+    "rule": "Default ea = /iː/: eat, teach, easy, season.",
+    "tip": "ea 默认 /iː/（eat、easy）；例外另见两张陷阱卡。",
+    "item_order": 50
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ea",
+    "sound": "/e/",
+    "ex": [
+      [
+        "head",
+        "hed"
+      ],
+      [
+        "bread",
+        "bred"
+      ],
+      [
+        "ready",
+        "redi"
+      ]
+    ],
+    "rule": "Common exception: ea = /e/ — head, bread, dead, ready, heavy.",
+    "tip": "ea 陷阱一：/e/（head、bread、dead、heavy）——高频死记。",
+    "item_order": 51
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ea",
+    "sound": "/eɪ/",
+    "ex": [
+      [
+        "great",
+        "ɡreɪt"
+      ],
+      [
+        "break",
+        "breɪk"
+      ],
+      [
+        "steak",
+        "steɪk"
+      ]
+    ],
+    "rule": "Rare but famous: ea = /eɪ/ — great, break, steak. Just these three.",
+    "tip": "ea 陷阱二：/eɪ/ 只有 great、break、steak 三个——见到直接认。",
+    "item_order": 52
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ie",
+    "sound": "/aɪ/",
+    "ex": [
+      [
+        "pie",
+        "paɪ"
+      ],
+      [
+        "tie",
+        "taɪ"
+      ],
+      [
+        "die",
+        "daɪ"
+      ]
+    ],
+    "rule": "ie at word end = /aɪ/: pie, tie, lie. In the middle often /iː/: field, piece.",
+    "tip": "词尾 ie 读 /aɪ/（pie）；词中多为 /iː/（field、piece）。",
+    "item_order": 53
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "oa",
+    "sound": "/əʊ/",
+    "ex": [
+      [
+        "boat",
+        "bəʊt"
+      ],
+      [
+        "road",
+        "rəʊd"
+      ],
+      [
+        "coat",
+        "kəʊt"
+      ]
+    ],
+    "rule": "oa = /əʊ/: road, soap, coast.",
+    "tip": "oa 恒读 /əʊ/（road、boat），可靠组合。",
+    "item_order": 54
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ow",
+    "sound": "/əʊ/",
+    "ex": [
+      [
+        "snow",
+        "snəʊ"
+      ],
+      [
+        "grow",
+        "ɡrəʊ"
+      ],
+      [
+        "window",
+        "wɪndəʊ"
+      ]
+    ],
+    "rule": "ow at word end often /əʊ/: snow, know, slow. Also /aʊ/ — see next card.",
+    "tip": "ow 两读：词尾常 /əʊ/（snow、know）。",
+    "item_order": 55
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ow",
+    "sound": "/aʊ/",
+    "ex": [
+      [
+        "cow",
+        "kaʊ"
+      ],
+      [
+        "now",
+        "naʊ"
+      ],
+      [
+        "down",
+        "daʊn"
+      ]
+    ],
+    "rule": "ow = /aʊ/: cow, town, flower, power. Meaning does not help — memorise.",
+    "tip": "ow 陷阱：/aʊ/（cow、town、flower）——与 /əʊ/ 全靠单词记。",
+    "item_order": 56
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "oo",
+    "sound": "/uː/",
+    "ex": [
+      [
+        "moon",
+        "muːn"
+      ],
+      [
+        "food",
+        "fuːd"
+      ],
+      [
+        "school",
+        "skuːl"
+      ]
+    ],
+    "rule": "Long oo = /uː/: moon, food, cool, afternoon.",
+    "tip": "oo 长音 /uː/（moon、food、school）。",
+    "item_order": 57
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "oo",
+    "sound": "/ʊ/",
+    "ex": [
+      [
+        "book",
+        "bʊk"
+      ],
+      [
+        "good",
+        "ɡʊd"
+      ],
+      [
+        "look",
+        "lʊk"
+      ]
+    ],
+    "rule": "Short oo = /ʊ/: book, foot, wood, cook. Mostly common short words.",
+    "tip": "oo 短音 /ʊ/（book、foot、good）——集中在高频短词，见多即识。",
+    "item_order": 58
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ou",
+    "sound": "/aʊ/",
+    "ex": [
+      [
+        "out",
+        "aʊt"
+      ],
+      [
+        "house",
+        "haʊs"
+      ],
+      [
+        "found",
+        "faʊnd"
+      ]
+    ],
+    "rule": "Default ou = /aʊ/: out, loud, around, house.",
+    "tip": "ou 默认 /aʊ/（out、house）。",
+    "item_order": 59
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ou",
+    "sound": "/uː/",
+    "ex": [
+      [
+        "soup",
+        "suːp"
+      ],
+      [
+        "group",
+        "ɡruːp"
+      ],
+      [
+        "you",
+        "juː"
+      ]
+    ],
+    "rule": "Trap: ou = /uː/ — soup, group, you, through, routine.",
+    "tip": "ou 陷阱一：/uː/（soup、group、you、through）——死记。",
+    "item_order": 60
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ou",
+    "sound": "/ʌ/",
+    "ex": [
+      [
+        "young",
+        "jʌŋ"
+      ],
+      [
+        "country",
+        "kʌntri"
+      ],
+      [
+        "touch",
+        "tʌtʃ"
+      ]
+    ],
+    "rule": "Trap: ou = /ʌ/ — young, country, enough, touch, trouble.",
+    "tip": "ou 陷阱二：/ʌ/（young、country、touch）——死记。",
+    "item_order": 61
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "oi / oy",
+    "sound": "/ɔɪ/",
+    "ex": [
+      [
+        "coin",
+        "kɔɪn"
+      ],
+      [
+        "boy",
+        "bɔɪ"
+      ],
+      [
+        "toy",
+        "tɔɪ"
+      ]
+    ],
+    "rule": "oi in the middle, oy at the end: coin, voice, boy, enjoy.",
+    "tip": "oi 词中、oy 词尾，都读 /ɔɪ/。",
+    "item_order": 62
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "au / aw",
+    "sound": "/ɔː/",
+    "ex": [
+      [
+        "autumn",
+        "ɔːtəm"
+      ],
+      [
+        "saw",
+        "sɔː"
+      ],
+      [
+        "law",
+        "lɔː"
+      ]
+    ],
+    "rule": "au usually inside (autumn, August), aw often at the end (saw, law).",
+    "tip": "au 词中、aw 词尾，都读 /ɔː/；au 有时静音 l（autumn 的 n 前）。",
+    "item_order": 63
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ew",
+    "sound": "/uː/",
+    "ex": [
+      [
+        "new",
+        "njuː"
+      ],
+      [
+        "few",
+        "fjuː"
+      ],
+      [
+        "grew",
+        "ɡruː"
+      ]
+    ],
+    "rule": "ew = /juː/ after most consonants (new, few), /uː/ after r/l etc (grew, flew).",
+    "tip": "ew 多数 /juː/（new、few）；r/l 后 /uː/（grew、flew）。",
+    "item_order": 64
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ue / ui",
+    "sound": "/uː/",
+    "ex": [
+      [
+        "blue",
+        "bluː"
+      ],
+      [
+        "true",
+        "truː"
+      ],
+      [
+        "fruit",
+        "fruːt"
+      ]
+    ],
+    "rule": "ue/ui = /uː/ (blue, fruit); after j it keeps /juː/: juice /dʒuːs/ is fine too.",
+    "tip": "ue/ui 读 /uː/（blue、true、fruit）。",
+    "item_order": 65
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "igh",
+    "sound": "/aɪ/",
+    "ex": [
+      [
+        "light",
+        "laɪt"
+      ],
+      [
+        "night",
+        "naɪt"
+      ],
+      [
+        "high",
+        "haɪ"
+      ]
+    ],
+    "rule": "igh = /aɪ/, gh silent: night, bright, high, sigh.",
+    "tip": "igh 三件套读 /aɪ/，gh 纯静音（night、high、bright）。",
+    "item_order": 66
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "-y (词尾)",
+    "sound": "/i/",
+    "ex": [
+      [
+        "happy",
+        "hæpi"
+      ],
+      [
+        "city",
+        "sɪti"
+      ],
+      [
+        "baby",
+        "beɪbi"
+      ]
+    ],
+    "rule": "Unstressed final -y = /i/: funny, twenty, family.",
+    "tip": "多音节词尾 -y 弱读 /i/（happy、twenty）。",
+    "item_order": 67
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ar",
+    "sound": "/ɑː/",
+    "ex": [
+      [
+        "car",
+        "kɑː"
+      ],
+      [
+        "star",
+        "stɑː"
+      ],
+      [
+        "farm",
+        "fɑːm"
+      ]
+    ],
+    "rule": "ar = /ɑː/ (r not pronounced in BrE): park, hard, market.",
+    "tip": "ar 读 /ɑː/（英式不卷舌；美式 car 卷舌）。",
+    "item_order": 68
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "or",
+    "sound": "/ɔː/",
+    "ex": [
+      [
+        "for",
+        "fɔː"
+      ],
+      [
+        "short",
+        "ʃɔːt"
+      ],
+      [
+        "morning",
+        "mɔːnɪŋ"
+      ]
+    ],
+    "rule": "or = /ɔː/: north, sport, morning. After w: work /wɜːk/, world.",
+    "tip": "or 读 /ɔː/；但 w+or 常变 /ɜː/（work、word、world）——经典陷阱。",
+    "item_order": 69
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "er / ir / ur",
+    "sound": "/ɜː/",
+    "ex": [
+      [
+        "her",
+        "hɜː"
+      ],
+      [
+        "bird",
+        "bɜːd"
+      ],
+      [
+        "turn",
+        "tɜːn"
+      ]
+    ],
+    "rule": "All three spellings = /ɜː/: her, girl, burn, nurse, turn.",
+    "tip": "er/ir/ur 都读 /ɜː/（her、bird、turn）——拼写不同音相同。",
+    "item_order": 70
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "air",
+    "sound": "/eə/",
+    "ex": [
+      [
+        "air",
+        "eə"
+      ],
+      [
+        "hair",
+        "heə"
+      ],
+      [
+        "chair",
+        "tʃeə"
+      ]
+    ],
+    "rule": "air = /eə/: fair, repair, airport.",
+    "tip": "air 恒读 /eə/（air、hair、repair）。",
+    "item_order": 71
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ear",
+    "sound": "/ɪə/",
+    "ex": [
+      [
+        "ear",
+        "ɪə"
+      ],
+      [
+        "hear",
+        "hɪə"
+      ],
+      [
+        "year",
+        "jɪə"
+      ]
+    ],
+    "rule": "ear = /ɪə/: near, clear, hear. Trap: bear /beə/, wear /weə/, pear.",
+    "tip": "ear 默认 /ɪə/（hear、near）；bear/wear/pear 读 /eə/ ——陷阱死记。",
+    "item_order": 72
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "eer",
+    "sound": "/ɪə/",
+    "ex": [
+      [
+        "deer",
+        "dɪə"
+      ],
+      [
+        "cheer",
+        "tʃɪə"
+      ],
+      [
+        "career",
+        "kəˈrɪə"
+      ]
+    ],
+    "rule": "eer = /ɪə/: deer, cheer, engineer, pioneer.",
+    "tip": "eer 恒读 /ɪə/（deer、cheer），可靠组合。",
+    "item_order": 73
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "oor / our",
+    "sound": "/ʊə/",
+    "ex": [
+      [
+        "tour",
+        "tʊə"
+      ],
+      [
+        "sure",
+        "ʃʊə"
+      ],
+      [
+        "poor",
+        "pʊə"
+      ]
+    ],
+    "rule": "oor/our = /ʊə/: tour, sure, poor. Poor often /pɔː/ in modern BrE.",
+    "tip": "oor/our 读 /ʊə/（tour、sure、poor）；poor 在当代英式常读 /pɔː/。",
+    "item_order": 74
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "ore",
+    "sound": "/ɔː/",
+    "ex": [
+      [
+        "more",
+        "mɔː"
+      ],
+      [
+        "store",
+        "stɔː"
+      ],
+      [
+        "before",
+        "bɪˈfɔː"
+      ]
+    ],
+    "rule": "ore = /ɔː/, silent e: score, explore, before.",
+    "tip": "ore 读 /ɔː/，词尾 e 不发音（more、store）。",
+    "item_order": 75
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "kn-",
+    "sound": "/n/",
+    "ex": [
+      [
+        "know",
+        "nəʊ"
+      ],
+      [
+        "knee",
+        "niː"
+      ],
+      [
+        "knife",
+        "naɪf"
+      ]
+    ],
+    "rule": "kn- at the start: k silent — know, knock, knight.",
+    "tip": "词首 kn- 的 k 静音（know、knife、knight）——古英语遗留。",
+    "item_order": 76
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "wr-",
+    "sound": "/r/",
+    "ex": [
+      [
+        "write",
+        "raɪt"
+      ],
+      [
+        "wrong",
+        "rɒŋ"
+      ],
+      [
+        "wrist",
+        "rɪst"
+      ]
+    ],
+    "rule": "wr- at the start: w silent — write, wrap, wrong.",
+    "tip": "词首 wr- 的 w 静音（write、wrong）。",
+    "item_order": 77
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "-mb",
+    "sound": "/m/",
+    "ex": [
+      [
+        "climb",
+        "klaɪm"
+      ],
+      [
+        "thumb",
+        "θʌm"
+      ],
+      [
+        "lamb",
+        "læm"
+      ]
+    ],
+    "rule": "Word-final -mb: b silent — climb, comb, tomb.",
+    "tip": "词尾 -mb 的 b 静音（climb、comb、thumb）。",
+    "item_order": 78
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "gn",
+    "sound": "/n/",
+    "ex": [
+      [
+        "sign",
+        "saɪn"
+      ],
+      [
+        "design",
+        "dɪˈzaɪn"
+      ],
+      [
+        "assign",
+        "əˈsaɪn"
+      ]
+    ],
+    "rule": "gn in the middle/end: g silent — sign, align, campaign.",
+    "tip": "词中/词尾 gn 的 g 静音（sign、campaign）。",
+    "item_order": 79
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "-tion",
+    "sound": "/ʃən/",
+    "ex": [
+      [
+        "nation",
+        "neɪʃn"
+      ],
+      [
+        "station",
+        "steɪʃn"
+      ],
+      [
+        "action",
+        "ækʃn"
+      ]
+    ],
+    "rule": "-tion = /ʃən/, always unstressed: station, question? No — question is /ˈkwestʃən/ with /tʃ/.",
+    "tip": "-tion 读弱读 /ʃən/（nation、station）；question 特例读 /tʃən/。",
+    "item_order": 80
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "-ture",
+    "sound": "/tʃə/",
+    "ex": [
+      [
+        "picture",
+        "pɪktʃə"
+      ],
+      [
+        "future",
+        "fjuːtʃə"
+      ],
+      [
+        "nature",
+        "neɪtʃə"
+      ]
+    ],
+    "rule": "-ture = /tʃə/: culture, adventure, furniture.",
+    "tip": "-ture 读 /tʃə/（picture、future）——t 不再单独发音。",
+    "item_order": 81
+  },
+  {
+    "sec": "字母组合",
+    "pattern": "双写辅音",
+    "sound": "短音信号",
+    "ex": [
+      [
+        "letter",
+        "letə"
+      ],
+      [
+        "summer",
+        "sʌmə"
+      ],
+      [
+        "dinner",
+        "dɪnə"
+      ]
+    ],
+    "rule": "Double consonants signal a short vowel before them: dinner, rabbit, happy.",
+    "tip": "双写辅音（pp/nn/rr/tt）是\"前面读短元音\"的信号（dinner、rabbit）。",
+    "item_order": 82
+  },
+  {
+    "sec": "音节重音",
+    "pattern": "闭音节",
+    "sound": "短元音",
+    "ex": [
+      [
+        "cat",
+        "kæt"
+      ],
+      [
+        "bed",
+        "bed"
+      ],
+      [
+        "sit",
+        "sɪt"
+      ]
+    ],
+    "rule": "Closed syllable = vowel + consonant ending → short vowel: cat, bed, sit, hot.",
+    "tip": "闭音节（元音后直接接辅音）读短元音——五短音 a/e/i/o/u 全在这。",
+    "item_order": 83
+  },
+  {
+    "sec": "音节重音",
+    "pattern": "开音节 + magic e",
+    "sound": "长元音",
+    "ex": [
+      [
+        "name",
+        "neɪm"
+      ],
+      [
+        "bike",
+        "baɪk"
+      ],
+      [
+        "note",
+        "nəʊt"
+      ]
+    ],
+    "rule": "Open syllable or magic e → long vowel (letter name): name, time, home.",
+    "tip": "开音节/magic e 读长音（字母名）——a_e/i_e/o_e/u_e 全家桶。",
+    "item_order": 84
+  },
+  {
+    "sec": "音节重音",
+    "pattern": "重音节名重读",
+    "sound": "stress 前",
+    "ex": [
+      [
+        "table",
+        "teɪbl"
+      ],
+      [
+        "money",
+        "mʌni"
+      ],
+      [
+        "window",
+        "wɪndəʊ"
+      ]
+    ],
+    "rule": "Two-syllable nouns/adjectives: stress the FIRST syllable — TAble, MOney, WINdow.",
+    "tip": "双音节名词/形容词重音在第一个音节（TAble、MOney）。",
+    "item_order": 85
+  },
+  {
+    "sec": "音节重音",
+    "pattern": "双音节动词重读尾",
+    "sound": "stress 后",
+    "ex": [
+      [
+        "begin",
+        "bɪˈɡɪn"
+      ],
+      [
+        "agree",
+        "əˈɡriː"
+      ],
+      [
+        "forget",
+        "fəˈɡet"
+      ]
+    ],
+    "rule": "Two-syllable verbs: stress the SECOND syllable — beGIN, aGREE, forGET.",
+    "tip": "双音节动词重音在第二个音节（beGIN、forGET）——名前动后。",
+    "item_order": 86
+  },
+  {
+    "sec": "音节重音",
+    "pattern": "-tion / -sion",
+    "sound": "重音前移",
+    "ex": [
+      [
+        "election",
+        "ɪˈlekʃn"
+      ],
+      [
+        "decision",
+        "dɪˈsɪʒn"
+      ],
+      [
+        "attention",
+        "əˈtenʃn"
+      ]
+    ],
+    "rule": "Stress falls on the syllable BEFORE -tion/-sion: elecTION, deciSION, attenTION.",
+    "tip": "-tion/-sion 把重音吸到它前面那个音节（elecTION、deciSION）。",
+    "item_order": 87
+  },
+  {
+    "sec": "音节重音",
+    "pattern": "-ic",
+    "sound": "重音前移",
+    "ex": [
+      [
+        "dramatic",
+        "drəˈmætɪk"
+      ],
+      [
+        "fantastic",
+        "fænˈtæstɪk"
+      ],
+      [
+        "energetic",
+        "enəˈdʒetɪk"
+      ]
+    ],
+    "rule": "-ic words stress the syllable before -ic: fanTAStic, draMAtic.",
+    "tip": "-ic 词重音同样在 -ic 前一音节（fanTAStic、enerGETic）。",
+    "item_order": 88
+  },
+  {
+    "sec": "音节重音",
+    "pattern": "复合名词",
+    "sound": "重首",
+    "ex": [
+      [
+        "playground",
+        "pleɪɡraʊnd"
+      ],
+      [
+        "blackboard",
+        "blækbɔːd"
+      ],
+      [
+        "notebook",
+        "nəʊtbʊk"
+      ]
+    ],
+    "rule": "Compound nouns stress the FIRST part: PLAYground, BLACKboard, NOTEbook.",
+    "tip": "复合名词重音在第一部分（PLAYground）；对比形容词短语 black BOARD? — black board 两词各有重音。",
+    "item_order": 89
+  },
+  {
+    "sec": "音节重音",
+    "pattern": "schwa /ə/",
+    "sound": "弱读之王",
+    "ex": [
+      [
+        "banana",
+        "bəˈnɑːnə"
+      ],
+      [
+        "sofa",
+        "səʊfə"
+      ],
+      [
+        "about",
+        "əˈbaʊt"
+      ]
+    ],
+    "rule": "Any vowel can reduce to /ə/ in unstressed syllables: banana has three a’s, none is /æ/ or /ɑː/... except the stressed one.",
+    "tip": "非重读元音一律弱化成 /ə/（banana、sofa）——英语听感的灵魂音。",
+    "item_order": 90
+  },
+  {
+    "sec": "音节重音",
+    "pattern": "-le 成节音",
+    "sound": "/əl/",
+    "ex": [
+      [
+        "apple",
+        "æpl"
+      ],
+      [
+        "table",
+        "teɪbl"
+      ],
+      [
+        "little",
+        "lɪtl"
+      ]
+    ],
+    "rule": "Final -le = /əl/, a syllable by itself: lit-tle, ta-ble, ap-ple.",
+    "tip": "词尾 -le 自成一个音节读 /əl/（apple 两拍：ap-ple）。",
+    "item_order": 91
+  },
+  {
+    "sec": "音节重音",
+    "pattern": "词尾不发音的 e",
+    "sound": "静音",
+    "ex": [
+      [
+        "time",
+        "taɪm"
+      ],
+      [
+        "have",
+        "hæv"
+      ],
+      [
+        "give",
+        "ɡɪv"
+      ]
+    ],
+    "rule": "Final e is silent but changes the vowel (time, note). Exceptions where it just hangs on: have, give, live (v never ends words).",
+    "tip": "词尾 e 不发音但改变元音；have/give/live 是\"为凑形\"的例外（英文词尾不写 v）。",
+    "item_order": 92
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "-ham",
+    "sound": "/əm/",
+    "ex": [
+      [
+        "Birmingham",
+        "bɜːmɪŋəm"
+      ],
+      [
+        "Nottingham",
+        "nɒtɪŋəm"
+      ],
+      [
+        "Fulham",
+        "fʊləm"
+      ]
+    ],
+    "rule": "Place suffix -ham = /əm/, h silent: Birming-ham → BIRMing-um.",
+    "tip": "-ham 后缀读 /əm/，h 静音：Birmingham 是“伯明厄姆”不是“汉”。",
+    "item_order": 93
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "-bury",
+    "sound": "/bri/",
+    "ex": [
+      [
+        "Canterbury",
+        "kæntəbri"
+      ],
+      [
+        "Salisbury",
+        "sɔːlzbri"
+      ],
+      [
+        "Shrewsbury",
+        "ʃruːzbri"
+      ]
+    ],
+    "rule": "-bury = /bəri/ or squeezed /bri/: SALis-bry, not bur-ry.",
+    "tip": "-bury 读 /bəri/ 或弱化 /bri/（Salisbury=“索兹伯里”）。",
+    "item_order": 94
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "-wich / -wick",
+    "sound": "/ɪtʃ/",
+    "ex": [
+      [
+        "Greenwich",
+        "ɡrenɪtʃ"
+      ],
+      [
+        "Norwich",
+        "nɒrɪdʒ"
+      ],
+      [
+        "Ipswich",
+        "ɪpswɪtʃ"
+      ]
+    ],
+    "rule": "-wich = /ɪtʃ/ or /ɪdʒ/: GREN-itch, NOR-ij. Not \"wick\".",
+    "tip": "-wich 读 /ɪtʃ/ 或 /ɪdʒ/（Greenwich=“格伦尼奇”、Norwich=“诺里奇”）。",
+    "item_order": 95
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "-cester",
+    "sound": "/stə/",
+    "ex": [
+      [
+        "Leicester",
+        "lestə"
+      ],
+      [
+        "Worcester",
+        "wʊstə"
+      ],
+      [
+        "Gloucester",
+        "ɡlɒstə"
+      ]
+    ],
+    "rule": "The famous squeeze: -cester = /stə/ — Lester, WUster, GLOSter.",
+    "tip": "-cester 读 /stə/：Leicester=“莱斯特”、Worcester=“伍斯特” —— c 整段静音。",
+    "item_order": 96
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "-shire",
+    "sound": "/ʃɪə/",
+    "ex": [
+      [
+        "Yorkshire",
+        "jɔːkʃɪə"
+      ],
+      [
+        "Hampshire",
+        "hæmpʃɪə"
+      ],
+      [
+        "Leicestershire",
+        "lestəʃɪə"
+      ]
+    ],
+    "rule": "-shire = /ʃɪə/ or weak /ʃə/: YORK-sher, not shire like \"shy-er\".",
+    "tip": "-shire 读 /ʃɪə/（或弱 /ʃə/），不是“夏尔”两拍分开。",
+    "item_order": 97
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "-mouth",
+    "sound": "/məθ/",
+    "ex": [
+      [
+        "Plymouth",
+        "plɪməθ"
+      ],
+      [
+        "Portsmouth",
+        "pɔːtsməθ"
+      ],
+      [
+        "Bournemouth",
+        "bɔːnməθ"
+      ]
+    ],
+    "rule": "-mouth = /məθ/, th like \"thin\", never like \"mouth = 嘴\" /maʊθ/.",
+    "tip": "-mouth 读 /məθ/（浊 th？不，清 th）：Plymouth=“普利茅斯”尾音是 muth。",
+    "item_order": 98
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "-ford",
+    "sound": "/fəd/",
+    "ex": [
+      [
+        "Oxford",
+        "ɒksfəd"
+      ],
+      [
+        "Bradford",
+        "brædfəd"
+      ],
+      [
+        "Hereford",
+        "herɪfəd"
+      ]
+    ],
+    "rule": "-ford = /fəd/, weak d: OX-fud.",
+    "tip": "-ford 弱读 /fəd/（Oxford=“奥克斯福德”实际读 OX-fud）。",
+    "item_order": 99
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "-borough",
+    "sound": "/bərə/",
+    "ex": [
+      [
+        "Edinburgh",
+        "edɪnbərə"
+      ],
+      [
+        "Scarborough",
+        "skɑːbrə"
+      ],
+      [
+        "Loughborough",
+        "lʌfbərə"
+      ]
+    ],
+    "rule": "-borough = /bərə/: EDin-bura, Luff-bura. Loughborough is the classic tongue trap.",
+    "tip": "-borough 读 /bərə/：Edinburgh=“爱丁堡”音译反而靠谱——Edin-bura。",
+    "item_order": 100
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "-ton",
+    "sound": "/tən/",
+    "ex": [
+      [
+        "Brighton",
+        "braɪtn"
+      ],
+      [
+        "Preston",
+        "prestn"
+      ],
+      [
+        "Hampton",
+        "hæmptən"
+      ]
+    ],
+    "rule": "-ton = /tən/ or syllabic /tn/: BRIGHT-on, HAMP-ton.",
+    "tip": "-ton 弱读 /tən/（Brighton、Preston）——不是“顿”重音。",
+    "item_order": 101
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "-don",
+    "sound": "/dən/",
+    "ex": [
+      [
+        "London",
+        "lʌndən"
+      ],
+      [
+        "Wimbledon",
+        "wɪmbldən"
+      ],
+      [
+        "Croydon",
+        "krɔɪdən"
+      ]
+    ],
+    "rule": "-don = /dən/: LUN-dun, WIMB-ledun.",
+    "tip": "-don 弱读 /dən/（London、Wimbledon）。",
+    "item_order": 102
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "爱尔兰名 I",
+    "sound": "静音字母堆",
+    "ex": [
+      [
+        "Sean",
+        "ʃɔːn"
+      ],
+      [
+        "Siobhán",
+        "ʃɪˈvɔːn"
+      ],
+      [
+        "Niamh",
+        "niːv"
+      ]
+    ],
+    "rule": "Irish spelling is its own system: Sean = Shawn, Siobhán = shi-VAWN, Niamh = NEEV.",
+    "tip": "Sean 读 /ʃɔːn/（=Shawn）、Siobhán 读 /ʃɪˈvɔːn/、Niamh 读 /niːv/ —— 按爱尔兰规则别按字母拼。",
+    "item_order": 103
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "爱尔兰名 II",
+    "sound": "/mVn 型",
+    "ex": [
+      [
+        "Aoife",
+        "iːfə"
+      ],
+      [
+        "Cian",
+        "kiːən"
+      ],
+      [
+        "Saoirse",
+        "sɜːʃə"
+      ]
+    ],
+    "rule": "Aoife = EE-fa, Cian = KEE-un, Saoirse = SUR-sha (like \"inertia\" without the n).",
+    "tip": "Aoife=/ˈiːfə/、Cian=/ˈkiːən/、Saoirse=/ˈsɜːʃə/ —— 爱尔兰名第二弹。",
+    "item_order": 104
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "Mac / Mc",
+    "sound": "/mək/",
+    "ex": [
+      [
+        "MacDonald",
+        "ˌmækˈdɒnəld"
+      ],
+      [
+        "McKenzie",
+        "məˈkenzi"
+      ],
+      [
+        "McCormick",
+        "məˈkɔːmɪk"
+      ]
+    ],
+    "rule": "Mc/Mac = /mək/ or /mak/ (weaker in Scots): Mac-DON-ald.",
+    "tip": "Mc/Mac 读 /mək/～/mak/，a 弱化；重音落在后面词根。",
+    "item_order": 105
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "法语源地名",
+    "sound": "变形记",
+    "ex": [
+      [
+        "Beauchamp",
+        "biːtʃəm"
+      ],
+      [
+        "Belvoir",
+        "biːvɪə"
+      ],
+      [
+        "Beaulieu",
+        "bjuːli"
+      ]
+    ],
+    "rule": "Anglicised French: Beauchamp = BEE-chum, Belvoir = BEE-veer, Beaulieu = BYOO-lee.",
+    "tip": "法语源地名被英语人\"读扁\"：Beauchamp=“比彻姆”、Belvoir=“比维尔”——千万别按法语读。",
+    "item_order": 106
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "伦敦三陷阱",
+    "sound": "名不副形",
+    "ex": [
+      [
+        "Thames",
+        "temz"
+      ],
+      [
+        "Southwark",
+        "sʌðək"
+      ],
+      [
+        "Marylebone",
+        "mærɪləbən"
+      ]
+    ],
+    "rule": "Thames = /temz/ (no h sound), Southwark = /ˈsʌðək/, Marylebone = /ˈmærɪləbən/.",
+    "tip": "Thames 读 /temz/（不是 θeɪmz）、Southwark 读“萨瑟克”、Marylebone 读“玛丽勒本”。",
+    "item_order": 107
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "贵族姓氏",
+    "sound": "千年压缩",
+    "ex": [
+      [
+        "Cholmondeley",
+        "tʃʌmli"
+      ],
+      [
+        "Featherstonehaugh",
+        "fænʃɔː"
+      ],
+      [
+        "St. John",
+        "sɪndʒən"
+      ]
+    ],
+    "rule": "Ultimate traps: Cholmondeley = CHUM-lee, Featherstonehaugh = FAN-shaw, St. John = Sin-jun.",
+    "tip": "三大贵族姓氏陷阱：Cholmondeley=/ˈtʃʌmli/（读“查姆利”）、Featherstonehaugh=/ˈfænʃɔː/（Fanshaw！）、St. John=/ˈsɪndʒən/（Sinjun）——千年压缩读音，形音完全脱节。",
+    "item_order": 108
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "同形异读",
+    "sound": "一词两音",
+    "ex": [
+      [
+        "Houston",
+        "hjuːstən · haʊstən"
+      ],
+      [
+        "Reading",
+        "redɪŋ"
+      ],
+      [
+        "Slough",
+        "slaʊ"
+      ]
+    ],
+    "rule": "Houston (Texas) /ˈhjuːstən/ vs Houston Street (NYC) /ˈhaʊstən/. Reading town = /ˈredɪŋ/, Slough = /slaʊ/.",
+    "tip": "休斯顿市 /ˈhjuːstən/、纽约 Houston 街 /ˈhaʊstən/；Reading 镇=/ˈredɪŋ/（和“阅读”同音）；Slough=/slaʊ/。",
+    "item_order": 109
+  },
+  {
+    "sec": "人名地名",
+    "pattern": "经典人名",
+    "sound": "拼读陷阱",
+    "ex": [
+      [
+        "Ralph",
+        "reɪf"
+      ],
+      [
+        "Vaughan",
+        "vɔːn"
+      ],
+      [
+        "Stephen",
+        "stiːvn"
+      ]
+    ],
+    "rule": "Ralph = /reɪf/ (also /rælf/), Vaughan = /vɔːn/, Stephen = /ˈstiːvn/ (ph = /v/ here!).",
+    "tip": "Ralph 读 /reɪf/、Vaughan 读 /vɔːn/、Stephen 的 ph 竟读 /v/（/ˈstiːvn/）——人名不按组合规律来。",
+    "item_order": 110
+  }
+]

@@ -1,0 +1,329 @@
+<!doctype html><html lang="zh-CN" data-page-node-id="ogaKiQ9dI3SOQinsOQptpt"><head data-page-node-id="8E7nK210ntr7I4jFBPQ1kK"><meta charset="utf-8" data-page-node-id="h1hojn5q4oU4A3zH2hsCSP"><meta name="viewport" content="width=device-width,initial-scale=1" data-page-node-id="9p9K4VSkneNZgGi0Z7ZifH">
+<title>英语句子成分与五种基本句型 · 预览</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" data-page-node-id="eCeg4vXrFrvU7Fue4dXDn7">
+<style>
+
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,"PingFang SC","Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#e9eef5;color:#2e3a4e;padding:28px 16px 60px}
+.wrap{max-width:600px;margin:0 auto}
+header{text-align:center;margin-bottom:8px}
+header h1{font-size:23px;margin:0 0 4px;color:#2e3a4e;font-weight:700}
+header p{margin:0;color:#7d8fa0;font-size:13px}
+.legend{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:16px 0 24px;font-size:12px;color:#5f7282}
+.legend .lg{display:inline-flex;align-items:center;gap:5px}
+.legend .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+.dark-toggle{position:fixed;top:14px;right:16px;z-index:50;font-size:12.5px;font-weight:600;color:#5f7282;background:#fff;border:1px solid #dbe3ec;border-radius:9999px;padding:6px 13px;cursor:pointer}
+body.dark-mode{background:#12181d;color:#cbd5e1}
+body.dark-mode header h1{color:#e2e8f0}
+body.dark-mode header p{color:#7d8f8e}
+body.dark-mode .dark-toggle{background:#1f262a;color:#a3b5b4;border-color:#2e363b}
+
+
+.sp-root{ background:#f7f9fc; border:1px solid #e2e8f0; border-radius:14px; box-shadow:0 1px 3px rgba(30,41,59,.06); margin-bottom:16px; overflow:hidden; }
+.sp-bar{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 16px; border-bottom:1px solid #e9eef4; background:#eef2f7; }
+.sp-bar-left{ display:inline-flex; align-items:center; gap:8px; min-width:0; }
+.sp-badge{ display:inline-flex; align-items:center; font-size:11px; font-weight:700; letter-spacing:.5px; padding:3px 9px; border-radius:9999px; color:#fff; white-space:nowrap; }
+.sp-label{ font-size:13px; font-weight:600; color:#33415c; }
+.sp-actions{ display:flex; gap:7px; }
+.sp-act{ position:relative; width:44px; height:44px; border-radius:9999px; border:none; cursor:pointer; background:#e2e9f1; color:#5a6b7d; font-size:17px; display:inline-flex; align-items:center; justify-content:center; transition:all .18s ease; }
+.sp-act:hover{ background:#3b82f6; color:#fff; }
+.sp-act:active{ transform:scale(.92); }
+.sp-act.is-active{ background:#3b82f6; color:#fff; }
+.sp-act.act-mark.is-active{ background:#f59e0b; color:#fff; }
+.sp-act.act-fav.is-active{ background:#ec4899; color:#fff; }
+.sp-act::after{ content:attr(data-tip); position:absolute; top:100%; left:50%; transform:translateX(-50%) translateY(3px); background:#33415c; color:#fff; font-size:11.5px; font-weight:600; padding:4px 9px; border-radius:7px; white-space:nowrap; opacity:0; visibility:hidden; pointer-events:none; z-index:20; transition:opacity .18s ease, transform .18s ease, visibility .18s; }
+.sp-act:hover::after{ opacity:1; visibility:visible; transform:translateX(-50%) translateY(7px); }
+.sp-body{ padding:20px 22px; display:flex; flex-direction:column; }
+.sp-tok{ padding:0 2px; border-radius:3px; font-weight:700; border-bottom:3px solid transparent; }
+.sp-sentence{ font-size:34px; font-weight:800; color:#1e293b; line-height:1.4; letter-spacing:-.4px; margin-bottom:14px; }
+.sp-formula-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
+.sp-formula{ display:inline-flex; align-items:center; gap:5px; flex-wrap:wrap; }
+.sp-part{ font-size:21px; font-weight:800; padding:5px 12px; border-radius:8px; color:#fff; }
+.sp-plus{ font-size:21px; font-weight:700; color:#cbd5e1; }
+.sp-name{ font-size:26px; font-weight:800; color:#1e293b; }
+.sp-name-en{ font-size:14px; color:#94a3b8; margin-bottom:14px; letter-spacing:.3px; }
+.sp-sec{ font-size:11px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:#94a3b8; margin-bottom:7px; }
+.sp-breakdown{ display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+.sp-row{ display:flex; align-items:center; gap:9px; font-size:15px; }
+.sp-dot{ width:10px; height:10px; border-radius:50%; flex:0 0 auto; }
+.sp-role{ font-size:12.5px; color:#64748b; }
+.sp-note{ font-size:14px; color:#475569; line-height:1.65; background:#eef2f7; border-left:3px solid #3b82f6; border-radius:0 8px 8px 0; padding:9px 12px; }
+.sp-note-en{ font-size:14px; color:#475569; line-height:1.65; background:#f3f0fa; border-left:3px solid #8b5cf6; border-radius:0 8px 8px 0; padding:9px 12px; font-style:italic; }
+.sp-note + .sp-note-en{ margin-top:8px; }
+.sp-trans{ margin-top:12px; font-size:14px; color:#64748b; }
+.sp-trans b{ color:#475569; }
+.sp-example{ font-size:22px; font-weight:700; color:#1e293b; line-height:1.5; margin-bottom:12px; }
+.sp-contrast{ display:flex; flex-direction:column; gap:16px; }
+.sp-c-item{ }
+.sp-c-tag{ display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:.5px; color:#94a3b8; margin-bottom:5px; }
+.sp-c-sentence{ font-size:21px; font-weight:800; color:#1e293b; line-height:1.45; letter-spacing:-.2px; margin-bottom:6px; }
+.sp-divider{ height:1px; background:#e9eef4; margin:6px 0; }
+.sp-overview{ display:flex; flex-direction:column; margin-bottom:14px; }
+.sp-ov-item{ display:flex; align-items:flex-start; gap:11px; padding:8px 0; }
+.sp-ov-item + .sp-ov-item{ border-top:1px dashed #e9eef4; }
+.sp-ov-num{ flex:0 0 auto; width:22px; height:22px; border-radius:50%; background:#e2e9f1; color:#5a6b7d; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:4px; }
+.sp-ov-body{ flex:1; min-width:0; }
+.sp-ov-head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:3px; }
+.sp-overview .sp-part{ font-size:14px; padding:3px 8px; }
+.sp-overview .sp-plus{ font-size:14px; }
+.sp-ov-name{ font-size:15px; font-weight:700; color:#1e293b; }
+.sp-ov-sentence{ font-size:13.5px; color:#64748b; }
+
+.sp-rule{ font-size:14px; color:#2f5a5e; line-height:1.7; background:#eef7f7; border-left:3px solid #14b8a6; border-radius:0 8px 8px 0; padding:9px 13px; margin-bottom:14px; }
+.sp-rule b{ color:#0d9488; }
+.sp-checks{ display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+.sp-check{ background:#fbfcfd; border:1px solid #e4eaf1; border-radius:10px; padding:10px 13px; }
+.sp-chk-top{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:7px; }
+.sp-chk-before{ font-size:16px; font-weight:700; color:#64748b; }
+.sp-chk-arrow{ font-size:11px; font-weight:700; color:#0d9488; background:#e6f4f3; border-radius:6px; padding:2px 7px; white-space:nowrap; }
+.sp-chk-after{ font-size:17px; font-weight:800; color:#1e293b; }
+.sp-chk-mark{ font-size:11.5px; font-weight:700; padding:3px 8px; border-radius:9999px; color:#fff; background:#33415c; white-space:nowrap; }
+.sp-chk-mark.no{ background:#94a3b8; }
+.sp-chk-verdict{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:13px; color:#475569; }
+.sp-check .sp-part{ font-size:13px; padding:3px 8px; }
+.sp-check .sp-plus{ font-size:13px; }
+.sp-chk-name{ font-weight:800; font-size:15px; color:#1e293b; }
+.sp-chk-why{ color:#64748b; font-size:12.5px; }
+/* dark mode */
+/* dark mode */
+body.dark-mode .sp-root{ background:#1f262a; border-color:#2e363b; }
+body.dark-mode .sp-bar{ background:#232b30; border-bottom-color:#2e363b; }
+body.dark-mode .sp-label, body.dark-mode .sp-name, body.dark-mode .sp-sentence, body.dark-mode .sp-c-sentence, body.dark-mode .sp-example{ color:#e2e8f0; }
+body.dark-mode .sp-note{ background:#252e33; color:#a3b5b4; }
+body.dark-mode .sp-note-en{ background:#2a2633; color:#b8adcc; }
+body.dark-mode .sp-trans, body.dark-mode .sp-role, body.dark-mode .sp-name-en, body.dark-mode .sp-sec, body.dark-mode .sp-c-tag{ color:#7d8f8e; }
+body.dark-mode .sp-act{ background:#2b343a; color:#a3b5b4; }
+body.dark-mode .sp-act:hover{ background:#3b82f6; color:#fff; }
+body.dark-mode .sp-plus{ color:#475569; }
+body.dark-mode .sp-divider{ background:#2e363b; }
+body.dark-mode .sp-ov-item + .sp-ov-item{ border-top-color:#2e363b; }
+body.dark-mode .sp-ov-num{ background:#2b343a; color:#a3b5b4; }
+body.dark-mode .sp-ov-name{ color:#e2e8f0; }
+body.dark-mode .sp-ov-sentence{ color:#7d8f8e; }
+body.dark-mode .sp-rule{ background:#1e2c2c; color:#9fc6c4; }
+body.dark-mode .sp-check{ background:#232b30; border-color:#2e363b; }
+body.dark-mode .sp-chk-before{ color:#7d8f8e; }
+body.dark-mode .sp-chk-arrow{ background:#24393a; color:#5eead4; }
+body.dark-mode .sp-chk-after, body.dark-mode .sp-chk-name{ color:#e2e8f0; }
+body.dark-mode .sp-chk-why{ color:#7d8f8e; }
+body.dark-mode .sp-chk-mark{ background:#3d4a58; }
+body.dark-mode .sp-chk-mark.no{ background:#64748b; }
+</style></head><body data-page-node-id="5gospjPk0SYySYDlS58QEQ">
+<button class="dark-toggle" onclick="document.body.classList.toggle('dark-mode')" data-page-node-id="d6hqSqVwLoAXW7HJnIPImq">&#9680; 深色</button>
+<div class="wrap" data-page-node-id="1zdPZ2B7ZSGD4CEPxoJALT">
+<header data-page-node-id="JANcL7yXElyQ6OpeiKmLM4"><h1 data-page-node-id="8ZxOQN1EWRpusdWvlvcJQs">英语句子成分 &middot; 五种基本句型</h1><p data-page-node-id="5FPBgVqzWgIz6NrLH3s9hk">29 张完整卡组（总览 + 五种句型 + 成分 + 辨析 + be 检验法）&middot; 理解型平铺卡 &middot; 例句按成分着色</p></header>
+<div class="legend" data-page-node-id="VwvjRswwgG7NNTf9Peynui">
+  <span class="lg" data-page-node-id="x2PwD6HGcUyTVdtqelKxQR"><span class="dot" style="background:#3b82f6" data-page-node-id="b7C857osuJF8IIhhJpcaJG"></span>主语</span>
+  <span class="lg" data-page-node-id="U773uk1C0vQB7pE9PIlBVg"><span class="dot" style="background:#22c55e" data-page-node-id="VXyDHwQZQtgQNtcehgaDKX"></span>谓语</span>
+  <span class="lg" data-page-node-id="PzUvWOEncyuCRdBVr2MjoC"><span class="dot" style="background:#f59e0b" data-page-node-id="rByuJxvaNNfd0eC7UAuKqx"></span>宾语</span>
+  <span class="lg" data-page-node-id="6vcyJfIl75d9Ja2G4xabFQ"><span class="dot" style="background:#8b5cf6" data-page-node-id="YKrHoD6UGGX6BVKDIA9ZJ0"></span>表语</span>
+  <span class="lg" data-page-node-id="ElPtvEtzrG9KDmultZztX6"><span class="dot" style="background:#ec4899" data-page-node-id="V8z9KVvecLlS8W2b5hRTrb"></span>宾补</span>
+  <span class="lg" data-page-node-id="5y5FCnsyv5USSfS012j81M"><span class="dot" style="background:#94a3b8" data-page-node-id="Q4ANjzIktAwfQUe3Y29LZu"></span>状语</span>
+</div>
+<div id="deck" data-page-node-id="OGF3NI2Gadw96gNHjTWfMY"></div>
+</div>
+<script>
+(function () {
+  'use strict';
+  function esc(s){ if(s==null) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  var ROLE = {
+    'S':    { c:'#3b82f6', n:'主语' },
+    'V':    { c:'#22c55e', n:'谓语' },
+    'P':    { c:'#8b5cf6', n:'表语' },
+    'O':    { c:'#f59e0b', n:'宾语' },
+    'IO':   { c:'#fbbf24', n:'间接宾语' },
+    'DO':   { c:'#f59e0b', n:'直接宾语' },
+    'OC':   { c:'#ec4899', n:'宾补' },
+    'A':    { c:'#94a3b8', n:'状语' },
+    'Attr': { c:'#94a3b8', n:'定语' }
+  };
+  var BADGE = {
+    'overview':  { c:'#0ea5e9', t:'总览' },
+    'pattern':   { c:'#3b82f6', t:'句型' },
+    'component': { c:'#22c55e', t:'成分' },
+    'contrast':  { c:'#8b5cf6', t:'辨析' },
+    'check':     { c:'#e11d48', t:'检验' }
+  };
+  function rl(r){ return ROLE[r] || { c:'#64748b', n:'' }; }
+  function tok(t){ var r=rl(t.role); return '<span class="sp-tok" style="color:'+r.c+';border-bottom-color:'+r.c+'">'+esc(t.text)+'</span>'; }
+  function sentence(bd, cls){
+    if(!bd || !bd.length) return '';
+    var parts=[]; for(var i=0;i<bd.length;i++) parts.push(tok(bd[i]));
+    return '<span class="'+cls+'">'+parts.join(' ')+'</span>';
+  }
+  function formula(p){
+    if(!p) return '';
+    var toks=p.split('+'); var out='';
+    for(var i=0;i<toks.length;i++){
+      var t=toks[i].trim(); var r=ROLE[t];
+      out += r ? '<span class="sp-part" style="background:'+r.c+'">'+esc(t)+'</span>'
+               : '<span class="sp-plus">'+esc(t)+'</span>';
+    }
+    return out;
+  }
+  function breakdown(bd){
+    if(!bd || !bd.length) return '';
+    var out='';
+    for(var i=0;i<bd.length;i++){
+      var r=rl(bd[i].role);
+      out += '<div class="sp-row"><span class="sp-dot" style="background:'+r.c+'"></span>'
+           + '<span class="sp-tok" style="color:'+r.c+';border-bottom-color:'+r.c+'">'+esc(bd[i].text)+'</span>'
+           + '<span class="sp-role">'+esc(r.n)+'</span></div>';
+    }
+    return out;
+  }
+  function actionBar(data){
+    var marked = !!(data && data.is_unknown === 1);
+    var faved  = !!(data && data.is_favorite === 1);
+    return '<div class="sp-actions">'
+      + '<button class="sp-act act-audio" data-action="audio" data-tip="朗读"><i class="fa-solid fa-volume-high"></i></button>'
+      + '<button class="sp-act act-mark' + (marked ? ' is-active' : '') + '" data-action="mark" data-tip="标记"><i class="' + (marked ? 'fa-solid' : 'fa-regular') + ' fa-star"></i></button>'
+      + '<button class="sp-act act-fav' + (faved ? ' is-active' : '') + '" data-action="favorite" data-tip="收藏"><i class="' + (faved ? 'fa-solid' : 'fa-regular') + ' fa-bookmark"></i></button>'
+      + '</div>';
+  }
+  window.cardTemplate = {
+    name: '英语句子成分与五种基本句型',
+    fields: [
+      { key:'type',       label:'类型',       hideable:false },
+      { key:'rows',       label:'句型列表',   hideable:false },
+      { key:'labelZh',    label:'中文名',     hideable:false },
+      { key:'labelEn',    label:'英文名',     hideable:true  },
+      { key:'pattern',    label:'句型公式',   hideable:false },
+      { key:'pattern2',   label:'句型公式2',  hideable:true  },
+      { key:'sentence',   label:'例句',       hideable:false },
+      { key:'breakdown',  label:'成分拆解',   hideable:false },
+      { key:'sentence2',  label:'对比例句',   hideable:true  },
+      { key:'breakdown2', label:'对比拆解',   hideable:true  },
+      { key:'sentenceZh', label:'中文释义',   hideable:true  },
+      { key:'note',       label:'讲解',       hideable:true  },
+      { key:'noteEn',     label:'英文解释',   hideable:true  },
+      { key:'rule',       label:'检验规则',   hideable:false },
+      { key:'checks',     label:'检验示例',   hideable:false }
+    ],
+    render: function (cardHtml, cardData, api) {
+      var data = (api && api.getCardData) ? api.getCardData() : cardData;
+      var d = data.data || {};
+      var hidden = (api.getHiddenFields && api.getHiddenFields()) || {};
+      function h(k, html){ return (hidden.has && hidden.has(k)) ? '' : html; }
+      var b = BADGE[d.type] || { c:'#64748b', t:'' };
+      var body = '';
+      if (d.type === 'overview') {
+        var rows = d.rows || [];
+        var ovHtml = '';
+        for (var i=0;i<rows.length;i++){
+          var r = rows[i] || {};
+          ovHtml += '<div class="sp-ov-item"><span class="sp-ov-num">'+(i+1)+'</span>'
+                  + '<div class="sp-ov-body">'
+                  +   '<div class="sp-ov-head"><span class="sp-formula">'+formula(r.pattern)+'</span>'
+                  +   '<span class="sp-ov-name">'+esc(r.labelZh)+'</span></div>'
+                  +   '<div class="sp-ov-sentence">'+esc(r.sentence)+'</div>'
+                  + '</div></div>';
+        }
+        body = '<div class="sp-name" style="font-size:30px">'+esc(d.labelZh)+'</div>'
+             + h('labelEn', '<div class="sp-name-en" style="font-size:15px">'+esc(d.labelEn)+'</div>')
+             + '<div class="sp-overview">'+ovHtml+'</div>'
+             + h('note', '<div class="sp-note">'+esc(d.note)+'</div>');
+      } else if (d.type === 'component') {
+        body = '<div class="sp-name" style="font-size:32px">'+esc(d.labelZh)+'</div>'
+             + h('labelEn', '<div class="sp-name-en" style="font-size:15px">'+esc(d.labelEn)+'</div>')
+             + h('note', '<div class="sp-note">'+esc(d.note)+'</div>')
+             + h('noteEn', '<div class="sp-note-en">'+esc(d.noteEn)+'</div>')
+             + '<div class="sp-sec" style="margin-top:16px">Example</div>'
+             + h('breakdown', '<div class="sp-example">'+sentence(d.breakdown,'')+'</div>')
+             + h('breakdown', '<div class="sp-breakdown">'+breakdown(d.breakdown)+'</div>')
+             + h('sentenceZh', '<div class="sp-trans"><b>译：</b>'+esc(d.sentenceZh)+'</div>');
+      } else if (d.type === 'contrast') {
+        body = '<div class="sp-name" style="font-size:21px">'+esc(d.labelZh)+'</div>'
+             + h('labelEn', '<div class="sp-name-en">'+esc(d.labelEn)+'</div>')
+             + '<div class="sp-contrast">'
+             + '<div class="sp-c-item"><div class="sp-c-tag">句子 A</div>'
+             + h('breakdown', '<div class="sp-c-sentence">'+sentence(d.breakdown,'')+'</div>')
+             + h('pattern', '<div class="sp-formula">'+formula(d.pattern)+'</div>')
+             + h('breakdown', '<div class="sp-breakdown">'+breakdown(d.breakdown)+'</div>')
+             + '</div>'
+             + '<div class="sp-c-item"><div class="sp-c-tag">句子 B</div>'
+             + h('breakdown2', '<div class="sp-c-sentence">'+sentence(d.breakdown2,'')+'</div>')
+             + h('pattern2', '<div class="sp-formula">'+formula(d.pattern2)+'</div>')
+             + h('breakdown2', '<div class="sp-breakdown">'+breakdown(d.breakdown2)+'</div>')
+             + '</div>'
+             + '</div>'
+             + h('note', '<div class="sp-note" style="margin-top:14px">'+esc(d.note)+'</div>')
+             + h('sentenceZh', '<div class="sp-trans"><b>译：</b>'+esc(d.sentenceZh)+'</div>');
+      } else if (d.type === 'check') {
+        var checks = d.checks || [];
+        var chkHtml = '';
+        for (var ci=0; ci<checks.length; ci++){
+          var ck = checks[ci] || {};
+          var mk = ck.ok
+            ? '<span class="sp-chk-mark">&#10003; 说得通</span>'
+            : '<span class="sp-chk-mark no">&#10007; 说不通</span>';
+          chkHtml += '<div class="sp-check">'
+              + '<div class="sp-chk-top"><span class="sp-chk-before">'+esc(ck.before)+'</span>'
+              + '<span class="sp-chk-arrow">换成 be</span>'
+              + '<span class="sp-chk-after">'+esc(ck.after)+'</span>'
+              + mk + '</div>'
+              + '<div class="sp-chk-verdict"><span class="sp-formula">'+formula(ck.pattern)+'</span>'
+              + '<span class="sp-chk-name">'+esc(ck.name)+'</span>'
+              + (ck.why ? '<span class="sp-chk-why">'+esc(ck.why)+'</span>' : '')
+              + '</div></div>';
+        }
+        body = '<div class="sp-name" style="font-size:28px">'+esc(d.labelZh)+'</div>'
+             + h('labelEn', '<div class="sp-name-en" style="font-size:15px">'+esc(d.labelEn)+'</div>')
+             + h('rule', '<div class="sp-rule">'+esc(d.rule)+'</div>')
+             + h('checks', '<div class="sp-checks">'+chkHtml+'</div>')
+             + h('note', '<div class="sp-note">'+esc(d.note)+'</div>');
+      } else { // pattern
+        body = h('breakdown', '<div class="sp-sentence">'+sentence(d.breakdown,'')+'</div>')
+             + '<div class="sp-formula-row">'
+             +   h('pattern', '<div class="sp-formula">'+formula(d.pattern)+'</div>')
+             +   '<div class="sp-name">'+esc(d.labelZh)+'</div>'
+             + '</div>'
+             + h('labelEn', '<div class="sp-name-en">'+esc(d.labelEn)+'</div>')
+             + '<div class="sp-sec">成分拆解</div>'
+             + h('breakdown', '<div class="sp-breakdown">'+breakdown(d.breakdown)+'</div>')
+             + h('note', '<div class="sp-note">'+esc(d.note)+'</div>')
+             + h('sentenceZh', '<div class="sp-trans"><b>译：</b>'+esc(d.sentenceZh)+'</div>');
+      }
+      return '<div class="sp-root" data-card-id="'+esc(data.id)+'">'
+           + '<div class="sp-bar">'
+           +   '<span class="sp-bar-left"><span class="sp-badge" style="background:'+b.c+'">'+esc(b.t)+'</span>'
+           +     h('labelZh', '<span class="sp-label">'+esc(d.labelZh)+'</span>') + '</span>'
+           +   actionBar(data)
+           + '</div>'
+           + '<div class="sp-body">'+body+'</div>'
+           + '</div>';
+    },
+    init: function (el, cardData, api) {
+      var data = (api && api.getCardData) ? api.getCardData() : cardData;
+      var d = data.data || {};
+      var ab = el.querySelector('.act-audio');
+      if (ab) ab.addEventListener('click', function(){ if(api&&api.playAudio) api.playAudio(d.labelZh || ''); if(api&&api.track) api.track('audio_play'); });
+      var mb = el.querySelector('.act-mark');
+      if (mb) mb.addEventListener('click', function(){ if(api&&api.toggleMark) api.toggleMark(); mb.classList.toggle('is-active'); var i=mb.querySelector('i'); if(i){ i.classList.toggle('fa-regular'); i.classList.toggle('fa-solid'); } if(api&&api.track) api.track('word_mark'); });
+      var vb = el.querySelector('.act-fav');
+      if (vb) vb.addEventListener('click', function(){ if(api&&api.toggleFavorite) api.toggleFavorite(); vb.classList.toggle('is-active'); var i=vb.querySelector('i'); if(i){ i.classList.toggle('fa-regular'); i.classList.toggle('fa-solid'); } if(api&&api.track) api.track('favorite_toggle'); });
+    }
+  };
+})();
+</script>
+<script>
+var SAMPLE = [{"item_order": 1, "type": "overview", "labelZh": "五种基本句型", "labelEn": "Five Basic Sentence Patterns", "rows": [{"pattern": "S + V", "labelZh": "主谓结构", "sentence": "Birds fly."}, {"pattern": "S + V + P", "labelZh": "主系表结构", "sentence": "She is a teacher."}, {"pattern": "S + V + O", "labelZh": "主谓宾结构", "sentence": "I love music."}, {"pattern": "S + V + IO + DO", "labelZh": "主谓双宾结构", "sentence": "He gave me a book."}, {"pattern": "S + V + O + OC", "labelZh": "主谓宾补结构", "sentence": "They made him monitor."}], "note": "英语句子看似千变万化，其实都由这五种基本句型扩展而来。从最简单的「主谓」到最复杂的「主谓宾补」，抓住这条主线，任何长难句都能拆回骨架。"}, {"item_order": 2, "type": "pattern", "labelZh": "主谓结构", "labelEn": "Subject + Verb", "pattern": "S + V", "sentence": "Birds fly.", "breakdown": [{"text": "Birds", "role": "S"}, {"text": "fly.", "role": "V"}], "sentenceZh": "鸟儿飞翔。", "note": "fly 是不及物动词（vi.），本身意思完整，不需要宾语。主谓结构是五种句型里最简单的一种。"}, {"item_order": 3, "type": "pattern", "labelZh": "主谓结构", "labelEn": "Subject + Verb", "pattern": "S + V", "sentence": "The sun rises.", "breakdown": [{"text": "The sun", "role": "S"}, {"text": "rises.", "role": "V"}], "sentenceZh": "太阳升起。", "note": "rise 也是不及物动词，「升起」这个动作不涉及别的对象。主语 + 不及物动词，语义已经完整。"}, {"item_order": 4, "type": "pattern", "labelZh": "主谓结构", "labelEn": "Subject + Verb", "pattern": "S + V", "sentence": "The baby cried.", "breakdown": [{"text": "The baby", "role": "S"}, {"text": "cried.", "role": "V"}], "sentenceZh": "婴儿哭了。", "note": "cry 不及物，哭声是主语自己发出的，没有承受者。注意：主谓结构里谓语后面不能再跟宾语。"}, {"item_order": 5, "type": "pattern", "labelZh": "主系表结构", "labelEn": "Subject + Link Verb + Predicative", "pattern": "S + V + P", "sentence": "She is a teacher.", "breakdown": [{"text": "She", "role": "S"}, {"text": "is", "role": "V"}, {"text": "a teacher.", "role": "P"}], "sentenceZh": "她是一名老师。", "note": "is 是 be 动词（系动词），后面的 a teacher 是表语，用来说明主语的身份。"}, {"item_order": 6, "type": "pattern", "labelZh": "主系表结构", "labelEn": "Subject + Link Verb + Predicative", "pattern": "S + V + P", "sentence": "He looks happy.", "breakdown": [{"text": "He", "role": "S"}, {"text": "looks", "role": "V"}, {"text": "happy.", "role": "P"}], "sentenceZh": "他看起来很开心。", "note": "look 在这里是感官系动词，不表「看」而表「看起来」。happy 是表语，说明主语的状态。"}, {"item_order": 7, "type": "pattern", "labelZh": "主系表结构", "labelEn": "Subject + Link Verb + Predicative", "pattern": "S + V + P", "sentence": "The soup tastes good.", "breakdown": [{"text": "The soup", "role": "S"}, {"text": "tastes", "role": "V"}, {"text": "good.", "role": "P"}], "sentenceZh": "这汤尝起来不错。", "note": "taste 是感官系动词「尝起来」。good 是表语，说明汤的味道。系动词后面跟的是表语，不是宾语。"}, {"item_order": 8, "type": "pattern", "labelZh": "主谓宾结构", "labelEn": "Subject + Verb + Object", "pattern": "S + V + O", "sentence": "I love music.", "breakdown": [{"text": "I", "role": "S"}, {"text": "love", "role": "V"}, {"text": "music.", "role": "O"}], "sentenceZh": "我爱音乐。", "note": "love 是及物动词（vt.），后面必须接宾语。music 就是 love 这个动作的承受者。"}, {"item_order": 9, "type": "pattern", "labelZh": "主谓宾结构", "labelEn": "Subject + Verb + Object", "pattern": "S + V + O", "sentence": "We study English.", "breakdown": [{"text": "We", "role": "S"}, {"text": "study", "role": "V"}, {"text": "English.", "role": "O"}], "sentenceZh": "我们学习英语。", "note": "study 是及物动词，English 是「学习」的对象，即宾语。"}, {"item_order": 10, "type": "pattern", "labelZh": "主谓宾结构", "labelEn": "Subject + Verb + Object", "pattern": "S + V + O", "sentence": "She reads books.", "breakdown": [{"text": "She", "role": "S"}, {"text": "reads", "role": "V"}, {"text": "books.", "role": "O"}], "sentenceZh": "她读书。", "note": "read 是及物动词，books 是「读」的对象。主谓宾结构是英语中最常见的句型。"}, {"item_order": 11, "type": "pattern", "labelZh": "主谓双宾结构", "labelEn": "Subject + Verb + Indirect Object + Direct Object", "pattern": "S + V + IO + DO", "sentence": "He gave me a book.", "breakdown": [{"text": "He", "role": "S"}, {"text": "gave", "role": "V"}, {"text": "me", "role": "IO"}, {"text": "a book.", "role": "DO"}], "sentenceZh": "他给了我一本书。", "note": "gave 后面接了两个人/物：me（间接宾语，指人）和 a book（直接宾语，指物）。「给某人某物」是双宾语最典型的用法。"}, {"item_order": 12, "type": "pattern", "labelZh": "主谓双宾结构", "labelEn": "Subject + Verb + Indirect Object + Direct Object", "pattern": "S + V + IO + DO", "sentence": "She told me a story.", "breakdown": [{"text": "She", "role": "S"}, {"text": "told", "role": "V"}, {"text": "me", "role": "IO"}, {"text": "a story.", "role": "DO"}], "sentenceZh": "她给我讲了一个故事。", "note": "told 后面 me 是间接宾语（听故事的人），a story 是直接宾语（讲的内容）。"}, {"item_order": 13, "type": "pattern", "labelZh": "主谓双宾结构", "labelEn": "Subject + Verb + Indirect Object + Direct Object", "pattern": "S + V + IO + DO", "sentence": "Dad bought me a bike.", "breakdown": [{"text": "Dad", "role": "S"}, {"text": "bought", "role": "V"}, {"text": "me", "role": "IO"}, {"text": "a bike.", "role": "DO"}], "sentenceZh": "爸爸给我买了一辆自行车。", "note": "bought 后面 me（间接宾语）+ a bike（直接宾语）。「给某人买某物」也是双宾语结构。"}, {"item_order": 14, "type": "pattern", "labelZh": "主谓宾补结构", "labelEn": "Subject + Verb + Object + Object Complement", "pattern": "S + V + O + OC", "sentence": "They made him monitor.", "breakdown": [{"text": "They", "role": "S"}, {"text": "made", "role": "V"}, {"text": "him", "role": "O"}, {"text": "monitor.", "role": "OC"}], "sentenceZh": "他们选他当班长。", "note": "him 是宾语，monitor 补充说明 him 的身份，暗含「他是班长」的主谓关系。"}, {"item_order": 15, "type": "pattern", "labelZh": "主谓宾补结构", "labelEn": "Subject + Verb + Object + Object Complement", "pattern": "S + V + O + OC", "sentence": "We call him Tom.", "breakdown": [{"text": "We", "role": "S"}, {"text": "call", "role": "V"}, {"text": "him", "role": "O"}, {"text": "Tom.", "role": "OC"}], "sentenceZh": "我们叫他汤姆。", "note": "him 是宾语，Tom 补充说明「他被叫作什么名字」，两者暗含「他是汤姆」的主谓关系。"}, {"item_order": 16, "type": "pattern", "labelZh": "主谓宾补结构", "labelEn": "Subject + Verb + Object + Object Complement", "pattern": "S + V + O + OC", "sentence": "She painted the wall white.", "breakdown": [{"text": "She", "role": "S"}, {"text": "painted", "role": "V"}, {"text": "the wall", "role": "O"}, {"text": "white.", "role": "OC"}], "sentenceZh": "她把墙刷成了白色。", "note": "the wall 是宾语，white 补充说明「墙被刷成了什么颜色」。"}, {"item_order": 17, "type": "component", "labelZh": "主语", "labelEn": "Subject", "sentence": "The cat sleeps.", "breakdown": [{"text": "The cat", "role": "S"}, {"text": "sleeps.", "role": "V"}], "sentenceZh": "猫在睡觉。", "note": "主语是句子叙述的主体，通常是动作的发出者或描述对象，一般放在句首。句中 The cat 就是主语。", "noteEn": "The subject is the person or thing the sentence is about. Here, \"the cat\" is the subject."}, {"item_order": 18, "type": "component", "labelZh": "谓语", "labelEn": "Verb", "sentence": "The cat sleeps.", "breakdown": [{"text": "The cat", "role": "S"}, {"text": "sleeps.", "role": "V"}], "sentenceZh": "猫在睡觉。", "note": "谓语说明主语的动作或状态，一般由动词充当，位置在主语之后。句中 sleeps 表示「睡」这个动作。", "noteEn": "The predicate verb expresses the action or state of the subject. Here, \"sleeps\" is the verb."}, {"item_order": 19, "type": "component", "labelZh": "宾语", "labelEn": "Object", "sentence": "I love music.", "breakdown": [{"text": "I", "role": "S"}, {"text": "love", "role": "V"}, {"text": "music.", "role": "O"}], "sentenceZh": "我爱音乐。", "note": "宾语是动作的承受者，放在及物动词之后。句中 music 承受了 love 这个动作，所以它是宾语。", "noteEn": "The object receives the action of a transitive verb. Here, \"music\" is the object."}, {"item_order": 20, "type": "component", "labelZh": "表语", "labelEn": "Predicative", "sentence": "She is a teacher.", "breakdown": [{"text": "She", "role": "S"}, {"text": "is", "role": "V"}, {"text": "a teacher.", "role": "P"}], "sentenceZh": "她是一名老师。", "note": "表语放在系动词之后，用来说明主语的身份、性质或状态。句中 a teacher 说明了 She 的身份。", "noteEn": "The predicative follows a link verb and describes the subject. Here, \"a teacher\" is the predicative."}, {"item_order": 21, "type": "component", "labelZh": "宾语补足语", "labelEn": "Object Complement", "sentence": "They made him monitor.", "breakdown": [{"text": "They", "role": "S"}, {"text": "made", "role": "V"}, {"text": "him", "role": "O"}, {"text": "monitor.", "role": "OC"}], "sentenceZh": "他们选他当班长。", "note": "宾语补足语补充说明宾语，与宾语构成逻辑上的主谓关系。句中 monitor 说明 him 的身份，暗含「他是班长」。", "noteEn": "The object complement completes the meaning of the object. Here, \"monitor\" describes \"him\"."}, {"item_order": 22, "type": "component", "labelZh": "定语", "labelEn": "Attribute", "sentence": "The red apple is sweet.", "breakdown": [{"text": "The", "role": "Attr"}, {"text": "red", "role": "Attr"}, {"text": "apple", "role": "S"}, {"text": "is", "role": "V"}, {"text": "sweet.", "role": "P"}], "sentenceZh": "这个红苹果很甜。", "note": "定语修饰名词，说明「什么样的、谁的」。句中 The 和 red 都修饰 apple，它们都是定语。", "noteEn": "An attribute modifies a noun. Here, \"the\" and \"red\" modify \"apple\"."}, {"item_order": 23, "type": "component", "labelZh": "状语", "labelEn": "Adverbial", "sentence": "She sings beautifully.", "breakdown": [{"text": "She", "role": "S"}, {"text": "sings", "role": "V"}, {"text": "beautifully.", "role": "A"}], "sentenceZh": "她唱得很动听。", "note": "状语修饰动词、形容词或整个句子，说明时间、地点、方式、程度等。句中 beautifully 说明了 sings 的方式。", "noteEn": "An adverbial modifies a verb, adjective, or sentence. Here, \"beautifully\" tells how she sings."}, {"item_order": 24, "type": "contrast", "labelZh": "表语 vs 宾语", "labelEn": "Predicative vs Object", "pattern": "S + V + P", "pattern2": "S + V + O", "sentence": "She is a teacher.", "breakdown": [{"text": "She", "role": "S"}, {"text": "is", "role": "V"}, {"text": "a teacher.", "role": "P"}], "sentence2": "She loves her teacher.", "breakdown2": [{"text": "She", "role": "S"}, {"text": "loves", "role": "V"}, {"text": "her teacher.", "role": "O"}], "sentenceZh": "她是一名老师。／她爱她的老师。", "note": "关键看动词：is 是系动词，后面是表语（说明主语「是什么」）；love 是及物动词，后面是宾语（承受「爱」这个动作）。同一类词 a teacher，作表语时说明身份，作宾语时承受动作。"}, {"item_order": 25, "type": "contrast", "labelZh": "双宾语 vs 复合宾语", "labelEn": "Double Object vs Complex Object", "pattern": "S + V + IO + DO", "pattern2": "S + V + O + OC", "sentence": "He gave me a book.", "breakdown": [{"text": "He", "role": "S"}, {"text": "gave", "role": "V"}, {"text": "me", "role": "IO"}, {"text": "a book.", "role": "DO"}], "sentence2": "They made him monitor.", "breakdown2": [{"text": "They", "role": "S"}, {"text": "made", "role": "V"}, {"text": "him", "role": "O"}, {"text": "monitor.", "role": "OC"}], "sentenceZh": "他给了我一本书。／他们选他当班长。", "note": "双宾语：me 和 a book 都是宾语，两者之间没有主谓关系。复合宾语：him 是宾语，monitor 补充说明 him 的身份，两者暗含「他是班长」的主谓关系。判断口诀：把后两个词连成一句，能成句就是宾补。"}, {"item_order": 26, "type": "contrast", "labelZh": "及物 vs 不及物动词", "labelEn": "Transitive vs Intransitive", "pattern": "S + V + O", "pattern2": "S + V", "sentence": "She reads books.", "breakdown": [{"text": "She", "role": "S"}, {"text": "reads", "role": "V"}, {"text": "books.", "role": "O"}], "sentence2": "Birds fly.", "breakdown2": [{"text": "Birds", "role": "S"}, {"text": "fly.", "role": "V"}], "sentenceZh": "她读书。／鸟儿飞翔。", "note": "及物动词（vt.）后面必须接宾语，动作有承受者；不及物动词（vi.）不接宾语，语义已经完整。同一个动词有时既是及物又是不及物，要看具体用法。"}, {"item_order": 27, "type": "component", "labelZh": "系动词", "labelEn": "Link Verb", "sentence": "The soup tastes good.", "breakdown": [{"text": "The soup", "role": "S"}, {"text": "tastes", "role": "V"}, {"text": "good.", "role": "P"}], "sentenceZh": "这汤尝起来不错。", "note": "系动词本身不表示具体动作，只起连接主语和表语的作用。常见分类：① be 动词（am/is/are）；② 感官系动词（look/sound/smell/taste/feel）；③ 变化系动词（become/get/turn/grow）；④ 保持系动词（keep/stay/remain）。", "noteEn": "A link verb connects the subject to a word that describes it. Common types: be, sense verbs (look/sound/smell/taste/feel), change verbs (become/get/turn/grow), and keeping verbs (keep/stay/remain)."}, {"item_order": 28, "type": "check", "labelZh": "be 检验法 · 主系表 / 主谓宾", "labelEn": "The Be-Test · SVP vs SVO", "rule": "把句中的动词换成 be（is/am/are）再念一遍：依然通顺，是后面的词在描述主语 → 主系表；变得荒谬，那它只能是动作的对象 → 主谓宾。", "checks": [{"before": "He looks happy.", "after": "He is happy.", "ok": true, "pattern": "S + V + P", "name": "主系表", "why": "happy 在描述 he（他是开心的），换成 is 依旧通顺。"}, {"before": "I love music.", "after": "I am music.", "ok": false, "pattern": "S + V + O", "name": "主谓宾", "why": "「我是音乐」荒谬 → music 只能是 love 的对象（宾语）。"}], "note": "判据：主系表的表语与主语是「描述/等同」关系，能换成 be；主谓宾的宾语是动作承受者，和主语是两回事，一换 be 就露馅。"}, {"item_order": 29, "type": "check", "labelZh": "be 检验法 · 双宾语 / 复合宾语", "labelEn": "The Be-Test · Double Object vs Complex Object", "rule": "在宾语和它后面的词之间加 be 连成一句：能连通（宾语就是后面那个人/那种状态）→ 复合宾语；连不成（两个词互不相干）→ 双宾语。", "checks": [{"before": "They made him monitor.", "after": "He is a monitor.", "ok": true, "pattern": "S + V + O + OC", "name": "复合宾语", "why": "him = monitor（他是班长）→ monitor 在说明 him 的身份。"}, {"before": "He gave me a book.", "after": "I am a book.", "ok": false, "pattern": "S + V + IO + DO", "name": "双宾语", "why": "「我是一本书」荒谬 → me 和 a book 是两个独立的宾语。"}], "note": "双宾语：动词既给「人」又给「物」，两者无从属关系；复合宾语：宾语与补语是同一人或物，暗含主谓关系。加个 be 一验便知。"}];
+var deck = document.getElementById('deck');
+function fakeApi(d){
+  return {
+    getCardData: function(){ return { id: 1, data: d }; },
+    getHiddenFields: function(){ return {}; },
+    playAudio: function(t, lang){ try{ var u=new SpeechSynthesisUtterance(t); u.lang=lang||'zh-CN'; speechSynthesis.speak(u); }catch(e){} },
+    toggleMark: function(){}, toggleFavorite: function(){}, track: function(){}, rerender: function(){}
+  };
+}
+SAMPLE.forEach(function(d, idx){
+  var api = fakeApi(d);
+  var html = window.cardTemplate.render('', { id: idx+1, data: d }, api);
+  var wrap = document.createElement('div');
+  wrap.innerHTML = html;
+  window.cardTemplate.init(wrap.firstElementChild, { id: idx+1, data: d }, api);
+  deck.appendChild(wrap);
+});
+</script>
+</body></html>

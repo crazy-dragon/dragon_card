@@ -1,0 +1,780 @@
+[
+  {
+    "item_order": 1,
+    "type": "overview",
+    "labelZh": "五种基本句型",
+    "labelEn": "Five Basic Sentence Patterns",
+    "rows": [
+      {
+        "pattern": "S + V",
+        "labelZh": "主谓结构",
+        "sentence": "Birds fly."
+      },
+      {
+        "pattern": "S + V + P",
+        "labelZh": "主系表结构",
+        "sentence": "She is a teacher."
+      },
+      {
+        "pattern": "S + V + O",
+        "labelZh": "主谓宾结构",
+        "sentence": "I love music."
+      },
+      {
+        "pattern": "S + V + IO + DO",
+        "labelZh": "主谓双宾结构",
+        "sentence": "He gave me a book."
+      },
+      {
+        "pattern": "S + V + O + OC",
+        "labelZh": "主谓宾补结构",
+        "sentence": "They made him monitor."
+      }
+    ],
+    "note": "英语句子看似千变万化，其实都由这五种基本句型扩展而来。从最简单的「主谓」到最复杂的「主谓宾补」，抓住这条主线，任何长难句都能拆回骨架。"
+  },
+  {
+    "item_order": 2,
+    "type": "pattern",
+    "labelZh": "主谓结构",
+    "labelEn": "Subject + Verb",
+    "pattern": "S + V",
+    "sentence": "Birds fly.",
+    "breakdown": [
+      {
+        "text": "Birds",
+        "role": "S"
+      },
+      {
+        "text": "fly.",
+        "role": "V"
+      }
+    ],
+    "sentenceZh": "鸟儿飞翔。",
+    "note": "fly 是不及物动词（vi.），本身意思完整，不需要宾语。主谓结构是五种句型里最简单的一种。"
+  },
+  {
+    "item_order": 3,
+    "type": "pattern",
+    "labelZh": "主谓结构",
+    "labelEn": "Subject + Verb",
+    "pattern": "S + V",
+    "sentence": "The sun rises.",
+    "breakdown": [
+      {
+        "text": "The sun",
+        "role": "S"
+      },
+      {
+        "text": "rises.",
+        "role": "V"
+      }
+    ],
+    "sentenceZh": "太阳升起。",
+    "note": "rise 也是不及物动词，「升起」这个动作不涉及别的对象。主语 + 不及物动词，语义已经完整。"
+  },
+  {
+    "item_order": 4,
+    "type": "pattern",
+    "labelZh": "主谓结构",
+    "labelEn": "Subject + Verb",
+    "pattern": "S + V",
+    "sentence": "The baby cried.",
+    "breakdown": [
+      {
+        "text": "The baby",
+        "role": "S"
+      },
+      {
+        "text": "cried.",
+        "role": "V"
+      }
+    ],
+    "sentenceZh": "婴儿哭了。",
+    "note": "cry 不及物，哭声是主语自己发出的，没有承受者。注意：主谓结构里谓语后面不能再跟宾语。"
+  },
+  {
+    "item_order": 5,
+    "type": "pattern",
+    "labelZh": "主系表结构",
+    "labelEn": "Subject + Link Verb + Predicative",
+    "pattern": "S + V + P",
+    "sentence": "She is a teacher.",
+    "breakdown": [
+      {
+        "text": "She",
+        "role": "S"
+      },
+      {
+        "text": "is",
+        "role": "V"
+      },
+      {
+        "text": "a teacher.",
+        "role": "P"
+      }
+    ],
+    "sentenceZh": "她是一名老师。",
+    "note": "is 是 be 动词（系动词），后面的 a teacher 是表语，用来说明主语的身份。"
+  },
+  {
+    "item_order": 6,
+    "type": "pattern",
+    "labelZh": "主系表结构",
+    "labelEn": "Subject + Link Verb + Predicative",
+    "pattern": "S + V + P",
+    "sentence": "He looks happy.",
+    "breakdown": [
+      {
+        "text": "He",
+        "role": "S"
+      },
+      {
+        "text": "looks",
+        "role": "V"
+      },
+      {
+        "text": "happy.",
+        "role": "P"
+      }
+    ],
+    "sentenceZh": "他看起来很开心。",
+    "note": "look 在这里是感官系动词，不表「看」而表「看起来」。happy 是表语，说明主语的状态。"
+  },
+  {
+    "item_order": 7,
+    "type": "pattern",
+    "labelZh": "主系表结构",
+    "labelEn": "Subject + Link Verb + Predicative",
+    "pattern": "S + V + P",
+    "sentence": "The soup tastes good.",
+    "breakdown": [
+      {
+        "text": "The soup",
+        "role": "S"
+      },
+      {
+        "text": "tastes",
+        "role": "V"
+      },
+      {
+        "text": "good.",
+        "role": "P"
+      }
+    ],
+    "sentenceZh": "这汤尝起来不错。",
+    "note": "taste 是感官系动词「尝起来」。good 是表语，说明汤的味道。系动词后面跟的是表语，不是宾语。"
+  },
+  {
+    "item_order": 8,
+    "type": "pattern",
+    "labelZh": "主谓宾结构",
+    "labelEn": "Subject + Verb + Object",
+    "pattern": "S + V + O",
+    "sentence": "I love music.",
+    "breakdown": [
+      {
+        "text": "I",
+        "role": "S"
+      },
+      {
+        "text": "love",
+        "role": "V"
+      },
+      {
+        "text": "music.",
+        "role": "O"
+      }
+    ],
+    "sentenceZh": "我爱音乐。",
+    "note": "love 是及物动词（vt.），后面必须接宾语。music 就是 love 这个动作的承受者。"
+  },
+  {
+    "item_order": 9,
+    "type": "pattern",
+    "labelZh": "主谓宾结构",
+    "labelEn": "Subject + Verb + Object",
+    "pattern": "S + V + O",
+    "sentence": "We study English.",
+    "breakdown": [
+      {
+        "text": "We",
+        "role": "S"
+      },
+      {
+        "text": "study",
+        "role": "V"
+      },
+      {
+        "text": "English.",
+        "role": "O"
+      }
+    ],
+    "sentenceZh": "我们学习英语。",
+    "note": "study 是及物动词，English 是「学习」的对象，即宾语。"
+  },
+  {
+    "item_order": 10,
+    "type": "pattern",
+    "labelZh": "主谓宾结构",
+    "labelEn": "Subject + Verb + Object",
+    "pattern": "S + V + O",
+    "sentence": "She reads books.",
+    "breakdown": [
+      {
+        "text": "She",
+        "role": "S"
+      },
+      {
+        "text": "reads",
+        "role": "V"
+      },
+      {
+        "text": "books.",
+        "role": "O"
+      }
+    ],
+    "sentenceZh": "她读书。",
+    "note": "read 是及物动词，books 是「读」的对象。主谓宾结构是英语中最常见的句型。"
+  },
+  {
+    "item_order": 11,
+    "type": "pattern",
+    "labelZh": "主谓双宾结构",
+    "labelEn": "Subject + Verb + Indirect Object + Direct Object",
+    "pattern": "S + V + IO + DO",
+    "sentence": "He gave me a book.",
+    "breakdown": [
+      {
+        "text": "He",
+        "role": "S"
+      },
+      {
+        "text": "gave",
+        "role": "V"
+      },
+      {
+        "text": "me",
+        "role": "IO"
+      },
+      {
+        "text": "a book.",
+        "role": "DO"
+      }
+    ],
+    "sentenceZh": "他给了我一本书。",
+    "note": "gave 后面接了两个人/物：me（间接宾语，指人）和 a book（直接宾语，指物）。「给某人某物」是双宾语最典型的用法。"
+  },
+  {
+    "item_order": 12,
+    "type": "pattern",
+    "labelZh": "主谓双宾结构",
+    "labelEn": "Subject + Verb + Indirect Object + Direct Object",
+    "pattern": "S + V + IO + DO",
+    "sentence": "She told me a story.",
+    "breakdown": [
+      {
+        "text": "She",
+        "role": "S"
+      },
+      {
+        "text": "told",
+        "role": "V"
+      },
+      {
+        "text": "me",
+        "role": "IO"
+      },
+      {
+        "text": "a story.",
+        "role": "DO"
+      }
+    ],
+    "sentenceZh": "她给我讲了一个故事。",
+    "note": "told 后面 me 是间接宾语（听故事的人），a story 是直接宾语（讲的内容）。"
+  },
+  {
+    "item_order": 13,
+    "type": "pattern",
+    "labelZh": "主谓双宾结构",
+    "labelEn": "Subject + Verb + Indirect Object + Direct Object",
+    "pattern": "S + V + IO + DO",
+    "sentence": "Dad bought me a bike.",
+    "breakdown": [
+      {
+        "text": "Dad",
+        "role": "S"
+      },
+      {
+        "text": "bought",
+        "role": "V"
+      },
+      {
+        "text": "me",
+        "role": "IO"
+      },
+      {
+        "text": "a bike.",
+        "role": "DO"
+      }
+    ],
+    "sentenceZh": "爸爸给我买了一辆自行车。",
+    "note": "bought 后面 me（间接宾语）+ a bike（直接宾语）。「给某人买某物」也是双宾语结构。"
+  },
+  {
+    "item_order": 14,
+    "type": "pattern",
+    "labelZh": "主谓宾补结构",
+    "labelEn": "Subject + Verb + Object + Object Complement",
+    "pattern": "S + V + O + OC",
+    "sentence": "They made him monitor.",
+    "breakdown": [
+      {
+        "text": "They",
+        "role": "S"
+      },
+      {
+        "text": "made",
+        "role": "V"
+      },
+      {
+        "text": "him",
+        "role": "O"
+      },
+      {
+        "text": "monitor.",
+        "role": "OC"
+      }
+    ],
+    "sentenceZh": "他们选他当班长。",
+    "note": "him 是宾语，monitor 补充说明 him 的身份，暗含「他是班长」的主谓关系。"
+  },
+  {
+    "item_order": 15,
+    "type": "pattern",
+    "labelZh": "主谓宾补结构",
+    "labelEn": "Subject + Verb + Object + Object Complement",
+    "pattern": "S + V + O + OC",
+    "sentence": "We call him Tom.",
+    "breakdown": [
+      {
+        "text": "We",
+        "role": "S"
+      },
+      {
+        "text": "call",
+        "role": "V"
+      },
+      {
+        "text": "him",
+        "role": "O"
+      },
+      {
+        "text": "Tom.",
+        "role": "OC"
+      }
+    ],
+    "sentenceZh": "我们叫他汤姆。",
+    "note": "him 是宾语，Tom 补充说明「他被叫作什么名字」，两者暗含「他是汤姆」的主谓关系。"
+  },
+  {
+    "item_order": 16,
+    "type": "pattern",
+    "labelZh": "主谓宾补结构",
+    "labelEn": "Subject + Verb + Object + Object Complement",
+    "pattern": "S + V + O + OC",
+    "sentence": "She painted the wall white.",
+    "breakdown": [
+      {
+        "text": "She",
+        "role": "S"
+      },
+      {
+        "text": "painted",
+        "role": "V"
+      },
+      {
+        "text": "the wall",
+        "role": "O"
+      },
+      {
+        "text": "white.",
+        "role": "OC"
+      }
+    ],
+    "sentenceZh": "她把墙刷成了白色。",
+    "note": "the wall 是宾语，white 补充说明「墙被刷成了什么颜色」。"
+  },
+  {
+    "item_order": 17,
+    "type": "component",
+    "labelZh": "主语",
+    "labelEn": "Subject",
+    "sentence": "The cat sleeps.",
+    "breakdown": [
+      {
+        "text": "The cat",
+        "role": "S"
+      },
+      {
+        "text": "sleeps.",
+        "role": "V"
+      }
+    ],
+    "sentenceZh": "猫在睡觉。",
+    "note": "主语是句子叙述的主体，通常是动作的发出者或描述对象，一般放在句首。句中 The cat 就是主语。",
+    "noteEn": "The subject is the person or thing the sentence is about. Here, \"the cat\" is the subject."
+  },
+  {
+    "item_order": 18,
+    "type": "component",
+    "labelZh": "谓语",
+    "labelEn": "Verb",
+    "sentence": "The cat sleeps.",
+    "breakdown": [
+      {
+        "text": "The cat",
+        "role": "S"
+      },
+      {
+        "text": "sleeps.",
+        "role": "V"
+      }
+    ],
+    "sentenceZh": "猫在睡觉。",
+    "note": "谓语说明主语的动作或状态，一般由动词充当，位置在主语之后。句中 sleeps 表示「睡」这个动作。",
+    "noteEn": "The predicate verb expresses the action or state of the subject. Here, \"sleeps\" is the verb."
+  },
+  {
+    "item_order": 19,
+    "type": "component",
+    "labelZh": "宾语",
+    "labelEn": "Object",
+    "sentence": "I love music.",
+    "breakdown": [
+      {
+        "text": "I",
+        "role": "S"
+      },
+      {
+        "text": "love",
+        "role": "V"
+      },
+      {
+        "text": "music.",
+        "role": "O"
+      }
+    ],
+    "sentenceZh": "我爱音乐。",
+    "note": "宾语是动作的承受者，放在及物动词之后。句中 music 承受了 love 这个动作，所以它是宾语。",
+    "noteEn": "The object receives the action of a transitive verb. Here, \"music\" is the object."
+  },
+  {
+    "item_order": 20,
+    "type": "component",
+    "labelZh": "表语",
+    "labelEn": "Predicative",
+    "sentence": "She is a teacher.",
+    "breakdown": [
+      {
+        "text": "She",
+        "role": "S"
+      },
+      {
+        "text": "is",
+        "role": "V"
+      },
+      {
+        "text": "a teacher.",
+        "role": "P"
+      }
+    ],
+    "sentenceZh": "她是一名老师。",
+    "note": "表语放在系动词之后，用来说明主语的身份、性质或状态。句中 a teacher 说明了 She 的身份。",
+    "noteEn": "The predicative follows a link verb and describes the subject. Here, \"a teacher\" is the predicative."
+  },
+  {
+    "item_order": 21,
+    "type": "component",
+    "labelZh": "宾语补足语",
+    "labelEn": "Object Complement",
+    "sentence": "They made him monitor.",
+    "breakdown": [
+      {
+        "text": "They",
+        "role": "S"
+      },
+      {
+        "text": "made",
+        "role": "V"
+      },
+      {
+        "text": "him",
+        "role": "O"
+      },
+      {
+        "text": "monitor.",
+        "role": "OC"
+      }
+    ],
+    "sentenceZh": "他们选他当班长。",
+    "note": "宾语补足语补充说明宾语，与宾语构成逻辑上的主谓关系。句中 monitor 说明 him 的身份，暗含「他是班长」。",
+    "noteEn": "The object complement completes the meaning of the object. Here, \"monitor\" describes \"him\"."
+  },
+  {
+    "item_order": 22,
+    "type": "component",
+    "labelZh": "定语",
+    "labelEn": "Attribute",
+    "sentence": "The red apple is sweet.",
+    "breakdown": [
+      {
+        "text": "The",
+        "role": "Attr"
+      },
+      {
+        "text": "red",
+        "role": "Attr"
+      },
+      {
+        "text": "apple",
+        "role": "S"
+      },
+      {
+        "text": "is",
+        "role": "V"
+      },
+      {
+        "text": "sweet.",
+        "role": "P"
+      }
+    ],
+    "sentenceZh": "这个红苹果很甜。",
+    "note": "定语修饰名词，说明「什么样的、谁的」。句中 The 和 red 都修饰 apple，它们都是定语。",
+    "noteEn": "An attribute modifies a noun. Here, \"the\" and \"red\" modify \"apple\"."
+  },
+  {
+    "item_order": 23,
+    "type": "component",
+    "labelZh": "状语",
+    "labelEn": "Adverbial",
+    "sentence": "She sings beautifully.",
+    "breakdown": [
+      {
+        "text": "She",
+        "role": "S"
+      },
+      {
+        "text": "sings",
+        "role": "V"
+      },
+      {
+        "text": "beautifully.",
+        "role": "A"
+      }
+    ],
+    "sentenceZh": "她唱得很动听。",
+    "note": "状语修饰动词、形容词或整个句子，说明时间、地点、方式、程度等。句中 beautifully 说明了 sings 的方式。",
+    "noteEn": "An adverbial modifies a verb, adjective, or sentence. Here, \"beautifully\" tells how she sings."
+  },
+  {
+    "item_order": 24,
+    "type": "contrast",
+    "labelZh": "表语 vs 宾语",
+    "labelEn": "Predicative vs Object",
+    "pattern": "S + V + P",
+    "pattern2": "S + V + O",
+    "sentence": "She is a teacher.",
+    "breakdown": [
+      {
+        "text": "She",
+        "role": "S"
+      },
+      {
+        "text": "is",
+        "role": "V"
+      },
+      {
+        "text": "a teacher.",
+        "role": "P"
+      }
+    ],
+    "sentence2": "She loves her teacher.",
+    "breakdown2": [
+      {
+        "text": "She",
+        "role": "S"
+      },
+      {
+        "text": "loves",
+        "role": "V"
+      },
+      {
+        "text": "her teacher.",
+        "role": "O"
+      }
+    ],
+    "sentenceZh": "她是一名老师。／她爱她的老师。",
+    "note": "关键看动词：is 是系动词，后面是表语（说明主语「是什么」）；love 是及物动词，后面是宾语（承受「爱」这个动作）。同一类词 a teacher，作表语时说明身份，作宾语时承受动作。"
+  },
+  {
+    "item_order": 25,
+    "type": "contrast",
+    "labelZh": "双宾语 vs 复合宾语",
+    "labelEn": "Double Object vs Complex Object",
+    "pattern": "S + V + IO + DO",
+    "pattern2": "S + V + O + OC",
+    "sentence": "He gave me a book.",
+    "breakdown": [
+      {
+        "text": "He",
+        "role": "S"
+      },
+      {
+        "text": "gave",
+        "role": "V"
+      },
+      {
+        "text": "me",
+        "role": "IO"
+      },
+      {
+        "text": "a book.",
+        "role": "DO"
+      }
+    ],
+    "sentence2": "They made him monitor.",
+    "breakdown2": [
+      {
+        "text": "They",
+        "role": "S"
+      },
+      {
+        "text": "made",
+        "role": "V"
+      },
+      {
+        "text": "him",
+        "role": "O"
+      },
+      {
+        "text": "monitor.",
+        "role": "OC"
+      }
+    ],
+    "sentenceZh": "他给了我一本书。／他们选他当班长。",
+    "note": "双宾语：me 和 a book 都是宾语，两者之间没有主谓关系。复合宾语：him 是宾语，monitor 补充说明 him 的身份，两者暗含「他是班长」的主谓关系。判断口诀：把后两个词连成一句，能成句就是宾补。"
+  },
+  {
+    "item_order": 26,
+    "type": "contrast",
+    "labelZh": "及物 vs 不及物动词",
+    "labelEn": "Transitive vs Intransitive",
+    "pattern": "S + V + O",
+    "pattern2": "S + V",
+    "sentence": "She reads books.",
+    "breakdown": [
+      {
+        "text": "She",
+        "role": "S"
+      },
+      {
+        "text": "reads",
+        "role": "V"
+      },
+      {
+        "text": "books.",
+        "role": "O"
+      }
+    ],
+    "sentence2": "Birds fly.",
+    "breakdown2": [
+      {
+        "text": "Birds",
+        "role": "S"
+      },
+      {
+        "text": "fly.",
+        "role": "V"
+      }
+    ],
+    "sentenceZh": "她读书。／鸟儿飞翔。",
+    "note": "及物动词（vt.）后面必须接宾语，动作有承受者；不及物动词（vi.）不接宾语，语义已经完整。同一个动词有时既是及物又是不及物，要看具体用法。"
+  },
+  {
+    "item_order": 27,
+    "type": "component",
+    "labelZh": "系动词",
+    "labelEn": "Link Verb",
+    "sentence": "The soup tastes good.",
+    "breakdown": [
+      {
+        "text": "The soup",
+        "role": "S"
+      },
+      {
+        "text": "tastes",
+        "role": "V"
+      },
+      {
+        "text": "good.",
+        "role": "P"
+      }
+    ],
+    "sentenceZh": "这汤尝起来不错。",
+    "note": "系动词本身不表示具体动作，只起连接主语和表语的作用。常见分类：① be 动词（am/is/are）；② 感官系动词（look/sound/smell/taste/feel）；③ 变化系动词（become/get/turn/grow）；④ 保持系动词（keep/stay/remain）。",
+    "noteEn": "A link verb connects the subject to a word that describes it. Common types: be, sense verbs (look/sound/smell/taste/feel), change verbs (become/get/turn/grow), and keeping verbs (keep/stay/remain)."
+  },
+  {
+    "item_order": 28,
+    "type": "check",
+    "labelZh": "be 检验法 · 主系表 / 主谓宾",
+    "labelEn": "The Be-Test · SVP vs SVO",
+    "rule": "把句中的动词换成 be（is/am/are）再念一遍：依然通顺，是后面的词在描述主语 → 主系表；变得荒谬，那它只能是动作的对象 → 主谓宾。",
+    "checks": [
+      {
+        "before": "He looks happy.",
+        "after": "He is happy.",
+        "ok": true,
+        "pattern": "S + V + P",
+        "name": "主系表",
+        "why": "happy 在描述 he（他是开心的），换成 is 依旧通顺。"
+      },
+      {
+        "before": "I love music.",
+        "after": "I am music.",
+        "ok": false,
+        "pattern": "S + V + O",
+        "name": "主谓宾",
+        "why": "「我是音乐」荒谬 → music 只能是 love 的对象（宾语）。"
+      }
+    ],
+    "note": "判据：主系表的表语与主语是「描述/等同」关系，能换成 be；主谓宾的宾语是动作承受者，和主语是两回事，一换 be 就露馅。"
+  },
+  {
+    "item_order": 29,
+    "type": "check",
+    "labelZh": "be 检验法 · 双宾语 / 复合宾语",
+    "labelEn": "The Be-Test · Double Object vs Complex Object",
+    "rule": "在宾语和它后面的词之间加 be 连成一句：能连通（宾语就是后面那个人/那种状态）→ 复合宾语；连不成（两个词互不相干）→ 双宾语。",
+    "checks": [
+      {
+        "before": "They made him monitor.",
+        "after": "He is a monitor.",
+        "ok": true,
+        "pattern": "S + V + O + OC",
+        "name": "复合宾语",
+        "why": "him = monitor（他是班长）→ monitor 在说明 him 的身份。"
+      },
+      {
+        "before": "He gave me a book.",
+        "after": "I am a book.",
+        "ok": false,
+        "pattern": "S + V + IO + DO",
+        "name": "双宾语",
+        "why": "「我是一本书」荒谬 → me 和 a book 是两个独立的宾语。"
+      }
+    ],
+    "note": "双宾语：动词既给「人」又给「物」，两者无从属关系；复合宾语：宾语与补语是同一人或物，暗含主谓关系。加个 be 一验便知。"
+  }
+]

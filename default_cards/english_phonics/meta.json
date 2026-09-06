@@ -1,0 +1,10 @@
+{
+  "name": "自然拼读规则 · English Phonics",
+  "description": "109 条拼读规则（含引导卡）：字母/组合/音节/人名地名，配例词与要领。",
+  "version": "1.0.0",
+  "author": "Alfred Long",
+  "email": "alfred.long@qq.com",
+  "source": "自编整理",
+  "license": "DragonCard Data License v1.0",
+  "updated": "2026-09-05"
+}

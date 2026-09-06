@@ -1,0 +1,198 @@
+{
+  "name": "English IPA · 英语音标 48 音",
+  "lang": "en",
+  "description": "英语国际音标 48 个（含 1 张引导卡）：单元音 12 + 双元音 8 + 清辅音 10 + 浊辅音 10 + 鼻音 3 + 半辅音 5。每音配 3 个高频例词（可点击朗读）、常见拼写规律与中文发音要领。清浊辅音成对排列便于对比（p/b、t/d、θ/ð…）。朗读英文例词（lang: en），可隐藏拼写规律或要领作自测。",
+  "cardHtml": "",
+  "cardCss": "\n.ipa-root{box-sizing:border-box;border-radius:16px;padding:13px 16px 15px;margin-bottom:16px;\n border:1px solid #dfe3e9;background:#f4f6f9;box-shadow:0 1px 2px rgba(20,24,33,.04)}\n@supports (background:color-mix(in srgb,red 10%,white)){\n.ipa-root{background:color-mix(in srgb,var(--cat) 8%,white);\n border-color:color-mix(in srgb,var(--cat) 24%,white)}\n}\n.ipa-top{display:flex;align-items:center;gap:8px;margin-bottom:9px;flex-wrap:wrap}\n.ipa-cat{font-size:calc(14px * var(--card-font-scale,1));line-height:1;padding:5px 11px;border-radius:999px;background:var(--cat);\n color:#fff;font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.08)}\n.ipa-en{font-size:calc(14px * var(--card-font-scale,1));line-height:1;padding:5px 10px;border-radius:999px;background:#fff;\n color:#454e5c;font-weight:700;border:0.5px solid rgba(0,0,0,.05)}\n.ipa-space{flex:1}\n.ipa-actions{display:flex;gap:2px}\n.ipa-actions button{border:0;background:transparent;color:#5b6472;cursor:pointer;padding:6px 8px;\n border-radius:8px;font-size:15px;line-height:1;transition:background .15s}\n.ipa-actions button:hover{background:rgba(255,255,255,.85);color:var(--cat,#333)}\n.ipa-sym{font-size:calc(46px * var(--card-font-scale,1));line-height:1.1;font-weight:700;\n color:var(--ink,#18202b);font-family:\"Charis SIL\",\"Gentium Plus\",\"Doulos SIL\",Georgia,serif}\n.ipa-spell{margin-top:5px;font-size:14px;line-height:1.55;color:var(--ink,#41506b)}\n.ipa-spell b{font-weight:700;color:var(--ink,#18202b)}\n.ipa-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}\n.ipa-chip{border:1px solid #c6cdd9;background:#fff;color:#333a45;border-radius:12px;padding:6px 12px;\n font-size:15px;font-weight:600;cursor:pointer;user-select:none;transition:transform .1s}\n.ipa-chip:active{transform:scale(.96)}\n.ipa-chip .w{margin-right:7px}\n.ipa-chip .p{font-size:13px;font-weight:500;color:#8a8f98}\n@supports (background:color-mix(in srgb,red 10%,white)){\n.ipa-chip{border-color:color-mix(in srgb,var(--cat) 40%,white)}\n}\n.ipa-tip{margin-top:12px;padding:1px 0 1px 12px;border-left:3px solid var(--cat);\n font-size:calc(16px * var(--card-font-scale,1));line-height:1.6;color:var(--ink,#22303f)}\nbody.dark-mode .ipa-root{border-color:#39404d}\nbody.dark-mode .ipa-en{background:#2a2f38;color:#d7dbe2;border-color:#39404d}\nbody.dark-mode .ipa-actions button{color:#c7cdd8}\nbody.dark-mode .ipa-actions button:hover{background:rgba(255,255,255,.08)}\nbody.dark-mode .ipa-chip{background:#2a2f38;border-color:#4a5260;color:#e6e9f0}\nbody.dark-mode .ipa-chip .p{color:#9aa3b2}\n@supports (background:color-mix(in srgb,red 10%,#20242c)){\nbody.dark-mode .ipa-root{background:color-mix(in srgb,var(--cat) 13%,#20242c)}\nbody.dark-mode .ipa-chip{background:color-mix(in srgb,var(--cat) 15%,#262b34);\n border-color:color-mix(in srgb,var(--cat) 38%,#4a5260);color:#e8ebf2}\n}\n/* intro */\n.ipa-intro{border:0;box-shadow:none;padding:0;background:transparent}\n.ipa-intro .ipa-intro-body{background:var(--card-bg,#fff);border:1px solid var(--line,#e6e4dd);\n border-radius:16px;padding:20px 22px}\n.ipa-intro h2{margin:0 0 4px;font-size:calc(26px * var(--card-font-scale,1));color:var(--ink,#161b22)}\n.ipa-intro .ipa-i-en{font-size:14px;color:var(--ink,#8a8f98);margin-bottom:14px}\n.ipa-i-formula{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 14px;\n font-size:17px;color:var(--ink,#2c3140)}\n.ipa-i-formula b{padding:4px 10px;border-radius:8px;background:#eef1f6;border:1px solid #d5dbe4}\n.ipa-intro .ipa-i-sec{margin:14px 0 6px;font-weight:800;color:var(--ink,#161b22);font-size:15px}\n.ipa-intro table{border-collapse:collapse;width:100%;font-size:15px;margin:4px 0 6px}\n.ipa-intro td{padding:5px 10px;border-bottom:1px dashed var(--line,#e6e4dd);color:var(--ink,#2c3140);\n font-family:\"Charis SIL\",\"Gentium Plus\",Georgia,serif;font-size:16px}\n.ipa-intro td.zh{font-weight:700;width:130px;font-family:inherit;font-size:14px}\n.ipa-intro td.en{color:var(--ink,#8a8f98);font-size:13px;font-family:inherit}\n.ipa-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}\n.ipa-legend .lg{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line,#e6e4dd);\n border-radius:999px;padding:6px 13px;font-size:15px;font-weight:600;color:var(--ink,#3c4452);background:var(--card-bg,#fff)}\n.ipa-legend .lg i{width:10px;height:10px;border-radius:50%;display:inline-block}\n",
+  "cardJs": "(function(){\nvar NAME='English IPA · 英语音标 48 音';\nvar CAT_MAP={'单元音':'#2f6ac0','双元音':'#7c44b4','清辅音':'#0e8f84','浊辅音':'#c2572d','鼻音':'#b03a48','半辅音':'#5a8a1f'};\nvar CAT_EN={'单元音':'monophthongs','双元音':'diphthongs','清辅音':'voiceless','浊辅音':'voiced','鼻音':'nasals','半辅音':'semi-vowels & others'};\nfunction esc(s){return String(s==null?'':s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c];});}\nfunction iconBtn(kind, on){return '<button type=\"button\" data-action=\"'+kind+'\" title=\"'+({play:'朗读例词',mark:'标记',favorite:'收藏'}[kind])+'\">'\n  + (kind==='play' ? '<i class=\"fa-solid fa-volume-high\"></i>'\n     : kind==='mark' ? '<i class=\"'+(on?'fa-solid':'fa-regular')+' fa-star\"></i>'\n     : '<i class=\"'+(on?'fa-solid':'fa-regular')+' fa-bookmark\"></i>') + '</button>';}\nfunction actionBar(api){var cd=api.getCardData?api.getCardData():{};\n  return '<div class=\"ipa-actions\">'\n   + iconBtn('play',0) + iconBtn('mark',!!(cd.is_unknown)) + iconBtn('favorite',!!(cd.is_favorite))\n   + '</div>';}\nfunction renderIntro(){\n  var pairs=[['/p/ · /b/','pen, map · book, big'],['/t/ · /d/','ten, cat · dog, red'],\n    ['/k/ · /ɡ/','key, cat · go, big'],['/f/ · /v/','five, life · very, love'],\n    ['/s/ · /z/','sun, bus · zoo, is'],['/θ/ · /ð/','think, three · this, mother'],\n    ['/ʃ/ · /ʒ/','she, fish · usual, pleasure'],['/tʃ/ · /dʒ/','chair, watch · job, age'],\n    ['/ts/ · /dz/','cats, lots · beds, hands'],['/tr/ · /dr/','tree, try · drink, drive']];\n  var table=pairs.map(function(r){return '<tr><td class=\"zh\">'+r[0]+'</td><td class=\"en\">'+r[1]+'</td></tr>';}).join('');\n  var keys=['单元音','双元音','清辅音','浊辅音','鼻音','半辅音'];\n  var leg=keys.map(function(k){return '<span class=\"lg\"><i style=\"background:'+CAT_MAP[k]+'\"></i>'+k+' · '+CAT_EN[k]+'</span>';}).join('');\n  return '<div class=\"ipa-root ipa-intro\" data-card-id=\"{{ID}}\"><div class=\"ipa-intro-body\">'\n   +'<h2>英语音标 · 48 Phonemes</h2>'\n   +'<div class=\"ipa-i-en\">The International Phonetic Alphabet (IPA) gives every English sound one exact symbol. Learn the 48 sounds once, and every dictionary entry becomes readable.</div>'\n   +'<div class=\"ipa-i-formula\"><b>48 音</b><span>=</span><b>20 元音</b><span>(12 单元音 + 8 双元音)</span><span>+</span><b>28 辅音</b><span>(10 清 + 10 浊 + 3 鼻 + 5 半辅音)</span></div>'\n   +'<div class=\"ipa-i-sec\">清浊成对 · 10 voiced/voiceless pairs</div>'+table\n   +'<div class=\"ipa-i-sec\">六类音标 · The 6 groups in this deck</div><div class=\"ipa-legend\">'+leg+'</div>'\n   +'<div class=\"ipa-i-en\" style=\"margin-top:12px;margin-bottom:0\">Every card shows the symbol, its group, 3 high-frequency example words (click to hear), the common spellings, and a Chinese pronunciation tip. 例词可点击朗读。</div>'\n   +'</div></div>';}\nfunction renderCard(d, api){\n  var col=CAT_MAP[d.cat]||'#64748b';\n  var chips=(d.ex||[]).map(function(p){\n    return '<span class=\"ipa-chip\" data-word=\"'+esc(p[0])+'\"><span class=\"w\">'+esc(p[0])+'</span><span class=\"p\">/'+esc(p[1])+'/</span></span>';\n  }).join('');\n  return '<div class=\"ipa-root\" data-card-id=\"{{ID}}\" style=\"--cat:'+col+'\">'\n   +'<div class=\"ipa-top\"><span class=\"ipa-cat\">'+esc(d.cat)+'</span><span class=\"ipa-en\">'+esc(CAT_EN[d.cat]||'')+'</span>'\n   +'<span class=\"ipa-space\"></span>'+actionBar(api)+'</div>'\n   +'<div class=\"ipa-sym\">'+esc(d.sym)+'</div>'\n   +'<div class=\"ipa-spell\"><b>常见拼写</b> · '+esc(d.spell)+'</div>'\n   +'<div class=\"ipa-chips\">'+chips+'</div>'\n   +'<div class=\"ipa-tip\">'+esc(d.tip)+'</div>'\n   +'</div>';}\nwindow.cardTemplate={\n  name:NAME,\n  fields:[\n    {key:'sym',label:'音标',hideable:false},\n    {key:'cat',label:'类别',hideable:false},\n    {key:'spell',label:'常见拼写',hideable:true},\n    {key:'ex',label:'例词',hideable:true},\n    {key:'tip',label:'发音要领',hideable:true}\n  ],\n  render:function(cardHtml,cardData,api){var d=cardData.data||cardData;\n    var id=String((cardData.id!=null)?cardData.id:d.item_order);\n    var html=(d.type==='intro')?renderIntro():renderCard(d,api||{});\n    return html.split('{{ID}}').join(id);},\n  init:function(el,cardData,api){var d=cardData.data||cardData;\n    el.querySelectorAll('[data-action]').forEach(function(b){\n      b.addEventListener('click',function(ev){ev.preventDefault();ev.stopPropagation();\n        var a=b.getAttribute('data-action');\n        if(a==='play'){var w=(d.ex&&d.ex[0])?d.ex[0][0]:'';api.playAudio(w,'en');api.track&&api.track('audio_play');}\n        else if(a==='mark'){api.toggleMark&&api.toggleMark();api.rerender&&api.rerender();}\n        else if(a==='favorite'){api.toggleFavorite&&api.toggleFavorite();api.rerender&&api.rerender();}\n      });});\n    el.querySelectorAll('[data-word]').forEach(function(c){\n      c.addEventListener('click',function(ev){ev.preventDefault();ev.stopPropagation();\n        api.playAudio(c.getAttribute('data-word'),'en');api.track&&api.track('audio_play');});});}\n};\n})();\n",
+  "trackedActions": [
+    {
+      "action": "audio_play",
+      "label": "朗读例词"
+    },
+    {
+      "action": "word_mark",
+      "label": "标记"
+    },
+    {
+      "action": "favorite_toggle",
+      "label": "收藏"
+    }
+  ],
+  "sampleData": [
+    {
+      "type": "intro",
+      "nameZh": "英语音标",
+      "nameEn": "English IPA 48",
+      "item_order": 1
+    },
+    {
+      "sym": "/iː/",
+      "cat": "单元音",
+      "ex": [
+        [
+          "see",
+          "siː"
+        ],
+        [
+          "eat",
+          "iːt"
+        ],
+        [
+          "meet",
+          "miːt"
+        ]
+      ],
+      "spell": "ee, ea, e, ie, i(开音节)",
+      "tip": "长音。嘴角向两边拉平，比中文“衣”更紧张、更长，发音时喉咙肌肉绷紧。",
+      "item_order": 2
+    },
+    {
+      "sym": "/æ/",
+      "cat": "单元音",
+      "ex": [
+        [
+          "cat",
+          "kæt"
+        ],
+        [
+          "apple",
+          "ˈæpl"
+        ],
+        [
+          "hand",
+          "hænd"
+        ]
+      ],
+      "spell": "a(闭音节)",
+      "tip": "嘴张到最大、舌位最低，像被压到下巴的“唉”。bad 和 bed 靠它区分——多练最小对立对。",
+      "item_order": 5
+    },
+    {
+      "sym": "/ə/",
+      "cat": "单元音",
+      "ex": [
+        [
+          "about",
+          "əˈbaʊt"
+        ],
+        [
+          "sofa",
+          "ˈsəʊfə"
+        ],
+        [
+          "banana",
+          "bəˈnɑːnə"
+        ]
+      ],
+      "spell": "a, e, o, u(弱读音节) · -tion, -ous, -a(词尾)",
+      "tip": "英语最高频的音——所有弱读音节都读它。非重读音节里的 a/e/o/u 一律轻化为“呃”。",
+      "item_order": 7
+    },
+    {
+      "sym": "/eɪ/",
+      "cat": "双元音",
+      "ex": [
+        [
+          "name",
+          "neɪm"
+        ],
+        [
+          "day",
+          "deɪ"
+        ],
+        [
+          "rain",
+          "reɪn"
+        ]
+      ],
+      "spell": "a_e, ai, ay, ei, ey",
+      "tip": "从 /e/ 滑向 /ɪ/。别读成中文“诶”一个音——双元音必须滑动。name 不是“内姆”。",
+      "item_order": 14
+    },
+    {
+      "sym": "/aʊ/",
+      "cat": "双元音",
+      "ex": [
+        [
+          "now",
+          "naʊ"
+        ],
+        [
+          "house",
+          "haʊs"
+        ],
+        [
+          "cow",
+          "kaʊ"
+        ]
+      ],
+      "spell": "ou, ow",
+      "tip": "从“啊”滑到“乌”，滑动幅度大。中文“傲”起点更靠后，这里起点是 /a/。now 不是“闹”。",
+      "item_order": 21
+    },
+    {
+      "sym": "/θ/",
+      "cat": "清辅音",
+      "ex": [
+        [
+          "think",
+          "θɪŋk"
+        ],
+        [
+          "three",
+          "θriː"
+        ],
+        [
+          "mouth",
+          "maʊθ"
+        ]
+      ],
+      "spell": "th",
+      "tip": "舌尖轻伸齿间吹气，无声带振动。中国学习者最难的音——别读成 /s/（think≠sink）。",
+      "item_order": 27
+    },
+    {
+      "sym": "/ʃ/",
+      "cat": "清辅音",
+      "ex": [
+        [
+          "she",
+          "ʃiː"
+        ],
+        [
+          "fish",
+          "fɪʃ"
+        ],
+        [
+          "nation",
+          "ˈneɪʃn"
+        ]
+      ],
+      "spell": "sh, ti(nation), ci(delicious), ssi(passport)",
+      "tip": "双唇略撅，比中文“嘘”更靠后、更圆。-tion 恒读 /ʃn/——背下这条拼读规律很值。",
+      "item_order": 28
+    },
+    {
+      "sym": "/ŋ/",
+      "cat": "鼻音",
+      "ex": [
+        [
+          "sing",
+          "sɪŋ"
+        ],
+        [
+          "think",
+          "θɪŋk"
+        ],
+        [
+          "long",
+          "lɒŋ"
+        ]
+      ],
+      "spell": "ng(词尾), n(k/g 前: bank, angry)",
+      "tip": "舌根鼻音，像中文“后鼻音”但更靠后。sing 严格说没有 /ɡ/ 音——别读成“辛格”。",
+      "item_order": 44
+    }
+  ]
+}

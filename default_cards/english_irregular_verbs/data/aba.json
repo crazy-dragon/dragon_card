@@ -1,0 +1,6 @@
+[
+  {"base":"come","zh":"来","past":"came","pp":"come","group":"ABA","example":"She came home late last night.","exampleZh":"她昨晚很晚才回家。"},
+  {"base":"become","zh":"变成，成为","past":"became","pp":"become","group":"ABA","example":"He became a doctor at thirty.","exampleZh":"他三十岁时成了一名医生。"},
+  {"base":"overcome","zh":"克服","past":"overcame","pp":"overcome","group":"ABA","example":"They overcame many difficulties.","exampleZh":"他们克服了许多困难。"},
+  {"base":"run","zh":"跑；经营","past":"ran","pp":"run","group":"ABA","example":"I ran three kilometers this morning.","exampleZh":"今天早上我跑了三公里。"}
+]

@@ -1,0 +1,8 @@
+[
+  {"type":"overview","nameZh":"英语不规则动词 · 五型总览","intro":"本卡组收录 200 余个常见不规则动词，按「过去式、过去分词与原形的关系」分成五型。先看每组前的引导卡抓住规律，再逐个动词扫读；想自测时，可在字段抽屉里隐藏「过去式 / 过去分词」，先回忆再点开对照。"},
+  {"type":"guide","group":"AAA","nameZh":"AAA 型 · 三形相同","anchor":"cut","pattern":"cut \u2192 cut \u2192 cut","rule":"原形、过去式、过去分词拼写完全一样，是最好记的一型。","tip":"注意 read 属此类：拼写不变，但过去式、过去分词要读作 /red/。","example":"She cut the apple into four pieces.","exampleZh":"她把苹果切成四块。"},
+  {"type":"guide","group":"AAB","nameZh":"AAB 型 · 原形 = 过去式","anchor":"beat","pattern":"beat \u2192 beat \u2192 beaten","rule":"只有 beat 一个常用词属于这一型：原形与过去式相同，过去分词加 -en。","tip":"整型就一个词，记住 beat-beat-beaten 即可；顺带记住 beaten 也能作形容词，意为「被打败的、筋疲力尽的」。","example":"He beat the drum all morning.","exampleZh":"他敲了一上午鼓。"},
+  {"type":"guide","group":"ABA","nameZh":"ABA 型 · 原形 = 过去分词","anchor":"come","pattern":"come \u2192 came \u2192 come","rule":"过去分词不同于过去式，却和原形相同。核心是 come 与 run 两个家族。","tip":"run 的三形只差一个字母；come 家族还有 become、overcome，变化方式完全一样。","example":"She came back home late.","exampleZh":"她很晚才回到家。"},
+  {"type":"guide","group":"ABB","nameZh":"ABB 型 · 过去式 = 过去分词","anchor":"build","pattern":"build \u2192 built \u2192 built","rule":"过去式与过去分词完全相同——不规则动词中最大的一类（本组 80+ 词）。多数是词尾变 -t / -d，或内部元音变化。","tip":"按小家族记更快：bring/bought 的 -ought、teach/taught 的 -aught、feel/felt 的 -t 尾、find/found 的元音变化。","example":"They built this bridge in 1990.","exampleZh":"这座桥是他们 1990 年建的。"},
+  {"type":"guide","group":"ABC","nameZh":"ABC 型 · 三形全不同","anchor":"begin","pattern":"begin \u2192 began \u2192 begun","rule":"原形、过去式、过去分词各不相同，数量仅次于 ABB。很多过去分词以 -en 结尾（broken / taken / written）。","tip":"-ew/-own（grew / grown）、-ang/-ung（sang / sung）都是常见家族，成组记效率更高。","example":"The film began at seven.","exampleZh":"电影七点开始。"}
+]

@@ -1,0 +1,55 @@
+[
+  {"mw": "位", "pinyin": "wèi", "category": "个体", "level": "2",
+   "usage": "polite counter for people (一位老师, 两位客人); kinder and more respectful than 个.",
+   "collocations": ["一位老师", "两位客人", "一位朋友"],
+   "example": "我们班来了两位新同学。",
+   "exampleEn": "Two new classmates joined our class."},
+
+  {"mw": "名", "pinyin": "míng", "category": "个体", "level": "2",
+   "usage": "counter for people by role or occupation, in a neutral or formal tone (一名学生, 一名警察).",
+   "collocations": ["一名学生", "一名警察", "一名医生"],
+   "example": "门口站着一名警察。",
+   "exampleEn": "A police officer is standing at the door."},
+
+  {"mw": "条", "pinyin": "tiáo", "category": "个体", "level": "2",
+   "usage": "for long, thin things — fish, pants, roads, rivers — and for abstract items such as news or suggestions.",
+   "collocations": ["一条鱼", "一条裤子", "一条路"],
+   "example": "这条裤子太长了。",
+   "exampleEn": "These pants are too long."},
+
+  {"mw": "间", "pinyin": "jiān", "category": "个体", "level": "2",
+   "usage": "for rooms (一间房, 一间教室, 一间办公室).",
+   "collocations": ["一间房", "两间教室", "一间办公室"],
+   "example": "我们学校有三十间教室。",
+   "exampleEn": "Our school has thirty classrooms."},
+
+  {"mw": "包", "pinyin": "bāo", "category": "容器", "level": "2",
+   "usage": "a packet, bag or pack of (一包糖, 一包纸巾).",
+   "collocations": ["一包糖", "一包纸巾", "一包茶叶"],
+   "example": "我买了一包糖。",
+   "exampleEn": "I bought a packet of candy."},
+
+  {"mw": "次", "pinyin": "cì", "category": "动作", "level": "2",
+   "usage": "time, occasion — counts how many times something happens (第一次 = the first time).",
+   "collocations": ["一次", "两次", "第一次"],
+   "example": "我去过两次北京。",
+   "exampleEn": "I have been to Beijing twice."},
+
+  {"mw": "床", "pinyin": "chuáng", "category": "容器", "level": "2",
+   "usage": "for quilts and bedding that cover a bed (一床被子, 一床棉被).",
+   "collocations": ["一床被子", "两床棉被", "一床毛毯"],
+   "example": "天气冷了，我换了一床厚被子。",
+   "exampleEn": "The weather is cold, so I switched to a thick quilt."},
+
+  {"mw": "门", "pinyin": "mén", "category": "类别", "level": "2",
+   "usage": "for courses (一门课), languages (一门语言) and crafts or skills (一门手艺).",
+   "collocations": ["一门课", "两门语言", "一门手艺"],
+   "example": "这学期我有四门课。",
+   "exampleEn": "I have four courses this semester."},
+
+  {"mw": "手", "pinyin": "shǒu", "category": "容器", "level": "2",
+   "usage": "a hand covered or filled with something (一手泥); also a skill with the hand (一手好字).",
+   "collocations": ["一手泥", "一手好字", "一手汗"],
+   "example": "爷爷写了一手好字。",
+   "exampleEn": "Grandpa writes beautiful calligraphy."}
+]

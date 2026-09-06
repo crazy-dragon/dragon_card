@@ -64,6 +64,14 @@ window.cardTemplate = {
     var hidden = api.getHiddenFields ? api.getHiddenFields() : null;
     function isHidden(k){ return hidden && hidden.has && hidden.has(k); }
     function show(k, html){ return isHidden(k) ? '' : html; }
+    function markBtn(){
+      var on = cardData.is_unknown === 1;
+      return '<button class="st-act'+(on?' on':'')+'" data-action="mark" title="标记"><i class="fas fa-bookmark"></i><span>标记</span></button>';
+    }
+    function favBtn(){
+      var on = cardData.is_favorite === 1;
+      return '<button class="st-act'+(on?' on':'')+'" data-action="favorite" title="收藏"><i class="fas fa-star"></i><span>收藏</span></button>';
+    }
     var root = '';
     if(d.type === 'overview'){
       root = ''
@@ -74,8 +82,8 @@ window.cardTemplate = {
       + show('body','<div class="st-ov-body">'+esc(d.body)+'</div>')
       + '<div class="st-actions">'
       +   '<button class="st-act" data-action="audio" title="朗读"><i class="fas fa-volume-up"></i><span>朗读</span></button>'
-      +   '<button class="st-act" data-action="mark" title="标记"><i class="fas fa-bookmark"></i><span>标记</span></button>'
-      +   '<button class="st-act" data-action="favorite" title="收藏"><i class="fas fa-star"></i><span>收藏</span></button>'
+      +   markBtn()
+      +   favBtn()
       + '</div>'
       + '</div>';
     } else {
@@ -104,8 +112,8 @@ window.cardTemplate = {
       +   '<div class="st-actions">'
       +     '<button class="st-act" data-action="audio" title="朗读"><i class="fas fa-volume-up"></i><span>朗读</span></button>'
       +     '<button class="st-act" data-action="flip" title="翻面"><i class="fas fa-sync-alt"></i><span>翻面</span></button>'
-      +     '<button class="st-act" data-action="mark" title="标记"><i class="fas fa-bookmark"></i><span>标记</span></button>'
-      +     '<button class="st-act" data-action="favorite" title="收藏"><i class="fas fa-star"></i><span>收藏</span></button>'
+      +     markBtn()
+      +     favBtn()
       +   '</div>'
       + '</div>';
     }
