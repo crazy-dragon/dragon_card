@@ -115,11 +115,15 @@ body.dark-mode .iv-badge{ color:#19140c; }
   function cell(tag, w, dim){
     return '<div class="iv-f'+(dim?' dim':'')+'"><span class="iv-f-tag">'+tag+'</span><span class="iv-f-w">'+esc(w)+'</span></div>';
   }
-  var ACTS = '<div class="iv-actions">'
-    + '<button class="iv-act act-audio" data-action="audio" data-tip="朗读"><i class="fa-solid fa-volume-high"></i></button>'
-    + '<button class="iv-act act-mark" data-action="mark" data-tip="标记"><i class="fa-regular fa-star"></i></button>'
-    + '<button class="iv-act act-fav" data-action="favorite" data-tip="收藏"><i class="fa-regular fa-bookmark"></i></button>'
-    + '</div>';
+  function actsHtml(data){
+    var marked = !!(data && data.is_unknown === 1);
+    var faved  = !!(data && data.is_favorite === 1);
+    return '<div class="iv-actions">'
+      + '<button class="iv-act act-audio" data-action="audio" data-tip="朗读"><i class="fa-solid fa-volume-high"></i></button>'
+      + '<button class="iv-act act-mark' + (marked ? ' is-active' : '') + '" data-action="mark" data-tip="标记"><i class="' + (marked ? 'fa-solid' : 'fa-regular') + ' fa-star"></i></button>'
+      + '<button class="iv-act act-fav' + (faved ? ' is-active' : '') + '" data-action="favorite" data-tip="收藏"><i class="' + (faved ? 'fa-solid' : 'fa-regular') + ' fa-bookmark"></i></button>'
+      + '</div>';
+  }
   window.cardTemplate = {
     name: 'English Irregular Verbs · 不规则动词',
     fields: [
@@ -162,7 +166,7 @@ body.dark-mode .iv-badge{ color:#19140c; }
       if (d.type === 'guide') {
         var g = cls(d.group);
         return '<div class="iv-root iv-'+g+'" data-card-id="'+esc(data.id)+'">'
-          + '<div class="iv-top"><span class="iv-badge">'+esc(g)+' <span class="cn">'+esc(TYPE_CN[g])+'</span></span>' + ACTS + '</div>'
+          + '<div class="iv-top"><span class="iv-badge">'+esc(g)+' <span class="cn">'+esc(TYPE_CN[g])+'</span></span>' + actsHtml(data) + '</div>'
           + '<div class="iv-g-title">'+esc(d.nameZh)+'</div>'
           + h('pattern', '<div class="iv-g-pattern">'+esc(d.pattern)+'</div>')
           + h('rule', '<div class="iv-g-rule">'+esc(d.rule)+'</div>')
@@ -176,7 +180,7 @@ body.dark-mode .iv-badge{ color:#19140c; }
       // verb
       var gv = cls(d.group);
       return '<div class="iv-root iv-'+gv+'" data-card-id="'+esc(data.id)+'">'
-        + '<div class="iv-top"><span class="iv-badge">'+esc(d.group)+' <span class="cn">'+esc(TYPE_CN[gv])+'</span></span>' + ACTS + '</div>'
+        + '<div class="iv-top"><span class="iv-badge">'+esc(d.group)+' <span class="cn">'+esc(TYPE_CN[gv])+'</span></span>' + actsHtml(data) + '</div>'
         + '<div class="iv-base-line"><span class="iv-base">'+esc(d.base)+'</span>'
         + h('zh', '<span class="iv-zh">'+esc(d.zh)+'</span>') + '</div>'
         + '<div class="iv-forms">'

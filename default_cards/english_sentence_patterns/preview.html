@@ -172,11 +172,13 @@ body.dark-mode .sp-chk-mark.no{ background:#64748b; }
     }
     return out;
   }
-  function actionBar(){
+  function actionBar(data){
+    var marked = !!(data && data.is_unknown === 1);
+    var faved  = !!(data && data.is_favorite === 1);
     return '<div class="sp-actions">'
       + '<button class="sp-act act-audio" data-action="audio" data-tip="朗读"><i class="fa-solid fa-volume-high"></i></button>'
-      + '<button class="sp-act act-mark" data-action="mark" data-tip="标记"><i class="fa-regular fa-star"></i></button>'
-      + '<button class="sp-act act-fav" data-action="favorite" data-tip="收藏"><i class="fa-regular fa-bookmark"></i></button>'
+      + '<button class="sp-act act-mark' + (marked ? ' is-active' : '') + '" data-action="mark" data-tip="标记"><i class="' + (marked ? 'fa-solid' : 'fa-regular') + ' fa-star"></i></button>'
+      + '<button class="sp-act act-fav' + (faved ? ' is-active' : '') + '" data-action="favorite" data-tip="收藏"><i class="' + (faved ? 'fa-solid' : 'fa-regular') + ' fa-bookmark"></i></button>'
       + '</div>';
   }
   window.cardTemplate = {
@@ -286,7 +288,7 @@ body.dark-mode .sp-chk-mark.no{ background:#64748b; }
            + '<div class="sp-bar">'
            +   '<span class="sp-bar-left"><span class="sp-badge" style="background:'+b.c+'">'+esc(b.t)+'</span>'
            +     h('labelZh', '<span class="sp-label">'+esc(d.labelZh)+'</span>') + '</span>'
-           +   actionBar()
+           +   actionBar(data)
            + '</div>'
            + '<div class="sp-body">'+body+'</div>'
            + '</div>';
