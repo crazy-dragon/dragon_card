@@ -244,6 +244,8 @@ body.study-mode .global-sidebar { display: none; }
     flex-shrink: 0;
 }
 .home-title { margin: 0; font-size: 18px; font-weight: 700; }
+.home-header-left { display: flex; align-items: center; gap: 6px; min-width: 0; }
+#home-refresh-btn { flex-shrink: 0; }
 .home-header-right { display: flex; align-items: center; gap: 12px; }
 
 .hh-btn {
