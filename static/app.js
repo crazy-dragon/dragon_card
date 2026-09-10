@@ -675,15 +675,18 @@ function progressColor(pct) {
     return 'var(--hp-primary)';
 }
 
-/* Deck kind filter state: null = all, otherwise a kind key */
-var _deckKindFilter = null;
+/* Deck kind filter state: null = all, 'recent' = last 3 studied, otherwise a kind key */
+var _deckKindFilter = 'recent';
+/* Cache of /v1/decks response (decks array). Refreshed on data changes. */
+var _decksCache = null;
 
-/* Render the type filter bar (order follows DECK_KIND_META definition order) */
+/* Render the type filter bar: [最近] [全部] [语言] [知识] [逻辑] [技能] [其它] */
 function renderDeckKindFilter() {
     var container = $('#deck-kind-filter');
     if (!container) return;
     var html = '';
-    html += '<button class="deck-kind-tab' + (_deckKindFilter === null ? ' active' : '') + '" data-kind="" data-dbl="1">' + t('home.filterAll') + '</button>';
+    html += '<button class="deck-kind-tab' + (_deckKindFilter === 'recent' ? ' active' : '') + '" data-kind="recent" style="--kcolor:#f97316;' + (_deckKindFilter === 'recent' ? 'border-color:#f97316;color:#f97316;' : '') + '"><i class="fa-solid fa-fire"></i> ' + t('home.filterRecent') + '</button>';
+    html += '<button class="deck-kind-tab' + (_deckKindFilter === '' || _deckKindFilter === null ? ' active' : '') + '" data-kind="" data-dbl="1">' + t('home.filterAll') + '</button>';
     Object.keys(DECK_KIND_META).forEach(function (k) {
         var meta = DECK_KIND_META[k];
         var active = _deckKindFilter === k;
@@ -693,19 +696,18 @@ function renderDeckKindFilter() {
 }
 
 function setDeckKindFilter(kind) {
-    _deckKindFilter = kind || null;
+    _deckKindFilter = kind || '';
     renderDeckKindFilter();
     renderDeckList();
 }
 
-function renderDeckList() {
+function renderDeckList(forceRefresh) {
     var grid = $('#deck-grid');
     if (!grid) return;
     renderDeckKindFilter();
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--hp-text-sub);"><i class="fa-solid fa-layer-group" style="font-size:32px;margin-bottom:12px;display:block;"></i><div style="font-size:14px;">' + t('common.loading') + '</div></div>';
+    if (!state.userId) return;
 
-    fetch('/v1/decks?user_id=' + state.userId).then(function (r) { return r.json(); }).then(function (d) {
-        var decks = d.decks || [];
+    var doRender = function (decks) {
         /* Sort by most recent study time, freshly-used decks on top. */
         decks.sort(function (a, b) {
             var at = a.last_studied_at || '';
@@ -713,7 +715,10 @@ function renderDeckList() {
             if (at === bt) return 0;
             return at > bt ? -1 : 1;
         });
-        if (_deckKindFilter) {
+        /* 'recent' shows only the 3 most recently studied decks. */
+        if (_deckKindFilter === 'recent') {
+            decks = decks.filter(function (dk) { return dk.last_studied_at; }).slice(0, 3);
+        } else if (_deckKindFilter) {
             decks = decks.filter(function (dk) { return (dk.kind || 'other') === _deckKindFilter; });
         }
         if (!decks.length) {
@@ -776,6 +781,17 @@ function renderDeckList() {
         });
         grid.innerHTML = html;
         updateHomeStats(decks);
+    };
+
+    /* Use cache unless a data-changing action forced a refresh. */
+    if (!forceRefresh && _decksCache) {
+        doRender(_decksCache.slice());
+        return;
+    }
+    fetch('/v1/decks?user_id=' + state.userId).then(function (r) { return r.json(); }).then(function (d) {
+        var decks = d.decks || [];
+        _decksCache = decks.slice();
+        doRender(decks);
     }).catch(function () {
         grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--hp-danger);">Failed to load decks</div>';
     });
@@ -2183,7 +2199,7 @@ function openManageModal(deckId) {
                 }).then(function (r) { return r.json(); }).then(function (d) {
                     if (d.success) {
                         showToast(t('kind.updated'));
-                        renderDeckList();
+                        renderDeckList(true);
                         var km = getKindMeta(val);
                         var iconEl = document.getElementById('mm-icon');
                         if (iconEl) {
@@ -2345,7 +2361,7 @@ function setActiveMmTemplate(deckId, templateId) {
         if (d.success) {
             showToast(t('manage.setActive'));
             if (_manageDeckId == deckId) openManageModal(deckId);
-            renderDeckList();
+            renderDeckList(true);
             if (state.deckId == deckId) {
                 state.templateId = templateId;
                 templateEngine.loadTemplate(templateId).then(function () {
@@ -2902,7 +2918,7 @@ function setupEventListeners() {
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({name: val})
                     }).then(function(r) { return r.json(); }).then(function(d) {
-                        if (d.success) { nameEl.textContent = d.deck.name; showToast(t('manage.renamed')); renderDeckList(); }
+                        if (d.success) { nameEl.textContent = d.deck.name; showToast(t('manage.renamed')); renderDeckList(true); }
                         else { showToast(t('manage.renameFailed'), true); nameEl.textContent = current; }
                     }).catch(function() { showToast(t('manage.renameFailed'), true); nameEl.textContent = current; });
                 } else {
@@ -2937,7 +2953,7 @@ function setupEventListeners() {
                 if (d.success) {
                     showToast(t('newDeck.created', { name: d.deck.name }));
                     hideModal('new-deck');
-                    renderDeckList();
+                    renderDeckList(true);
                 } else { showToast(d.error || t('newDeck.failed'), true); }
             }).catch(function () { showToast(t('newDeck.failed'), true); });
             return;
@@ -3140,6 +3156,13 @@ function setupEventListeners() {
         /* Online store (opens official site in a new tab) */
         if (target.closest('#store-btn')) {
             window.open('https://dragoncard.top/', '_blank', 'noopener');
+            return;
+        }
+
+        /* Refresh deck list (manual) */
+        if (target.closest('#home-refresh-btn')) {
+            renderDeckList(true);
+            showToast(t('home.refreshed'));
             return;
         }
 

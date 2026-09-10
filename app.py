@@ -69,6 +69,14 @@ def _migrate_schema():
         db.session.execute(db.text('ALTER TABLE t_user ADD COLUMN display_name VARCHAR(100)'))
         db.session.commit()
 
+    # Performance indexes (idempotent)
+    existing_idx = {r[0] for r in db.session.execute(db.text("SELECT name FROM sqlite_master WHERE type='index'")).fetchall()}
+    if 'ix_t_deck_item_deck_id' not in existing_idx:
+        db.session.execute(db.text('CREATE INDEX ix_t_deck_item_deck_id ON t_deck_item (deck_id)'))
+    if 'ix_t_learning_event_user_deck' not in existing_idx:
+        db.session.execute(db.text('CREATE INDEX ix_t_learning_event_user_deck ON t_learning_event (user_id, deck_id)'))
+    db.session.commit()
+
 
 app = create_app()
 
@@ -327,10 +335,11 @@ def list_decks():
         q = q.filter_by(user_id=user_id)
     decks = q.order_by(Deck.created_at.desc()).all()
 
-    # 各卡组今年有学习事件的天数（按卡组单独计算）
-    year_days_map = _year_study_days_map(user_id) if user_id else {}
-    # 各卡组最近一次学习时间
-    last_study_map = _last_study_at_map(user_id) if user_id else {}
+    # 各卡组今年有学习事件的天数 + 最近一次学习时间（单次聚合查询）
+    year_days_map = {}
+    last_study_map = {}
+    if user_id:
+        year_days_map, last_study_map = _study_activity_map(user_id)
 
     result = []
     for d in decks:
@@ -341,31 +350,25 @@ def list_decks():
     return jsonify({'success': True, 'decks': result})
 
 
-def _year_study_days_map(user_id):
-    """各卡组今年有学习事件的天数（按 deck_id 分组，日期去重）。"""
+def _study_activity_map(user_id):
+    """各卡组今年有学习事件的天数 + 最近一次学习时间，单次聚合查询。
+
+    Returns (year_days_map, last_study_map)."""
     from datetime import date
     rows = db.session.query(
         LearningEvent.deck_id,
-        db.func.count(db.func.distinct(db.func.date(LearningEvent.created_at)))
+        db.func.count(db.func.distinct(db.func.date(LearningEvent.created_at))),
+        db.func.max(LearningEvent.created_at),
     ).filter(
         LearningEvent.user_id == user_id,
         db.func.date(LearningEvent.created_at) >= date(date.today().year, 1, 1),
     ).group_by(LearningEvent.deck_id).all()
-    return {deck_id: days for deck_id, days in rows}
-
-
-def _last_study_at_map(user_id):
-    """各卡组最近一次学习事件的时间（ISO 字符串；无记录则为 None）。"""
-    rows = db.session.query(
-        LearningEvent.deck_id,
-        db.func.max(LearningEvent.created_at)
-    ).filter(
-        LearningEvent.user_id == user_id
-    ).group_by(LearningEvent.deck_id).all()
-    return {
-        deck_id: (ts.isoformat() if ts else None)
-        for deck_id, ts in rows
-    }
+    year_days = {}
+    last = {}
+    for deck_id, days, ts in rows:
+        year_days[deck_id] = days
+        last[deck_id] = ts.isoformat() if ts else None
+    return year_days, last
 
 
 @app.route('/v1/decks', methods=['POST'])

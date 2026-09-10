@@ -87,7 +87,10 @@ class Deck(db.Model):
     deck_templates = db.relationship('DeckTemplate', backref='deck', cascade='all, delete-orphan')
 
     def to_dict(self):
-        item_count = len(self.deck_items) if self.deck_items else 0
+        # COUNT instead of len(deck_items) to avoid loading all card rows.
+        item_count = db.session.query(db.func.count(DeckItem.id)).filter(
+            DeckItem.deck_id == self.id
+        ).scalar() or 0
         active_t = self.active_template
         t_list = sorted(self.deck_templates, key=lambda r: r.sort_order)
 
@@ -95,16 +98,20 @@ class Deck(db.Model):
         mastered_count = 0
         round_count = 0
         try:
-            unknown_count = db.session.query(db.func.count(Progress.id)).filter(
-                Progress.deck_id == self.id, Progress.is_unknown == 1
-            ).join(DeckItem, Progress.deck_item_id == DeckItem.id).scalar() or 0
+            # Aggregate unknown + mastered in a single pass over progress rows
+            # (orphaned progress is excluded by joining DeckItem).
+            row = db.session.query(
+                db.func.sum(db.case((Progress.is_unknown == 1, 1), else_=0)),
+                db.func.sum(db.case((Progress.is_unknown == 0, 1), else_=0)),
+            ).select_from(Progress).join(DeckItem, Progress.deck_item_id == DeckItem.id).filter(
+                Progress.deck_id == self.id
+            ).first()
+            if row:
+                unknown_count = row[0] or 0
+                mastered_count = row[1] or 0
             round_count = db.session.query(db.func.count(StudyRound.id)).filter(
                 StudyRound.deck_id == self.id
             ).scalar() or 0
-            if round_count > 0:
-                mastered_count = db.session.query(db.func.count(Progress.id)).filter(
-                    Progress.deck_id == self.id, Progress.is_unknown == 0
-                ).join(DeckItem, Progress.deck_item_id == DeckItem.id).scalar() or 0
         except Exception:
             pass
 
