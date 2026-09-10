@@ -21,6 +21,9 @@ static/media/*.gltf
 # 临时设计稿
 designs/
 
+# 临时测试脚本
+static/_*.js
+
 # 宣传资料（小红书等草稿，不提交）
 marketing/
 

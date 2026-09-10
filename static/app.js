@@ -182,6 +182,106 @@ var audioFeedback = (function () {
     };
 })();
 
+/* ===== Template CSS scoping =====
+   Every template's cardCss is auto-scoped to its own cards, so different decks
+   can safely reuse the same class names (e.g. .action-btn) without leaking.
+   - selectors are prefixed with :where([data-tpl-root="<id>"]) -> zero extra
+     specificity, so a template's internal cascade is unchanged
+   - @keyframes are renamed to dc<id>_<name> (and references rewritten), because
+     animation names are global
+   - :root becomes the card root (card-level custom properties)
+   - body./html.-rooted selectors keep their prefix with the scope inserted after it
+   Cards are tagged by initCard(); template JS that appends portal nodes to
+   <body> must copy data-tpl-root onto them (see the Chinese Radicals template). */
+function _firstCompound(sel) {
+    var depth = 0, i = 0, c;
+    for (; i < sel.length; i++) {
+        c = sel.charAt(i);
+        if (c === '(' || c === '[') depth++;
+        else if (c === ')' || c === ']') depth--;
+        else if (depth === 0 && (c === ' ' || c === '\t' || c === '\n' || c === '\r' || c === '>' || c === '+' || c === '~')) break;
+    }
+    return sel.slice(0, i);
+}
+function _scopeSelectorVariants(sel, attr) {
+    var m = sel.match(/^((?:html|body)\b(?:[.#][-\w]+|\[[^\]]*\])*)([\s\S]*)$/);
+    if (m) {
+        var rest = m[2].trim();
+        if (!rest) return [sel];
+        var variants = [];
+        rest.split(',').forEach(function (one) {
+            var t = one.trim();
+            if (!t) return;
+            _scopeSelectorVariants(t, attr).forEach(function (v) { variants.push(m[1] + ' ' + v); });
+        });
+        return variants;
+    }
+    if (/^:root\b/.test(sel)) return [sel.replace(/^:root/, attr)];
+    var out = [':where(' + attr + ') ' + sel];
+    var first = _firstCompound(sel);
+    if (first) out.push(first + ':where(' + attr + ')' + sel.slice(first.length));
+    return out;
+}
+function _scopeCssRules(css, attr) {
+    var out = '', i = 0, n = css.length;
+    while (i < n) {
+        var open = css.indexOf('{', i);
+        if (open < 0) { out += css.slice(i); break; }
+        var depth = 1, j = open + 1;
+        while (j < n && depth > 0) {
+            var ch = css.charAt(j);
+            if (ch === '{') depth++;
+            else if (ch === '}') depth--;
+            j++;
+        }
+        var prelude = css.slice(i, open);
+        var body = css.slice(open + 1, j - 1);
+        var probe = prelude.replace(/\/\*[\s\S]*?\*\//g, ' ').trim();
+        if (probe.charAt(0) === '@') {
+            if (/^@(media|supports|layer|container|document)\b/i.test(probe)) {
+                out += prelude + '{' + _scopeCssRules(body, attr) + '}';
+            } else {
+                out += prelude + '{' + body + '}';
+            }
+        } else {
+            var lead = '';
+            var lm = prelude.match(/^(\s*(?:\/\*[\s\S]*?\*\/\s*)*)/);
+            if (lm) lead = lm[1];
+            var tail = prelude.slice(lead.length);
+            var parts = [];
+            tail.split(',').forEach(function (one) {
+                var t = one.trim();
+                if (!t) return;
+                _scopeSelectorVariants(t, attr).forEach(function (v) { parts.push(v); });
+            });
+            if (!parts.length) out += prelude;
+            else out += lead + parts.join(', ');
+            out += '{' + body + '}';
+        }
+        i = j;
+    }
+    return out;
+}
+function scopeTemplateCss(css, templateId) {
+    if (!css) return '';
+    var attr = '[data-tpl-root="' + templateId + '"]';
+    var names = [];
+    var scoped = css.replace(/@keyframes\s+([-\w]+)/g, function (all, name) {
+        names.push(name);
+        return '@keyframes dc' + templateId + '_' + name;
+    });
+    if (names.length) {
+        scoped = scoped.replace(/(animation(?:-name)?\s*:[^;}]*)/g, function (decl) {
+            names.forEach(function (nm) {
+                decl = decl.replace(new RegExp('(^|[\\s,])' + nm + '(?=[\\s,;]|$)', 'g'), '$1dc' + templateId + '_' + nm);
+            });
+            return decl;
+        });
+    }
+    return _scopeCssRules(scoped, attr);
+}
+window.__dcScopeCss = scopeTemplateCss;
+
 /* ===== Template engine ===== */
 var _loadedTpl = {};
 var _tplCssEls = {};
@@ -203,11 +303,12 @@ var templateEngine = {
             var tpl = d.template;
             _tplLangs[templateId] = tpl.lang || 'en';
             var styleId = 'tpl-css-' + templateId;
+            var scopedCss = scopeTemplateCss(tpl.card_css || '', templateId);
             if (_tplCssEls[templateId]) {
-                _tplCssEls[templateId].textContent = tpl.card_css || '';
+                _tplCssEls[templateId].textContent = scopedCss;
             } else {
                 var s = document.createElement('style');
-                s.id = styleId; s.textContent = tpl.card_css || '';
+                s.id = styleId; s.textContent = scopedCss;
                 document.head.appendChild(s); _tplCssEls[templateId] = s;
             }
             _loadedTpl[templateId] = tpl;
@@ -250,6 +351,9 @@ var templateEngine = {
         var api = card.__api || createApiForCard(card);
         card.__api = api;
         el.__cardApi = api;
+        /* Tag the card root so its template's scoped CSS only applies here */
+        var tplId = (card.template_id != null) ? card.template_id : state.templateId;
+        if (tplId != null && el.setAttribute) el.setAttribute('data-tpl-root', tplId);
         var ct = this.getCardTemplate(card.template_id);
         if (ct && typeof ct.init === 'function') {
             try { ct.init(el, card, api); } catch (e) { console.error('template init error', e); }
@@ -2331,10 +2435,13 @@ function renderMmPreview(templateId) {
             } else {
                 renderedHtml = templateEngine.renderCard(cardData, tpl.card_html);
             }
-            tplCss = tpl.card_css || '';
+            tplCss = scopeTemplateCss(tpl.card_css || '', tpl.id);
             area.innerHTML = '<style>' + tplCss + '</style><div class="mm-preview-card">' + renderedHtml + '</div>';
             var cardEl = area.querySelector('[data-card-id]');
-            if (cardEl && cardData) templateEngine.initCard(cardEl, cardData);
+            if (cardEl && cardData) {
+                templateEngine.initCard(cardEl, cardData);
+                cardEl.setAttribute('data-tpl-root', tpl.id);
+            }
             /* Restore the previously active template global after init */
             window.cardTemplate = savedCardTemplate;
             if (evalError && (!renderedHtml || renderedHtml.indexOf('Render error') === 0)) {
@@ -2546,9 +2653,12 @@ function renderPreviewCard(canvas, template, sampleCard) {
     cardData.is_favorite = 0;
     cardData.current_order = cardData.current_order || cardData.item_order || 1;
     var html = templateEngine.renderCard(cardData, '');
-    canvas.innerHTML = '<style>' + (template.card_css || '') + '</style><div style="max-width:600px;margin:0 auto;">' + html + '</div>';
+    canvas.innerHTML = '<style>' + scopeTemplateCss(template.card_css || '', template.id) + '</style><div style="max-width:600px;margin:0 auto;">' + html + '</div>';
     var cardEl = canvas.querySelector('[data-card-id]');
-    if (cardEl) templateEngine.initCard(cardEl, cardData);
+    if (cardEl) {
+        templateEngine.initCard(cardEl, cardData);
+        cardEl.setAttribute('data-tpl-root', template.id);
+    }
 }
 
 /* ===== Reorder ===== */
