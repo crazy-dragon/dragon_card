@@ -142,9 +142,7 @@ dragoncard/
 ├── requirements.txt
 ├── DB_relation.md             # 数据库关系说明
 ├── README.md
-├── SKIN.md                    # 皮肤系统开发文档
 ├── TEMPLATE_PACK.md           # 模板包发布规范
-├── ui_design.md               # UI 界面设计文档
 │
 ├── default_cards/             # 内置卡组资产（模板 + 数据，通过页面「上传」导入）
 │   ├── english_coca20000/      # English Word Card + template_simple（精简版）
@@ -193,8 +191,6 @@ dragoncard/
 | 文档 | 用途 |
 |------|------|
 | [`DB_relation.md`](./DB_relation.md) | 数据库表结构与关系 |
-| [`SKIN.md`](./SKIN.md) | 皮肤系统开发文档 |
-| [`ui_design.md`](./ui_design.md) | UI 界面设计文档 |
 | 应用内「模板 API 参考」 | 模板格式与 `window.cardTemplate` 契约（主页顶栏 `</>` 按钮） |
 | 应用内「使用文档」 | 面向最终用户的操作指南（中英双语） |
 

@@ -144,9 +144,7 @@ dragoncard/
 ├── DB_relation.md             # Database relationship docs
 ├── README.md
 ├── README_zh.md               # Chinese README
-├── SKIN.md                    # Skin system dev doc
 ├── TEMPLATE_PACK.md           # Template pack publishing spec
-├── ui_design.md               # UI design doc
 │
 ├── default_cards/             # Bundled deck assets (templates + data, imported via upload)
 │   ├── english_coca20000/      # English Word Card + template_simple (minimal)
@@ -195,8 +193,6 @@ dragoncard/
 | Doc | Purpose |
 |-----|---------|
 | [`DB_relation.md`](./DB_relation.md) | Database tables & relationships |
-| [`SKIN.md`](./SKIN.md) | Skin system developer doc |
-| [`ui_design.md`](./ui_design.md) | UI design document |
 | In-app "Template API Reference" | Template format & `window.cardTemplate` contract (top-bar `</>` button) |
 | In-app "Docs" | End-user operations guide (bilingual) |
 

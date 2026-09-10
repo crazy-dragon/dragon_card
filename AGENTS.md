@@ -107,8 +107,8 @@ Key concepts:
   (`app.run(host='0.0.0.0', port=5001)`).
 - TTS uses the browser's Web Speech API (no server dependency).
 - Skins are front-end only (CSS variable overrides + a `pointer-events:none`
-  decoration layer); see `SKIN.md`. Skin CSS must **not** change layout
-  widths or card-content variables.
-- The three built-in themed skins live in `static/app.js` `SKINS`; card
+  decoration layer). Skin CSS must **not** change layout widths or
+  card-content variables.
+- The built-in themed skins live in `static/app.js` `SKINS`; card
   content variables are intentionally untouched so template cards keep their
   user-defined look.
