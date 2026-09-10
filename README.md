@@ -43,8 +43,17 @@ The brain is remarkably good at being lazy. When you do the same thing consisten
 
 ### Install & Run
 
+**One command (recommended):**
+
 ```bash
 cd dragoncard
+./start.sh        # macOS / Linux
+start.bat         # Windows
+```
+
+Or manually:
+
+```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -57,10 +66,15 @@ On first launch, the app automatically creates the database tables, a default us
 
 ### First Use
 
-1. Click "New Deck", enter a name and pick a type
-2. Open the deck → "Manage deck" → upload a template file (JSON) in the Templates area
-3. Upload a data file (JSON) in the Data area
-4. Return to the catalogue and click a page number to start studying
+1. (Optional) Import the bundled free decks: `python seed_decks.py`
+2. Click "New Deck", enter a name and pick a type
+3. Open the deck → "Manage deck" → upload a template file (JSON) in the Templates area
+4. Upload a data file (JSON) in the Data area
+5. Return to the catalogue and click a page number to start studying
+
+> An AI coding agent (e.g. Claude Code, Cursor, opencode) can run and extend this
+> project; read `AGENTS.md` for the agent guide. Bundled free decks are imported
+> via `python seed_decks.py` (idempotent).
 
 ## 🎪 Online Store
 
