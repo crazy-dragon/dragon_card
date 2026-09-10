@@ -115,30 +115,6 @@ class Deck(db.Model):
         except Exception:
             pass
 
-        # A "check-in deck" uses a template whose tracked actions include check_in.
-        is_checkin = False
-        today_checked = False
-        try:
-            if active_t and active_t.tracked_actions:
-                ta = json.loads(active_t.tracked_actions)
-                if isinstance(ta, list):
-                    is_checkin = any(
-                        (isinstance(x, dict) and x.get('action') == 'check_in')
-                        or x == 'check_in'
-                        for x in ta
-                    )
-            if is_checkin:
-                from datetime import date
-                today_checked = db.session.query(
-                    db.func.count(LearningEvent.id)
-                ).filter(
-                    LearningEvent.deck_id == self.id,
-                    LearningEvent.action == 'check_in',
-                    db.func.date(LearningEvent.created_at) == date.today().isoformat(),
-                ).scalar() > 0
-        except (json.JSONDecodeError, TypeError):
-            pass
-
         return {
             'id': self.id,
             'user_id': self.user_id,
@@ -151,8 +127,6 @@ class Deck(db.Model):
             'item_count': item_count,
             'has_template': self.active_template_id is not None,
             'has_data': item_count > 0,
-            'is_checkin_deck': is_checkin,
-            'today_checked_in': today_checked,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'unknown_count': unknown_count,
             'mastered_count': mastered_count,
