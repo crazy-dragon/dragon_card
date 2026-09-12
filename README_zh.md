@@ -151,7 +151,7 @@ dragoncard/
 │   ├── japanese_gojuon/
 │   ├── prelude_yijing/
 │   ├── yijing/
-│   ├── checkin_date/           # 日期打卡（date/sunset/peach 三种样式）
+│   ├── checkin_log/            # 星际航行日志（按天多任务打卡）
 │   ├── dino_alphabet/
 │   └── dinosaur_3d/
 │

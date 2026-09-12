@@ -153,7 +153,7 @@ dragoncard/
 │   ├── japanese_gojuon/
 │   ├── prelude_yijing/
 │   ├── yijing/
-│   ├── checkin_date/           # Check-in date (date/sunset/peach themes)
+│   ├── checkin_log/            # Voyage Log (per-day multi-task check-in)
 │   ├── dino_alphabet/
 │   └── dinosaur_3d/
 │
