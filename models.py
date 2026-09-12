@@ -229,7 +229,9 @@ class LearningEvent(db.Model):
     deck_item_id = db.Column(db.Integer, db.ForeignKey('t_deck_item.id'), nullable=False)
     template_id = db.Column(db.Integer, db.ForeignKey('t_template.id'), nullable=True)
     action = db.Column(db.String(50), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    # 本地时间：/v1/observability/* 的"某一天"边界用的是本地时间（datetime.now），
+    # 若这里存 UTC，凌晨 0-8 点（东八区）的埋点会被算到前一天。
+    created_at = db.Column(db.DateTime, default=datetime.now, index=True)
 
     def to_dict(self):
         return {
