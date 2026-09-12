@@ -860,8 +860,9 @@ function renderDeckList(forceRefresh) {
             html += '</div>';
             html += '</div>';
 
-            /* Description: show TEMPLATE description (deck description removed) */
-            html += '<div class="deck-desc">' + (deck.template_description ? escapeHtml(deck.template_description) : t('home.notBound')) + '</div>';
+            /* Description: show TEMPLATE description (deck description removed).
+               title shows the full text on hover since the desc is clamped to 4 lines. */
+            html += '<div class="deck-desc" title="' + (deck.template_description ? escapeHtml(deck.template_description) : '') + '">' + (deck.template_description ? escapeHtml(deck.template_description) : t('home.notBound')) + '</div>';
 
             /* Stats (mastered count only, near bottom) */
             html += '<div class="deck-stats">';
