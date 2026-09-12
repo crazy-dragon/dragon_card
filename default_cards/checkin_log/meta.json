@@ -1,0 +1,10 @@
+{
+  "name": "星际航行日志",
+  "description": "一张卡 = 一天，卡内多个任务；点一下写一条埋点，状态全部由埋点统计读出。只有\"今天\"那张是星夜主题（暗色 + 星尘 + 黑洞），历史/未来卡保持素净。任务清单写在模板里，换目标只改模板。",
+  "version": "1.2.0",
+  "author": "Alfred Long",
+  "email": "alfred.long@qq.com",
+  "source": "自编（无外部数据源）",
+  "license": "DragonCard Data License v1.0",
+  "updated": "2026-09-12"
+}

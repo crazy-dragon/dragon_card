@@ -1,0 +1,337 @@
+/* ============ Check-in Log Card · 打卡任务日志 ============ */
+.ci-card {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background: #fff;
+    border: 1px solid #e8edf5;
+    border-radius: 18px;
+    box-shadow: 0 6px 22px rgba(15, 23, 42, .06);
+    color: #1f2937;
+    line-height: 1.45;
+    transition: box-shadow .25s;
+}
+.ci-bar { height: 5px; background: linear-gradient(90deg, #34d399, #22d3ee, #818cf8); opacity: .9; }
+.ci-past .ci-bar { background: linear-gradient(90deg, #cbd5e1, #e2e8f0); }
+.ci-future .ci-bar { background: linear-gradient(90deg, #ddd6fe, #ede9fe); }
+.ci-body { padding: 15px 17px 16px; }
+
+/* ---- 头部：日期 + 连续天数 ---- */
+.ci-head { display: flex; align-items: center; gap: 12px; }
+.ci-date { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.ci-day { font-size: 32px; font-weight: 800; letter-spacing: -1px; color: #0f172a; font-variant-numeric: tabular-nums; }
+.ci-ym { display: flex; flex-direction: column; line-height: 1.15; }
+.ci-ym b { font-size: 12px; font-weight: 600; color: #64748b; }
+.ci-ym i { font-style: normal; font-size: 11px; color: #94a3b8; }
+.ci-today-chip {
+    align-self: flex-start; margin-top: 3px; padding: 1px 7px;
+    border-radius: 999px; background: #ecfdf5; color: #059669;
+    font-size: 10px; font-weight: 700; letter-spacing: .5px;
+}
+.ci-streak {
+    margin-left: auto; display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 11px; border-radius: 999px;
+    background: #fff7ed; border: 1px solid #fed7aa; color: #c2410c;
+    font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.ci-streak i { font-size: 12px; color: #f97316; }
+.ci-streak b { font-size: 15px; font-variant-numeric: tabular-nums; }
+.ci-streak em { font-style: normal; font-size: 11px; font-weight: 600; opacity: .75; }
+.ci-streak.is-idle { background: #f8fafc; border-color: #e2e8f0; color: #94a3b8; }
+.ci-streak.is-idle i { color: #cbd5e1; }
+
+.ci-status { font-size: 12px; color: #94a3b8; margin: 8px 0 12px; }
+
+/* ---- 任务行 ---- */
+.ci-tasks { display: flex; flex-direction: column; gap: 8px; }
+.ci-task {
+    display: flex; align-items: center; gap: 11px;
+    padding: 10px 12px; border-radius: 13px;
+    border: 1px solid #eef2f7; background: #fbfcfe;
+    transition: background .18s, border-color .18s, transform .12s;
+}
+.ci-today .ci-task { cursor: pointer; }
+.ci-today .ci-task:hover { background: #f5f9ff; border-color: #dbe6f7; }
+.ci-today .ci-task:active { transform: scale(.985); }
+.ci-dot {
+    width: 26px; height: 26px; flex: 0 0 26px; border-radius: 50%;
+    border: 2px dashed #cbd5e1; background: #fff;
+    display: grid; place-items: center;
+    color: #fff; transition: all .2s;
+}
+/* 两个图标必须叠在同一格。用 flex 会并排占位，把可见图标挤出圆心（歪） */
+.ci-dot > i { grid-area: 1 / 1; line-height: 1; }
+/* 空心圈：待办时显示任务图标，完成后换成对勾 */
+.ci-dot [data-role="dot-task"] { font-size: 12px; opacity: 1; color: #94a3b8; }
+.ci-dot [data-role="dot-check"] { font-size: 11px; opacity: 0; }
+.ci-task.done .ci-dot [data-role="dot-task"] { opacity: 0; }
+.ci-task.done .ci-dot [data-role="dot-check"] { opacity: 1; }
+.ci-task.done .ci-dot { border: 2px solid #10b981; border-style: solid; background: linear-gradient(135deg, #34d399, #10b981); }
+.ci-info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.ci-info b { font-size: 14px; font-weight: 600; color: #1e293b; }
+.ci-info i { font-style: normal; font-size: 11px; color: #a2adbf; margin-top: 1px; }
+.ci-right {
+    flex: 0 0 auto; font-size: 12px; font-weight: 700; color: #94a3b8;
+    display: inline-flex; align-items: center; gap: 5px;
+    font-variant-numeric: tabular-nums;
+}
+.ci-task.done { background: #f0fdf4; border-color: #bbf7d0; }
+.ci-task.done .ci-info b { color: #047857; }
+.ci-task.done .ci-right { color: #059669; }
+.ci-task.ci-pop { animation: ciPop .42s ease; }
+@keyframes ciPop {
+    0% { transform: scale(1); }
+    35% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+/* ---- 过期 / 未解锁 ---- */
+.ci-past { background: #fbfbfc; border-color: #eceff4; box-shadow: none; }
+.ci-past .ci-day { color: #94a3b8; }
+.ci-past .ci-task { background: #f7f8fa; }
+.ci-future { background: #fcfbff; border-color: #eee9fb; box-shadow: none; }
+.ci-future .ci-day { color: #b4b9c6; }
+.ci-lock {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 16px; border-radius: 13px;
+    border: 1px dashed #ddd6fe; background: #faf9ff;
+    color: #a78bfa; font-size: 13px; font-weight: 600;
+}
+
+/* ---- 最近 7 天活跃条 ---- */
+.ci-week { display: flex; gap: 6px; margin-top: 13px; }
+.ci-wd { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.ci-wd span { font-size: 10px; color: #a8b2c4; }
+.ci-wd i { width: 100%; height: 6px; border-radius: 999px; background: #eef1f6; transition: background .2s; }
+.ci-wd.on i { background: linear-gradient(90deg, #34d399, #10b981); }
+.ci-wd.cur i { outline: 2px solid #bfdbfe; outline-offset: 1px; }
+.ci-wd.now span { color: #2563eb; font-weight: 700; }
+
+/* ---- 暗色模式 ---- */
+body.dark-mode .ci-card { background: #1b2230; border-color: #2a3547; color: #e5e9f0; }
+body.dark-mode .ci-day { color: #f1f5f9; }
+body.dark-mode .ci-ym b { color: #9aa6b8; }
+body.dark-mode .ci-today-chip { background: #0d2b1e; color: #34d399; }
+body.dark-mode .ci-task { background: #212a39; border-color: #2c3849; }
+body.dark-mode .ci-task.done { background: #12301f; border-color: #1d4a30; }
+body.dark-mode .ci-info b { color: #e2e8f0; }
+body.dark-mode .ci-info i { color: #7d8798; }
+body.dark-mode .ci-status { color: #7d8798; }
+body.dark-mode .ci-dot { background: #1b2230; }
+body.dark-mode .ci-wd i { background: #2a3547; }
+body.dark-mode .ci-past { background: #1a202c; border-color: #26303f; }
+body.dark-mode .ci-future { background: #1e1b2e; border-color: #332c4a; }
+body.dark-mode .ci-lock { background: #221d33; border-color: #3b3260; color: #a78bfa; }
+
+
+/* ==========================================================================
+   星际航行 · 星夜版（Voyage / Night）
+   --------------------------------------------------------------------------
+   只作用于"今天"那张卡（.ci-today），而且是**恒为暗色**——不跟随应用的全局暗色。
+   理由：400 张素卡的长列表里，深色是唯一能一眼认出"今天"的信号；
+   顺带省掉一整套全局暗色适配，规则更少更简单。
+   历史卡 / 未来卡保持上面那套素净原样。
+
+   视觉隐喻：
+     深空底 + 星尘点阵   = 夜空
+     顶部渐变条          = 星轨（缀几点星光）
+     完成任务            = 点亮一颗星（暖金，2.8s 呼吸）
+     最近 7 天           = 航迹上的 7 个节点
+     连续天数            = 「航行第 N 天」
+     头部右侧黑洞        = 今天的"印记"（见本文件末尾）
+   ========================================================================== */
+
+/* ---------- 卡面：深空底 + 星尘 ---------- */
+.ci-today {
+    background-color: #141a2e;
+    background-image:
+        radial-gradient(rgba(165, 180, 252, .17) 1px, transparent 1.3px),
+        radial-gradient(rgba(139, 92, 246, .13) 1px, transparent 1.3px),
+        radial-gradient(rgba(255, 255, 255, .10) 1px, transparent 1.3px);
+    background-size: 23px 23px, 41px 41px, 59px 59px;
+    background-position: 0 0, 17px 13px, 31px 29px;
+    border-color: #2b3153;
+    color: #e2e8f0;
+    box-shadow: 0 12px 32px rgba(2, 6, 23, .38);
+}
+
+/* ---------- 顶部星轨 ---------- */
+.ci-today .ci-bar {
+    height: 6px;
+    opacity: 1;
+    background-image:
+        radial-gradient(circle at 11% 50%, rgba(255, 255, 255, .95) 0 1px, transparent 1.7px),
+        radial-gradient(circle at 34% 50%, rgba(255, 255, 255, .78) 0 1px, transparent 1.6px),
+        radial-gradient(circle at 58% 50%, rgba(255, 255, 255, .92) 0 1px, transparent 1.7px),
+        radial-gradient(circle at 79% 50%, rgba(255, 255, 255, .70) 0 1px, transparent 1.6px),
+        radial-gradient(circle at 93% 50%, rgba(255, 255, 255, .85) 0 1px, transparent 1.6px),
+        linear-gradient(90deg, #4f46e5, #7c3aed 42%, #a855f7 72%, #d946ef);
+    box-shadow: 0 1px 16px rgba(139, 92, 246, .50);
+}
+
+/* ---------- 日期 ---------- */
+.ci-today .ci-day { color: #f2f4ff; text-shadow: 0 2px 14px rgba(129, 140, 248, .45); }
+.ci-today .ci-ym b { color: #9aa7be; }
+.ci-today .ci-ym i { color: #7480a0; }
+.ci-today .ci-today-chip { background: #232a52; color: #a5b4fc; }
+
+/* ---------- 连续天数 → 航行第 N 天 ---------- */
+.ci-today .ci-streak {
+    background: linear-gradient(135deg, #232a52, #2b2352);
+    border-color: #3b4478;
+    color: #c7d2fe;
+    box-shadow: 0 3px 14px rgba(79, 70, 229, .30);
+}
+.ci-today .ci-streak i { color: #818cf8; }
+.ci-today .ci-streak.is-idle {
+    background: #1a1f36; border-color: #2b3153; color: #6f7899; box-shadow: none;
+}
+.ci-today .ci-streak.is-idle i { color: #565f85; }
+
+/* ---------- 状态行 ---------- */
+.ci-today .ci-status { color: #8b93b5; }
+
+/* ---------- 任务行 ---------- */
+.ci-today .ci-task { background: #1c2138; border-color: #2b3158; }
+.ci-today .ci-task:hover { background: #232a4d; border-color: #3a4272; }
+.ci-today .ci-info b { color: #e8ecf8; }
+.ci-today .ci-info i { color: #8b93b5; }
+.ci-today .ci-dot { border-color: #3f4778; background: #141a2e; }
+.ci-today .ci-dot [data-role="dot-task"] { color: #8b93c4; }
+/* 待办行的「点亮」按钮：用靛蓝点出"可点"（完成行由 .done 的暖金覆盖） */
+.ci-today .ci-right { color: #a5b4fc; }
+
+/* ---------- 完成任务 = 点亮一颗星 ---------- */
+.ci-today .ci-task.done {
+    background: linear-gradient(90deg, #2a2413, #1c2138 72%);
+    border-color: #4d3c15;
+}
+.ci-today .ci-task.done .ci-info b { color: #fbbf24; }
+.ci-today .ci-task.done .ci-info i { color: #a08a55; }
+.ci-today .ci-task.done .ci-right { color: #fbbf24; }
+.ci-today .ci-task.done .ci-dot {
+    border: 2px solid #f59e0b;
+    background: radial-gradient(circle at 34% 28%, #fde68a, #f59e0b 72%);
+    animation: ciVoyageTwinkle 2.8s ease-in-out infinite;
+}
+@keyframes ciVoyageTwinkle {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(251, 191, 36, .16), 0 0 10px rgba(245, 158, 11, .55); }
+    50%      { box-shadow: 0 0 0 4px rgba(251, 191, 36, .26), 0 0 18px rgba(245, 158, 11, .85); }
+}
+
+/* ---------- 最近 7 天 = 航迹上的 7 个节点 ---------- */
+.ci-today .ci-week { gap: 0; margin-top: 16px; padding: 0 2px; }
+.ci-today .ci-wd { position: relative; gap: 6px; }
+.ci-today .ci-wd span { color: #6f7a99; }
+.ci-today .ci-wd i {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: #252b47; border: 1.5px solid #39406b;
+    position: relative; z-index: 1;
+    transition: background .25s, border-color .25s, box-shadow .25s;
+}
+/* 轨道连线（连到右边相邻节点，与圆点同心） */
+.ci-today .ci-wd:not(:last-child)::after {
+    content: ''; position: absolute; left: 50%; right: -50%; bottom: 3.5px;
+    height: 2px; background: #252b47; z-index: 0;
+}
+.ci-today .ci-wd.on i {
+    background: radial-gradient(circle at 34% 28%, #fde68a, #f59e0b 70%);
+    border-color: #f59e0b;
+    box-shadow: 0 0 10px rgba(245, 158, 11, .60);
+}
+.ci-today .ci-wd.cur i { outline: 2px solid #4c5590; outline-offset: 2px; }
+.ci-today .ci-wd.now span { color: #a5b4fc; font-weight: 700; }
+
+
+/* ==========================================================================
+   黑洞（今天的印记）—— 动态，纯 CSS：无 canvas / 无 rAF
+   --------------------------------------------------------------------------
+   结构（由 card.js 的 render() 在 mode==='today' 时注入到 .ci-head 末尾）：
+     .bh-halo   外晕（缓慢呼吸）
+     .bh-disk   吸积盘：conic-gradient 彩色扇区，rotateX 压扁成斜看视角的椭圆，
+                中间挖空、匀速旋转（静态图里看不出转，动起来才明显）
+     .bh-arc    引力透镜环：不压扁，正圆细亮环，上下两段亮边在自转
+     .bh-core   事件视界：近黑实心 + 冷光细边
+
+   摆放：挂在 .ci-head 的**最后一个**子元素位置，也就是头部最右侧。
+   左侧日期块因此完全不动——和素卡的日期位置逐像素一致。
+   只有"今天"那张卡带这个节点，403 张列表里动画只有 1 份，性能无压力。
+
+   实现要点：会转的东西必须放在 ::before 上——animation 会整个覆盖 transform，
+   否则外层用来压扁的 rotateX 会被转没。
+   ========================================================================== */
+
+.bh {
+    position: relative;
+    display: block;
+    width: 44px; height: 44px;
+}
+.bh > span { position: absolute; border-radius: 50%; }
+
+/* 外晕 */
+.bh-halo {
+    inset: -42%;
+    background: radial-gradient(circle,
+        rgba(139, 92, 246, .40) 0%,
+        rgba(99, 102, 241, .16) 42%,
+        rgba(99, 102, 241, 0) 68%);
+    animation: ciBhGlow 4.5s ease-in-out infinite;
+    z-index: 1;
+}
+/* 吸积盘：整盘压扁 → 斜看视角；::before 里才是会转的彩色扇区 */
+.bh-disk {
+    inset: -12%;
+    transform: perspective(130px) rotateX(64deg);
+    z-index: 2;
+}
+.bh-disk::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg,
+        rgba(255, 255, 255, 0) 0deg,
+        #fde68a 26deg, #fbbf24 54deg, #fb7185 96deg, #c084fc 134deg,
+        rgba(255, 255, 255, 0) 168deg,
+        rgba(255, 255, 255, 0) 196deg,
+        #60a5fa 238deg, #22d3ee 282deg, #a78bfa 316deg,
+        rgba(255, 255, 255, 0) 348deg, rgba(255, 255, 255, 0) 360deg);
+    -webkit-mask: radial-gradient(circle, rgba(0, 0, 0, 0) 32%, #000 46%);
+    mask: radial-gradient(circle, rgba(0, 0, 0, 0) 32%, #000 46%);
+    filter: blur(2.4px);
+    animation: ciBhSpin 6.5s linear infinite;
+}
+/* 引力透镜环：保持正圆（不压扁），上下两段亮边绕视界转 */
+.bh-arc {
+    inset: -6%;
+    z-index: 3;
+}
+.bh-arc::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    border: 1.8px solid transparent;
+    border-top-color: rgba(255, 255, 255, .95);
+    border-bottom-color: rgba(253, 230, 138, .80);
+    box-shadow: 0 0 6px rgba(255, 255, 255, .35);
+    animation: ciBhSpin 3.2s linear infinite;
+}
+/* 事件视界 */
+.bh-core {
+    inset: 25%;
+    background: radial-gradient(circle at 50% 45%, #000 58%, #0b0a18 100%);
+    box-shadow: 0 0 0 1.5px rgba(226, 232, 240, .70),
+                0 0 10px rgba(99, 102, 241, .40),
+                0 0 16px rgba(2, 6, 23, .45);
+    z-index: 4;
+}
+
+@keyframes ciBhSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes ciBhGlow { 0%, 100% { opacity: .72; } 50% { opacity: 1; } }
+
+/* 摆放：头部最右侧（日期布局不变，连续天数徽章在它左边） */
+.ci-today .bh {
+    flex: 0 0 auto;
+    width: 46px; height: 46px;
+    /* 外晕比本体大一圈（inset:-42%），留 3px 免得被 .ci-card 的 overflow:hidden 切边 */
+    margin-right: 3px;
+}

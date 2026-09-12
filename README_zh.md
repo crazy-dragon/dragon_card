@@ -43,8 +43,17 @@
 
 ### 安装与启动
 
+**一键启动（推荐）：**
+
 ```bash
 cd dragoncard
+./start.sh        # macOS / Linux
+start.bat         # Windows
+```
+
+或手动：
+
+```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -57,10 +66,14 @@ python app.py
 
 ### 首次使用
 
-1. 点击「新建卡组」，填写名称并选择类型
-2. 进入卡组 → 「管理卡组」→ 在模板区上传模板文件（JSON）
-3. 在数据区上传数据文件（JSON）
-4. 返回目录，点击页码开始学习
+1. （可选）导入内置免费卡组：`python seed_decks.py`
+2. 点击「新建卡组」，填写名称并选择类型
+3. 进入卡组 → 「管理卡组」→ 在模板区上传模板文件（JSON）
+4. 在数据区上传数据文件（JSON）
+5. 返回目录，点击页码开始学习
+
+> 本地 AI 助手（如 Claude Code / Cursor / opencode）可运行与扩展本项目；
+> 面向 AI 的指引见 `AGENTS.md`。内置免费卡组通过 `python seed_decks.py` 导入（幂等）。
 
 ## 🎪 在线商店
 
@@ -129,9 +142,7 @@ dragoncard/
 ├── requirements.txt
 ├── DB_relation.md             # 数据库关系说明
 ├── README.md
-├── SKIN.md                    # 皮肤系统开发文档
 ├── TEMPLATE_PACK.md           # 模板包发布规范
-├── ui_design.md               # UI 界面设计文档
 │
 ├── default_cards/             # 内置卡组资产（模板 + 数据，通过页面「上传」导入）
 │   ├── english_coca20000/      # English Word Card + template_simple（精简版）
@@ -140,7 +151,7 @@ dragoncard/
 │   ├── japanese_gojuon/
 │   ├── prelude_yijing/
 │   ├── yijing/
-│   ├── checkin_date/           # 日期打卡（date/sunset/peach 三种样式）
+│   ├── checkin_log/            # 星际航行日志（按天多任务打卡）
 │   ├── dino_alphabet/
 │   └── dinosaur_3d/
 │
@@ -180,8 +191,6 @@ dragoncard/
 | 文档 | 用途 |
 |------|------|
 | [`DB_relation.md`](./DB_relation.md) | 数据库表结构与关系 |
-| [`SKIN.md`](./SKIN.md) | 皮肤系统开发文档 |
-| [`ui_design.md`](./ui_design.md) | UI 界面设计文档 |
 | 应用内「模板 API 参考」 | 模板格式与 `window.cardTemplate` 契约（主页顶栏 `</>` 按钮） |
 | 应用内「使用文档」 | 面向最终用户的操作指南（中英双语） |
 

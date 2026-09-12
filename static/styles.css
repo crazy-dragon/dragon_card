@@ -480,16 +480,19 @@ body.study-mode .global-sidebar { display: none; }
     display: flex; align-items: center; gap: 6px; margin-left: auto;
 }
 .stats-nav-btn {
-    width: 30px; height: 30px; border: 1px solid var(--line);
-    border-radius: 6px; background: transparent; cursor: pointer;
-    font-size: 14px; color: var(--ink-2);
+    width: 34px; height: 34px; border: 1px solid var(--line);
+    border-radius: 8px; background: transparent; cursor: pointer;
+    font-size: 15px; color: var(--ink-2);
     display: flex; align-items: center; justify-content: center;
     transition: all .15s;
 }
-.stats-nav-btn:hover { background: var(--hp-primary-soft); color: var(--hp-primary); border-color: var(--hp-primary); }
+.stats-nav-btn:hover { background: var(--hp-primary-soft); color: var(--hp-primary); border-color: var(--hp-primary); transform: translateY(-1px); }
+.stats-nav-btn:active { transform: scale(.92); }
 .stats-date {
-    font-size: 13px; font-weight: 600; color: var(--ink);
-    min-width: 120px; text-align: center;
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    min-width: 130px; text-align: center;
+    background: var(--slate-soft); border-radius: 6px; padding: 5px 10px;
+    font-variant-numeric: tabular-nums;
 }
 .stats-refresh-btn {
     width: 30px; height: 30px; border: none; border-radius: 6px;
@@ -498,15 +501,22 @@ body.study-mode .global-sidebar { display: none; }
 }
 .stats-refresh-btn:hover { color: var(--hp-primary); transform: rotate(180deg); }
 
-/* Stats cards grid */
+/* Stats cards grid — horizontal scroll so a large number of labels
+   never pushes the chart down. */
 .stats-cards {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 12px; min-height: 60px;
+    display: flex; gap: 12px;
+    overflow-x: auto; overflow-y: hidden;
+    min-height: 84px; padding-bottom: 4px;
+    scrollbar-width: thin; scrollbar-color: var(--hp-border) transparent;
 }
 .stats-card {
     background: var(--hp-card); border: 1px solid var(--hp-border);
-    border-radius: 10px; padding: 24px 16px; text-align: center;
+    border-radius: 10px; padding: 16px; text-align: center;
     box-shadow: var(--hp-shadow); position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px; min-height: 84px;
+    flex: 0 0 140px;
 }
 .stats-card::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
@@ -515,9 +525,13 @@ body.study-mode .global-sidebar { display: none; }
     font-size: 28px; font-weight: 700; line-height: 1.2;
     font-variant-numeric: tabular-nums;
 }
-.stats-card-lbl { font-size: 12px; color: var(--hp-text-sub); margin-top: 4px; }
+.stats-card-lbl {
+    font-size: 12px; color: var(--hp-text-sub); margin-top: 0;
+    font-weight: 500; letter-spacing: .2px; max-width: 100%;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
 .stats-empty {
-    grid-column: 1 / -1; text-align: center; padding: 40px;
+    flex: 1 1 100%; text-align: center; padding: 40px;
     color: var(--hp-text-sub); font-size: 14px;
 }
 

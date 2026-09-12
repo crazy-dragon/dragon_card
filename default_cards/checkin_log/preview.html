@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>星际航行日志 · Voyage Log · 预览</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }   /* 与应用保持一致（应用全局是 border-box） */
+  body { margin:0; padding:22px; background:#eef2f7; font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; }
+  .pv-wrap { max-width:720px; margin:0 auto; }
+  .pv-tip { font-size:12px; color:#64748b; margin:0 0 14px; line-height:1.7;
+            background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:9px 12px; }
+  .pv-label { font-size:12px; font-weight:700; color:#475569; margin:18px 0 7px; letter-spacing:.5px; }
+  .pv-confirm { position:fixed; z-index:99; display:flex; align-items:center; gap:9px;
+                background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:8px 10px 8px 13px;
+                box-shadow:0 12px 32px rgba(15,23,42,.16); font-size:13px; color:#1f2937; }
+  .pv-confirm button { font:inherit; font-size:12px; padding:4px 11px; border-radius:8px; cursor:pointer; border:1px solid #e2e8f0; background:#fff; color:#475569; }
+  .pv-confirm button[data-pc="ok"] { border-color:#10b981; background:#10b981; color:#fff; font-weight:600; }
+/* ============ Check-in Log Card · 打卡任务日志 ============ */
+.ci-card {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background: #fff;
+    border: 1px solid #e8edf5;
+    border-radius: 18px;
+    box-shadow: 0 6px 22px rgba(15, 23, 42, .06);
+    color: #1f2937;
+    line-height: 1.45;
+    transition: box-shadow .25s;
+}
+.ci-bar { height: 5px; background: linear-gradient(90deg, #34d399, #22d3ee, #818cf8); opacity: .9; }
+.ci-past .ci-bar { background: linear-gradient(90deg, #cbd5e1, #e2e8f0); }
+.ci-future .ci-bar { background: linear-gradient(90deg, #ddd6fe, #ede9fe); }
+.ci-body { padding: 15px 17px 16px; }
+
+/* ---- 头部：日期 + 连续天数 ---- */
+.ci-head { display: flex; align-items: center; gap: 12px; }
+.ci-date { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.ci-day { font-size: 32px; font-weight: 800; letter-spacing: -1px; color: #0f172a; font-variant-numeric: tabular-nums; }
+.ci-ym { display: flex; flex-direction: column; line-height: 1.15; }
+.ci-ym b { font-size: 12px; font-weight: 600; color: #64748b; }
+.ci-ym i { font-style: normal; font-size: 11px; color: #94a3b8; }
+.ci-today-chip {
+    align-self: flex-start; margin-top: 3px; padding: 1px 7px;
+    border-radius: 999px; background: #ecfdf5; color: #059669;
+    font-size: 10px; font-weight: 700; letter-spacing: .5px;
+}
+.ci-streak {
+    margin-left: auto; display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 11px; border-radius: 999px;
+    background: #fff7ed; border: 1px solid #fed7aa; color: #c2410c;
+    font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.ci-streak i { font-size: 12px; color: #f97316; }
+.ci-streak b { font-size: 15px; font-variant-numeric: tabular-nums; }
+.ci-streak em { font-style: normal; font-size: 11px; font-weight: 600; opacity: .75; }
+.ci-streak.is-idle { background: #f8fafc; border-color: #e2e8f0; color: #94a3b8; }
+.ci-streak.is-idle i { color: #cbd5e1; }
+
+.ci-status { font-size: 12px; color: #94a3b8; margin: 8px 0 12px; }
+
+/* ---- 任务行 ---- */
+.ci-tasks { display: flex; flex-direction: column; gap: 8px; }
+.ci-task {
+    display: flex; align-items: center; gap: 11px;
+    padding: 10px 12px; border-radius: 13px;
+    border: 1px solid #eef2f7; background: #fbfcfe;
+    transition: background .18s, border-color .18s, transform .12s;
+}
+.ci-today .ci-task { cursor: pointer; }
+.ci-today .ci-task:hover { background: #f5f9ff; border-color: #dbe6f7; }
+.ci-today .ci-task:active { transform: scale(.985); }
+.ci-dot {
+    width: 26px; height: 26px; flex: 0 0 26px; border-radius: 50%;
+    border: 2px dashed #cbd5e1; background: #fff;
+    display: grid; place-items: center;
+    color: #fff; transition: all .2s;
+}
+/* 两个图标必须叠在同一格。用 flex 会并排占位，把可见图标挤出圆心（歪） */
+.ci-dot > i { grid-area: 1 / 1; line-height: 1; }
+/* 空心圈：待办时显示任务图标，完成后换成对勾 */
+.ci-dot [data-role="dot-task"] { font-size: 12px; opacity: 1; color: #94a3b8; }
+.ci-dot [data-role="dot-check"] { font-size: 11px; opacity: 0; }
+.ci-task.done .ci-dot [data-role="dot-task"] { opacity: 0; }
+.ci-task.done .ci-dot [data-role="dot-check"] { opacity: 1; }
+.ci-task.done .ci-dot { border: 2px solid #10b981; border-style: solid; background: linear-gradient(135deg, #34d399, #10b981); }
+.ci-info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.ci-info b { font-size: 14px; font-weight: 600; color: #1e293b; }
+.ci-info i { font-style: normal; font-size: 11px; color: #a2adbf; margin-top: 1px; }
+.ci-right {
+    flex: 0 0 auto; font-size: 12px; font-weight: 700; color: #94a3b8;
+    display: inline-flex; align-items: center; gap: 5px;
+    font-variant-numeric: tabular-nums;
+}
+.ci-task.done { background: #f0fdf4; border-color: #bbf7d0; }
+.ci-task.done .ci-info b { color: #047857; }
+.ci-task.done .ci-right { color: #059669; }
+.ci-task.ci-pop { animation: ciPop .42s ease; }
+@keyframes ciPop {
+    0% { transform: scale(1); }
+    35% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+/* ---- 过期 / 未解锁 ---- */
+.ci-past { background: #fbfbfc; border-color: #eceff4; box-shadow: none; }
+.ci-past .ci-day { color: #94a3b8; }
+.ci-past .ci-task { background: #f7f8fa; }
+.ci-future { background: #fcfbff; border-color: #eee9fb; box-shadow: none; }
+.ci-future .ci-day { color: #b4b9c6; }
+.ci-lock {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 16px; border-radius: 13px;
+    border: 1px dashed #ddd6fe; background: #faf9ff;
+    color: #a78bfa; font-size: 13px; font-weight: 600;
+}
+
+/* ---- 最近 7 天活跃条 ---- */
+.ci-week { display: flex; gap: 6px; margin-top: 13px; }
+.ci-wd { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.ci-wd span { font-size: 10px; color: #a8b2c4; }
+.ci-wd i { width: 100%; height: 6px; border-radius: 999px; background: #eef1f6; transition: background .2s; }
+.ci-wd.on i { background: linear-gradient(90deg, #34d399, #10b981); }
+.ci-wd.cur i { outline: 2px solid #bfdbfe; outline-offset: 1px; }
+.ci-wd.now span { color: #2563eb; font-weight: 700; }
+
+/* ---- 暗色模式 ---- */
+body.dark-mode .ci-card { background: #1b2230; border-color: #2a3547; color: #e5e9f0; }
+body.dark-mode .ci-day { color: #f1f5f9; }
+body.dark-mode .ci-ym b { color: #9aa6b8; }
+body.dark-mode .ci-today-chip { background: #0d2b1e; color: #34d399; }
+body.dark-mode .ci-task { background: #212a39; border-color: #2c3849; }
+body.dark-mode .ci-task.done { background: #12301f; border-color: #1d4a30; }
+body.dark-mode .ci-info b { color: #e2e8f0; }
+body.dark-mode .ci-info i { color: #7d8798; }
+body.dark-mode .ci-status { color: #7d8798; }
+body.dark-mode .ci-dot { background: #1b2230; }
+body.dark-mode .ci-wd i { background: #2a3547; }
+body.dark-mode .ci-past { background: #1a202c; border-color: #26303f; }
+body.dark-mode .ci-future { background: #1e1b2e; border-color: #332c4a; }
+body.dark-mode .ci-lock { background: #221d33; border-color: #3b3260; color: #a78bfa; }
+
+
+/* ==========================================================================
+   星际航行 · 星夜版（Voyage / Night）
+   --------------------------------------------------------------------------
+   只作用于"今天"那张卡（.ci-today），而且是**恒为暗色**——不跟随应用的全局暗色。
+   理由：400 张素卡的长列表里，深色是唯一能一眼认出"今天"的信号；
+   顺带省掉一整套全局暗色适配，规则更少更简单。
+   历史卡 / 未来卡保持上面那套素净原样。
+
+   视觉隐喻：
+     深空底 + 星尘点阵   = 夜空
+     顶部渐变条          = 星轨（缀几点星光）
+     完成任务            = 点亮一颗星（暖金，2.8s 呼吸）
+     最近 7 天           = 航迹上的 7 个节点
+     连续天数            = 「航行第 N 天」
+     头部右侧黑洞        = 今天的"印记"（见本文件末尾）
+   ========================================================================== */
+
+/* ---------- 卡面：深空底 + 星尘 ---------- */
+.ci-today {
+    background-color: #141a2e;
+    background-image:
+        radial-gradient(rgba(165, 180, 252, .17) 1px, transparent 1.3px),
+        radial-gradient(rgba(139, 92, 246, .13) 1px, transparent 1.3px),
+        radial-gradient(rgba(255, 255, 255, .10) 1px, transparent 1.3px);
+    background-size: 23px 23px, 41px 41px, 59px 59px;
+    background-position: 0 0, 17px 13px, 31px 29px;
+    border-color: #2b3153;
+    color: #e2e8f0;
+    box-shadow: 0 12px 32px rgba(2, 6, 23, .38);
+}
+
+/* ---------- 顶部星轨 ---------- */
+.ci-today .ci-bar {
+    height: 6px;
+    opacity: 1;
+    background-image:
+        radial-gradient(circle at 11% 50%, rgba(255, 255, 255, .95) 0 1px, transparent 1.7px),
+        radial-gradient(circle at 34% 50%, rgba(255, 255, 255, .78) 0 1px, transparent 1.6px),
+        radial-gradient(circle at 58% 50%, rgba(255, 255, 255, .92) 0 1px, transparent 1.7px),
+        radial-gradient(circle at 79% 50%, rgba(255, 255, 255, .70) 0 1px, transparent 1.6px),
+        radial-gradient(circle at 93% 50%, rgba(255, 255, 255, .85) 0 1px, transparent 1.6px),
+        linear-gradient(90deg, #4f46e5, #7c3aed 42%, #a855f7 72%, #d946ef);
+    box-shadow: 0 1px 16px rgba(139, 92, 246, .50);
+}
+
+/* ---------- 日期 ---------- */
+.ci-today .ci-day { color: #f2f4ff; text-shadow: 0 2px 14px rgba(129, 140, 248, .45); }
+.ci-today .ci-ym b { color: #9aa7be; }
+.ci-today .ci-ym i { color: #7480a0; }
+.ci-today .ci-today-chip { background: #232a52; color: #a5b4fc; }
+
+/* ---------- 连续天数 → 航行第 N 天 ---------- */
+.ci-today .ci-streak {
+    background: linear-gradient(135deg, #232a52, #2b2352);
+    border-color: #3b4478;
+    color: #c7d2fe;
+    box-shadow: 0 3px 14px rgba(79, 70, 229, .30);
+}
+.ci-today .ci-streak i { color: #818cf8; }
+.ci-today .ci-streak.is-idle {
+    background: #1a1f36; border-color: #2b3153; color: #6f7899; box-shadow: none;
+}
+.ci-today .ci-streak.is-idle i { color: #565f85; }
+
+/* ---------- 状态行 ---------- */
+.ci-today .ci-status { color: #8b93b5; }
+
+/* ---------- 任务行 ---------- */
+.ci-today .ci-task { background: #1c2138; border-color: #2b3158; }
+.ci-today .ci-task:hover { background: #232a4d; border-color: #3a4272; }
+.ci-today .ci-info b { color: #e8ecf8; }
+.ci-today .ci-info i { color: #8b93b5; }
+.ci-today .ci-dot { border-color: #3f4778; background: #141a2e; }
+.ci-today .ci-dot [data-role="dot-task"] { color: #8b93c4; }
+/* 待办行的「点亮」按钮：用靛蓝点出"可点"（完成行由 .done 的暖金覆盖） */
+.ci-today .ci-right { color: #a5b4fc; }
+
+/* ---------- 完成任务 = 点亮一颗星 ---------- */
+.ci-today .ci-task.done {
+    background: linear-gradient(90deg, #2a2413, #1c2138 72%);
+    border-color: #4d3c15;
+}
+.ci-today .ci-task.done .ci-info b { color: #fbbf24; }
+.ci-today .ci-task.done .ci-info i { color: #a08a55; }
+.ci-today .ci-task.done .ci-right { color: #fbbf24; }
+.ci-today .ci-task.done .ci-dot {
+    border: 2px solid #f59e0b;
+    background: radial-gradient(circle at 34% 28%, #fde68a, #f59e0b 72%);
+    animation: ciVoyageTwinkle 2.8s ease-in-out infinite;
+}
+@keyframes ciVoyageTwinkle {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(251, 191, 36, .16), 0 0 10px rgba(245, 158, 11, .55); }
+    50%      { box-shadow: 0 0 0 4px rgba(251, 191, 36, .26), 0 0 18px rgba(245, 158, 11, .85); }
+}
+
+/* ---------- 最近 7 天 = 航迹上的 7 个节点 ---------- */
+.ci-today .ci-week { gap: 0; margin-top: 16px; padding: 0 2px; }
+.ci-today .ci-wd { position: relative; gap: 6px; }
+.ci-today .ci-wd span { color: #6f7a99; }
+.ci-today .ci-wd i {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: #252b47; border: 1.5px solid #39406b;
+    position: relative; z-index: 1;
+    transition: background .25s, border-color .25s, box-shadow .25s;
+}
+/* 轨道连线（连到右边相邻节点，与圆点同心） */
+.ci-today .ci-wd:not(:last-child)::after {
+    content: ''; position: absolute; left: 50%; right: -50%; bottom: 3.5px;
+    height: 2px; background: #252b47; z-index: 0;
+}
+.ci-today .ci-wd.on i {
+    background: radial-gradient(circle at 34% 28%, #fde68a, #f59e0b 70%);
+    border-color: #f59e0b;
+    box-shadow: 0 0 10px rgba(245, 158, 11, .60);
+}
+.ci-today .ci-wd.cur i { outline: 2px solid #4c5590; outline-offset: 2px; }
+.ci-today .ci-wd.now span { color: #a5b4fc; font-weight: 700; }
+
+
+/* ==========================================================================
+   黑洞（今天的印记）—— 动态，纯 CSS：无 canvas / 无 rAF
+   --------------------------------------------------------------------------
+   结构（由 card.js 的 render() 在 mode==='today' 时注入到 .ci-head 末尾）：
+     .bh-halo   外晕（缓慢呼吸）
+     .bh-disk   吸积盘：conic-gradient 彩色扇区，rotateX 压扁成斜看视角的椭圆，
+                中间挖空、匀速旋转（静态图里看不出转，动起来才明显）
+     .bh-arc    引力透镜环：不压扁，正圆细亮环，上下两段亮边在自转
+     .bh-core   事件视界：近黑实心 + 冷光细边
+
+   摆放：挂在 .ci-head 的**最后一个**子元素位置，也就是头部最右侧。
+   左侧日期块因此完全不动——和素卡的日期位置逐像素一致。
+   只有"今天"那张卡带这个节点，403 张列表里动画只有 1 份，性能无压力。
+
+   实现要点：会转的东西必须放在 ::before 上——animation 会整个覆盖 transform，
+   否则外层用来压扁的 rotateX 会被转没。
+   ========================================================================== */
+
+.bh {
+    position: relative;
+    display: block;
+    width: 44px; height: 44px;
+}
+.bh > span { position: absolute; border-radius: 50%; }
+
+/* 外晕 */
+.bh-halo {
+    inset: -42%;
+    background: radial-gradient(circle,
+        rgba(139, 92, 246, .40) 0%,
+        rgba(99, 102, 241, .16) 42%,
+        rgba(99, 102, 241, 0) 68%);
+    animation: ciBhGlow 4.5s ease-in-out infinite;
+    z-index: 1;
+}
+/* 吸积盘：整盘压扁 → 斜看视角；::before 里才是会转的彩色扇区 */
+.bh-disk {
+    inset: -12%;
+    transform: perspective(130px) rotateX(64deg);
+    z-index: 2;
+}
+.bh-disk::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg,
+        rgba(255, 255, 255, 0) 0deg,
+        #fde68a 26deg, #fbbf24 54deg, #fb7185 96deg, #c084fc 134deg,
+        rgba(255, 255, 255, 0) 168deg,
+        rgba(255, 255, 255, 0) 196deg,
+        #60a5fa 238deg, #22d3ee 282deg, #a78bfa 316deg,
+        rgba(255, 255, 255, 0) 348deg, rgba(255, 255, 255, 0) 360deg);
+    -webkit-mask: radial-gradient(circle, rgba(0, 0, 0, 0) 32%, #000 46%);
+    mask: radial-gradient(circle, rgba(0, 0, 0, 0) 32%, #000 46%);
+    filter: blur(2.4px);
+    animation: ciBhSpin 6.5s linear infinite;
+}
+/* 引力透镜环：保持正圆（不压扁），上下两段亮边绕视界转 */
+.bh-arc {
+    inset: -6%;
+    z-index: 3;
+}
+.bh-arc::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    border: 1.8px solid transparent;
+    border-top-color: rgba(255, 255, 255, .95);
+    border-bottom-color: rgba(253, 230, 138, .80);
+    box-shadow: 0 0 6px rgba(255, 255, 255, .35);
+    animation: ciBhSpin 3.2s linear infinite;
+}
+/* 事件视界 */
+.bh-core {
+    inset: 25%;
+    background: radial-gradient(circle at 50% 45%, #000 58%, #0b0a18 100%);
+    box-shadow: 0 0 0 1.5px rgba(226, 232, 240, .70),
+                0 0 10px rgba(99, 102, 241, .40),
+                0 0 16px rgba(2, 6, 23, .45);
+    z-index: 4;
+}
+
+@keyframes ciBhSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes ciBhGlow { 0%, 100% { opacity: .72; } 50% { opacity: 1; } }
+
+/* 摆放：头部最右侧（日期布局不变，连续天数徽章在它左边） */
+.ci-today .bh {
+    flex: 0 0 auto;
+    width: 46px; height: 46px;
+    /* 外晕比本体大一圈（inset:-42%），留 3px 免得被 .ci-card 的 overflow:hidden 切边 */
+    margin-right: 3px;
+}
+
+</style>
+</head>
+<body>
+<div class="pv-wrap">
+  <p class="pv-tip"><b>这是预览页</b>：三张卡分别是<b>今天（可打卡）/ 昨天（只读）/ 三天后（未解锁）</b>。<br>
+  <b>只有"今天"这张换装</b>——深空底 + 星尘 + 头部右侧的黑洞（纯 CSS 动画，没有 canvas）；历史卡与未来卡保持素净，所以混在长列表里不吵。<br>
+  今天已记一项「每日 20 分钟美剧」，剩下那项点一下会先弹<b>确认气泡</b>（防误触），确认后才算记录。<br>
+  卡片里的连续天数、最近 7 天、记录时间用的是<b>内置演示数据</b>（不是真实记录）；点"点亮"只演示交互，不会写库。<br>
+  要真正打卡：把 template.json + cards.json 导入应用，在学习页里点。</p>
+  <div id="pv-host"></div>
+</div>
+<script>
+/* 用演示数据顶掉统计接口：预览页不依赖本地服务，也不会污染真实记录 */
+(function () {
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+  function key(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+  var TIMES = { movie_20min: '21:40', read_10pages: '22:05' };
+  /* 第 4 天前断一次，其余连续 → 今天连续 4 天、最近 7 天亮 6 格。
+     今天故意只记一项：另一项留空才点得动，用来演示"点一下先弹确认"。 */
+  var PATTERN = { '0': ['movie_20min'], '1': ['movie_20min'], '2': ['movie_20min'],
+                   '3': ['movie_20min'], '4': [], '5': ['movie_20min'], '6': ['movie_20min', 'read_10pages'] };
+  function actionsFor(offset) {
+    var list = PATTERN[String(offset)] || [];
+    var acts = {};
+    list.forEach(function (a) { acts[a] = 1; });
+    return acts;
+  }
+  function offsetOf(dateStr) {
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var d = new Date(dateStr + 'T00:00:00');
+    return Math.round((d - today) / 86400000);
+  }
+  var _orig = window.fetch;
+  window.fetch = function (url) {
+    var u = String(url);
+    if (u.indexOf('/v1/observability/data') !== -1) {
+      var body;
+      if (u.indexOf('view=heatmap') !== -1) {
+        var rows = [];
+        Object.keys(PATTERN).forEach(function (off) {
+          var d = new Date(); d.setDate(d.getDate() - Number(off));
+          rows.push({ date: key(d), actions: actionsFor(Number(off)) });
+        });
+        body = { success: true, view: 'heatmap', data: rows.sort(function (a, b) { return a.date < b.date ? -1 : 1; }) };
+      } else {
+        var m = /date=([\d-]+)/.exec(u);
+        var acts = m ? actionsFor(offsetOf(m[1])) : {};
+        var buckets = Object.keys(acts).map(function (a) {
+          var one = {}; one[a] = acts[a];
+          return { time: TIMES[a] || '21:00', actions: one };
+        });
+        body = { success: true, view: 'daily', data: buckets };
+      }
+      return Promise.resolve({ ok: true, json: function () { return Promise.resolve(body); } });
+    }
+    return _orig.apply(window, arguments);
+  };
+})();
+</script>
+<script>(function () {
+    'use strict';
+
+    /* ===================================================================
+     * 任务定义 —— 想增删任务、改名，只改这个数组
+     *   action : 埋点动作名（英文小写 + 下划线，务必保持稳定）
+     *            历史记录靠它归属，改了字 = 老记录不再属于这个任务
+     *   label  : 卡片上显示的名字
+     *   hint   : 副标题，可留空
+     *   图标可换成任意 Font Awesome 类名
+     * =================================================================== */
+    var TASKS = [
+        { action: 'movie_20min',  label: '每日 20 分钟美剧', hint: '看一集，20 分钟', icon: 'fa-tv' },
+        { action: 'read_10pages', label: '阅读 10 页',       hint: '读完 10 页记一笔', icon: 'fa-book-open' }
+    ];
+
+    var WEEK_CN = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
+    /* 预览页（file://）直连本地服务；应用内走相对路径 */
+    var API_BASE = (location.protocol === 'file:') ? 'http://localhost:5001' : '';
+
+    /* 列表模式一页会渲染几十张卡，请求必须共享去重 */
+    var _heat = {}, _heatQ = {}, _day = {}, _dayQ = {};
+    /* 线性排列下"今天"在中间，进页面自动定位一次（每页只做一次） */
+    var _autoLocated = false;
+    var HEAT_TTL = 60000, DAY_TTL = 30000;
+
+    function pad2(n) { return (n < 10 ? '0' : '') + n; }
+    function keyOf(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+    function todayKey() { return keyOf(new Date()); }
+    function parseKey(s) { var p = String(s || '').split('-'); return new Date(+p[0], (+p[1]) - 1, +p[2]); }
+    function shiftKey(s, n) { var d = parseKey(s); d.setDate(d.getDate() + n); return keyOf(d); }
+    function nowHM() { var d = new Date(); return pad2(d.getHours()) + ':' + pad2(d.getMinutes()); }
+    function uid() { return (window.state && window.state.userId) || ''; }
+
+    function getJson(path, params) {
+        var qs = [], k;
+        for (k in params) {
+            if (!params.hasOwnProperty(k) || params[k] === '' || params[k] == null) continue;
+            qs.push(k + '=' + encodeURIComponent(params[k]));
+        }
+        return fetch(API_BASE + path + (qs.length ? '?' + qs.join('&') : ''), { credentials: 'same-origin' })
+            .then(function (r) { return r.json(); });
+    }
+    function flush(queue, key, val) {
+        var list = queue[key] || [];
+        delete queue[key];
+        list.forEach(function (fn) { try { fn(val); } catch (e) {} });
+    }
+
+    /* 365 天热力图：{ 'YYYY-MM-DD': { action: count } } —— 活跃/连续/历史卡都靠它 */
+    function loadHeat(deckId, cb) {
+        var c = _heat[deckId];
+        if (c && (Date.now() - c.ts) < HEAT_TTL) { cb(c.map); return; }
+        if (_heatQ[deckId]) { _heatQ[deckId].push(cb); return; }
+        _heatQ[deckId] = [cb];
+        getJson('/v1/observability/data', { view: 'heatmap', deck_id: deckId, user_id: uid() })
+            .then(function (d) {
+                var map = {};
+                ((d && d.data) || []).forEach(function (row) {
+                    if (row && row.date) map[row.date] = row.actions || {};
+                });
+                _heat[deckId] = { ts: Date.now(), map: map };
+                flush(_heatQ, deckId, map);
+            })
+            .catch(function () { flush(_heatQ, deckId, {}); });
+    }
+
+    /* 某一天的 15 分钟分桶：{ 'HH:MM': { action: count } } —— 用来显示"几点记的" */
+    function loadDay(deckId, date, cb) {
+        var key = deckId + '|' + date, c = _day[key];
+        if (c && (Date.now() - c.ts) < DAY_TTL) { cb(c.map); return; }
+        if (_dayQ[key]) { _dayQ[key].push(cb); return; }
+        _dayQ[key] = [cb];
+        getJson('/v1/observability/data', { view: 'daily', date: date, deck_id: deckId, user_id: uid() })
+            .then(function (d) {
+                var map = {};
+                ((d && d.data) || []).forEach(function (row) {
+                    if (row && row.time) map[row.time] = row.actions || {};
+                });
+                _day[key] = { ts: Date.now(), map: map };
+                flush(_dayQ, key, map);
+            })
+            .catch(function () { flush(_dayQ, key, {}); });
+    }
+
+    function total(actions) { var n = 0, k; for (k in actions) if (actions.hasOwnProperty(k)) n += actions[k]; return n; }
+    function isActive(map, date) { return total((map && map[date]) || {}) > 0; }
+    function countOf(map, date, action) { return (((map || {})[date] || {})[action]) || 0; }
+    function streakEndingAt(map, date) {
+        var n = 0, k = date, guard = 0;
+        while (guard++ < 400 && isActive(map, k)) { n++; k = shiftKey(k, -1); }
+        return n;
+    }
+
+    window.cardTemplate = {
+        name: 'Check-in Log Card',
+        lang: 'zh',
+        fields: [
+            { key: 'date', label: '日期', hideable: false }
+        ],
+        trackedActions: TASKS.map(function (t) { return { action: t.action, label: t.label }; }),
+
+        render: function (cardHtml, cardData, api) {
+            var cd = (api.getCardData && api.getCardData()) || cardData || {};
+            var d = cd.data || {};
+            var dateStr = d.date || '';
+            var tk = todayKey();
+            /* 没有日期字段的卡 = 永远"今天"（一份 cards.json 里只有一张卡时用） */
+            var mode = !dateStr ? 'today' : (dateStr === tk ? 'today' : (dateStr > tk ? 'future' : 'past'));
+            var dt = dateStr ? parseKey(dateStr) : new Date();
+            var html = '';
+
+            html += '<div class="ci-card ci-' + mode + '" data-card-id="' + (cd.id != null ? cd.id : '') +
+                    '" data-date="' + dateStr + '" data-mode="' + mode + '">';
+            html +=   '<div class="ci-bar"></div>';
+            html +=   '<div class="ci-body">';
+
+            /* 头部 */
+            html +=     '<div class="ci-head">';
+            html +=       '<div class="ci-date">';
+            html +=         '<span class="ci-day">' + dt.getDate() + '</span>';
+            html +=         '<span class="ci-ym"><b>' + dt.getFullYear() + ' 年 ' + (dt.getMonth() + 1) + ' 月</b>' +
+                            '<i>' + WEEK_CN[dt.getDay()] + '</i>' +
+                            (mode === 'today' ? '<span class="ci-today-chip">今天</span>' : '') + '</span>';
+            html +=       '</div>';
+            if (mode !== 'future') {
+                /* 今天这张用「航行第 N 天」，历史/未来卡还是「连续 N 天」 */
+                html +=   '<div class="ci-streak" data-role="streak" title="连续记录天数">' +
+                          (mode === 'today'
+                              ? '<i class="fa-solid fa-rocket"></i><em>航行第</em><b>—</b><em>天</em>'
+                              : '<i class="fa-solid fa-fire"></i><b>—</b><em>天</em>') +
+                          '</div>';
+            }
+            /* 今天的印记：黑洞挂在头部最右侧（.ci-head 的最后一个子元素），
+               所以左边的日期块位置和素卡完全一致 */
+            if (mode === 'today') {
+                html +=   '<span class="bh" aria-hidden="true">' +
+                              '<span class="bh-halo"></span><span class="bh-disk"></span>' +
+                              '<span class="bh-arc"></span><span class="bh-core"></span>' +
+                          '</span>';
+            }
+            html +=     '</div>';
+
+            /* 状态行 */
+            var status = mode === 'future' ? '待解锁 · 到那天就能记录'
+                       : (mode === 'past' ? '这一天没有记录' : '今天还没有记录，点一下点亮一颗星');
+            html +=     '<div class="ci-status" data-role="status">' + status + '</div>';
+
+            /* 任务区 */
+            if (mode === 'future') {
+                html +=   '<div class="ci-lock"><i class="fa-solid fa-lock"></i><span>到那天才会解锁</span></div>';
+            } else {
+                html +=   '<div class="ci-tasks">';
+                TASKS.forEach(function (t) {
+                    html += '<div class="ci-task" data-task="' + t.action + '" data-role="task" data-action="log" title="' + t.label + '">' +
+                              '<span class="ci-dot"><i class="fa-solid ' + (t.icon || 'fa-circle') + '" data-role="dot-task"></i>' +
+                              '<i class="fa-solid fa-check" data-role="dot-check"></i></span>' +
+                              '<span class="ci-info"><b>' + t.label + '</b>' + (t.hint ? '<i>' + t.hint + '</i>' : '') + '</span>' +
+                              '<span class="ci-right" data-role="right"><b>' + (mode === 'today' ? '点亮' : '—') + '</b></span>' +
+                            '</div>';
+                });
+                html +=   '</div>';
+            }
+            /* 最近 7 天活跃条（init 里填） */
+            if (mode !== 'future') html += '<div class="ci-week" data-role="week"></div>';
+
+            html +=   '</div>';
+            html += '</div>';
+            return html;
+        },
+
+        init: function (cardElement, cardData, api) {
+            var cd = (api.getCardData && api.getCardData()) || cardData || {};
+            var deckId = (cd.deck_id != null) ? cd.deck_id : (api.cardId != null ? api.cardId : '');
+            var dateStr = cardElement.getAttribute('data-date') || '';
+            var mode = cardElement.getAttribute('data-mode') || 'today';
+            if (!dateStr && mode === 'today') dateStr = todayKey();
+
+            var elStreak = cardElement.querySelector('[data-role="streak"]');
+            var elStatus = cardElement.querySelector('[data-role="status"]');
+            var elWeek = cardElement.querySelector('[data-role="week"]');
+            var elTasks = Array.prototype.slice.call(cardElement.querySelectorAll('[data-role="task"]'));
+
+            var heatMap = {}, dayMap = {};
+
+            function alive() {
+                return cardElement.isConnected === undefined
+                    ? document.body.contains(cardElement)
+                    : cardElement.isConnected;
+            }
+            function taskEl(action) {
+                for (var i = 0; i < elTasks.length; i++) {
+                    if (elTasks[i].getAttribute('data-task') === action) return elTasks[i];
+                }
+                return null;
+            }
+
+            function paintTasks() {
+                TASKS.forEach(function (t) {
+                    var el = taskEl(t.action);
+                    if (!el) return;
+                    var done = countOf(heatMap, dateStr, t.action) > 0;
+                    var time = '';
+                    for (var hm in dayMap) {
+                        if (dayMap.hasOwnProperty(hm) && dayMap[hm] && dayMap[hm][t.action]) { time = hm; break; }
+                    }
+                    el.classList.toggle('done', done);
+                    var right = el.querySelector('[data-role="right"]');
+                    if (right) {
+                        if (done) right.innerHTML = '<i class="fa-solid fa-check"></i><b>' + (time || '已记录') + '</b>';
+                        else right.innerHTML = '<b>' + (mode === 'today' ? '点亮' : '—') + '</b>';
+                    }
+                });
+            }
+            function paintStreak() {
+                if (!elStreak) return;
+                var idle = (mode === 'today' && !isActive(heatMap, dateStr));
+                var ref = isActive(heatMap, dateStr) ? dateStr : shiftKey(dateStr, -1);
+                var n = streakEndingAt(heatMap, ref);
+                elStreak.classList.toggle('is-idle', idle);
+                elStreak.innerHTML = (mode === 'today')
+                    ? '<i class="fa-solid fa-rocket"></i><em>航行第</em><b>' + n + '</b><em>天</em>'
+                    : '<i class="fa-solid fa-fire"></i><b>' + n + '</b><em>天</em>';
+                elStreak.setAttribute('title', (mode === 'today' ? '航行第 ' : '连续 ') + n + ' 天' +
+                    (idle && n > 0 ? ' · 今天还没记录' : ''));
+            }
+            function paintWeek() {
+                if (!elWeek) return;
+                var html = '', i, k, d, on, cls;
+                for (i = 6; i >= 0; i--) {
+                    k = shiftKey(dateStr, -i);
+                    d = parseKey(k);
+                    on = isActive(heatMap, k);
+                    cls = 'ci-wd' + (on ? ' on' : '') + (k === dateStr ? ' cur' : '') + (k === todayKey() ? ' now' : '');
+                    html += '<div class="' + cls + '" title="' + k + (on ? ' · 有记录' : ' · 无记录') + '">' +
+                            '<span>' + WEEK_CN[d.getDay()].charAt(1) + '</span><i></i></div>';
+                }
+                elWeek.innerHTML = html;
+            }
+            function paintStatus() {
+                if (!elStatus) return;
+                var n = 0;
+                TASKS.forEach(function (t) { if (countOf(heatMap, dateStr, t.action) > 0) n++; });
+                var txt;
+                if (mode === 'future') txt = '待解锁 · 到那天就能记录';
+                else if (mode === 'today') txt = n ? ('今天已记录 ' + n + ' 项' + (n >= TASKS.length ? ' · 全部完成' : '')) : '今天还没有记录，点一下点亮一颗星';
+                else txt = n ? ('当天记录了 ' + n + ' 项') : '这一天没有记录';
+                elStatus.textContent = txt;
+            }
+            function paintAll() { if (!alive()) return; paintTasks(); paintStreak(); paintWeek(); paintStatus(); }
+
+            /* 1) 热力图：任务完成态 + 活跃条 + 连续天数（同页多卡共享一次请求） */
+            loadHeat(deckId, function (map) { heatMap = map || {}; paintAll(); });
+
+            /* 2) 当天分桶：把"几点记的"补上（今天立即加载，历史卡可见时再加载） */
+            if (mode === 'today') {
+                loadDay(deckId, dateStr, function (m) { dayMap = m || {}; paintAll(); });
+            } else if (mode === 'past') {
+                whenVisible(cardElement, function () {
+                    loadDay(deckId, dateStr, function (m) { dayMap = m || {}; paintAll(); });
+                });
+            }
+
+            /* 3) 线性排列时"今天"在中间：首次进页面自动滚到"今天" */
+            if (mode === 'today' && !_autoLocated) {
+                _autoLocated = true;
+                setTimeout(function () {
+                    if (!alive() || !cardElement.parentNode) return;
+                    try { cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+                    catch (e) { try { cardElement.scrollIntoView(); } catch (e2) {} }
+                }, 120);
+            }
+
+            /* 4) 打卡：只在"今天"这张卡上可点，且每次都要二次确认（防误触） */
+            if (mode !== 'today') return;
+
+            function labelOf(action) {
+                for (var i = 0; i < TASKS.length; i++) {
+                    if (TASKS[i].action === action) return TASKS[i].label;
+                }
+                return action;
+            }
+            /* 应用内是就地小气泡（api.confirmDialog）；预览页没有就退化成原生 confirm */
+            function askConfirm(anchor, msg, ok) {
+                if (api.confirmDialog) { api.confirmDialog(anchor, msg, ok); return; }
+                if (window.confirm && window.confirm(msg)) ok();
+            }
+            function commit(row, action) {
+                row.setAttribute('data-busy', '1');
+                api.track(action);                      /* 唯一写入口：一条埋点 */
+                if (!heatMap[dateStr]) heatMap[dateStr] = {};
+                heatMap[dateStr][action] = (heatMap[dateStr][action] || 0) + 1;
+                if (!dayMap[nowHM()]) dayMap[nowHM()] = {};
+                dayMap[nowHM()][action] = (dayMap[nowHM()][action] || 0) + 1;
+                paintAll();
+                row.classList.remove('ci-pop');
+                void row.offsetWidth;
+                row.classList.add('ci-pop');
+                setTimeout(function () { row.removeAttribute('data-busy'); }, 500);
+            }
+            elTasks.forEach(function (row) {
+                row.addEventListener('click', function () {
+                    var action = row.getAttribute('data-task');
+                    if (!action || row.classList.contains('done')) return;
+                    if (row.getAttribute('data-busy')) return;
+                    askConfirm(row, '确认记录「' + labelOf(action) + '」？', function () {
+                        commit(row, action);
+                    });
+                });
+            });
+        }
+    };
+
+    /* 元素可见时才回调（避免一页几十张历史卡同时发请求）。不支持 IO 就直接回调。 */
+    function whenVisible(el, fn) {
+        if (typeof IntersectionObserver === 'undefined') { fn(); return; }
+        var done = false, io = new IntersectionObserver(function (entries) {
+            for (var i = 0; i < entries.length; i++) {
+                if (entries[i].isIntersecting) { fire(); return; }
+            }
+        }, { rootMargin: '160px' });
+        function fire() {
+            if (done) return;
+            done = true;
+            try { io.disconnect(); } catch (e) {}
+            fn();
+        }
+        io.observe(el);
+    }
+})();
+</script>
+<script>
+(function () {
+  var host = document.getElementById('pv-host');
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+  function key(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+  function mk(dateStr, label) {
+    var cardData = { id: 'pv' + dateStr, deck_id: 0, data: { date: dateStr },
+                     current_order: 1, is_unknown: 0, is_favorite: 0 };
+    var api = {
+      cardItemId: cardData.id, cardId: 0, templateId: 0,
+      getCardData: function () { return cardData; },
+      getViewMode: function () { return 'single'; },
+      getHiddenFields: function () { return {}; },
+      setHiddenFields: function () {},
+      toggleMark: function () { return Promise.resolve({ success: true, is_unknown: 1 }); },
+      toggleFavorite: function () { return Promise.resolve({ success: true }); },
+      isFavorite: function () { return false; },
+      playAudio: function () {},
+      rerender: function () {},
+      track: function (a) { console.log('[preview] track:', a); },
+      /* 和真实应用一致：就地弹出小气泡二次确认（防止误触写库） */
+      confirmDialog: function (el, msg, ok) {
+        var old = document.getElementById('pv-confirm');
+        if (old) old.parentNode.removeChild(old);
+        var pop = document.createElement('div');
+        pop.id = 'pv-confirm'; pop.className = 'pv-confirm';
+        pop.innerHTML = '<span></span>' +
+          '<button type="button" data-pc="cancel">取消</button>' +
+          '<button type="button" data-pc="ok">确认</button>';
+        pop.firstChild.textContent = msg;
+        document.body.appendChild(pop);
+        var r = el.getBoundingClientRect();
+        pop.style.left = Math.max(8, Math.min(r.left, window.innerWidth - pop.offsetWidth - 8)) + 'px';
+        pop.style.top = (r.bottom + 6) + 'px';
+        function close() { if (pop.parentNode) pop.parentNode.removeChild(pop); document.removeEventListener('mousedown', onDown); }
+        function onDown(e) { if (!pop.contains(e.target)) close(); }
+        pop.querySelector('[data-pc="cancel"]').addEventListener('click', close);
+        pop.querySelector('[data-pc="ok"]').addEventListener('click', function () { close(); ok(); });
+        setTimeout(function () { document.addEventListener('mousedown', onDown); }, 0);
+      },
+      showTooltip: function () {}, hideTooltip: function () {}
+    };
+    var holder = document.createElement('div');
+    holder.innerHTML = window.cardTemplate.render('', cardData, api);
+    var root = holder.querySelector('[data-card-id]');
+    var lab = document.createElement('div');
+    lab.className = 'pv-label';
+    lab.textContent = label;
+    host.appendChild(lab);
+    host.appendChild(holder);
+    window.cardTemplate.init(root, cardData, api);
+  }
+  var t = new Date();
+  var y = new Date(); y.setDate(y.getDate() - 1);
+  var f = new Date(); f.setDate(f.getDate() + 3);
+  mk(key(t), '今天（可打卡）');
+  mk(key(y), '昨天（只读）');
+  mk(key(f), '三天后（未解锁）');
+})();
+</script>
+</body>
+</html>

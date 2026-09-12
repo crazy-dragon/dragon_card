@@ -1,0 +1,25 @@
+<!-- 静态样例：对应 card.js render() 在 mode==='today' 时产出的结构。
+     运行时不使用本文件（应用调用 cardHtml 时传空串，实际由 render() 生成），
+     保留作参照，方便对照类名与结构。 -->
+<div class="ci-card ci-today" data-card-id="{{id}}" data-date="{{date}}" data-mode="today">
+    <div class="ci-bar"></div>
+    <div class="ci-body">
+        <div class="ci-head">
+            <div class="ci-date">
+                <span class="ci-day">{{day}}</span>
+                <span class="ci-ym"><b>{{year}} 年 {{month}} 月</b><i>{{weekday}}</i><span class="ci-today-chip">今天</span></span>
+            </div>
+            <div class="ci-streak" data-role="streak" title="连续记录天数"><i class="fa-solid fa-rocket"></i><em>航行第</em><b>—</b><em>天</em></div>
+            <span class="bh" aria-hidden="true"><span class="bh-halo"></span><span class="bh-disk"></span><span class="bh-arc"></span><span class="bh-core"></span></span>
+        </div>
+        <div class="ci-status" data-role="status">今天还没有记录，点一下点亮一颗星</div>
+        <div class="ci-tasks">
+            <div class="ci-task" data-task="{{task.action}}" data-role="task" data-action="log">
+                <span class="ci-dot"><i class="fa-solid fa-check" data-role="dot-task"></i><i class="fa-solid fa-check" data-role="dot-check"></i></span>
+                <span class="ci-info"><b>{{task.label}}</b><i>{{task.hint}}</i></span>
+                <span class="ci-right" data-role="right"><b>点亮</b></span>
+            </div>
+        </div>
+        <div class="ci-week" data-role="week"></div>
+    </div>
+</div>

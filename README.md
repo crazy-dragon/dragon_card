@@ -43,8 +43,17 @@ The brain is remarkably good at being lazy. When you do the same thing consisten
 
 ### Install & Run
 
+**One command (recommended):**
+
 ```bash
 cd dragoncard
+./start.sh        # macOS / Linux
+start.bat         # Windows
+```
+
+Or manually:
+
+```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -57,10 +66,15 @@ On first launch, the app automatically creates the database tables, a default us
 
 ### First Use
 
-1. Click "New Deck", enter a name and pick a type
-2. Open the deck → "Manage deck" → upload a template file (JSON) in the Templates area
-3. Upload a data file (JSON) in the Data area
-4. Return to the catalogue and click a page number to start studying
+1. (Optional) Import the bundled free decks: `python seed_decks.py`
+2. Click "New Deck", enter a name and pick a type
+3. Open the deck → "Manage deck" → upload a template file (JSON) in the Templates area
+4. Upload a data file (JSON) in the Data area
+5. Return to the catalogue and click a page number to start studying
+
+> An AI coding agent (e.g. Claude Code, Cursor, opencode) can run and extend this
+> project; read `AGENTS.md` for the agent guide. Bundled free decks are imported
+> via `python seed_decks.py` (idempotent).
 
 ## 🎪 Online Store
 
@@ -130,9 +144,7 @@ dragoncard/
 ├── DB_relation.md             # Database relationship docs
 ├── README.md
 ├── README_zh.md               # Chinese README
-├── SKIN.md                    # Skin system dev doc
 ├── TEMPLATE_PACK.md           # Template pack publishing spec
-├── ui_design.md               # UI design doc
 │
 ├── default_cards/             # Bundled deck assets (templates + data, imported via upload)
 │   ├── english_coca20000/      # English Word Card + template_simple (minimal)
@@ -141,7 +153,7 @@ dragoncard/
 │   ├── japanese_gojuon/
 │   ├── prelude_yijing/
 │   ├── yijing/
-│   ├── checkin_date/           # Check-in date (date/sunset/peach themes)
+│   ├── checkin_log/            # Voyage Log (per-day multi-task check-in)
 │   ├── dino_alphabet/
 │   └── dinosaur_3d/
 │
@@ -181,8 +193,6 @@ dragoncard/
 | Doc | Purpose |
 |-----|---------|
 | [`DB_relation.md`](./DB_relation.md) | Database tables & relationships |
-| [`SKIN.md`](./SKIN.md) | Skin system developer doc |
-| [`ui_design.md`](./ui_design.md) | UI design document |
 | In-app "Template API Reference" | Template format & `window.cardTemplate` contract (top-bar `</>` button) |
 | In-app "Docs" | End-user operations guide (bilingual) |
 
