@@ -1,0 +1,10 @@
+{
+  "name": "小学初中英语词汇（糖果积木版）",
+  "description": "Primary & junior-high English vocabulary. Candy-block 3D letters on the writing grid; direct Chinese display; multiple color themes switchable in-card. Includes a spelling game. 小学初中英语词汇：糖果积木 3D 字母 + 四线三格，中文直显，多套色板可切换，含字母拼拼乐游戏。",
+  "version": "2.0.0",
+  "author": "Alfred Long",
+  "email": "alfred.long@qq.com",
+  "source": "自编整理（词汇数据按初中英语格式：word / phonetic_us / paraphrase_en / paraphrase_zh / examples）",
+  "license": "DragonCard Data License v1.0",
+  "updated": "2026-09-15"
+}

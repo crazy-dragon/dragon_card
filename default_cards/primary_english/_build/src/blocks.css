@@ -1,0 +1,25 @@
+/* ================= 模板二：字母砖拼装（专属样式） ================= */
+/* 共用部分在 core.css；这里只放「只有字母砖玩法才有」的东西。 */
+
+/* 空槽一排，上下给点呼吸 */
+.pk-bl .pk-answer { padding: calc(.2 * var(--pk-u)) 0; }
+
+/* 砖池：像一块垫在桌上的板，砖撒在上面 */
+.pk-bl .pk-pool {
+  padding: calc(.45 * var(--pk-u)) calc(.4 * var(--pk-u)) calc(.6 * var(--pk-u));
+  border-radius: calc(16px * var(--pk-fs));
+  background: var(--pk-soft);
+  border: 1px dashed var(--pk-line);
+}
+.pk-bl .pk-slot { background: var(--pk-surface); }
+
+/* 提示等级 chip */
+.pk-lv { letter-spacing: .02em; }
+
+/* hint>=4：直接把整词摆出来当参考答案 */
+.pk-reveal-word {
+  display: flex; justify-content: center;
+  margin: calc(6px * var(--pk-fs)) 0 0;
+  animation: pk-pop .28s ease;
+}
+.pk-reveal-word .pk-wordbox { opacity: .82; }

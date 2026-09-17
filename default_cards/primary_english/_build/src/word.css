@@ -1,0 +1,46 @@
+/* ================= 模板一：小学单词卡（直显 · 大立体字母） ================= */
+
+.pk-wc .pk-stage { text-align: center; margin: calc(8px * var(--pk-fs)) 0 calc(2px * var(--pk-fs)); }
+
+/* 信息行：中文是第二主角（暖色大字），音标/音节 chip 跟在后面 */
+.pk-info {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: calc(8px * var(--pk-fs));
+  margin: calc(2px * var(--pk-fs)) 0 0;
+}
+.pk-zh-main {
+  font-size: calc(22px * var(--pk-fs)); font-weight: 800; line-height: 1.2;
+  color: var(--pk-warm, #d97706);
+}
+.pk-info .pk-meta {
+  display: inline-flex; flex-wrap: wrap; gap: calc(6px * var(--pk-fs));
+  justify-content: center; margin: 0;
+}
+.pk-info .pk-chip { font-size: calc(13px * var(--pk-fs)); color: var(--pk-ink2); }
+
+/* 读一遍 = 主按钮，宽一点、字大一点（低龄第一眼就看到） */
+.pk-wc .pk-audio { min-width: calc(150px * var(--pk-fs)); font-size: calc(15px * var(--pk-fs)); }
+
+/* 例句 */
+.pk-panel {
+  margin: calc(10px * var(--pk-fs)) 0 0;
+  padding: calc(10px * var(--pk-fs)) calc(12px * var(--pk-fs));
+  border-radius: calc(12px * var(--pk-fs));
+  background: var(--ex-bg, #fdf8e8);
+  border-left: calc(4px * var(--pk-fs)) solid var(--pk-accent);
+}
+.pk-en { font-size: calc(15px * var(--pk-fs)); font-weight: 600; line-height: 1.5; color: var(--pk-ink); }
+.pk-cn { margin-top: calc(3px * var(--pk-fs)); font-size: calc(13px * var(--pk-fs)); color: var(--pk-ink2); }
+
+/* 易错提示 */
+.pk-hint {
+  margin: calc(8px * var(--pk-fs)) 0 0;
+  padding: calc(8px * var(--pk-fs)) calc(11px * var(--pk-fs));
+  border-radius: calc(11px * var(--pk-fs));
+  background: var(--pk-accent-soft); color: var(--pk-accent);
+  font-size: calc(13px * var(--pk-fs)); font-weight: 700; line-height: 1.5;
+}
+
+/* 点卡片任何地方都能读 —— 给一点"可点"的暗示 */
+.pk-wc { cursor: pointer; }
+.pk-wc .pk-act, .pk-wc .pk-gal-item { cursor: pointer; }

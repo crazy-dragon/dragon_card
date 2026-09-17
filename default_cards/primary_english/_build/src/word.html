@@ -1,0 +1,22 @@
+<div class="pk-card pk-wc" data-card-id="{{id}}">
+    <!-- 说明：本模板的卡片 DOM 由 cardJs 的 render() 生成（应用传入的 cardHtml 恒为空串），
+         这里给出的是最终结构，方便阅读 / 二次修改。
+      ┌ 顶部    序号徽章 + 单元 chip + 「点卡片听发音」chip
+      ├ 主视觉  大号 3D 立体字母直接站在四线三格里（无揭晓步骤，不是闪卡）
+      ├ 信息行  中文（暖色大字）+ 音标 + 音节
+      ├ 例句    英 + 中
+      ├ 提示    易错提示（点"提示"后出现）
+      ├ 底部    动物角色 + 对话气泡
+      ├ 按钮    读一遍（主按钮）/ 提示 / 不熟 / 收藏
+      └ 图鉴    6 只角色，答对累积解锁；底部留 data-veil-host 供弹出层使用
+    -->
+    <div class="pk-head">
+        <span class="pk-badge">{{current_order}}</span>
+        <span class="pk-chip">{{unit}}</span>
+    </div>
+    <div class="pk-stage"></div>
+    <div class="pk-info"></div>
+    <div class="pk-foot"></div>
+    <div class="pk-acts"></div>
+    <div data-veil-host></div>
+</div>

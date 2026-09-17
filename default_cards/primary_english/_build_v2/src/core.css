@@ -1,0 +1,161 @@
+/* ================= v2 糖果积木 · 共用运行时样式 =================
+   设计要点：字母块用「饱和深色底 + 白色粗体字母」，对比度高、清晰；
+   卡片浅色渐变底，衬托字母块；四线三格弱化为浅色参照线。 */
+
+.sw-card {
+  --sw-u: calc(20px * var(--card-font-scale, 1));
+  --sw-fs: var(--card-font-scale, 1);
+
+  /* 色板变量（JS 按主题注入） */
+  --sw-ink: #1f2a37;
+  --sw-ink2: #4b5563;
+  --sw-ink3: #6b7280;
+  --sw-line: #cbd5e1;
+  --sw-surface: #ffffff;
+  --sw-accent: #0f766e;
+  --sw-accent-soft: #ccfbf1;
+  --sw-good: #15803d;
+  --sw-good-soft: #dcfce7;
+  --sw-bad: #dc2626;
+  --sw-bad-soft: #fee2e2;
+  --sw-grid: #c3d0e0;
+  --sw-bg1: #fdfaf3;
+  --sw-bg2: #eef4fb;
+  --sw-chip: rgba(255,255,255,.75);
+
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto 16px;
+  padding: calc(16px * var(--sw-fs));
+  border-radius: calc(20px * var(--sw-fs));
+  background: linear-gradient(165deg, var(--sw-bg1) 0%, var(--sw-bg2) 100%);
+  box-shadow: 0 6px 22px rgba(20, 40, 60, .10);
+  overflow: hidden;
+}
+
+/* 顶部信息条 */
+.sw-head {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: calc(10px * var(--sw-fs));
+}
+.sw-badge {
+  font-size: calc(12px * var(--sw-fs)); font-weight: 800; color: #fff;
+  background: var(--sw-accent); border-radius: 999px; padding: 3px 11px;
+  letter-spacing: .5px;
+}
+.sw-chip {
+  font-size: calc(12px * var(--sw-fs)); font-weight: 600; color: var(--sw-ink2);
+  background: var(--sw-chip); border-radius: 999px; padding: 3px 11px;
+  border: 1px solid rgba(0,0,0,.05);
+}
+.sw-spacer { flex: 1; }
+
+/* ---- 字母块：饱和底 + 白字 + 立体 ---- */
+.sw-stage { text-align: center; margin: calc(6px * var(--sw-fs)) 0 calc(4px * var(--sw-fs)); }
+.sw-wordbox {
+  position: relative; display: inline-flex; align-items: flex-end; justify-content: center;
+  flex-wrap: wrap; gap: calc(.14 * var(--sw-u));
+  padding: calc(.5 * var(--sw-u)) calc(.4 * var(--sw-u));
+}
+/* 四线三格：弱化为背景参照线（浅色），放在字母块后方 */
+.sw-lines {
+  position: absolute; left: 0; right: 0; top: 50%;
+  height: calc(3 * var(--sw-u)); transform: translateY(-50%);
+  pointer-events: none; opacity: .5;
+}
+.sw-lines i { display: block; height: var(--sw-u); border-bottom: 1px dashed var(--sw-grid); }
+.sw-lines i:last-child { border-bottom-style: solid; }
+.sw-lines::before { content: ''; display: block; height: 0; border-top: 1px dashed var(--sw-grid); }
+.sw-noline .sw-lines { display: none; }
+
+.sw-block {
+  display: inline-flex; align-items: center; justify-content: center;
+  position: relative;
+  width: calc(2.3 * var(--sw-u)); height: calc(2.3 * var(--sw-u));
+  border-radius: calc(.5 * var(--sw-u));
+  background: linear-gradient(180deg, var(--sw-c-hi) 0%, var(--sw-c1) 42%, var(--sw-c2) 100%);
+  box-shadow:
+    0 calc(.18 * var(--sw-u)) 0 var(--sw-c-deep),                       /* 底部厚度 */
+    0 calc(.3 * var(--sw-u)) calc(.26 * var(--sw-u)) rgba(15,30,50,.28),/* 地面投影 */
+    inset 0 calc(.14 * var(--sw-u)) calc(.14 * var(--sw-u)) rgba(255,255,255,.35); /* 顶部高光 */
+  border: 1px solid var(--sw-c-deep);
+  box-sizing: border-box;
+  cursor: pointer;
+}
+/* 顶部糖果高光点 */
+.sw-block::before {
+  content: ''; position: absolute; top: calc(.18 * var(--sw-u)); left: 22%; right: 34%;
+  height: calc(.28 * var(--sw-u)); border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,.85), rgba(255,255,255,0));
+}
+.sw-block .sw-letter {
+  position: relative; z-index: 1;
+  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: calc(1.53 * var(--sw-u)); font-weight: 900; color: #fff; /* ≈ 方块 2/3 */
+  line-height: 1;
+  text-shadow: 0 calc(.06 * var(--sw-u)) calc(.08 * var(--sw-u)) rgba(0,0,0,.35);
+}
+
+/* ---- 信息行 ---- */
+.sw-info {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: calc(8px * var(--sw-fs)); margin: calc(10px * var(--sw-fs)) 0 0;
+}
+.sw-zh {
+  font-size: calc(23px * var(--sw-fs)); font-weight: 800; line-height: 1.25;
+  color: var(--sw-ink);
+}
+.sw-meta { display: inline-flex; flex-wrap: wrap; gap: calc(6px * var(--sw-fs)); justify-content: center; }
+
+/* ---- 例句 ---- */
+.sw-panel {
+  margin: calc(10px * var(--sw-fs)) 0 0;
+  padding: calc(10px * var(--sw-fs)) calc(13px * var(--sw-fs));
+  border-radius: calc(12px * var(--sw-fs));
+  background: rgba(255,255,255,.78);
+  border-left: calc(4px * var(--sw-fs)) solid var(--sw-accent);
+}
+.sw-en { font-size: calc(15px * var(--sw-fs)); font-weight: 600; line-height: 1.5; color: var(--sw-ink); }
+.sw-cn { margin-top: calc(3px * var(--sw-fs)); font-size: calc(13px * var(--sw-fs)); color: var(--sw-ink2); }
+
+/* ---- 按钮 ---- */
+.sw-acts { display: flex; gap: calc(8px * var(--sw-fs)); flex-wrap: wrap; justify-content: center; margin-top: calc(12px * var(--sw-fs)); }
+.sw-act {
+  border: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: calc(9px * var(--sw-fs)) calc(16px * var(--sw-fs));
+  border-radius: 999px; font-size: calc(14px * var(--sw-fs)); font-weight: 700;
+  color: var(--sw-ink); background: rgba(255,255,255,.9);
+  box-shadow: 0 2px 8px rgba(20,40,60,.10);
+  transition: transform .12s, box-shadow .12s;
+}
+.sw-act:hover { transform: translateY(-2px); }
+.sw-act.is-pri { background: var(--sw-accent); color: #fff; }
+.sw-act.is-on { background: var(--sw-accent-soft); color: var(--sw-accent); }
+.sw-act i, .sw-act .sw-emo { font-size: calc(16px * var(--sw-fs)); }
+
+/* ---- 色板切换条 ---- */
+.sw-themes {
+  display: flex; gap: 7px; justify-content: center; align-items: center;
+  margin-top: calc(12px * var(--sw-fs));
+}
+.sw-theme-btn {
+  width: calc(22px * var(--sw-fs)); height: calc(22px * var(--sw-fs));
+  border-radius: 50%; border: 2px solid rgba(255,255,255,.9); cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,.2); padding: 0;
+  transition: transform .12s;
+}
+.sw-theme-btn:hover { transform: scale(1.15); }
+.sw-theme-btn.is-active { outline: 2px solid var(--sw-accent); outline-offset: 1px; }
+
+/* ---- 角色 ---- */
+.sw-foot { display: flex; align-items: center; gap: 10px; margin-top: calc(10px * var(--sw-fs)); }
+.sw-face { width: calc(44px * var(--sw-fs)); height: calc(44px * var(--sw-fs)); flex-shrink: 0; }
+.sw-bubble {
+  flex: 1; font-size: calc(13px * var(--sw-fs)); color: var(--sw-ink2);
+  background: rgba(255,255,255,.82); border-radius: calc(10px * var(--sw-fs));
+  padding: calc(7px * var(--sw-fs)) calc(11px * var(--sw-fs));
+  border: 1px solid rgba(0,0,0,.05);
+}
