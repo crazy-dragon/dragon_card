@@ -199,7 +199,15 @@ function _firstCompound(sel) {
         c = sel.charAt(i);
         if (c === '(' || c === '[') depth++;
         else if (c === ')' || c === ']') depth--;
-        else if (depth === 0 && (c === ' ' || c === '\t' || c === '\n' || c === '\r' || c === '>' || c === '+' || c === '~')) break;
+        /* ':' must also break the compound: the second scoping variant is built as
+           `<first>:where(<attr>)<rest>`. If `first` swallowed a pseudo-element
+           (e.g. `.dc-card.ew::before`) the result was `.dc-card.ew::before:where(...)`,
+           which the CSS parser rewrites to `.dc-card.ew::before:where()` — matching
+           NOTHING. Pseudo-elements on the card root were therefore silently dropped
+           (no error, no visual). Breaking at ':' yields `.dc-card.ew:where(<attr>)::before`,
+           which is valid; for pseudo-classes (`.x:hover`) it is equivalent to before. */
+        else if (depth === 0 && (c === ' ' || c === '\t' || c === '\n' || c === '\r'
+                                 || c === '>' || c === '+' || c === '~' || c === ':')) break;
     }
     return sel.slice(0, i);
 }
@@ -1116,16 +1124,17 @@ function renderSingleCardStage(pageNum) {
         container.innerHTML = '<div class="empty-state" style="padding:60px 20px;">No cards on this page.</div>';
         return;
     }
-    var prevSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
-    var nextSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+    var prevSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg>';
+    var nextSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
     container.innerHTML =
         '<div class="single-card-stage">' +
-            '<div class="sc-card-wrap" id="sc-card-wrap"></div>' +
-            '<div class="sc-nav-row">' +
+            '<div class="sc-main">' +
+                '<div class="sc-card-wrap" id="sc-card-wrap"></div>' +
+            '</div>' +
+            '<div class="sc-nav-col">' +
                 '<button class="sc-nav sc-prev" data-sc="prev" data-tooltip="' + t('study.prev') + '" aria-label="Previous card">' + prevSvg + '</button>' +
                 '<div class="sc-progress"><span id="sc-idx">1</span> / ' + cards.length + '</div>' +
                 '<button class="sc-nav sc-next" data-sc="next" data-tooltip="' + t('study.next') + '" aria-label="Next card">' + nextSvg + '</button>' +
-                '<span class="sc-nav-gap"></span>' +
                 '<button class="sc-3d-btn" id="sc-3d-btn" data-sc-3d data-tooltip="3D 预览" style="display:none;"><i class="fa-solid fa-cube"></i></button>' +
             '</div>' +
         '</div>';

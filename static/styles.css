@@ -1059,16 +1059,18 @@ body.dark-mode {
 
 /* Single-card mode */
 .single-card-stage {
-    display: flex; flex-direction: column;
+    display: flex; flex-direction: row;
     align-items: center;
-    justify-content: safe center;
-    gap: 20px; flex: 1; min-height: 0;
+    justify-content: center;
+    gap: 18px; flex: 1; min-height: 0;
 }
+.sc-main { flex: 1; min-width: 0; display: flex; justify-content: center; align-items: center; }
+.sc-nav-col { display: flex; flex-direction: column; align-items: center; gap: 14px; flex-shrink: 0; }
 /* Fixed, stationary card: height is constant (600px, capped on short screens)
    so the box never resizes / jumps when switching cards — only inner content swaps. */
 .sc-card-wrap {
-    width: 100%; max-width: 620px; margin: 0 auto;
-    height: min(600px, calc(100vh - 220px));
+    width: 100%; max-width: 785px; margin: 0 auto;
+    height: min(760px, calc(100vh - 140px));
     flex-shrink: 0;
     display: flex; flex-direction: column;
     border-radius: 16px;
@@ -1080,9 +1082,8 @@ body.dark-mode {
    stacked "double" white card behind it. */
 .sc-card-wrap > [data-card-id] { flex: 1; min-height: 0; overflow-y: auto; margin-bottom: 0; }
 .sc-card-wrap > [data-card-id]:hover { transform: none; }
-.sc-nav-row { display: flex; align-items: center; justify-content: center; gap: 18px; }
 .sc-nav {
-    width: 46px; height: 46px; border-radius: 50%;
+    width: 52px; height: 52px; border-radius: 50%;
     border: 1px solid var(--line); background: var(--btn-bg);
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     color: var(--ink-2); transition: all 0.2s; flex-shrink: 0;
@@ -1090,11 +1091,10 @@ body.dark-mode {
 }
 .sc-nav:hover { background: var(--slate-soft); color: var(--primary); border-color: var(--primary-light); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(15,118,110,0.12); }
 .sc-nav:active { transform: scale(0.92); }
-.sc-progress { text-align: center; font-size: 13px; color: var(--ink-3); font-weight: 600; margin: 0; min-width: 56px; }
+.sc-progress { text-align: center; font-size: 13px; color: var(--ink-3); font-weight: 600; margin: 0; min-width: 20px; }
 .sc-anim { animation: scFlash 0.28s ease; }
 
-/* Single-card 3D preview button (right of nav row) */
-.sc-nav-gap { flex: 1; }
+/* Single-card 3D preview button (in nav column) */
 .sc-3d-btn {
     width: 46px; height: 46px; border-radius: 50%;
     border: 1px solid var(--line); background: var(--btn-bg);
@@ -1548,16 +1548,16 @@ body.dark-mode {
 
     /* Single-card: bigger touch targets, thumb-friendly nav.
        100dvh = visible viewport excluding mobile browser chrome (Edge etc.),
-       so the nav row stays on screen without scrolling. */
-    .single-card-stage { gap: 12px; justify-content: flex-start; }
+       so the nav stays on screen without scrolling. */
+    .single-card-stage { gap: 10px; }
     .sc-card-wrap {
-        height: calc(100dvh - 190px);
+        height: calc(100dvh - 120px);
         max-width: none; border-radius: 14px;
         flex: 0 0 auto;
     }
-    .sc-nav-row { gap: 14px; flex-shrink: 0; }
+    .sc-nav-col { gap: 10px; }
     .sc-nav, .sc-3d-btn { width: 58px; height: 58px; }
-    .sc-progress { font-size: 14px; min-width: 64px; }
+    .sc-progress { font-size: 14px; min-width: 30px; }
     .study-scroll { overflow: hidden; }
     .study-content { padding: 12px 12px; overflow: hidden; }
     .study-page { overflow: hidden; }
