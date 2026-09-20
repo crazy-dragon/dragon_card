@@ -2843,6 +2843,90 @@ function showSageQuote(text) {
     }, 3000);
 }
 
+/* ===== Zip Tools (小工具) ===== */
+function loadTools() {
+    var grid = $('#tools-grid');
+    if (!grid) return;
+    fetch('/v1/tools').then(function (r) { return r.json(); }).then(function (d) {
+        if (!d.success) { grid.innerHTML = '<div class="tools-empty">' + t('common.loadFailed') + '</div>'; return; }
+        var list = d.tools || [];
+        if (!list.length) { grid.innerHTML = '<div class="tools-empty">' + t('tools.empty') + '</div>'; return; }
+        grid.innerHTML = '';
+        list.forEach(function (tool) {
+            var el = document.createElement('div');
+            el.className = 'tool-card';
+            el.innerHTML =
+                '<div class="tool-icon">' + (tool.icon ? '<img src="' + escapeHtml(tool.icon) + '" alt="">' : '<i class="fa-solid fa-wand-magic-sparkles"></i>') + '</div>' +
+                '<div class="tool-info">' +
+                    '<div class="tool-name">' + escapeHtml(tool.name) + '</div>' +
+                    (tool.description ? '<div class="tool-desc">' + escapeHtml(tool.description) + '</div>' : '') +
+                '</div>' +
+                '<button class="tool-del-btn" data-tool-id="' + tool.id + '" title="' + t('tools.delete') + '"><i class="fa-solid fa-trash"></i></button>';
+            grid.appendChild(el);
+        });
+        grid.querySelectorAll('.tool-del-btn').forEach(function (b) {
+            b.addEventListener('click', function (ev) { ev.stopPropagation(); deleteTool(+this.dataset.toolId); });
+        });
+    }).catch(function () {});
+}
+
+function deleteTool(id) {
+    if (!confirm(t('tools.confirmDelete'))) return;
+    fetch('/v1/tools/' + id, { method: 'DELETE' }).then(function (r) { return r.json(); }).then(function (d) {
+        if (!d.success) { toast(t('common.loadFailed')); return; }
+        toast(t('tools.deleted'));
+        loadTools();
+    }).catch(function () {});
+}
+
+function uploadTool(file) {
+    if (!file) return;
+    var fd = new FormData();
+    fd.append('user_id', state.userId || 1);
+    fd.append('zip', file);
+    fetch('/v1/tools', { method: 'POST', body: fd }).then(function (r) { return r.json(); }).then(function (d) {
+        if (!d.success) { alert(d.error || t('tools.installFailed')); return; }
+        toast(t('tools.installed'));
+        loadTools();
+    }).catch(function () { toast(t('tools.installFailed')); });
+}
+
+function openToolPicker(deckId) {
+    var list = $('#tool-picker-list');
+    if (!list) return;
+    list.innerHTML = '<div class="tools-empty">' + t('common.loading') + '</div>';
+    showModal('tool-picker');
+    fetch('/v1/tools').then(function (r) { return r.json(); }).then(function (d) {
+        if (!d.success) { list.innerHTML = '<div class="tools-empty">' + t('common.loadFailed') + '</div>'; return; }
+        var tools = d.tools || [];
+        if (!tools.length) { list.innerHTML = '<div class="tools-empty">' + t('tools.noTool') + '</div>'; return; }
+        list.innerHTML = '';
+        tools.forEach(function (tool) {
+            var el = document.createElement('div');
+            el.className = 'tool-pick-item';
+            el.innerHTML = '<span class="tool-pick-icon">' + (tool.icon ? '<img src="' + escapeHtml(tool.icon) + '">' : '<i class="fa-solid fa-wand-magic-sparkles"></i>') + '</span>' +
+                '<span class="tool-pick-name">' + escapeHtml(tool.name) + '</span>' +
+                (tool.description ? '<span class="tool-pick-desc">' + escapeHtml(tool.description) + '</span>' : '');
+            el.addEventListener('click', function () { runToolWithDeck(tool.id, deckId); });
+            list.appendChild(el);
+        });
+    }).catch(function () { list.innerHTML = '<div class="tools-empty">' + t('common.loadFailed') + '</div>'; });
+}
+
+function runToolWithDeck(toolId, deckId) {
+    fetch('/v1/tools/' + toolId + '/validate', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ deck_id: deckId })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+        hideModal('tool-picker');
+        if (d.success && d.missing && d.missing.length) {
+            if (!confirm(t('tools.missingFields') + '：' + d.missing.join(', ') + '\n' + t('tools.missingHint'))) return;
+        }
+        var uid = state.userId || 1;
+        window.open('/v1/tools/' + toolId + '/run?deck_id=' + deckId + '&user_id=' + uid, '_blank');
+    }).catch(function () { hideModal('tool-picker'); toast(t('common.loadFailed')); });
+}
+
 /* ===== Global Sidebar Nav ===== */
 function switchGlobalPage(page) {
     closeSagesPop();
@@ -2859,7 +2943,7 @@ function switchGlobalPage(page) {
         if (_stats.actionsLoaded) destroyStatsPage();
         if (_ach.loaded) destroyAchievementsPage();
     } else {
-        var titles = { achievements: 'page.achievements', stats: 'page.stats', docs: 'page.docs' };
+        var titles = { achievements: 'page.achievements', stats: 'page.stats', docs: 'page.docs', tools: 'page.tools' };
         document.getElementById('home-title').textContent = t(titles[page] || page);
         document.getElementById('home-content').style.display = 'none';
 
@@ -2868,6 +2952,7 @@ function switchGlobalPage(page) {
         if (page === 'stats') initStatsPage();
         if (page === 'achievements') initAchievementsPage();
         if (page === 'docs' && window.renderDocs) renderDocs();
+        if (page === 'tools') loadTools();
     }
 }
 
@@ -2875,6 +2960,15 @@ function switchGlobalPage(page) {
 function setupEventListeners() {
     document.addEventListener('click', function (e) {
         var target = e.target;
+
+        /* Zip tool upload input */
+        var toolZip = document.getElementById('tool-zip-input');
+        if (toolZip) {
+            toolZip.onchange = function () {
+                if (toolZip.files && toolZip.files[0]) uploadTool(toolZip.files[0]);
+                toolZip.value = '';
+            };
+        }
 
         /* Close skin dropdown when clicking outside it */
         if (!target.closest('#skin-toggle-wrap')) {
@@ -3009,6 +3103,20 @@ function setupEventListeners() {
         }
         if (target.closest('[data-mm-action="upload-template"]')) {
             if (_manageDeckId) doUploadDeckTemplate(_manageDeckId, parseInt(target.closest('[data-mm-action="upload-template"]').dataset.tid));
+            return;
+        }
+        /* Open a zip tool with the current deck */
+        if (target.closest('#mma-tool')) {
+            if (_manageDeckId) openToolPicker(_manageDeckId);
+            return;
+        }
+        if (target.closest('#tools-upload-btn')) {
+            var tzi = $('#tool-zip-input');
+            if (tzi) tzi.click();
+            return;
+        }
+        if (target.closest('#tool-picker-close')) {
+            hideModal('tool-picker');
             return;
         }
         /* Export template */

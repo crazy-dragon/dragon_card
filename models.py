@@ -243,3 +243,56 @@ class LearningEvent(db.Model):
             'action': self.action,
             'created_at': self.created_at.isoformat() if self.created_at else None,
         }
+
+
+class Tool(db.Model):
+    """全屏 zip 小工具（模板）：独立离线 H5 应用，数据/排序/进度/埋点由本体桥接。"""
+    __tablename__ = 't_tool'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    icon = db.Column(db.String(255))
+    lang = db.Column(db.String(10), nullable=False, default='zh')
+    zip_blob = db.Column(db.LargeBinary, nullable=False)
+    manifest_json = db.Column(db.Text)
+    tracked_actions = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    user = db.relationship('User', backref='tools')
+
+    def _manifest(self):
+        if not self.manifest_json:
+            return {}
+        try:
+            return json.loads(self.manifest_json)
+        except (json.JSONDecodeError, TypeError):
+            return {}
+
+    def get_fields(self):
+        m = self._manifest()
+        f = m.get('fields')
+        return f if isinstance(f, list) else []
+
+    def get_tracked_actions(self):
+        if not self.tracked_actions:
+            return []
+        try:
+            return json.loads(self.tracked_actions)
+        except (json.JSONDecodeError, TypeError):
+            return []
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'name': self.name,
+            'description': self.description,
+            'icon': self.icon,
+            'lang': self.lang or 'zh',
+            'fields': self.get_fields(),
+            'tracked_actions': self.get_tracked_actions(),
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+        }

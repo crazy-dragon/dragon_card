@@ -1,14 +1,18 @@
 import math
 import os
+import io
 import json
 import re
+import zipfile
 from datetime import datetime
-from flask import Flask, request, jsonify, render_template, send_file
-from models import db, User, Template, Deck, DeckTemplate, DeckItem, Progress, StudyRound, LearningEvent
+from flask import Flask, request, jsonify, render_template, send_file, Response
+from models import db, User, Template, Deck, DeckTemplate, DeckItem, Progress, StudyRound, LearningEvent, Tool
 from config import Config
 
 MAX_ACTIONS = 5
 DECK_KINDS = {'language', 'knowledge', 'logic', 'skill', 'other'}
+TOOL_MAX_BYTES = 30 * 1024 * 1024  # zip 上限 30MB
+TOOL_EXT_WHITELIST = {'.html', '.css', '.js', '.json', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.woff', '.woff2'}
 
 
 def create_app():
@@ -67,6 +71,10 @@ def _migrate_schema():
     user_cols = [c['name'] for c in inspector.get_columns('t_user')]
     if 'display_name' not in user_cols:
         db.session.execute(db.text('ALTER TABLE t_user ADD COLUMN display_name VARCHAR(100)'))
+        db.session.commit()
+
+    if 't_tool' not in tables:
+        db.session.execute(db.text('CREATE TABLE t_tool (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, user_id INTEGER REFERENCES t_user(id), name VARCHAR(100) NOT NULL, description TEXT, icon VARCHAR(255), lang VARCHAR(10) DEFAULT \'zh\', zip_blob BLOB NOT NULL, manifest_json TEXT, tracked_actions TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP)'))
         db.session.commit()
 
     # Performance indexes (idempotent)
@@ -322,6 +330,236 @@ def export_template(template_id):
         'success': True,
         'name': t.name + '.json',
         'content': json.dumps(data, ensure_ascii=False, indent=2)
+    })
+
+
+# ==================== Tool (zip 小工具) ====================
+
+def _open_tool_zip(tool):
+    try:
+        return zipfile.ZipFile(io.BytesIO(tool.zip_blob))
+    except zipfile.BadZipFile:
+        return None
+
+
+def _safe_zip_name(name):
+    """Reject path traversal / absolute paths; return a normalized zip member name."""
+    if not name:
+        return None
+    n = name.replace('\\', '/')
+    if n.startswith('/') or n.startswith('../') or '/../' in n or '..' in n.split('/')[0]:
+        return None
+    return n
+
+
+def _tool_cardapi_script(deck_id, user_id):
+    """JSBridge injected into the tool page so it can call the host engine."""
+    return '''
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  var deckId = q.get('deck_id') || null;
+  var userId = q.get('user_id') || null;
+  function post(path, body) {
+    return fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body || {}) }).then(function (r) { return r.json(); });
+  }
+  window.cardAPI = {
+    deckId: deckId,
+    userId: userId,
+    getDeckId: function () { return deckId; },
+    getUserId: function () { return userId; },
+    getPage: function (page, pageSize) {
+      var u = '/v1/learn/page?user_id=' + userId + '&deck_id=' + deckId
+            + '&page=' + (page || 1) + '&page_size=' + (pageSize || 100);
+      return fetch(u).then(function (r) { return r.json(); });
+    },
+    mark: function (itemId, isUnknown) {
+      return post('/v1/learn/mark', { deck_item_id: itemId, user_id: userId, deck_id: deckId, is_unknown: isUnknown ? 1 : 0 });
+    },
+    favorite: function (itemId, fav) {
+      return post('/v1/learn/favorite', { deck_item_id: itemId, user_id: userId, deck_id: deckId, is_favorite: fav ? 1 : 0 });
+    },
+    track: function (action) {
+      if (!action || !userId || !deckId) return Promise.resolve();
+      return post('/v1/observability/events', { events: [{ user_id: userId, deck_id: deckId, action: action }] });
+    },
+    playAudio: function (text) {
+      try {
+        var u = new SpeechSynthesisUtterance(String(text));
+        u.lang = 'en-US';
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(u);
+      } catch (e) {}
+    },
+    finish: function () {
+      return post('/v1/observability/events', { events: [{ user_id: userId, deck_id: deckId, action: 'tool_finish' }] });
+    }
+  };
+})();
+</script>
+'''
+
+
+@app.route('/v1/tools', methods=['POST'])
+def import_tool():
+    """Upload a zip tool: index.html must be at zip root + manifest.json."""
+    user_id = request.form.get('user_id', type=int)
+    f = request.files.get('zip')
+    if not f or not f.filename:
+        return jsonify({'error': 'No zip file'}), 400
+    blob = f.read()
+    if not blob or len(blob) > TOOL_MAX_BYTES:
+        return jsonify({'error': 'Zip too large'}), 400
+    try:
+        zf = zipfile.ZipFile(io.BytesIO(blob))
+    except zipfile.BadZipFile:
+        return jsonify({'error': 'Invalid zip file'}), 400
+
+    names = zf.namelist()
+    if 'index.html' not in names:
+        return jsonify({'error': 'index.html must be at the zip root'}), 400
+
+    manifest = {}
+    if 'manifest.json' in names:
+        try:
+            manifest = json.loads(zf.read('manifest.json').decode('utf-8'))
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            return jsonify({'error': 'manifest.json is not valid JSON'}), 400
+
+    name = (manifest.get('name') or '').strip() or os.path.splitext(f.filename)[0][:100]
+    description = (manifest.get('description') or '')
+    icon = manifest.get('icon') or ''
+    lang = manifest.get('lang') or 'zh'
+    fields = manifest.get('fields')
+    if not isinstance(fields, list):
+        fields = []
+    tracked_actions = manifest.get('trackedActions')
+    if isinstance(tracked_actions, list) and len(tracked_actions) > MAX_ACTIONS:
+        return jsonify({'error': 'trackedActions exceeds %d' % MAX_ACTIONS}), 400
+
+    tool = Tool(
+        user_id=user_id,
+        name=name[:100],
+        description=description,
+        icon=icon,
+        lang=lang,
+        zip_blob=blob,
+        manifest_json=json.dumps(manifest, ensure_ascii=False),
+        tracked_actions=json.dumps(tracked_actions, ensure_ascii=False) if tracked_actions else None,
+    )
+    db.session.add(tool)
+    db.session.commit()
+    return jsonify({'success': True, 'tool': tool.to_dict()}), 201
+
+
+@app.route('/v1/tools')
+def list_tools():
+    user_id = request.args.get('user_id', type=int)
+    q = Tool.query
+    if user_id:
+        q = q.filter_by(user_id=user_id)
+    tools = q.order_by(Tool.created_at.desc()).all()
+    return jsonify({'success': True, 'tools': [t.to_dict() for t in tools]})
+
+
+@app.route('/v1/tools/<int:tool_id>', methods=['GET'])
+def get_tool(tool_id):
+    t = db.session.get(Tool, tool_id)
+    if not t:
+        return jsonify({'error': 'Tool not found'}), 404
+    return jsonify({'success': True, 'tool': t.to_dict()})
+
+
+@app.route('/v1/tools/<int:tool_id>', methods=['DELETE'])
+def delete_tool(tool_id):
+    t = db.session.get(Tool, tool_id)
+    if not t:
+        return jsonify({'error': 'Tool not found'}), 404
+    db.session.delete(t)
+    db.session.commit()
+    return jsonify({'success': True})
+
+
+@app.route('/v1/tools/<int:tool_id>/run')
+def run_tool(tool_id):
+    """Proxy the tool's index.html, injecting the cardAPI bridge."""
+    t = db.session.get(Tool, tool_id)
+    if not t:
+        return 'Tool not found', 404
+    zf = _open_tool_zip(t)
+    if not zf:
+        return 'Invalid tool zip', 500
+    html = zf.read('index.html').decode('utf-8', errors='replace')
+    deck_id = request.args.get('deck_id')
+    user_id = request.args.get('user_id')
+    script = _tool_cardapi_script(deck_id, user_id)
+    low = html.lower()
+    # Inject into <head> so cardAPI is ready before any tool script runs.
+    if '</head>' in low:
+        i = low.rindex('</head>')
+        html = html[:i] + script + html[i:]
+    elif '<body' in low:
+        i = low.index('<body')
+        html = html[:i] + '<head>' + script + '</head>' + html[i:]
+    else:
+        html = script + html
+    return Response(html, mimetype='text/html')
+
+
+@app.route('/v1/tools/<int:tool_id>/assets/<path:path>')
+def tool_asset(tool_id, path):
+    t = db.session.get(Tool, tool_id)
+    if not t:
+        return 'Tool not found', 404
+    safe = _safe_zip_name(path)
+    if not safe:
+        return 'Forbidden', 403
+    if not os.path.splitext(safe)[1].lower() in TOOL_EXT_WHITELIST:
+        return 'Forbidden', 403
+    zf = _open_tool_zip(t)
+    if not zf:
+        return 'Not found', 404
+    names = zf.namelist()
+    # The route's leading "assets/" prefix collides with a zip-internal
+    # "assets/" folder, so resolve against both layouts.
+    real = safe if safe in names else ('assets/' + safe if 'assets/' + safe in names else None)
+    if real is None:
+        return 'Not found', 404
+    data = zf.read(real)
+    mime = {
+        '.html': 'text/html', '.css': 'text/css', '.js': 'application/javascript',
+        '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp',
+        '.svg': 'image/svg+xml', '.woff': 'font/woff', '.woff2': 'font/woff2',
+    }.get(os.path.splitext(real)[1].lower(), 'application/octet-stream')
+    return Response(data, mimetype=mime)
+
+
+@app.route('/v1/tools/<int:tool_id>/validate', methods=['POST'])
+def validate_tool_deck(tool_id):
+    """Check the tool's manifest fields against a deck's data sample."""
+    t = db.session.get(Tool, tool_id)
+    if not t:
+        return jsonify({'error': 'Tool not found'}), 404
+    body = request.get_json() or {}
+    deck_id = body.get('deck_id')
+    deck = db.session.get(Deck, deck_id) if deck_id else None
+    if not deck:
+        return jsonify({'error': 'Deck not found'}), 404
+
+    fields = t.get_fields()
+    sample = DeckItem.query.filter_by(deck_id=deck_id).order_by(DeckItem.item_order).limit(3).all()
+    sample_keys = set()
+    for it in sample:
+        sample_keys.update(it.data.keys())
+    missing = [f for f in fields if f not in sample_keys]
+    return jsonify({
+        'success': True,
+        'tool_fields': fields,
+        'deck_keys': sorted(sample_keys),
+        'missing': missing,
+        'sample_count': len(sample),
     })
 
 
