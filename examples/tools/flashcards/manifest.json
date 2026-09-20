@@ -1,7 +1,0 @@
-{
-  "name": "单词闪卡工具",
-  "description": "分页浏览卡组单词，可标记不熟（示例小工具）",
-  "lang": "zh",
-  "fields": ["word", "phonetic_us", "paraphrase_zh"],
-  "trackedActions": ["card_flip", "tool_finish"]
-}
