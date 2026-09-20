@@ -2914,17 +2914,25 @@ function openToolPicker(deckId) {
 }
 
 function runToolWithDeck(toolId, deckId) {
+    /* window.open must happen synchronously inside the click gesture,
+       otherwise the browser's popup blocker kills it. Open a blank tab now
+       and navigate it after validation. */
+    var url = '/v1/tools/' + toolId + '/run?deck_id=' + deckId + '&user_id=' + (state.userId || 1);
+    var win = window.open('', '_blank');
     fetch('/v1/tools/' + toolId + '/validate', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ deck_id: deckId })
     }).then(function (r) { return r.json(); }).then(function (d) {
         hideModal('tool-picker');
         if (d.success && d.missing && d.missing.length) {
-            if (!confirm(t('tools.missingFields') + '：' + d.missing.join(', ') + '\n' + t('tools.missingHint'))) return;
+            if (!confirm(t('tools.missingFields') + '：' + d.missing.join(', ') + '\n' + t('tools.missingHint'))) {
+                if (win) win.close();
+                return;
+            }
         }
-        var uid = state.userId || 1;
-        window.open('/v1/tools/' + toolId + '/run?deck_id=' + deckId + '&user_id=' + uid, '_blank');
-    }).catch(function () { hideModal('tool-picker'); toast(t('common.loadFailed')); });
+        if (win) win.location.href = url;
+        else window.open(url, '_blank');
+    }).catch(function () { hideModal('tool-picker'); if (win) win.close(); toast(t('common.loadFailed')); });
 }
 
 /* ===== Global Sidebar Nav ===== */
