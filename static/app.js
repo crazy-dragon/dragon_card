@@ -859,18 +859,21 @@ function renderDeckList(forceRefresh) {
                 html += '<span class="active-pill">' + t('home.active') + '</span>';
             }
 
-            /* Header: kind icon + kind label + deck name */
+            /* Header: tool icon (if any) or kind icon + kind label + deck name */
             html += '<div class="deck-header">';
-            html += '<div class="deck-icon" style="background:' + kindMeta.bg + ';color:' + kindMeta.color + '">' + kindMeta.icon + '</div>';
+            if (deck.tool_icon) {
+                html += '<div class="deck-icon" style="overflow:hidden;"><img src="' + escapeHtml(deck.tool_icon) + '" alt="" style="width:100%;height:100%;object-fit:cover;"></div>';
+            } else {
+                html += '<div class="deck-icon" style="background:' + kindMeta.bg + ';color:' + kindMeta.color + '">' + kindMeta.icon + '</div>';
+            }
             html += '<div class="deck-header-text">';
             html += '<div class="deck-title">' + escapeHtml(deck.name) + '</div>';
             html += '<div class="deck-kind-label" style="color:' + kindMeta.color + '"><i class="fa-solid fa-tag"></i> ' + kindLabel(deck.kind) + '</div>';
             html += '</div>';
             html += '</div>';
 
-            /* Description: show TEMPLATE description (deck description removed).
-               title shows the full text on hover since the desc is clamped to 4 lines. */
-            html += '<div class="deck-desc" title="' + (deck.template_description ? escapeHtml(deck.template_description) : '') + '">' + (deck.template_description ? escapeHtml(deck.template_description) : t('home.notBound')) + '</div>';
+            /* Description: tool description (falls back to template description). */
+            html += '<div class="deck-desc" title="' + (deck.tool_description ? escapeHtml(deck.tool_description) : (deck.template_description ? escapeHtml(deck.template_description) : '')) + '">' + (deck.tool_description ? escapeHtml(deck.tool_description) : (deck.template_description ? escapeHtml(deck.template_description) : t('home.notBound'))) + '</div>';
 
             /* Stats (mastered count only, near bottom) */
             html += '<div class="deck-stats">';
@@ -880,10 +883,10 @@ function renderDeckList(forceRefresh) {
             /* Progress bar */
             html += '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%;background:' + progressColor(pct) + '"></div></div>';
 
-            /* Template binding footer: template name left, study days right */
+            /* Tool binding footer: tool name left, study days right */
             html += '<div class="deck-tpl-row">';
-            if (hasTpl) {
-                html += '<span class="deck-tpl-badge">' + escapeHtml(deck.template_name) + '</span>';
+            if (deck.tool_name) {
+                html += '<span class="deck-tpl-badge">' + escapeHtml(deck.tool_name) + '</span>';
             } else {
                 html += '<span class="deck-tpl-badge unbind">' + t('home.notBound') + '</span>';
             }
@@ -944,25 +947,15 @@ function enterDeck(deckId) {
         state.currentDeck = d.deck;
         state.templateId = d.deck.active_template_id;
         $('#study-deck-title').textContent = d.deck.name;
-        if (!state.templateId) {
-            showToast(t('study.noTemplate'));
-            openManageModal(deckId);
+
+        /* 表现与数据分离：卡组绑定工具 → 打开工具（全屏新 tab）；未绑定 → 提示 */
+        if (d.deck.tool_id) {
+            var url = '/v1/tools/' + d.deck.tool_id + '/run?deck_id=' + deckId + '&user_id=' + (state.userId || 1);
+            window.open(url, '_blank');
             return;
         }
-        return templateEngine.loadTemplate(state.templateId);
-    }).then(function () {
-        if (!state.templateId) return;
-        showStudyView();
-        voiceMgr.setLang(templateLangOf(state.templateId));
-        renderTabs();
-        renderStudyPages();
-        return loadInfo();
-    }).then(function () {
-        if (!state.templateId) return;
-        restoreOpenTabs();
-        renderTabs();
-        renderStudyPages();
-        renderContent();
+        showToast(t('study.bindTool') || '该卡组还没有绑定小工具，请先在管理页绑定');
+        openManageModal(deckId);
     });
 }
 
@@ -2329,7 +2322,7 @@ function openManageModal(deckId) {
             };
         }
 
-        renderMmTemplates(deck);
+        renderMmTool(deck);
         renderMmPreview(null);
 
         $('#manage-modal').style.display = 'flex';
@@ -2341,63 +2334,69 @@ function closeManageModal() {
     _manageDeckId = null;
 }
 
-function renderMmTemplates(deck) {
-    var box = document.getElementById('mm-tpl-list');
+function renderMmTool(deck) {
+    var box = document.getElementById('mm-tool-box');
     if (!box) return;
-    box.innerHTML = '<div style="color:var(--hp-text-sub);font-size:13px;padding:8px 2px;">' + t('common.loading') + '</div>';
+    box.innerHTML = '';
+    if (deck.tool_id) {
+        var el = document.createElement('div');
+        el.className = 'tpl-card active';
+        var iconHtml = deck.tool_icon
+            ? '<img src="' + escapeHtml(deck.tool_icon) + '" style="width:20px;height:20px;border-radius:6px;object-fit:cover;">'
+            : '<i class="fa-solid fa-wand-magic-sparkles"></i>';
+        el.innerHTML =
+            '<span class="tpl-name">' + iconHtml + ' ' + escapeHtml(deck.tool_name || '小工具') + '</span>' +
+            '<div class="tpl-actions">' +
+                '<button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-red-50 hover:text-red-600 hover:border-red-600" data-mm-action="unbind-tool" title="' + t('tools.unbind') + '"><i class="fa-solid fa-unlink"></i></button>' +
+            '</div>' +
+            (deck.tool_description ? '<div class="tpl-desc" style="font-size:11px;color:var(--hp-text-light);margin-top:2px;">' + escapeHtml(deck.tool_description) + '</div>' : '');
+        box.appendChild(el);
+        var ub = el.querySelector('[data-mm-action="unbind-tool"]');
+        if (ub) ub.addEventListener('click', function (ev) {
+            ev.stopPropagation();
+            unbindToolFromDeck(deck.id);
+        });
+    } else {
+        var empty = document.createElement('div');
+        empty.className = 'tpl-card empty';
+        empty.innerHTML = '<div class="tpl-empty-inner"><span class="plus">+</span><span>' + t('manage.uploadTool') + '</span></div>';
+        empty.addEventListener('click', function () {
+            if (_manageDeckId) bindToolToDeck(_manageDeckId);
+        });
+        box.appendChild(empty);
+    }
+}
 
-    fetch('/v1/decks/' + deck.id + '/templates').then(function (r) { return r.json(); }).then(function (d) {
-        if (!d.success) { box.innerHTML = ''; return; }
-        var list = d.templates || [];
-        var activeId = deck.active_template_id;
-        box.innerHTML = '';
+function bindToolToDeck(deckId) {
+    var input = document.createElement('input');
+    input.type = 'file'; input.accept = '.zip';
+    input.style.display = 'none';
+    input.onchange = function () {
+        var f = input.files && input.files[0];
+        input.remove();
+        if (!f) return;
+        var fd = new FormData();
+        fd.append('user_id', state.userId || 1);
+        fd.append('zip', f);
+        fetch('/v1/decks/' + deckId + '/tool', { method: 'POST', body: fd }).then(function (r) { return r.json(); }).then(function (d) {
+            if (!d.success) { alert(d.error || t('tools.installFailed')); return; }
+            toast(t('tools.installed'));
+            renderDeckList(true);
+            openManageModal(deckId);
+        }).catch(function () { toast(t('tools.installFailed')); });
+    };
+    document.body.appendChild(input);
+    input.click();
+}
 
-        /* Render up to 3 slots: existing templates + empty slots */
-        for (var i = 0; i < 3; i++) {
-            if (i < list.length) {
-                var tpl = list[i];
-                var isActive = (tpl.id === activeId);
-                var el = document.createElement('div');
-                el.className = 'tpl-card' + (isActive ? ' active' : '');
-                el.dataset.templateId = tpl.id;
-                el.innerHTML =
-                    '<span class="tpl-name">' + escapeHtml(tpl.name) + '</span>' +
-                    '<div class="tpl-actions">' +
-                        '<button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" data-mm-action="upload-template" data-tid="' + tpl.id + '" title="' + t('manage.replaceTemplate') + '"><i class="fa-solid fa-upload"></i></button>' +
-                        '<button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" data-mm-action="export-template" data-tid="' + tpl.id + '" title="' + t('manage.exportTemplate') + '"><i class="fa-solid fa-download"></i></button>' +
-                    '</div>' +
-                    '<div class="tpl-select"></div>';
-                el.addEventListener('click', function (e) {
-                    if (e.target.closest('.tpl-icon-btn')) return;
-                    if (e.target.closest('.tpl-select')) {
-                        /* Setting active is handled by the select click below */
-                        return;
-                    }
-                    var tid = parseInt(this.dataset.templateId);
-                    renderMmPreview(tid);
-                });
-                /* Select radio: set as active */
-                var selectEl = el.querySelector('.tpl-select');
-                if (selectEl) {
-                    selectEl.addEventListener('click', function (e) {
-                        e.stopPropagation();
-                        var tid = parseInt(this.parentElement.dataset.templateId);
-                        setActiveMmTemplate(deck.id, tid);
-                    });
-                }
-                box.appendChild(el);
-            } else {
-                /* Empty slot */
-                var empty = document.createElement('div');
-                empty.className = 'tpl-card empty';
-                empty.innerHTML = '<div class="tpl-empty-inner"><span class="plus">+</span><span>' + t('manage.uploadTemplate') + '</span></div>';
-                empty.addEventListener('click', function () {
-                    if (_manageDeckId) doUploadDeckTemplate(_manageDeckId);
-                });
-                box.appendChild(empty);
-            }
-        }
-    }).catch(function () {});
+function unbindToolFromDeck(deckId) {
+    if (!confirm(t('tools.unbindConfirm'))) return;
+    fetch('/v1/decks/' + deckId + '/tool', { method: 'DELETE' }).then(function (r) { return r.json(); }).then(function (d) {
+        if (!d.success) { toast(t('common.loadFailed')); return; }
+        toast(t('tools.unbound'));
+        renderDeckList(true);
+        openManageModal(deckId);
+    }).catch(function () { toast(t('common.loadFailed')); });
 }
 
 function renderMmPreview(templateId) {

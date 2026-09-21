@@ -77,6 +77,11 @@ def _migrate_schema():
         db.session.execute(db.text('CREATE TABLE t_tool (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, user_id INTEGER REFERENCES t_user(id), name VARCHAR(100) NOT NULL, description TEXT, icon VARCHAR(255), lang VARCHAR(10) DEFAULT \'zh\', zip_blob BLOB NOT NULL, manifest_json TEXT, tracked_actions TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP)'))
         db.session.commit()
 
+    deck_cols = [c['name'] for c in inspector.get_columns('t_deck')]
+    if 'tool_id' not in deck_cols:
+        db.session.execute(db.text('ALTER TABLE t_deck ADD COLUMN tool_id INTEGER REFERENCES t_tool(id)'))
+        db.session.commit()
+
     # Performance indexes (idempotent)
     existing_idx = {r[0] for r in db.session.execute(db.text("SELECT name FROM sqlite_master WHERE type='index'")).fetchall()}
     if 'ix_t_deck_item_deck_id' not in existing_idx:
@@ -380,9 +385,11 @@ def _tool_cardapi_script(deck_id, user_id):
     favorite: function (itemId, fav) {
       return post('/v1/learn/favorite', { deck_item_id: itemId, user_id: userId, deck_id: deckId, is_favorite: fav ? 1 : 0 });
     },
-    track: function (action) {
+    track: function (action, itemId) {
       if (!action || !userId || !deckId) return Promise.resolve();
-      return post('/v1/observability/events', { events: [{ user_id: userId, deck_id: deckId, action: action }] });
+      var ev = { user_id: userId, deck_id: deckId, action: action };
+      if (itemId != null) ev.deck_item_id = itemId;
+      return post('/v1/observability/events', { events: [ev] });
     },
     playAudio: function (text) {
       try {
@@ -646,6 +653,65 @@ def update_deck(deck_id):
         if kind not in DECK_KINDS:
             return jsonify({'error': f'Invalid kind: {kind}'}), 400
         d.kind = kind
+    db.session.commit()
+    return jsonify({'success': True, 'deck': d.to_dict()})
+
+
+@app.route('/v1/decks/<int:deck_id>/tool', methods=['POST'])
+def bind_tool_to_deck(deck_id):
+    """Upload a zip tool and bind it to the deck (manage page)."""
+    d = db.session.get(Deck, deck_id)
+    if not d:
+        return jsonify({'error': 'Deck not found'}), 404
+    user_id = request.form.get('user_id', type=int)
+    f = request.files.get('zip')
+    if not f or not f.filename:
+        return jsonify({'error': 'No zip file'}), 400
+    blob = f.read()
+    if not blob or len(blob) > TOOL_MAX_BYTES:
+        return jsonify({'error': 'Zip too large'}), 400
+    try:
+        zf = zipfile.ZipFile(io.BytesIO(blob))
+    except zipfile.BadZipFile:
+        return jsonify({'error': 'Invalid zip file'}), 400
+    if 'index.html' not in zf.namelist():
+        return jsonify({'error': 'index.html must be at the zip root'}), 400
+    manifest = {}
+    if 'manifest.json' in zf.namelist():
+        try:
+            manifest = json.loads(zf.read('manifest.json').decode('utf-8'))
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            return jsonify({'error': 'manifest.json is not valid JSON'}), 400
+    name = (manifest.get('name') or '').strip() or os.path.splitext(f.filename)[0][:100]
+    fields = manifest.get('fields')
+    if not isinstance(fields, list):
+        fields = []
+    ta = manifest.get('trackedActions')
+    if isinstance(ta, list) and len(ta) > MAX_ACTIONS:
+        return jsonify({'error': 'trackedActions exceeds %d' % MAX_ACTIONS}), 400
+    tool = Tool(
+        user_id=user_id,
+        name=name[:100],
+        description=(manifest.get('description') or ''),
+        icon=(manifest.get('icon') or ''),
+        lang=(manifest.get('lang') or 'zh'),
+        zip_blob=blob,
+        manifest_json=json.dumps(manifest, ensure_ascii=False),
+        tracked_actions=json.dumps(ta, ensure_ascii=False) if ta else None,
+    )
+    db.session.add(tool)
+    db.session.flush()
+    d.tool_id = tool.id
+    db.session.commit()
+    return jsonify({'success': True, 'tool': tool.to_dict(), 'deck': d.to_dict()})
+
+
+@app.route('/v1/decks/<int:deck_id>/tool', methods=['DELETE'])
+def unbind_tool_from_deck(deck_id):
+    d = db.session.get(Deck, deck_id)
+    if not d:
+        return jsonify({'error': 'Deck not found'}), 404
+    d.tool_id = None
     db.session.commit()
     return jsonify({'success': True, 'deck': d.to_dict()})
 

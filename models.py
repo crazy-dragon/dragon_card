@@ -79,11 +79,13 @@ class Deck(db.Model):
     name = db.Column(db.String(100), nullable=False)
     kind = db.Column(db.String(20), nullable=False, default='other')
     active_template_id = db.Column(db.Integer, db.ForeignKey('t_template.id'), nullable=True)
+    tool_id = db.Column(db.Integer, db.ForeignKey('t_tool.id'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = db.relationship('User', backref='decks')
     active_template = db.relationship('Template', foreign_keys=[active_template_id])
+    tool = db.relationship('Tool', foreign_keys=[tool_id])
     deck_templates = db.relationship('DeckTemplate', backref='deck', cascade='all, delete-orphan')
 
     def to_dict(self):
@@ -123,9 +125,14 @@ class Deck(db.Model):
             'active_template_id': self.active_template_id,
             'template_name': active_t.name if active_t else None,
             'template_description': active_t.description if active_t else None,
+            'tool_id': self.tool_id,
+            'tool_name': self.tool.name if self.tool else None,
+            'tool_icon': self.tool.icon if self.tool else None,
+            'tool_description': self.tool.description if self.tool else None,
             'templates': [{'id': r.template_id, 'name': r.template.name} for r in t_list if r.template],
             'item_count': item_count,
             'has_template': self.active_template_id is not None,
+            'has_tool': self.tool_id is not None,
             'has_data': item_count > 0,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'unknown_count': unknown_count,
