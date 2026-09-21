@@ -2323,7 +2323,6 @@ function openManageModal(deckId) {
         }
 
         renderMmTool(deck);
-        renderMmPreview(null);
 
         $('#manage-modal').style.display = 'flex';
     }).catch(function () { showToast('Failed to load deck info', true); });
@@ -2397,75 +2396,6 @@ function unbindToolFromDeck(deckId) {
         renderDeckList(true);
         openManageModal(deckId);
     }).catch(function () { toast(t('common.loadFailed')); });
-}
-
-function renderMmPreview(templateId) {
-    var area = document.getElementById('mm-preview-area');
-    var label = document.getElementById('mm-preview-label');
-    if (!area) return;
-    if (!templateId || !_manageDeckId) {
-        area.innerHTML = '<div class="preview-placeholder">' + t('manage.previewPlaceholder') + '</div>';
-        if (label) label.textContent = t('manage.previewHint');
-        return;
-    }
-    if (label) label.textContent = t('common.loading');
-    area.innerHTML = '<div style="text-align:center;padding:20px;color:var(--hp-text-light);font-size:13px;">' + t('common.loading') + '</div>';
-
-    fetch('/v1/decks/' + _manageDeckId + '/preview?template_id=' + templateId).then(function (r) { return r.json(); }).then(function (d) {
-        if (!d.success) {
-            area.innerHTML = '<div class="preview-placeholder">' + (d.error || t('manage.loadPreviewFailed')) + '</div>';
-            if (label) label.textContent = t('manage.previewFailed');
-            return;
-        }
-        if (label) label.textContent = (d.template ? d.template.name : t('manage.preview'));
-        var cardData = d.sample_card;
-        if (!cardData) {
-            area.innerHTML = '<div class="preview-placeholder">' + t('manage.noSample') + '</div>';
-            return;
-        }
-        cardData._pageNum = 0;
-        cardData._showAnswer = false;
-        if (cardData.data && cardData.data.examples) cardData.data.examples.forEach(function (e) { e._show = false; });
-        cardData.is_unknown = 0;
-        cardData.is_favorite = 0;
-        cardData.current_order = cardData.current_order || cardData.item_order || 1;
-        /* Use template data directly with shadow DOM to avoid polluting global state */
-        var renderedHtml, tplCss;
-        try {
-            var tpl = d.template;
-            var tempApi = createApiForCard(cardData);
-            /* Eval this template's JS so window.cardTemplate reflects THIS template,
-               then restore the previous global afterwards to avoid polluting the study view. */
-            var savedCardTemplate = window.cardTemplate;
-            var evalError = null;
-            try { (0, eval)(tpl.card_js || ''); } catch (e) { evalError = e; console.error('template js error', e); }
-            if (window.cardTemplate && typeof window.cardTemplate.render === 'function') {
-                renderedHtml = window.cardTemplate.render(tpl.card_html, cardData, tempApi);
-            } else {
-                renderedHtml = templateEngine.renderCard(cardData, tpl.card_html);
-            }
-            tplCss = scopeTemplateCss(tpl.card_css || '', tpl.id);
-            area.innerHTML = '<style>' + tplCss + '</style><div class="mm-preview-card">' + renderedHtml + '</div>';
-            var cardEl = area.querySelector('[data-card-id]');
-            if (cardEl && cardData) {
-                templateEngine.initCard(cardEl, cardData);
-                cardEl.setAttribute('data-tpl-root', tpl.id);
-            }
-            /* Restore the previously active template global after init */
-            window.cardTemplate = savedCardTemplate;
-            if (evalError && (!renderedHtml || renderedHtml.indexOf('Render error') === 0)) {
-                renderedHtml = '<div class="error-state">Render error: ' + escapeHtml(evalError.message) + '</div>';
-                area.innerHTML = '<style>' + tplCss + '</style><div class="mm-preview-card">' + renderedHtml + '</div>';
-            }
-        } catch (err) {
-            renderedHtml = '<div class="error-state">Render error: ' + escapeHtml(err.message) + '</div>';
-            tplCss = '';
-            area.innerHTML = '<style></style><div class="mm-preview-card">' + renderedHtml + '</div>';
-        }
-    }).catch(function () {
-        area.innerHTML = '<div class="preview-placeholder">' + t('common.loadFailed') + '</div>';
-        if (label) label.textContent = t('manage.previewHint');
-    });
 }
 
 function setActiveMmTemplate(deckId, templateId) {
