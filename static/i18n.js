@@ -10,8 +10,7 @@
         'nav.achievements': '成就',
         'nav.stats': '统计',
         'nav.docs': '使用文档',
-        'nav.tools': '小工具',
-        'nav.sages': '先贤的智慧',
+                'nav.sages': '先贤的智慧',
 
         /* 主页 */
         'home.title': '我的卡组',
@@ -44,19 +43,9 @@
         'page.achievements': '成就中心',
         'page.stats': '数据统计',
         'page.docs': '使用文档',
-        'page.tools': '小工具',
-        'tools.install': '安装小工具',
-        'tools.pick': '用小工具打开',
-        'tools.empty': '还没有安装小工具，点击右上角「安装小工具」上传 zip 包',
-        'tools.noTool': '还没有小工具，请先到「小工具」页安装',
-        'tools.delete': '删除',
-        'tools.confirmDelete': '确定删除这个小工具吗？',
-        'tools.deleted': '已删除',
-        'tools.installed': '安装成功',
+                                                                        'tools.installed': '安装成功',
         'tools.installFailed': '安装失败',
-        'tools.missingFields': '该工具需要以下字段',
-        'tools.missingHint': '当前卡组数据缺少这些字段，工具可能无法正常显示。仍要打开吗？',
-
+                
         /* 通用 */
         'common.cancel': '取消',
         'common.confirm': '确认',
@@ -291,8 +280,7 @@
         'nav.achievements': 'Achievements',
         'nav.stats': 'Stats',
         'nav.docs': 'Docs',
-        'nav.tools': 'Tools',
-        'nav.sages': 'Wisdom of Sages',
+                'nav.sages': 'Wisdom of Sages',
 
         /* 主页 */
         'home.title': 'My Decks',
@@ -325,19 +313,9 @@
         'page.achievements': 'Achievements',
         'page.stats': 'Statistics',
         'page.docs': 'Documentation',
-        'page.tools': 'Tools',
-        'tools.install': 'Install a tool',
-        'tools.pick': 'Open with a tool',
-        'tools.empty': 'No tools installed. Click "Install a tool" to upload a zip.',
-        'tools.noTool': 'No tools yet. Install one on the Tools page first.',
-        'tools.delete': 'Delete',
-        'tools.confirmDelete': 'Delete this tool?',
-        'tools.deleted': 'Deleted',
-        'tools.installed': 'Installed',
+                                                                        'tools.installed': 'Installed',
         'tools.installFailed': 'Install failed',
-        'tools.missingFields': 'This tool needs these fields',
-        'tools.missingHint': 'The deck data is missing them, the tool may not render correctly. Open anyway?',
-
+                
         /* 通用 */
         'common.cancel': 'Cancel',
         'common.confirm': 'Confirm',
