@@ -1278,13 +1278,13 @@ body.dark-mode {
     width: 9px; height: 9px; border-radius: 2px;
     background: var(--hp-border);
 }
-.mh-cell.mastered { background: var(--hp-success); }
-.mh-cell.unknown { background: var(--hp-danger); }
+.mh-cell.mastered { background: #e07600; }
+.mh-cell.unknown { background: #a02818; }
 .mh-legend { display: flex; gap: 14px; margin-bottom: 10px; font-size: 11px; color: var(--hp-text-sub); }
 .mh-legend span { display: flex; align-items: center; gap: 5px; }
 .mh-legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
-.mh-legend .d-mastered { background: var(--hp-success); }
-.mh-legend .d-unknown { background: var(--hp-danger); }
+.mh-legend .d-mastered { background: #e07600; }
+.mh-legend .d-unknown { background: #a02818; }
 
 /* Rounds — horizontal pyramid, center-symmetric */
 .rp-wrap { padding: 8px 0; }
@@ -1309,7 +1309,7 @@ body.dark-mode {
 .rp-bar {
     position: absolute; top: 2px; bottom: 2px;
     left: 50%; transform: translateX(-50%);
-    background: linear-gradient(90deg, var(--hp-primary), var(--hp-success));
+    background: linear-gradient(90deg, #e07600, #a02818);
     border-radius: 3px;
     min-width: 2px;
 }
@@ -1627,3 +1627,11 @@ body.dark-theme .card-tooltip { background: #e5e7eb; color: #111827; }
 .tool-pick-icon img { width: 100%; height: 100%; object-fit: cover; }
 .tool-pick-name { font-size: 14px; font-weight: 600; color: var(--hp-text); }
 .tool-pick-desc { font-size: 12px; color: var(--hp-text-sub); margin-left: auto; max-width: 55%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ===== 小彩蛋：金色万字符（卍）· 持续旋转 ===== */
+.swa {
+    display: inline-block; color: #d4af37;
+    font-size: 16px; line-height: 1; font-weight: 700;
+    animation: swaSpin 3s linear infinite;
+}
+@keyframes swaSpin { to { transform: rotate(360deg); } }
