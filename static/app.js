@@ -2289,7 +2289,7 @@ function openManageModal(deckId) {
         document.getElementById('mm-icon').style.background = kindMeta.bg;
         document.getElementById('mm-icon').style.color = kindMeta.color;
         document.getElementById('mm-name').textContent = deck.name;
-        document.getElementById('mm-sub').textContent = deck.template_name ? (deck.template_name + (deck.template_description ? ' · ' + deck.template_description : '')) : t('home.notBound');
+        document.getElementById('mm-sub').textContent = deck.tool_name ? (deck.tool_name + (deck.tool_description ? ' · ' + deck.tool_description : '')) : (deck.template_name ? (deck.template_name + (deck.template_description ? ' · ' + deck.template_description : '')) : t('home.notBound'));
         document.getElementById('mm-data-count').textContent = (deck.item_count || 0).toLocaleString();
 
         var kindSel = document.getElementById('mm-kind-select');
@@ -2398,7 +2398,7 @@ function replaceTool(toolId, deckId) {
             if (!d.success) { alert(d.error || t('tools.installFailed')); return; }
             toast(t('tools.installed'));
             renderDeckList(true);
-            openManageModal(deckId);
+            refreshManageTool(deckId);
         }).catch(function () { toast(t('tools.installFailed')); });
     };
     document.body.appendChild(input);
@@ -2420,11 +2420,24 @@ function bindToolToDeck(deckId) {
             if (!d.success) { alert(d.error || t('tools.installFailed')); return; }
             toast(t('tools.installed'));
             renderDeckList(true);
-            openManageModal(deckId);
+            refreshManageTool(deckId);
         }).catch(function () { toast(t('tools.installFailed')); });
     };
     document.body.appendChild(input);
     input.click();
+}
+
+
+function refreshManageTool(deckId) {
+    fetch('/v1/decks/' + deckId).then(function (r) { return r.json(); }).then(function (d) {
+        if (!d.success) return;
+        var deck = d.deck;
+        renderMmTool(deck);
+        var sub = document.getElementById('mm-sub');
+        if (sub) {
+            sub.textContent = deck.tool_name ? (deck.tool_name + (deck.tool_description ? ' · ' + deck.tool_description : '')) : t('home.notBound');
+        }
+    }).catch(function () {});
 }
 
 function unbindToolFromDeck(deckId) {
@@ -2433,7 +2446,7 @@ function unbindToolFromDeck(deckId) {
         if (!d.success) { toast(t('common.loadFailed')); return; }
         toast(t('tools.unbound'));
         renderDeckList(true);
-        openManageModal(deckId);
+        refreshManageTool(deckId);
     }).catch(function () { toast(t('common.loadFailed')); });
 }
 
