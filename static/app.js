@@ -862,7 +862,7 @@ function renderDeckList(forceRefresh) {
             /* Header: tool icon (if any) or kind icon + kind label + deck name */
             html += '<div class="deck-header">';
             if (deck.tool_icon) {
-                html += '<div class="deck-icon" style="overflow:hidden;"><img src="' + escapeHtml(deck.tool_icon) + '" alt="" style="width:100%;height:100%;object-fit:cover;"></div>';
+                html += '<div class="deck-icon" style="overflow:hidden;"><img src="' + escapeHtml(toolIconUrl(deck.tool_icon, deck.tool_id)) + '" alt="" style="width:100%;height:100%;object-fit:cover;"></div>';
             } else {
                 html += '<div class="deck-icon" style="background:' + kindMeta.bg + ';color:' + kindMeta.color + '">' + kindMeta.icon + '</div>';
             }
@@ -2341,11 +2341,13 @@ function renderMmTool(deck) {
         var el = document.createElement('div');
         el.className = 'tpl-card active';
         var iconHtml = deck.tool_icon
-            ? '<img src="' + escapeHtml(deck.tool_icon) + '" style="width:20px;height:20px;border-radius:6px;object-fit:cover;">'
+            ? '<img src="' + escapeHtml(toolIconUrl(deck.tool_icon, deck.tool_id)) + '" style="width:20px;height:20px;border-radius:6px;object-fit:cover;">'
             : '<i class="fa-solid fa-wand-magic-sparkles"></i>';
         el.innerHTML =
             '<span class="tpl-name">' + iconHtml + ' ' + escapeHtml(deck.tool_name || '小工具') + '</span>' +
             '<div class="tpl-actions">' +
+                '<button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" data-mm-action="replace-tool" title="' + t('tools.replace') + '"><i class="fa-solid fa-upload"></i></button>' +
+                '<button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" data-mm-action="export-tool" title="' + t('tools.export') + '"><i class="fa-solid fa-download"></i></button>' +
                 '<button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-red-50 hover:text-red-600 hover:border-red-600" data-mm-action="unbind-tool" title="' + t('tools.unbind') + '"><i class="fa-solid fa-unlink"></i></button>' +
             '</div>' +
             (deck.tool_description ? '<div class="tpl-desc" style="font-size:11px;color:var(--hp-text-light);margin-top:2px;">' + escapeHtml(deck.tool_description) + '</div>' : '');
@@ -2354,6 +2356,16 @@ function renderMmTool(deck) {
         if (ub) ub.addEventListener('click', function (ev) {
             ev.stopPropagation();
             unbindToolFromDeck(deck.id);
+        });
+        var rp = el.querySelector('[data-mm-action="replace-tool"]');
+        if (rp) rp.addEventListener('click', function (ev) {
+            ev.stopPropagation();
+            replaceTool(deck.tool_id, deck.id);
+        });
+        var ex = el.querySelector('[data-mm-action="export-tool"]');
+        if (ex) ex.addEventListener('click', function (ev) {
+            ev.stopPropagation();
+            window.location.href = '/v1/tools/' + deck.tool_id + '/export';
         });
     } else {
         var empty = document.createElement('div');
@@ -2364,6 +2376,33 @@ function renderMmTool(deck) {
         });
         box.appendChild(empty);
     }
+}
+
+function toolIconUrl(icon, toolId) {
+    if (!icon) return null;
+    if (/^https?:/i.test(icon)) return icon;
+    return '/v1/tools/' + toolId + '/assets/' + icon;
+}
+
+function replaceTool(toolId, deckId) {
+    var input = document.createElement('input');
+    input.type = 'file'; input.accept = '.zip';
+    input.style.display = 'none';
+    input.onchange = function () {
+        var f = input.files && input.files[0];
+        input.remove();
+        if (!f) return;
+        var fd = new FormData();
+        fd.append('zip', f);
+        fetch('/v1/tools/' + toolId + '/replace', { method: 'POST', body: fd }).then(function (r) { return r.json(); }).then(function (d) {
+            if (!d.success) { alert(d.error || t('tools.installFailed')); return; }
+            toast(t('tools.installed'));
+            renderDeckList(true);
+            openManageModal(deckId);
+        }).catch(function () { toast(t('tools.installFailed')); });
+    };
+    document.body.appendChild(input);
+    input.click();
 }
 
 function bindToolToDeck(deckId) {

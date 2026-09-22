@@ -253,7 +253,8 @@ class LearningEvent(db.Model):
 
 
 class Tool(db.Model):
-    """全屏 zip 小工具（模板）：独立离线 H5 应用，数据/排序/进度/埋点由本体桥接。"""
+    """全屏 zip 小工具（模板）：独立离线 H5 应用，数据/排序/进度/埋点由本体桥接。
+    存储：文件系统 minitools/<id>/（index.html + manifest.json + assets/），DB 只存元数据。"""
     __tablename__ = 't_tool'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -262,7 +263,7 @@ class Tool(db.Model):
     description = db.Column(db.Text)
     icon = db.Column(db.String(255))
     lang = db.Column(db.String(10), nullable=False, default='zh')
-    zip_blob = db.Column(db.LargeBinary, nullable=False)
+    dir_path = db.Column(db.String(255), nullable=False, default='')
     manifest_json = db.Column(db.Text)
     tracked_actions = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

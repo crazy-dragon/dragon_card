@@ -73,8 +73,16 @@ def _migrate_schema():
         db.session.execute(db.text('ALTER TABLE t_user ADD COLUMN display_name VARCHAR(100)'))
         db.session.commit()
 
+    # t_tool：文件系统存储（minitools/<id>/），DB 只存元数据。
+    # 旧结构含 zip_blob → 重建为无 blob 的新表（数据少，直接重建；已绑定的 tool_id 置空）。
+    tool_cols = [c['name'] for c in inspector.get_columns('t_tool')] if 't_tool' in tables else []
     if 't_tool' not in tables:
-        db.session.execute(db.text('CREATE TABLE t_tool (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, user_id INTEGER REFERENCES t_user(id), name VARCHAR(100) NOT NULL, description TEXT, icon VARCHAR(255), lang VARCHAR(10) DEFAULT \'zh\', zip_blob BLOB NOT NULL, manifest_json TEXT, tracked_actions TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP)'))
+        db.session.execute(db.text('CREATE TABLE t_tool (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, user_id INTEGER REFERENCES t_user(id), name VARCHAR(100) NOT NULL, description TEXT, icon VARCHAR(255), lang VARCHAR(10) DEFAULT \'zh\', dir_path VARCHAR(255) NOT NULL DEFAULT \'\', manifest_json TEXT, tracked_actions TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP)'))
+        db.session.commit()
+    elif 'zip_blob' in tool_cols:
+        db.session.execute(db.text('DROP TABLE t_tool'))
+        db.session.execute(db.text('CREATE TABLE t_tool (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, user_id INTEGER REFERENCES t_user(id), name VARCHAR(100) NOT NULL, description TEXT, icon VARCHAR(255), lang VARCHAR(10) DEFAULT \'zh\', dir_path VARCHAR(255) NOT NULL DEFAULT \'\', manifest_json TEXT, tracked_actions TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP)'))
+        db.session.execute(db.text('UPDATE t_deck SET tool_id = NULL'))
         db.session.commit()
 
     deck_cols = [c['name'] for c in inspector.get_columns('t_deck')]
@@ -340,21 +348,77 @@ def export_template(template_id):
 
 # ==================== Tool (zip 小工具) ====================
 
-def _open_tool_zip(tool):
-    try:
-        return zipfile.ZipFile(io.BytesIO(tool.zip_blob))
-    except zipfile.BadZipFile:
-        return None
+def _tool_dir(tool):
+    """工具文件系统目录（绝对路径）。"""
+    return os.path.join(Config.TOOLS_DIR, str(tool.id))
 
 
 def _safe_zip_name(name):
-    """Reject path traversal / absolute paths; return a normalized zip member name."""
+    """Reject path traversal / absolute paths; return a normalized member path."""
     if not name:
         return None
     n = name.replace('\\', '/')
     if n.startswith('/') or n.startswith('../') or '/../' in n or '..' in n.split('/')[0]:
         return None
     return n
+
+
+def _extract_tool_zip(tool, blob):
+    """清空并解压 zip 到工具目录（文件系统）。返回成功与否。"""
+    try:
+        zf = zipfile.ZipFile(io.BytesIO(blob))
+    except zipfile.BadZipFile:
+        return False
+    target = _tool_dir(tool)
+    os.makedirs(target, exist_ok=True)
+    for n in os.listdir(target):  # 清空旧内容（保留目录本身）
+        p = os.path.join(target, n)
+        if os.path.isdir(p):
+            import shutil
+            shutil.rmtree(p)
+        else:
+            os.remove(p)
+    base = os.path.realpath(target)
+    for name in zf.namelist():
+        safe = _safe_zip_name(name)
+        if safe is None:
+            continue
+        dest = os.path.realpath(os.path.join(target, *safe.split('/')))
+        if os.path.commonpath([dest, base]) != base:
+            continue  # 防穿越
+        if name.endswith('/'):
+            os.makedirs(dest, exist_ok=True)
+        else:
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
+            with open(dest, 'wb') as f:
+                f.write(zf.read(name))
+    return True
+
+
+def _tool_file_path(tool, path):
+    """安全解析工具目录内的文件路径；越界返回 None。"""
+    safe = _safe_zip_name(path)
+    if not safe:
+        return None
+    base = os.path.realpath(_tool_dir(tool))
+    candidate = os.path.realpath(os.path.join(base, *safe.split('/')))
+    if candidate != base and os.path.commonpath([candidate, base]) != base:
+        return None
+    return candidate
+
+
+def _pack_tool_dir(tool):
+    """把工具目录打包成 zip（BytesIO）。"""
+    buf = io.BytesIO()
+    base = _tool_dir(tool)
+    with zipfile.ZipFile(buf, 'w', zipfile.ZIP_DEFLATED) as zf:
+        for root, dirs, files in os.walk(base):
+            for fn in files:
+                full = os.path.join(root, fn)
+                rel = os.path.relpath(full, base).replace(os.sep, '/')
+                zf.write(full, rel)
+    buf.seek(0)
+    return buf
 
 
 def _tool_cardapi_script(deck_id, user_id):
@@ -414,10 +478,11 @@ def run_tool(tool_id):
     t = db.session.get(Tool, tool_id)
     if not t:
         return 'Tool not found', 404
-    zf = _open_tool_zip(t)
-    if not zf:
-        return 'Invalid tool zip', 500
-    html = zf.read('index.html').decode('utf-8', errors='replace')
+    index_path = os.path.join(_tool_dir(t), 'index.html')
+    if not os.path.isfile(index_path):
+        return 'Tool not installed', 500
+    with open(index_path, encoding='utf-8', errors='replace') as f:
+        html = f.read()
     deck_id = request.args.get('deck_id')
     user_id = request.args.get('user_id')
     script = _tool_cardapi_script(deck_id, user_id)
@@ -439,21 +504,17 @@ def tool_asset(tool_id, path):
     t = db.session.get(Tool, tool_id)
     if not t:
         return 'Tool not found', 404
-    safe = _safe_zip_name(path)
-    if not safe:
+    if not os.path.splitext(path)[1].lower() in TOOL_EXT_WHITELIST:
         return 'Forbidden', 403
-    if not os.path.splitext(safe)[1].lower() in TOOL_EXT_WHITELIST:
-        return 'Forbidden', 403
-    zf = _open_tool_zip(t)
-    if not zf:
-        return 'Not found', 404
-    names = zf.namelist()
-    # The route's leading "assets/" prefix collides with a zip-internal
-    # "assets/" folder, so resolve against both layouts.
-    real = safe if safe in names else ('assets/' + safe if 'assets/' + safe in names else None)
-    if real is None:
-        return 'Not found', 404
-    data = zf.read(real)
+    real = _tool_file_path(t, path)
+    if real is None or not os.path.isfile(real):
+        # 兼容工具内 assets/ 前缀布局
+        real2 = _tool_file_path(t, 'assets/' + path)
+        if real2 is None or not os.path.isfile(real2):
+            return 'Not found', 404
+        real = real2
+    with open(real, 'rb') as f:
+        data = f.read()
     mime = {
         '.html': 'text/html', '.css': 'text/css', '.js': 'application/javascript',
         '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg',
@@ -488,6 +549,54 @@ def validate_tool_deck(tool_id):
         'missing': missing,
         'sample_count': len(sample),
     })
+
+
+@app.route('/v1/tools/<int:tool_id>/replace', methods=['POST'])
+def replace_tool(tool_id):
+    """重新上传工具 zip：替换 minitools/<id>/ 内容，更新元数据（保留工具 id 与卡组绑定）。"""
+    t = db.session.get(Tool, tool_id)
+    if not t:
+        return jsonify({'error': 'Tool not found'}), 404
+    f = request.files.get('zip')
+    if not f or not f.filename:
+        return jsonify({'error': 'No zip file'}), 400
+    blob = f.read()
+    if not blob or len(blob) > TOOL_MAX_BYTES:
+        return jsonify({'error': 'Zip too large'}), 400
+    try:
+        zf = zipfile.ZipFile(io.BytesIO(blob))
+    except zipfile.BadZipFile:
+        return jsonify({'error': 'Invalid zip file'}), 400
+    if 'index.html' not in zf.namelist():
+        return jsonify({'error': 'index.html must be at the zip root'}), 400
+    manifest = {}
+    if 'manifest.json' in zf.namelist():
+        try:
+            manifest = json.loads(zf.read('manifest.json').decode('utf-8'))
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            return jsonify({'error': 'manifest.json is not valid JSON'}), 400
+    if not _extract_tool_zip(t, blob):
+        return jsonify({'error': 'Failed to extract zip'}), 500
+    t.name = (manifest.get('name') or '').strip() or t.name
+    t.description = manifest.get('description') or t.description
+    t.icon = manifest.get('icon') or t.icon
+    t.lang = manifest.get('lang') or t.lang
+    t.manifest_json = json.dumps(manifest, ensure_ascii=False)
+    ta = manifest.get('trackedActions')
+    t.tracked_actions = json.dumps(ta, ensure_ascii=False) if isinstance(ta, list) else t.tracked_actions
+    db.session.commit()
+    return jsonify({'success': True, 'tool': t.to_dict()})
+
+
+@app.route('/v1/tools/<int:tool_id>/export')
+def export_tool(tool_id):
+    """把工具目录打包成 zip 下载。"""
+    t = db.session.get(Tool, tool_id)
+    if not t:
+        return jsonify({'error': 'Tool not found'}), 404
+    buf = _pack_tool_dir(t)
+    safe = ''.join(c for c in (t.name or 'tool') if c.isalnum() or c in '-_') or 'tool'
+    return send_file(buf, as_attachment=True, download_name=safe + '.zip', mimetype='application/zip')
 
 
 # ==================== Deck (卡组) ====================
@@ -615,12 +724,16 @@ def bind_tool_to_deck(deck_id):
         description=(manifest.get('description') or ''),
         icon=(manifest.get('icon') or ''),
         lang=(manifest.get('lang') or 'zh'),
-        zip_blob=blob,
+        dir_path='',
         manifest_json=json.dumps(manifest, ensure_ascii=False),
         tracked_actions=json.dumps(ta, ensure_ascii=False) if ta else None,
     )
     db.session.add(tool)
     db.session.flush()
+    if not _extract_tool_zip(tool, blob):
+        db.session.rollback()
+        return jsonify({'error': 'Failed to extract zip'}), 500
+    tool.dir_path = os.path.join('minitools', str(tool.id))
     d.tool_id = tool.id
     db.session.commit()
     return jsonify({'success': True, 'tool': tool.to_dict(), 'deck': d.to_dict()})
