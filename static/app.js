@@ -2289,7 +2289,7 @@ function openManageModal(deckId) {
         document.getElementById('mm-icon').style.background = kindMeta.bg;
         document.getElementById('mm-icon').style.color = kindMeta.color;
         document.getElementById('mm-name').textContent = deck.name;
-        document.getElementById('mm-sub').textContent = deck.tool_name ? (deck.tool_name + (deck.tool_description ? ' · ' + deck.tool_description : '')) : (deck.template_name ? (deck.template_name + (deck.template_description ? ' · ' + deck.template_description : '')) : t('home.notBound'));
+        document.getElementById('mm-intro').textContent = deck.tool_description || deck.template_description || '';
         renderMmData(deck);
 
         var kindSel = document.getElementById('mm-kind-select');
@@ -2442,10 +2442,8 @@ function refreshManageTool(deckId) {
         var deck = d.deck;
         renderMmTool(deck);
         renderMmData(deck);
-        var sub = document.getElementById('mm-sub');
-        if (sub) {
-            sub.textContent = deck.tool_name ? (deck.tool_name + (deck.tool_description ? ' · ' + deck.tool_description : '')) : t('home.notBound');
-        }
+        var intro = document.getElementById('mm-intro');
+        if (intro) intro.textContent = deck.tool_description || deck.template_description || '';
     }).catch(function () {});
 }
 

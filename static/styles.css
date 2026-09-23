@@ -739,16 +739,31 @@ body.study-mode .global-sidebar { display: none; }
 /* Body */
 .mm-body { flex: 1; display: flex; flex-direction: column; min-height: 0; }
 
-/* Top section: two equal desktop-app style cards (tool + data) */
+/* Intro: tool description, up to 3 lines with ellipsis */
+.mm-intro {
+    margin: 4px 24px 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--hp-primary-soft);
+    color: var(--hp-text-sub);
+    font-size: 12px; line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+/* Top section: two square desktop-app cards (tool + data) */
 .mm-top {
     display: flex; gap: 24px; padding: 16px 24px;
     flex: 1; min-height: 0;
+    justify-content: center; align-items: center;
 }
 .mm-app-card {
-    flex: 1; min-width: 0;
+    flex: 1; min-width: 0; max-width: 320px;
+    aspect-ratio: 1;
     display: flex; flex-direction: column;
-    padding: 14px 16px;
-    border-radius: 12px; border: 1.5px solid var(--hp-border);
+    padding: 16px;
+    border-radius: 16px; border: 1.5px solid var(--hp-border);
     background: var(--bg-card);
     transition: border-color .18s, box-shadow .18s;
 }
