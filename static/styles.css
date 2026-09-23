@@ -377,6 +377,13 @@ body.study-mode .global-sidebar { display: none; }
     display: flex; align-items: center; justify-content: center;
     font-size: 20px; flex-shrink: 0;
 }
+/* default tool icon (no tool icon set) — modern gradient */
+.deck-default-tool-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: linear-gradient(135deg, #22d3ee 0%, #6366f1 55%, #a855f7 100%);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+}
 .deck-header-text { flex: 1; min-width: 0; }
 .deck-title { font-weight: 700; font-size: 15px; line-height: 1.25; color: var(--hp-text); }
 .deck-kind-label { font-size: 11px; font-weight: 600; margin-top: 3px; opacity: .85; }
@@ -758,14 +765,20 @@ body.study-mode .global-sidebar { display: none; }
 .mm-app-title { font-size: 14px; font-weight: 700; color: var(--hp-text); }
 .mm-app-sub { font-size: 12px; color: var(--hp-text-sub); margin-top: 2px; }
 
-/* big centered icon */
+/* big centered icon — modern gradient app-icon tile */
 .mm-app-icon {
     flex: 1; min-height: 0;
     display: flex; align-items: center; justify-content: center;
-    color: var(--hp-primary);
 }
-.mm-app-icon > i { font-size: 56px; }
-.mm-app-icon > img { width: 64px; height: 64px; object-fit: cover; border-radius: 14px; }
+.mm-app-icon > i {
+    width: 64px; height: 64px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px; color: #fff;
+    background: linear-gradient(135deg, #22d3ee 0%, #6366f1 55%, #a855f7 100%);
+    border-radius: 18px;
+    box-shadow: 0 10px 24px rgba(99, 102, 241, .28);
+}
+.mm-app-icon > img { width: 64px; height: 64px; object-fit: cover; border-radius: 18px; box-shadow: 0 10px 24px rgba(0,0,0,.14); }
 
 /* actions at the bottom, centered */
 .mm-app-actions {

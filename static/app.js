@@ -864,7 +864,7 @@ function renderDeckList(forceRefresh) {
             if (deck.tool_icon) {
                 html += '<div class="deck-icon" style="overflow:hidden;"><img src="' + escapeHtml(toolIconUrl(deck.tool_icon, deck.tool_id)) + '" alt="" style="width:100%;height:100%;object-fit:cover;"></div>';
             } else {
-                html += '<div class="deck-icon" style="background:' + kindMeta.bg + ';color:' + kindMeta.color + '">' + kindMeta.icon + '</div>';
+                html += '<div class="deck-icon deck-default-tool-icon"><i class="fa-solid fa-dragon"></i></div>';
             }
             html += '<div class="deck-header-text">';
             html += '<div class="deck-title">' + escapeHtml(deck.name) + '</div>';
@@ -2340,7 +2340,7 @@ function renderMmTool(deck) {
     if (deck.tool_id) {
         var iconHtml = deck.tool_icon
             ? '<img src="' + escapeHtml(toolIconUrl(deck.tool_icon, deck.tool_id)) + '" alt="">'
-            : '<i class="fa-solid fa-wand-magic-sparkles"></i>';
+            : '<i class="fa-solid fa-dragon"></i>';
         card.innerHTML =
             '<div class="mm-app-head">' +
                 '<div class="mm-app-title">' + escapeHtml(deck.tool_name || '小工具') + '</div>' +
