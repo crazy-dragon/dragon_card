@@ -377,13 +377,6 @@ body.study-mode .global-sidebar { display: none; }
     display: flex; align-items: center; justify-content: center;
     font-size: 20px; flex-shrink: 0;
 }
-/* default tool icon (no tool icon set) — modern gradient */
-.deck-default-tool-icon {
-    width: 38px; height: 38px; border-radius: 10px;
-    background: linear-gradient(135deg, #22d3ee 0%, #6366f1 55%, #a855f7 100%);
-    color: #fff; display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-}
 .deck-header-text { flex: 1; min-width: 0; }
 .deck-title { font-weight: 700; font-size: 15px; line-height: 1.25; color: var(--hp-text); }
 .deck-kind-label { font-size: 11px; font-weight: 600; margin-top: 3px; opacity: .85; }
@@ -676,7 +669,8 @@ body.study-mode .global-sidebar { display: none; }
 /* ============ Management Modal ============ */
 .manage-modal-box {
     background: var(--hp-card);
-    width: 820px; max-width: 94vw; max-height: 88vh;
+    width: 720px; max-width: 94vw;
+    height: min(64vh, 94vh); min-height: 400px;
     border-radius: 16px; overflow: hidden;
     box-shadow: 0 24px 70px rgba(0,0,0,.25);
     display: flex; flex-direction: column;
@@ -771,14 +765,14 @@ body.study-mode .global-sidebar { display: none; }
     display: flex; align-items: center; justify-content: center;
 }
 .mm-app-icon > i {
-    width: 64px; height: 64px;
+    width: 84px; height: 84px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 30px; color: #fff;
+    font-size: 38px; color: #fff;
     background: linear-gradient(135deg, #22d3ee 0%, #6366f1 55%, #a855f7 100%);
-    border-radius: 18px;
-    box-shadow: 0 10px 24px rgba(99, 102, 241, .28);
+    border-radius: 22px;
+    box-shadow: 0 12px 28px rgba(99, 102, 241, .28);
 }
-.mm-app-icon > img { width: 64px; height: 64px; object-fit: cover; border-radius: 18px; box-shadow: 0 10px 24px rgba(0,0,0,.14); }
+.mm-app-icon > img { width: 84px; height: 84px; object-fit: cover; border-radius: 22px; box-shadow: 0 12px 28px rgba(0,0,0,.14); }
 
 /* actions at the bottom, centered */
 .mm-app-actions {
