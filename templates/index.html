@@ -361,32 +361,21 @@
                     <button class="mm-head-close" id="manage-modal-close"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div class="mm-body">
-                    <!-- Top: Templates + Data -->
+                    <!-- Top: Tool + Data (desktop-app style cards) -->
                     <div class="mm-top">
-                        <!-- Tool -->
-                        <div class="mm-tpl-section">
-                            <div class="section-header">
-                                <h3><i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="manage.tool">小工具</span></h3>
-                                <span data-i18n="manage.toolHint">上传 zip 绑定</span>
+                        <!-- Tool app card (JS renders bound/empty) -->
+                        <div class="mm-app-card" id="mm-tool-card"></div>
+                        <!-- Data app card -->
+                        <div class="mm-app-card">
+                            <div class="mm-app-head">
+                                <div class="mm-app-title" id="mm-data-title" data-i18n="manage.deckData">卡组数据</div>
+                                <div class="mm-app-sub"><span id="mm-data-count">0</span> <span data-i18n="manage.items">条数据</span></div>
                             </div>
-                            <div class="tpl-cards" id="mm-tool-box"></div>
-                        </div>
-                        <!-- Data -->
-                        <div class="mm-data-section">
-                            <div class="section-header">
-                                <h3><i class="fa-solid fa-database"></i> <span data-i18n="manage.data">数据</span></h3>
-                                <span></span>
-                            </div>
-                            <div class="data-cards">
-                                <div class="data-card">
-                                    <div class="data-count" id="mm-data-count">0</div>
-                                    <div class="data-count-label" data-i18n="manage.items">条数据</div>
-                                    <div class="data-actions">
-                                        <button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" id="mma-data" data-i18n-tooltip="manage.uploadData" title="上传数据"><i class="fa-solid fa-upload"></i></button>
-                                        <button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" id="ma-export" data-i18n-tooltip="manage.exportData" title="导出数据"><i class="fa-solid fa-download"></i></button>
-                                        <button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" id="ma-goagain" data-i18n-tooltip="manage.goagain" title="重新打乱"><span class="swa">卍</span></button>
-                                    </div>
-                                </div>
+                            <div class="mm-app-icon"><i class="fa-solid fa-database"></i></div>
+                            <div class="mm-app-actions">
+                                <button class="tpl-icon-btn flex items-center justify-center w-9 h-9 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-sm text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" id="mma-data" data-i18n-tooltip="manage.uploadData" title="上传数据"><i class="fa-solid fa-upload"></i></button>
+                                <button class="tpl-icon-btn flex items-center justify-center w-9 h-9 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-sm text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" id="ma-export" data-i18n-tooltip="manage.exportData" title="导出数据"><i class="fa-solid fa-download"></i></button>
+                                <button class="tpl-icon-btn flex items-center justify-center w-9 h-9 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-sm text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" id="ma-goagain" data-i18n-tooltip="manage.goagain" title="重新打乱"><span class="swa">卍</span></button>
                             </div>
                         </div>
                     </div>

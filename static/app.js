@@ -2290,7 +2290,7 @@ function openManageModal(deckId) {
         document.getElementById('mm-icon').style.color = kindMeta.color;
         document.getElementById('mm-name').textContent = deck.name;
         document.getElementById('mm-sub').textContent = deck.tool_name ? (deck.tool_name + (deck.tool_description ? ' · ' + deck.tool_description : '')) : (deck.template_name ? (deck.template_name + (deck.template_description ? ' · ' + deck.template_description : '')) : t('home.notBound'));
-        document.getElementById('mm-data-count').textContent = (deck.item_count || 0).toLocaleString();
+        renderMmData(deck);
 
         var kindSel = document.getElementById('mm-kind-select');
         if (kindSel) {
@@ -2334,48 +2334,56 @@ function closeManageModal() {
 }
 
 function renderMmTool(deck) {
-    var box = document.getElementById('mm-tool-box');
-    if (!box) return;
-    box.innerHTML = '';
+    var card = document.getElementById('mm-tool-card');
+    if (!card) return;
+    card.innerHTML = '';
     if (deck.tool_id) {
-        var el = document.createElement('div');
-        el.className = 'tpl-card active';
         var iconHtml = deck.tool_icon
-            ? '<img src="' + escapeHtml(toolIconUrl(deck.tool_icon, deck.tool_id)) + '" style="width:20px;height:20px;border-radius:6px;object-fit:cover;">'
+            ? '<img src="' + escapeHtml(toolIconUrl(deck.tool_icon, deck.tool_id)) + '" alt="">'
             : '<i class="fa-solid fa-wand-magic-sparkles"></i>';
-        el.innerHTML =
-            '<span class="tpl-name">' + iconHtml + ' ' + escapeHtml(deck.tool_name || '小工具') + '</span>' +
-            '<div class="tpl-actions">' +
-                '<button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" data-mm-action="replace-tool" title="' + t('tools.replace') + '"><i class="fa-solid fa-upload"></i></button>' +
-                '<button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" data-mm-action="export-tool" title="' + t('tools.export') + '"><i class="fa-solid fa-download"></i></button>' +
-                '<button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-red-50 hover:text-red-600 hover:border-red-600" data-mm-action="unbind-tool" title="' + t('tools.unbind') + '"><i class="fa-solid fa-unlink"></i></button>' +
+        card.innerHTML =
+            '<div class="mm-app-head">' +
+                '<div class="mm-app-title">' + escapeHtml(deck.tool_name || '小工具') + '</div>' +
             '</div>' +
-            (deck.tool_description ? '<div class="tpl-desc" style="font-size:11px;color:var(--hp-text-light);margin-top:2px;">' + escapeHtml(deck.tool_description) + '</div>' : '');
-        box.appendChild(el);
-        var ub = el.querySelector('[data-mm-action="unbind-tool"]');
+            '<div class="mm-app-icon">' + iconHtml + '</div>' +
+            '<div class="mm-app-actions">' +
+                '<button class="tpl-icon-btn flex items-center justify-center w-9 h-9 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-sm text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" data-mm-action="replace-tool" title="' + t('tools.replace') + '"><i class="fa-solid fa-upload"></i></button>' +
+                '<button class="tpl-icon-btn flex items-center justify-center w-9 h-9 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-sm text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" data-mm-action="export-tool" title="' + t('tools.export') + '"><i class="fa-solid fa-download"></i></button>' +
+                '<button class="tpl-icon-btn flex items-center justify-center w-9 h-9 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-sm text-[var(--hp-text-sub)] transition-all hover:bg-red-50 hover:text-red-600 hover:border-red-600" data-mm-action="unbind-tool" title="' + t('tools.unbind') + '"><i class="fa-solid fa-unlink"></i></button>' +
+            '</div>';
+        var ub = card.querySelector('[data-mm-action="unbind-tool"]');
         if (ub) ub.addEventListener('click', function (ev) {
             ev.stopPropagation();
             unbindToolFromDeck(deck.id);
         });
-        var rp = el.querySelector('[data-mm-action="replace-tool"]');
+        var rp = card.querySelector('[data-mm-action="replace-tool"]');
         if (rp) rp.addEventListener('click', function (ev) {
             ev.stopPropagation();
             replaceTool(deck.tool_id, deck.id);
         });
-        var ex = el.querySelector('[data-mm-action="export-tool"]');
+        var ex = card.querySelector('[data-mm-action="export-tool"]');
         if (ex) ex.addEventListener('click', function (ev) {
             ev.stopPropagation();
             window.location.href = '/v1/tools/' + deck.tool_id + '/export';
         });
     } else {
-        var empty = document.createElement('div');
-        empty.className = 'tpl-card empty';
-        empty.innerHTML = '<div class="tpl-empty-inner"><span class="plus">+</span><span>' + t('manage.uploadTool') + '</span></div>';
-        empty.addEventListener('click', function () {
+        card.innerHTML =
+            '<div class="mm-app-empty">' +
+                '<div class="mm-app-empty-text">' + t('home.notBound') + '</div>' +
+                '<button class="tpl-icon-btn flex items-center gap-2 px-4 h-9 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-sm text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" id="mm-tool-upload-empty" title="' + t('manage.uploadTool') + '"><i class="fa-solid fa-upload"></i> ' + t('manage.uploadTool') + '</button>' +
+            '</div>';
+        var up = card.querySelector('#mm-tool-upload-empty');
+        if (up) up.addEventListener('click', function () {
             if (_manageDeckId) bindToolToDeck(_manageDeckId);
         });
-        box.appendChild(empty);
     }
+}
+
+function renderMmData(deck) {
+    var title = document.getElementById('mm-data-title');
+    var count = document.getElementById('mm-data-count');
+    if (title) title.textContent = (deck.name || '') + ' ' + t('manage.deckData');
+    if (count) count.textContent = (deck.item_count || 0).toLocaleString();
 }
 
 function toolIconUrl(icon, toolId) {
@@ -2433,6 +2441,7 @@ function refreshManageTool(deckId) {
         if (!d.success) return;
         var deck = d.deck;
         renderMmTool(deck);
+        renderMmData(deck);
         var sub = document.getElementById('mm-sub');
         if (sub) {
             sub.textContent = deck.tool_name ? (deck.tool_name + (deck.tool_description ? ' · ' + deck.tool_description : '')) : t('home.notBound');
