@@ -2370,7 +2370,7 @@ function renderMmTool(deck) {
         card.innerHTML =
             '<div class="mm-app-empty">' +
                 '<div class="mm-app-empty-text">' + t('home.notBound') + '</div>' +
-                '<button class="tpl-icon-btn flex items-center gap-2 px-4 h-9 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-sm text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" id="mm-tool-upload-empty" title="' + t('manage.uploadTool') + '"><i class="fa-solid fa-upload"></i> ' + t('manage.uploadTool') + '</button>' +
+                '<button class="mm-action-btn" id="mm-tool-upload-empty" title="' + t('manage.uploadTool') + '"><i class="fa-solid fa-upload"></i> ' + t('manage.uploadTool') + '</button>' +
             '</div>';
         var up = card.querySelector('#mm-tool-upload-empty');
         if (up) up.addEventListener('click', function () {

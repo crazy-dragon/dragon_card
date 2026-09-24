@@ -813,6 +813,7 @@ body.study-mode .global-sidebar { display: none; }
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
 }
 .mm-app-empty-text { font-size: 14px; font-weight: 600; color: var(--hp-text-sub); }
+.mm-app-empty .mm-action-btn { flex: 0 0 auto; max-width: none; padding: 9px 18px; }
 
 .tpl-icon-btn {
     width: 36px; height: 36px; border: 1px solid var(--hp-border);
