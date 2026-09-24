@@ -12,7 +12,10 @@ from config import Config
 MAX_ACTIONS = 5
 DECK_KINDS = {'language', 'knowledge', 'logic', 'skill', 'other'}
 TOOL_MAX_BYTES = 30 * 1024 * 1024  # zip 上限 30MB
-TOOL_EXT_WHITELIST = {'.html', '.css', '.js', '.json', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.woff', '.woff2'}
+TOOL_EXT_WHITELIST = {'.html', '.css', '.js', '.json', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg',
+                      '.woff', '.woff2',
+                      # 音频：音标 / 拼读类小工具要自带音素发音（assets/phonemes/*.mp3）
+                      '.mp3', '.m4a', '.ogg', '.oga', '.wav'}
 
 
 def create_app():
@@ -421,37 +424,45 @@ def _pack_tool_dir(tool):
     return buf
 
 
-def _tool_cardapi_script(deck_id, user_id):
-    """JSBridge injected into the tool page so it can call the host engine."""
+def _tool_cardapi_script(tool_id, deck_id, user_id):
+    """JSBridge injected into the tool page so it can call the host engine.
+    tool_id comes from the server (the tool being run), not the URL — so a
+    tampered ?deck_id= can't write to an unrelated deck (server verifies the
+    tool is bound to that deck)."""
+    tid = ('%s' % tool_id) if tool_id else 'null'
+    did = ('%s' % deck_id) if deck_id else 'null'
+    uid = ('%s' % user_id) if user_id else 'null'
     return '''
 <script>
 (function () {
-  var q = new URLSearchParams(location.search);
-  var deckId = q.get('deck_id') || null;
-  var userId = q.get('user_id') || null;
+  var toolId = %s;
+  var deckId = %s;
+  var userId = %s;
   function post(path, body) {
     return fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body || {}) }).then(function (r) { return r.json(); });
   }
   window.cardAPI = {
+    toolId: toolId,
     deckId: deckId,
     userId: userId,
+    getToolId: function () { return toolId; },
     getDeckId: function () { return deckId; },
     getUserId: function () { return userId; },
     getPage: function (page, pageSize) {
       var u = '/v1/learn/page?user_id=' + userId + '&deck_id=' + deckId
-            + '&page=' + (page || 1) + '&page_size=' + (pageSize || 100);
+            + '&tool_id=' + toolId + '&page=' + (page || 1) + '&page_size=' + (pageSize || 100);
       return fetch(u).then(function (r) { return r.json(); });
     },
     mark: function (itemId, isUnknown) {
-      return post('/v1/learn/mark', { deck_item_id: itemId, user_id: userId, deck_id: deckId, is_unknown: isUnknown ? 1 : 0 });
+      return post('/v1/learn/mark', { deck_item_id: itemId, user_id: userId, deck_id: deckId, is_unknown: isUnknown ? 1 : 0, tool_id: toolId });
     },
     favorite: function (itemId, fav) {
-      return post('/v1/learn/favorite', { deck_item_id: itemId, user_id: userId, deck_id: deckId, is_favorite: fav ? 1 : 0 });
+      return post('/v1/learn/favorite', { deck_item_id: itemId, user_id: userId, deck_id: deckId, is_favorite: fav ? 1 : 0, tool_id: toolId });
     },
     track: function (action, itemId) {
       if (!action || !userId || !deckId) return Promise.resolve();
-      var ev = { user_id: userId, deck_id: deckId, action: action };
+      var ev = { user_id: userId, deck_id: deckId, action: action, tool_id: toolId };
       if (itemId != null) ev.deck_item_id = itemId;
       return post('/v1/observability/events', { events: [ev] });
     },
@@ -464,12 +475,23 @@ def _tool_cardapi_script(deck_id, user_id):
       } catch (e) {}
     },
     finish: function () {
-      return post('/v1/observability/events', { events: [{ user_id: userId, deck_id: deckId, action: 'tool_finish' }] });
+      return post('/v1/observability/events', { events: [{ user_id: userId, deck_id: deckId, action: 'tool_finish', tool_id: toolId }] });
     }
   };
 })();
 </script>
-'''
+''' % (tid, did, uid)
+
+
+def _check_tool_deck_binding(deck_id, tool_id):
+    """工具调用数据接口时校验：该工具是否绑定了这个卡组。
+    无 tool_id（本体 study / 兼容调用）→ 放行；有 tool_id → 必须 deck.tool_id == tool_id。"""
+    if not tool_id:
+        return True
+    d = db.session.get(Deck, deck_id) if deck_id else None
+    if not d or d.tool_id != tool_id:
+        return False
+    return True
 
 
 @app.route('/v1/tools/<int:tool_id>/run')
@@ -485,7 +507,7 @@ def run_tool(tool_id):
         html = f.read()
     deck_id = request.args.get('deck_id')
     user_id = request.args.get('user_id')
-    script = _tool_cardapi_script(deck_id, user_id)
+    script = _tool_cardapi_script(tool_id, deck_id, user_id)
     low = html.lower()
     # Inject into <head> so cardAPI is ready before any tool script runs.
     if '</head>' in low:
@@ -520,6 +542,8 @@ def tool_asset(tool_id, path):
         '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg',
         '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp',
         '.svg': 'image/svg+xml', '.woff': 'font/woff', '.woff2': 'font/woff2',
+        '.mp3': 'audio/mpeg', '.m4a': 'audio/mp4', '.ogg': 'audio/ogg',
+        '.oga': 'audio/ogg', '.wav': 'audio/wav',
     }.get(os.path.splitext(real)[1].lower(), 'application/octet-stream')
     return Response(data, mimetype=mime)
 
@@ -1037,9 +1061,12 @@ def learn_info():
 def learn_page():
     user_id = request.args.get('user_id', type=int)
     deck_id = request.args.get('deck_id', type=int)
+    tool_id = request.args.get('tool_id', type=int)
     page = request.args.get('page', 1, type=int)
     page_size = request.args.get('page_size', Config.PAGE_SIZE, type=int)
 
+    if not _check_tool_deck_binding(deck_id, tool_id):
+        return jsonify({'error': 'Tool not bound to this deck'}), 403
     if not user_id or not deck_id:
         return jsonify({'error': 'user_id and deck_id required'}), 400
 
@@ -1100,8 +1127,11 @@ def mark_item():
     deck_item_id = data.get('deck_item_id')
     user_id = data.get('user_id')
     deck_id = data.get('deck_id')
+    tool_id = data.get('tool_id')
     is_unknown = data.get('is_unknown')
 
+    if not _check_tool_deck_binding(deck_id, tool_id):
+        return jsonify({'error': 'Tool not bound to this deck'}), 403
     if not all([deck_item_id, user_id, deck_id]):
         return jsonify({'error': 'deck_item_id, user_id, deck_id required'}), 400
 
@@ -1345,6 +1375,9 @@ def record_events_batch():
         deck_item_id = e.get('deck_item_id')
         action = e.get('action')
         template_id = e.get('template_id')
+        tool_id = e.get('tool_id')
+        if not _check_tool_deck_binding(deck_id, tool_id):
+            continue  # 工具未绑定该卡组：丢弃该事件
         if all([user_id, deck_id, deck_item_id, action]) and isinstance(action, str) and action.strip():
             db.session.add(LearningEvent(
                 user_id=user_id, deck_id=deck_id, deck_item_id=deck_item_id,
@@ -1486,6 +1519,10 @@ def toggle_favorite():
     deck_item_id = data.get('deck_item_id')
     user_id = data.get('user_id')
     deck_id = data.get('deck_id')
+    tool_id = data.get('tool_id')
+
+    if not _check_tool_deck_binding(deck_id, tool_id):
+        return jsonify({'error': 'Tool not bound to this deck'}), 403
 
     if not all([deck_item_id, user_id, deck_id]):
         return jsonify({'error': 'deck_item_id, user_id, deck_id required'}), 400
