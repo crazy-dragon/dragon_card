@@ -2347,9 +2347,9 @@ function renderMmTool(deck) {
             '</div>' +
             '<div class="mm-app-icon">' + iconHtml + '</div>' +
             '<div class="mm-app-actions">' +
-                '<button class="tpl-icon-btn flex items-center justify-center w-9 h-9 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-sm text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" data-mm-action="replace-tool" title="' + t('tools.replace') + '"><i class="fa-solid fa-upload"></i></button>' +
-                '<button class="tpl-icon-btn flex items-center justify-center w-9 h-9 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-sm text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" data-mm-action="export-tool" title="' + t('tools.export') + '"><i class="fa-solid fa-download"></i></button>' +
-                '<button class="tpl-icon-btn flex items-center justify-center w-9 h-9 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-sm text-[var(--hp-text-sub)] transition-all hover:bg-red-50 hover:text-red-600 hover:border-red-600" data-mm-action="unbind-tool" title="' + t('tools.unbind') + '"><i class="fa-solid fa-unlink"></i></button>' +
+                '<button class="mm-action-btn" data-mm-action="replace-tool" title="' + t('tools.replace') + '"><i class="fa-solid fa-upload"></i> ' + t('tools.replaceShort') + '</button>' +
+                '<button class="mm-action-btn" data-mm-action="export-tool" title="' + t('tools.export') + '"><i class="fa-solid fa-download"></i> ' + t('tools.exportShort') + '</button>' +
+                '<button class="mm-action-btn danger" data-mm-action="unbind-tool" title="' + t('tools.unbind') + '"><i class="fa-solid fa-unlink"></i> ' + t('tools.unbindShort') + '</button>' +
             '</div>';
         var ub = card.querySelector('[data-mm-action="unbind-tool"]');
         if (ub) ub.addEventListener('click', function (ev) {

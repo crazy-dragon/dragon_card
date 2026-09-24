@@ -793,8 +793,19 @@ body.study-mode .global-sidebar { display: none; }
 .mm-app-actions {
     flex-shrink: 0;
     display: flex; justify-content: center; gap: 8px;
-    margin-top: 12px;
+    margin-top: 12px; width: 100%;
 }
+.mm-action-btn {
+    flex: 1; max-width: 110px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+    height: 40px; border-radius: 10px;
+    border: 1px solid var(--hp-border); background: transparent;
+    font-size: 13px; font-weight: 600; color: var(--hp-text-sub);
+    cursor: pointer; transition: all .15s;
+}
+.mm-action-btn:hover { background: var(--hp-primary-soft); color: var(--hp-primary); border-color: var(--hp-primary); }
+.mm-action-btn.danger:hover { background: rgba(239,68,68,.1); color: #ef4444; border-color: #ef4444; }
+.mm-action-btn .swa { font-size: 15px; }
 
 /* empty (tool not bound): fill the card, centered */
 .mm-app-empty {
