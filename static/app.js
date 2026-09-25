@@ -2380,10 +2380,36 @@ function renderMmTool(deck) {
 }
 
 function renderMmData(deck) {
-    var title = document.getElementById('mm-data-title');
-    var count = document.getElementById('mm-data-count');
-    if (title) title.textContent = (deck.name || '') + ' ' + t('manage.deckData');
-    if (count) count.textContent = (deck.item_count || 0).toLocaleString();
+    var card = document.getElementById('mm-data-card');
+    if (!card) return;
+    var count = deck.item_count || 0;
+    card.innerHTML = '';
+    if (count > 0) {
+        card.innerHTML =
+            '<div class="mm-app-head">' +
+                '<div class="mm-app-title">' + escapeHtml(deck.name || '') + ' ' + t('manage.deckData') + '</div>' +
+                '<div class="mm-app-sub">' + count.toLocaleString() + ' ' + t('manage.items') + '</div>' +
+            '</div>' +
+            '<div class="mm-app-icon"><i class="fa-solid fa-database"></i></div>' +
+            '<div class="mm-app-actions">' +
+                '<button class="mm-action-btn" id="mma-data" title="' + t('manage.uploadData') + '"><i class="fa-solid fa-upload"></i> ' + t('manage.uploadDataShort') + '</button>' +
+                '<button class="mm-action-btn" id="ma-export" title="' + t('manage.exportData') + '"><i class="fa-solid fa-download"></i> ' + t('manage.exportDataShort') + '</button>' +
+                '<button class="mm-action-btn" id="ma-goagain" title="' + t('manage.goagain') + '"><span class="swa">卍</span> ' + t('manage.goagainShort') + '</button>' +
+            '</div>';
+    } else {
+        card.innerHTML =
+            '<div class="mm-app-head">' +
+                '<div class="mm-app-title">' + escapeHtml(deck.name || '') + ' ' + t('manage.deckData') + '</div>' +
+            '</div>' +
+            '<div class="mm-app-empty">' +
+                '<div class="mm-app-empty-text">' + t('manage.noData') + '</div>' +
+                '<button class="mm-action-btn" id="mm-data-import-empty" title="' + t('manage.uploadData') + '"><i class="fa-solid fa-upload"></i> ' + t('manage.uploadDataShort') + '</button>' +
+            '</div>';
+        var up = card.querySelector('#mm-data-import-empty');
+        if (up) up.addEventListener('click', function () {
+            if (_manageDeckId) doUploadDeckData(_manageDeckId);
+        });
+    }
 }
 
 function toolIconUrl(icon, toolId) {
@@ -2406,7 +2432,7 @@ function replaceTool(toolId, deckId) {
             if (!d.success) { alert(d.error || t('tools.installFailed')); return; }
             toast(t('tools.installed'));
             renderDeckList(true);
-            refreshManageTool(deckId);
+            refreshManageTool(d.deck);
         }).catch(function () { toast(t('tools.installFailed')); });
     };
     document.body.appendChild(input);
@@ -2428,7 +2454,7 @@ function bindToolToDeck(deckId) {
             if (!d.success) { alert(d.error || t('tools.installFailed')); return; }
             toast(t('tools.installed'));
             renderDeckList(true);
-            refreshManageTool(deckId);
+            refreshManageTool(d.deck);
         }).catch(function () { toast(t('tools.installFailed')); });
     };
     document.body.appendChild(input);
@@ -2436,15 +2462,12 @@ function bindToolToDeck(deckId) {
 }
 
 
-function refreshManageTool(deckId) {
-    fetch('/v1/decks/' + deckId).then(function (r) { return r.json(); }).then(function (d) {
-        if (!d.success) return;
-        var deck = d.deck;
-        renderMmTool(deck);
-        renderMmData(deck);
-        var intro = document.getElementById('mm-intro');
-        if (intro) intro.textContent = deck.tool_description || deck.template_description || '';
-    }).catch(function () {});
+function refreshManageTool(deck) {
+    if (!deck) return;
+    renderMmTool(deck);
+    renderMmData(deck);
+    var intro = document.getElementById('mm-intro');
+    if (intro) intro.textContent = deck.tool_description || deck.template_description || '';
 }
 
 function unbindToolFromDeck(deckId) {
@@ -2453,7 +2476,7 @@ function unbindToolFromDeck(deckId) {
         if (!d.success) { toast(t('common.loadFailed')); return; }
         toast(t('tools.unbound'));
         renderDeckList(true);
-        refreshManageTool(deckId);
+        refreshManageTool(d.deck);
     }).catch(function () { toast(t('common.loadFailed')); });
 }
 

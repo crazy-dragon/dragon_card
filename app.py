@@ -609,7 +609,8 @@ def replace_tool(tool_id):
     ta = manifest.get('trackedActions')
     t.tracked_actions = json.dumps(ta, ensure_ascii=False) if isinstance(ta, list) else t.tracked_actions
     db.session.commit()
-    return jsonify({'success': True, 'tool': t.to_dict()})
+    d = Deck.query.filter_by(tool_id=tool_id).first()
+    return jsonify({'success': True, 'tool': t.to_dict(), 'deck': d.to_dict() if d else None})
 
 
 @app.route('/v1/tools/<int:tool_id>/export')
