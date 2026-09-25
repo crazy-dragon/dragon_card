@@ -1,9 +1,10 @@
 {
-  "name": "Japanese Gojuon 日语五十音卡组",
+  "name": "日语五十音图 · Gojūon",
   "description": "Japanese syllabary: 46 seion + nasal ん, with romaji and sample words. 日语五十音：46清音+拨音ん，含罗马音和例词。",
   "version": "1.0.0",
   "author": "Alfred Long",
   "email": "alfred.long@qq.com",
   "license": "DragonCard Data License v1.0",
-  "updated": "2026-08-15"
+  "updated": "2026-08-15",
+  "tool": "japanese-gojuon"
 }

@@ -1,0 +1,11 @@
+{
+  "name": "音标拼读 · English Phonetics",
+  "description": "48 个国际音标 + 109 条自然拼读规则，合成一个卡组、由小工具顶栏切换：音标管「这个音怎么发」，拼读管「这串字母为什么这么读」。",
+  "version": "1.0.0",
+  "author": "Alfred Long",
+  "email": "alfred.long@qq.com",
+  "source": "自编整理（由 english_ipa 与 english_phonics 合并）",
+  "license": "DragonCard Data License v1.0",
+  "updated": "2026-09-25",
+  "tool": "english-phonetics"
+}

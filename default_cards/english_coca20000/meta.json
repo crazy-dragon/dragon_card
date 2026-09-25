@@ -1,9 +1,10 @@
 {
-  "name": "English Word Card 英语词汇卡组",
+  "name": "COCA20000 词卡",
   "description": "COCA top 2000 high-frequency words with phonetic, EN/ZH definitions and examples. COCA前2000高频词：音标、中英释义、例句。（两个模板均已升级为轻立体+翡翠配色，支持暗色皮肤；序号徽章随应用字号等比缩放）",
   "version": "1.1.1",
   "author": "Alfred Long",
   "email": "alfred.long@qq.com",
   "license": "DragonCard Data License v1.0",
-  "updated": "2026-09-13"
+  "updated": "2026-09-13",
+  "tool": "coca-cards"
 }
