@@ -49,6 +49,7 @@
         /* 通用 */
         'common.cancel': '取消',
         'common.confirm': '确认',
+        'common.processing': '处理中…',
         'common.close': '关闭',
         'common.copy': '复制',
         'common.reset': '重置',
@@ -90,6 +91,8 @@
         'study.finish.continue': '继续学习',
         'study.finish.done': '完成',
         'study.reorder.title': '重排卡片？',
+        'reorder.success': '轮回成功',
+        'reorder.failed': '轮回失败',
         'study.reorder.desc': '这将打乱所有卡片的顺序。请输入以下短语确认：',
         'study.reorder.phrase': '广修万劫证吾道心',
         'study.reorder.input': '输入上方短语...',
@@ -329,6 +332,7 @@
         /* 通用 */
         'common.cancel': 'Cancel',
         'common.confirm': 'Confirm',
+        'common.processing': 'Processing...',
         'common.close': 'Close',
         'common.copy': 'Copy',
         'common.reset': 'Reset',
@@ -369,6 +373,8 @@
         'study.finish.continue': 'Keep studying',
         'study.finish.done': 'Finish',
         'study.reorder.title': 'Reorder Cards?',
+        'reorder.success': 'Reordered',
+        'reorder.failed': 'Reorder failed',
         'study.reorder.desc': 'This will shuffle all cards. Type the phrase below to confirm:',
         'study.reorder.phrase': '广修万劫证吾道心',
         'study.reorder.input': 'Type the phrase above...',

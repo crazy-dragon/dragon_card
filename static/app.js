@@ -2430,10 +2430,10 @@ function replaceTool(toolId, deckId) {
         fd.append('zip', f);
         fetch('/v1/tools/' + toolId + '/replace', { method: 'POST', body: fd }).then(function (r) { return r.json(); }).then(function (d) {
             if (!d.success) { alert(d.error || t('tools.installFailed')); return; }
-            toast(t('tools.installed'));
+            showToast(t('tools.installed'));
             renderDeckList(true);
             refreshManageTool(d.deck);
-        }).catch(function () { toast(t('tools.installFailed')); });
+        }).catch(function () { showToast(t('tools.installFailed'), true); });
     };
     document.body.appendChild(input);
     input.click();
@@ -2452,10 +2452,10 @@ function bindToolToDeck(deckId) {
         fd.append('zip', f);
         fetch('/v1/decks/' + deckId + '/tool', { method: 'POST', body: fd }).then(function (r) { return r.json(); }).then(function (d) {
             if (!d.success) { alert(d.error || t('tools.installFailed')); return; }
-            toast(t('tools.installed'));
+            showToast(t('tools.installed'));
             renderDeckList(true);
             refreshManageTool(d.deck);
-        }).catch(function () { toast(t('tools.installFailed')); });
+        }).catch(function () { showToast(t('tools.installFailed'), true); });
     };
     document.body.appendChild(input);
     input.click();
@@ -2473,11 +2473,11 @@ function refreshManageTool(deck) {
 function unbindToolFromDeck(deckId) {
     if (!confirm(t('tools.unbindConfirm'))) return;
     fetch('/v1/decks/' + deckId + '/tool', { method: 'DELETE' }).then(function (r) { return r.json(); }).then(function (d) {
-        if (!d.success) { toast(t('common.loadFailed')); return; }
-        toast(t('tools.unbound'));
+        if (!d.success) { showToast(t('common.loadFailed'), true); return; }
+        showToast(t('tools.unbound'));
         renderDeckList(true);
         refreshManageTool(d.deck);
-    }).catch(function () { toast(t('common.loadFailed')); });
+    }).catch(function () { showToast(t('common.loadFailed'), true); });
 }
 
 function setActiveMmTemplate(deckId, templateId) {
@@ -2575,8 +2575,7 @@ function doUploadDeckData(deckId, anchorEl) {
                 }).then(function (r) { return r.json(); }).then(function (d) {
                     if (d.success) {
                         showToast(t('manage.imported', { n: d.count }));
-                        if (_manageDeckId == deckId) openManageModal(deckId);
-                        else openManageModal(deckId);
+                        openManageModal(deckId);
                         if (state.deckId == deckId) { state.cards = {}; loadInfo(); renderCatalogue(); }
                     } else { showToast(d.error || t('toast.importFailed'), true); }
                 }).catch(function () { showToast(t('toast.importFailed'), true); });
@@ -3019,16 +3018,6 @@ function setupEventListeners() {
             }
             return;
         }
-        if (target.closest('[data-mm-action="upload-template"]')) {
-            if (_manageDeckId) doUploadDeckTemplate(_manageDeckId, parseInt(target.closest('[data-mm-action="upload-template"]').dataset.tid));
-            return;
-        }
-        /* Export template */
-        if (target.closest('[data-mm-action="export-template"]')) {
-            var tid = target.closest('[data-mm-action="export-template"]').dataset.tid;
-            if (_manageDeckId && tid) exportTemplate(tid);
-            return;
-        }
 
         /* Rename deck */
         if (target.closest('#mm-rename-btn')) {
@@ -3119,25 +3108,6 @@ function setupEventListeners() {
             return;
         }
 
-        /* Manage: template operations (upload / remove / set-active) */
-        if (target.closest('[data-upload-template]')) {
-            doUploadDeckTemplate(parseInt(target.closest('[data-upload-template]').dataset.uploadTemplate));
-            return;
-        }
-        if (target.closest('[data-set-active-template]')) {
-            var sBtn = target.closest('[data-set-active-template]');
-            setActiveMmTemplate(parseInt(sBtn.dataset.setActiveTemplate), parseInt(sBtn.dataset.tid));
-            return;
-        }
-        if (target.closest('[data-export-template]')) {
-            doExportDeckTemplate(parseInt(target.closest('[data-export-template]').dataset.exportTemplate));
-            return;
-        }
-        if (target.closest('[data-upload-data]')) {
-            var udBtn = target.closest('[data-upload-data]');
-            doUploadDeckData(parseInt(udBtn.dataset.uploadData), udBtn);
-            return;
-        }
         if (target.closest('[data-preview-deck]')) {
             openDeckPreview(parseInt(target.closest('[data-preview-deck]').dataset.previewDeck));
             return;
@@ -3174,18 +3144,18 @@ function setupEventListeners() {
             var btn = target.closest('#modal-goagain-confirm');
             if (btn.disabled) return;
             btn.disabled = true;
-            btn.textContent = 'Processing...';
+            btn.textContent = t('common.processing');
             fetch('/v1/reorder', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user_id: state.userId, deck_id: state._reorderDeckId || state.deckId })
             }).then(function (r) { return r.json(); }).then(function (d) {
                 hideModal('goagain');
-                showToast('Cards reordered successfully!');
+                showToast(t('reorder.success'));
                 state.cards = {}; state.tabs = []; state.activeTab = 'catalogue'; state.enteredPages = new Set();
                 renderTabs(); renderStudyPages(); renderContent(); loadInfo();
-            }).catch(function () { showToast('Failed to reorder', true); })
-            .finally(function () { btn.disabled = false; btn.textContent = 'Confirm'; });
+            }).catch(function () { showToast(t('reorder.failed'), true); })
+            .finally(function () { btn.disabled = false; btn.textContent = t('common.confirm'); });
             return;
         }
         if (target.closest('#import-confirm-cancel')) { hideModal('import-confirm'); return; }
