@@ -875,9 +875,14 @@ function renderDeckList(forceRefresh) {
             /* Description: tool description (falls back to template description). */
             html += '<div class="deck-desc" title="' + (deck.tool_description ? escapeHtml(deck.tool_description) : (deck.template_description ? escapeHtml(deck.template_description) : '')) + '">' + (deck.tool_description ? escapeHtml(deck.tool_description) : (deck.template_description ? escapeHtml(deck.template_description) : t('home.notBound'))) + '</div>';
 
-            /* Stats (mastered count only, near bottom) */
+            /* Stats (mastered count left, study rounds right) */
             html += '<div class="deck-stats">';
             html += '<span>' + t('home.mastered') + ' <b>' + (deck.mastered_count || 0).toLocaleString() + '</b> / ' + (deck.item_count || 0).toLocaleString() + '</span>';
+            if (deck.round_count > 0) {
+                html += '<span class="deck-rounds"><i class="fa-solid fa-rotate"></i> ' + (deck.round_count || 0) + ' ' + t('home.rounds') + '</span>';
+            } else {
+                html += '<span class="deck-rounds not-started"><i class="fa-solid fa-rotate"></i> ' + t('home.notStarted') + '</span>';
+            }
             html += '</div>';
 
             /* Progress bar */

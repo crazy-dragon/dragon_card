@@ -387,6 +387,9 @@ body.study-mode .global-sidebar { display: none; }
 }
 .deck-stats { display: flex; justify-content: space-between; font-size: 12px; color: var(--hp-text-sub); margin-bottom: 8px; }
 .deck-stats b { color: var(--hp-text); font-weight: 600; }
+.deck-rounds { display: inline-flex; align-items: center; gap: 4px; color: var(--hp-text-sub); }
+.deck-rounds i { font-size: 12px; }
+.deck-rounds.not-started { color: var(--hp-text-light); }
 .deck-year-days {
     display: inline-flex; align-items: center; gap: 6px;
     color: var(--hp-primary);
