@@ -1,9 +1,10 @@
 {
   "name": "I Ching Intro 周易入门卡组",
-  "description": "Zero-to-basic intro to the Book of Changes: yin/yang, trigrams, hexagrams. 易经入门：阴阳、八卦、卦爻入门。",
+  "description": "Zero-to-basic intro to the Book of Changes: yin/yang, four images, eight trigrams (trigram diagrams drawn by the tool), yao, casting. 易经入门：阴阳、四象、八卦（三画卦图由工具绘制）、爻与起卦。",
   "version": "1.0.0",
   "author": "Alfred Long",
   "email": "alfred.long@qq.com",
   "license": "DragonCard Data License v1.0",
-  "updated": "2026-08-15"
+  "updated": "2026-09-27",
+  "tool": "yijing"
 }
