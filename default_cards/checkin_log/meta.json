@@ -1,11 +1,11 @@
 {
   "name": "星际航行日志 · Voyage Log",
-  "description": "一个月一张卡：月历看历史，点某一天弹出那天的卡面记今天。目标随月固化在卡片数据里，换目标只影响后续月份，历史不动。卡面只有「今天」是星夜深空，历史/未来保持素净。由小工具 voyage-log 呈现，不再依赖模板。",
-  "version": "2.0.0",
+  "description": "一天一张卡（默认 2026-08-06 → 2027-10-31，452 张）：月历看历史，点某一天弹出那天的卡面记今天。目标随日固化在卡片数据里，换目标只影响后续日期，历史不动。卡面只有「今天」是星夜深空，历史/未来保持素净。由小工具 voyage-log 呈现，不再依赖模板。",
+  "version": "3.0.0",
   "author": "Alfred Long",
   "email": "alfred.long@qq.com",
   "source": "自编（无外部数据源）",
   "license": "DragonCard Data License v1.0",
-  "updated": "2026-09-22",
+  "updated": "2026-09-26",
   "tool": "voyage-log"
 }

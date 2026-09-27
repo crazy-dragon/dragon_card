@@ -1,5 +1,5 @@
 {
-  "name": "Chinese Idiom Card 成语卡组",
+  "name": "成语积累 · Chinese Idioms",
   "description": "10 common four-character idioms with pinyin, meaning and example sentence. Companion web tool provides an idiom wall (grid of big serif idioms + pinyin + meaning, click a cell to hear the idiom and jump) + cards (idiom and example read-aloud). 10 条常用四字成语，带拼音、释义与例句；配套小工具提供成语墙（衬线大字 + 拼音 + 释义，点格子读成语并跳卡）与卡片（成语与例句可点读）。",
   "version": "1.0.0",
   "author": "Alfred Long",

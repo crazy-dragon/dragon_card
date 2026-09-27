@@ -1,5 +1,5 @@
 {
-  "name": "Dino Alphabet 恐龙字母卡组",
+  "name": "恐龙字母表 · Dino Alphabet",
   "description": "26 letters A-Z with a dinosaur per letter (ages 3-6); companion web tool provides an A-Z letter wall (each cell in that dinosaur's own color, click to hear \"A for …\" and jump) + big-letter cards with phonics, sample word, read-aloud. 26个字母各配一只恐龙（3-6岁）；配套小工具提供 A-Z 字母墙（每格是这只恐龙自己的颜色，点格子读「A for …」并跳卡）+ 大字母卡片（phonics/例词/中英恐龙名/朗读）。",
   "version": "1.0.0",
   "author": "Alfred Long",

@@ -1,5 +1,5 @@
 {
-  "name": "Dinosaur 3D Card 恐龙3D卡组",
+  "name": "3D 恐龙 · Dinosaurs 3D",
   "description": "Two 3D dinosaur cards (T-Rex, Pteranodon) with real .glb models; companion web tool renders the model in a three.js stage (one global renderer - the most visible stage claims the canvas, others show a placeholder), drag to rotate / scroll to zoom / double-click to reset, auto-rotate after 3s idle; read-aloud for Chinese name + description, Latin name read in English. 两张 3D 恐龙卡（霸王龙/翼龙），配套小工具用 three.js 渲染 .glb 模型（全局单 renderer，最可见舞台认领 canvas，其余显示占位），拖拽旋转/滚轮缩放/双击复位，闲置 3 秒回到自动旋转；中文名+描述朗读，拉丁学名按英文读。",
   "version": "1.0.0",
   "author": "Alfred Long",

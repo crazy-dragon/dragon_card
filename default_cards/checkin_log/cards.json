@@ -1,2420 +1,7982 @@
 [
  {
-  "item_order": 1,
-  "data": {
-   "date": "2026-08-06"
-  }
- },
- {
-  "item_order": 2,
-  "data": {
-   "date": "2026-08-07"
-  }
- },
- {
-  "item_order": 3,
-  "data": {
-   "date": "2026-08-08"
-  }
- },
- {
-  "item_order": 4,
-  "data": {
-   "date": "2026-08-09"
-  }
- },
- {
-  "item_order": 5,
-  "data": {
-   "date": "2026-08-10"
-  }
- },
- {
-  "item_order": 6,
-  "data": {
-   "date": "2026-08-11"
-  }
- },
- {
-  "item_order": 7,
-  "data": {
-   "date": "2026-08-12"
-  }
- },
- {
-  "item_order": 8,
-  "data": {
-   "date": "2026-08-13"
-  }
- },
- {
-  "item_order": 9,
-  "data": {
-   "date": "2026-08-14"
-  }
- },
- {
-  "item_order": 10,
-  "data": {
-   "date": "2026-08-15"
-  }
- },
- {
-  "item_order": 11,
-  "data": {
-   "date": "2026-08-16"
-  }
- },
- {
-  "item_order": 12,
-  "data": {
-   "date": "2026-08-17"
-  }
- },
- {
-  "item_order": 13,
-  "data": {
-   "date": "2026-08-18"
-  }
- },
- {
-  "item_order": 14,
-  "data": {
-   "date": "2026-08-19"
-  }
- },
- {
-  "item_order": 15,
-  "data": {
-   "date": "2026-08-20"
-  }
- },
- {
-  "item_order": 16,
-  "data": {
-   "date": "2026-08-21"
-  }
- },
- {
-  "item_order": 17,
-  "data": {
-   "date": "2026-08-22"
-  }
- },
- {
-  "item_order": 18,
-  "data": {
-   "date": "2026-08-23"
-  }
- },
- {
-  "item_order": 19,
-  "data": {
-   "date": "2026-08-24"
-  }
- },
- {
-  "item_order": 20,
-  "data": {
-   "date": "2026-08-25"
-  }
- },
- {
-  "item_order": 21,
-  "data": {
-   "date": "2026-08-26"
-  }
- },
- {
-  "item_order": 22,
-  "data": {
-   "date": "2026-08-27"
-  }
- },
- {
-  "item_order": 23,
-  "data": {
-   "date": "2026-08-28"
-  }
- },
- {
-  "item_order": 24,
-  "data": {
-   "date": "2026-08-29"
-  }
- },
- {
-  "item_order": 25,
-  "data": {
-   "date": "2026-08-30"
-  }
- },
- {
-  "item_order": 26,
-  "data": {
-   "date": "2026-08-31"
-  }
- },
- {
-  "item_order": 27,
-  "data": {
-   "date": "2026-09-01"
-  }
- },
- {
-  "item_order": 28,
-  "data": {
-   "date": "2026-09-02"
-  }
- },
- {
-  "item_order": 29,
-  "data": {
-   "date": "2026-09-03"
-  }
- },
- {
-  "item_order": 30,
-  "data": {
-   "date": "2026-09-04"
-  }
- },
- {
-  "item_order": 31,
-  "data": {
-   "date": "2026-09-05"
-  }
- },
- {
-  "item_order": 32,
-  "data": {
-   "date": "2026-09-06"
-  }
- },
- {
-  "item_order": 33,
-  "data": {
-   "date": "2026-09-07"
-  }
- },
- {
-  "item_order": 34,
-  "data": {
-   "date": "2026-09-08"
-  }
- },
- {
-  "item_order": 35,
-  "data": {
-   "date": "2026-09-09"
-  }
- },
- {
-  "item_order": 36,
-  "data": {
-   "date": "2026-09-10"
-  }
- },
- {
-  "item_order": 37,
-  "data": {
-   "date": "2026-09-11"
-  }
- },
- {
-  "item_order": 38,
-  "data": {
-   "date": "2026-09-12"
-  }
- },
- {
-  "item_order": 39,
-  "data": {
-   "date": "2026-09-13"
-  }
- },
- {
-  "item_order": 40,
-  "data": {
-   "date": "2026-09-14"
-  }
- },
- {
-  "item_order": 41,
-  "data": {
-   "date": "2026-09-15"
-  }
- },
- {
-  "item_order": 42,
-  "data": {
-   "date": "2026-09-16"
-  }
- },
- {
-  "item_order": 43,
-  "data": {
-   "date": "2026-09-17"
-  }
- },
- {
-  "item_order": 44,
-  "data": {
-   "date": "2026-09-18"
-  }
- },
- {
-  "item_order": 45,
-  "data": {
-   "date": "2026-09-19"
-  }
- },
- {
-  "item_order": 46,
-  "data": {
-   "date": "2026-09-20"
-  }
- },
- {
-  "item_order": 47,
-  "data": {
-   "date": "2026-09-21"
-  }
- },
- {
-  "item_order": 48,
-  "data": {
-   "date": "2026-09-22"
-  }
- },
- {
-  "item_order": 49,
-  "data": {
-   "date": "2026-09-23"
-  }
- },
- {
-  "item_order": 50,
-  "data": {
-   "date": "2026-09-24"
-  }
- },
- {
-  "item_order": 51,
-  "data": {
-   "date": "2026-09-25"
-  }
- },
- {
-  "item_order": 52,
-  "data": {
-   "date": "2026-09-26"
-  }
- },
- {
-  "item_order": 53,
-  "data": {
-   "date": "2026-09-27"
-  }
- },
- {
-  "item_order": 54,
-  "data": {
-   "date": "2026-09-28"
-  }
- },
- {
-  "item_order": 55,
-  "data": {
-   "date": "2026-09-29"
-  }
- },
- {
-  "item_order": 56,
-  "data": {
-   "date": "2026-09-30"
-  }
- },
- {
-  "item_order": 57,
-  "data": {
-   "date": "2026-10-01"
-  }
- },
- {
-  "item_order": 58,
-  "data": {
-   "date": "2026-10-02"
-  }
- },
- {
-  "item_order": 59,
-  "data": {
-   "date": "2026-10-03"
-  }
- },
- {
-  "item_order": 60,
-  "data": {
-   "date": "2026-10-04"
-  }
- },
- {
-  "item_order": 61,
-  "data": {
-   "date": "2026-10-05"
-  }
- },
- {
-  "item_order": 62,
-  "data": {
-   "date": "2026-10-06"
-  }
- },
- {
-  "item_order": 63,
-  "data": {
-   "date": "2026-10-07"
-  }
- },
- {
-  "item_order": 64,
-  "data": {
-   "date": "2026-10-08"
-  }
- },
- {
-  "item_order": 65,
-  "data": {
-   "date": "2026-10-09"
-  }
- },
- {
-  "item_order": 66,
-  "data": {
-   "date": "2026-10-10"
-  }
- },
- {
-  "item_order": 67,
-  "data": {
-   "date": "2026-10-11"
-  }
- },
- {
-  "item_order": 68,
-  "data": {
-   "date": "2026-10-12"
-  }
- },
- {
-  "item_order": 69,
-  "data": {
-   "date": "2026-10-13"
-  }
- },
- {
-  "item_order": 70,
-  "data": {
-   "date": "2026-10-14"
-  }
- },
- {
-  "item_order": 71,
-  "data": {
-   "date": "2026-10-15"
-  }
- },
- {
-  "item_order": 72,
-  "data": {
-   "date": "2026-10-16"
-  }
- },
- {
-  "item_order": 73,
-  "data": {
-   "date": "2026-10-17"
-  }
- },
- {
-  "item_order": 74,
-  "data": {
-   "date": "2026-10-18"
-  }
- },
- {
-  "item_order": 75,
-  "data": {
-   "date": "2026-10-19"
-  }
- },
- {
-  "item_order": 76,
-  "data": {
-   "date": "2026-10-20"
-  }
- },
- {
-  "item_order": 77,
-  "data": {
-   "date": "2026-10-21"
-  }
- },
- {
-  "item_order": 78,
-  "data": {
-   "date": "2026-10-22"
-  }
- },
- {
-  "item_order": 79,
-  "data": {
-   "date": "2026-10-23"
-  }
- },
- {
-  "item_order": 80,
-  "data": {
-   "date": "2026-10-24"
-  }
- },
- {
-  "item_order": 81,
-  "data": {
-   "date": "2026-10-25"
-  }
- },
- {
-  "item_order": 82,
-  "data": {
-   "date": "2026-10-26"
-  }
- },
- {
-  "item_order": 83,
-  "data": {
-   "date": "2026-10-27"
-  }
- },
- {
-  "item_order": 84,
-  "data": {
-   "date": "2026-10-28"
-  }
- },
- {
-  "item_order": 85,
-  "data": {
-   "date": "2026-10-29"
-  }
- },
- {
-  "item_order": 86,
-  "data": {
-   "date": "2026-10-30"
-  }
- },
- {
-  "item_order": 87,
-  "data": {
-   "date": "2026-10-31"
-  }
- },
- {
-  "item_order": 88,
-  "data": {
-   "date": "2026-11-01"
-  }
- },
- {
-  "item_order": 89,
-  "data": {
-   "date": "2026-11-02"
-  }
- },
- {
-  "item_order": 90,
-  "data": {
-   "date": "2026-11-03"
-  }
- },
- {
-  "item_order": 91,
-  "data": {
-   "date": "2026-11-04"
-  }
- },
- {
-  "item_order": 92,
-  "data": {
-   "date": "2026-11-05"
-  }
- },
- {
-  "item_order": 93,
-  "data": {
-   "date": "2026-11-06"
-  }
- },
- {
-  "item_order": 94,
-  "data": {
-   "date": "2026-11-07"
-  }
- },
- {
-  "item_order": 95,
-  "data": {
-   "date": "2026-11-08"
-  }
- },
- {
-  "item_order": 96,
-  "data": {
-   "date": "2026-11-09"
-  }
- },
- {
-  "item_order": 97,
-  "data": {
-   "date": "2026-11-10"
-  }
- },
- {
-  "item_order": 98,
-  "data": {
-   "date": "2026-11-11"
-  }
- },
- {
-  "item_order": 99,
-  "data": {
-   "date": "2026-11-12"
-  }
- },
- {
-  "item_order": 100,
-  "data": {
-   "date": "2026-11-13"
-  }
- },
- {
-  "item_order": 101,
-  "data": {
-   "date": "2026-11-14"
-  }
- },
- {
-  "item_order": 102,
-  "data": {
-   "date": "2026-11-15"
-  }
- },
- {
-  "item_order": 103,
-  "data": {
-   "date": "2026-11-16"
-  }
- },
- {
-  "item_order": 104,
-  "data": {
-   "date": "2026-11-17"
-  }
- },
- {
-  "item_order": 105,
-  "data": {
-   "date": "2026-11-18"
-  }
- },
- {
-  "item_order": 106,
-  "data": {
-   "date": "2026-11-19"
-  }
- },
- {
-  "item_order": 107,
-  "data": {
-   "date": "2026-11-20"
-  }
- },
- {
-  "item_order": 108,
-  "data": {
-   "date": "2026-11-21"
-  }
- },
- {
-  "item_order": 109,
-  "data": {
-   "date": "2026-11-22"
-  }
- },
- {
-  "item_order": 110,
-  "data": {
-   "date": "2026-11-23"
-  }
- },
- {
-  "item_order": 111,
-  "data": {
-   "date": "2026-11-24"
-  }
- },
- {
-  "item_order": 112,
-  "data": {
-   "date": "2026-11-25"
-  }
- },
- {
-  "item_order": 113,
-  "data": {
-   "date": "2026-11-26"
-  }
- },
- {
-  "item_order": 114,
-  "data": {
-   "date": "2026-11-27"
-  }
- },
- {
-  "item_order": 115,
-  "data": {
-   "date": "2026-11-28"
-  }
- },
- {
-  "item_order": 116,
-  "data": {
-   "date": "2026-11-29"
-  }
- },
- {
-  "item_order": 117,
-  "data": {
-   "date": "2026-11-30"
-  }
- },
- {
-  "item_order": 118,
-  "data": {
-   "date": "2026-12-01"
-  }
- },
- {
-  "item_order": 119,
-  "data": {
-   "date": "2026-12-02"
-  }
- },
- {
-  "item_order": 120,
-  "data": {
-   "date": "2026-12-03"
-  }
- },
- {
-  "item_order": 121,
-  "data": {
-   "date": "2026-12-04"
-  }
- },
- {
-  "item_order": 122,
-  "data": {
-   "date": "2026-12-05"
-  }
- },
- {
-  "item_order": 123,
-  "data": {
-   "date": "2026-12-06"
-  }
- },
- {
-  "item_order": 124,
-  "data": {
-   "date": "2026-12-07"
-  }
- },
- {
-  "item_order": 125,
-  "data": {
-   "date": "2026-12-08"
-  }
- },
- {
-  "item_order": 126,
-  "data": {
-   "date": "2026-12-09"
-  }
- },
- {
-  "item_order": 127,
-  "data": {
-   "date": "2026-12-10"
-  }
- },
- {
-  "item_order": 128,
-  "data": {
-   "date": "2026-12-11"
-  }
- },
- {
-  "item_order": 129,
-  "data": {
-   "date": "2026-12-12"
-  }
- },
- {
-  "item_order": 130,
-  "data": {
-   "date": "2026-12-13"
-  }
- },
- {
-  "item_order": 131,
-  "data": {
-   "date": "2026-12-14"
-  }
- },
- {
-  "item_order": 132,
-  "data": {
-   "date": "2026-12-15"
-  }
- },
- {
-  "item_order": 133,
-  "data": {
-   "date": "2026-12-16"
-  }
- },
- {
-  "item_order": 134,
-  "data": {
-   "date": "2026-12-17"
-  }
- },
- {
-  "item_order": 135,
-  "data": {
-   "date": "2026-12-18"
-  }
- },
- {
-  "item_order": 136,
-  "data": {
-   "date": "2026-12-19"
-  }
- },
- {
-  "item_order": 137,
-  "data": {
-   "date": "2026-12-20"
-  }
- },
- {
-  "item_order": 138,
-  "data": {
-   "date": "2026-12-21"
-  }
- },
- {
-  "item_order": 139,
-  "data": {
-   "date": "2026-12-22"
-  }
- },
- {
-  "item_order": 140,
-  "data": {
-   "date": "2026-12-23"
-  }
- },
- {
-  "item_order": 141,
-  "data": {
-   "date": "2026-12-24"
-  }
- },
- {
-  "item_order": 142,
-  "data": {
-   "date": "2026-12-25"
-  }
- },
- {
-  "item_order": 143,
-  "data": {
-   "date": "2026-12-26"
-  }
- },
- {
-  "item_order": 144,
-  "data": {
-   "date": "2026-12-27"
-  }
- },
- {
-  "item_order": 145,
-  "data": {
-   "date": "2026-12-28"
-  }
- },
- {
-  "item_order": 146,
-  "data": {
-   "date": "2026-12-29"
-  }
- },
- {
-  "item_order": 147,
-  "data": {
-   "date": "2026-12-30"
-  }
- },
- {
-  "item_order": 148,
-  "data": {
-   "date": "2026-12-31"
-  }
- },
- {
-  "item_order": 149,
-  "data": {
-   "date": "2027-01-01"
-  }
- },
- {
-  "item_order": 150,
-  "data": {
-   "date": "2027-01-02"
-  }
- },
- {
-  "item_order": 151,
-  "data": {
-   "date": "2027-01-03"
-  }
- },
- {
-  "item_order": 152,
-  "data": {
-   "date": "2027-01-04"
-  }
- },
- {
-  "item_order": 153,
-  "data": {
-   "date": "2027-01-05"
-  }
- },
- {
-  "item_order": 154,
-  "data": {
-   "date": "2027-01-06"
-  }
- },
- {
-  "item_order": 155,
-  "data": {
-   "date": "2027-01-07"
-  }
- },
- {
-  "item_order": 156,
-  "data": {
-   "date": "2027-01-08"
-  }
- },
- {
-  "item_order": 157,
-  "data": {
-   "date": "2027-01-09"
-  }
- },
- {
-  "item_order": 158,
-  "data": {
-   "date": "2027-01-10"
-  }
- },
- {
-  "item_order": 159,
-  "data": {
-   "date": "2027-01-11"
-  }
- },
- {
-  "item_order": 160,
-  "data": {
-   "date": "2027-01-12"
-  }
- },
- {
-  "item_order": 161,
-  "data": {
-   "date": "2027-01-13"
-  }
- },
- {
-  "item_order": 162,
-  "data": {
-   "date": "2027-01-14"
-  }
- },
- {
-  "item_order": 163,
-  "data": {
-   "date": "2027-01-15"
-  }
- },
- {
-  "item_order": 164,
-  "data": {
-   "date": "2027-01-16"
-  }
- },
- {
-  "item_order": 165,
-  "data": {
-   "date": "2027-01-17"
-  }
- },
- {
-  "item_order": 166,
-  "data": {
-   "date": "2027-01-18"
-  }
- },
- {
-  "item_order": 167,
-  "data": {
-   "date": "2027-01-19"
-  }
- },
- {
-  "item_order": 168,
-  "data": {
-   "date": "2027-01-20"
-  }
- },
- {
-  "item_order": 169,
-  "data": {
-   "date": "2027-01-21"
-  }
- },
- {
-  "item_order": 170,
-  "data": {
-   "date": "2027-01-22"
-  }
- },
- {
-  "item_order": 171,
-  "data": {
-   "date": "2027-01-23"
-  }
- },
- {
-  "item_order": 172,
-  "data": {
-   "date": "2027-01-24"
-  }
- },
- {
-  "item_order": 173,
-  "data": {
-   "date": "2027-01-25"
-  }
- },
- {
-  "item_order": 174,
-  "data": {
-   "date": "2027-01-26"
-  }
- },
- {
-  "item_order": 175,
-  "data": {
-   "date": "2027-01-27"
-  }
- },
- {
-  "item_order": 176,
-  "data": {
-   "date": "2027-01-28"
-  }
- },
- {
-  "item_order": 177,
-  "data": {
-   "date": "2027-01-29"
-  }
- },
- {
-  "item_order": 178,
-  "data": {
-   "date": "2027-01-30"
-  }
- },
- {
-  "item_order": 179,
-  "data": {
-   "date": "2027-01-31"
-  }
- },
- {
-  "item_order": 180,
-  "data": {
-   "date": "2027-02-01"
-  }
- },
- {
-  "item_order": 181,
-  "data": {
-   "date": "2027-02-02"
-  }
- },
- {
-  "item_order": 182,
-  "data": {
-   "date": "2027-02-03"
-  }
- },
- {
-  "item_order": 183,
-  "data": {
-   "date": "2027-02-04"
-  }
- },
- {
-  "item_order": 184,
-  "data": {
-   "date": "2027-02-05"
-  }
- },
- {
-  "item_order": 185,
-  "data": {
-   "date": "2027-02-06"
-  }
- },
- {
-  "item_order": 186,
-  "data": {
-   "date": "2027-02-07"
-  }
- },
- {
-  "item_order": 187,
-  "data": {
-   "date": "2027-02-08"
-  }
- },
- {
-  "item_order": 188,
-  "data": {
-   "date": "2027-02-09"
-  }
- },
- {
-  "item_order": 189,
-  "data": {
-   "date": "2027-02-10"
-  }
- },
- {
-  "item_order": 190,
-  "data": {
-   "date": "2027-02-11"
-  }
- },
- {
-  "item_order": 191,
-  "data": {
-   "date": "2027-02-12"
-  }
- },
- {
-  "item_order": 192,
-  "data": {
-   "date": "2027-02-13"
-  }
- },
- {
-  "item_order": 193,
-  "data": {
-   "date": "2027-02-14"
-  }
- },
- {
-  "item_order": 194,
-  "data": {
-   "date": "2027-02-15"
-  }
- },
- {
-  "item_order": 195,
-  "data": {
-   "date": "2027-02-16"
-  }
- },
- {
-  "item_order": 196,
-  "data": {
-   "date": "2027-02-17"
-  }
- },
- {
-  "item_order": 197,
-  "data": {
-   "date": "2027-02-18"
-  }
- },
- {
-  "item_order": 198,
-  "data": {
-   "date": "2027-02-19"
-  }
- },
- {
-  "item_order": 199,
-  "data": {
-   "date": "2027-02-20"
-  }
- },
- {
-  "item_order": 200,
-  "data": {
-   "date": "2027-02-21"
-  }
- },
- {
-  "item_order": 201,
-  "data": {
-   "date": "2027-02-22"
-  }
- },
- {
-  "item_order": 202,
-  "data": {
-   "date": "2027-02-23"
-  }
- },
- {
-  "item_order": 203,
-  "data": {
-   "date": "2027-02-24"
-  }
- },
- {
-  "item_order": 204,
-  "data": {
-   "date": "2027-02-25"
-  }
- },
- {
-  "item_order": 205,
-  "data": {
-   "date": "2027-02-26"
-  }
- },
- {
-  "item_order": 206,
-  "data": {
-   "date": "2027-02-27"
-  }
- },
- {
-  "item_order": 207,
-  "data": {
-   "date": "2027-02-28"
-  }
- },
- {
-  "item_order": 208,
-  "data": {
-   "date": "2027-03-01"
-  }
- },
- {
-  "item_order": 209,
-  "data": {
-   "date": "2027-03-02"
-  }
- },
- {
-  "item_order": 210,
-  "data": {
-   "date": "2027-03-03"
-  }
- },
- {
-  "item_order": 211,
-  "data": {
-   "date": "2027-03-04"
-  }
- },
- {
-  "item_order": 212,
-  "data": {
-   "date": "2027-03-05"
-  }
- },
- {
-  "item_order": 213,
-  "data": {
-   "date": "2027-03-06"
-  }
- },
- {
-  "item_order": 214,
-  "data": {
-   "date": "2027-03-07"
-  }
- },
- {
-  "item_order": 215,
-  "data": {
-   "date": "2027-03-08"
-  }
- },
- {
-  "item_order": 216,
-  "data": {
-   "date": "2027-03-09"
-  }
- },
- {
-  "item_order": 217,
-  "data": {
-   "date": "2027-03-10"
-  }
- },
- {
-  "item_order": 218,
-  "data": {
-   "date": "2027-03-11"
-  }
- },
- {
-  "item_order": 219,
-  "data": {
-   "date": "2027-03-12"
-  }
- },
- {
-  "item_order": 220,
-  "data": {
-   "date": "2027-03-13"
-  }
- },
- {
-  "item_order": 221,
-  "data": {
-   "date": "2027-03-14"
-  }
- },
- {
-  "item_order": 222,
-  "data": {
-   "date": "2027-03-15"
-  }
- },
- {
-  "item_order": 223,
-  "data": {
-   "date": "2027-03-16"
-  }
- },
- {
-  "item_order": 224,
-  "data": {
-   "date": "2027-03-17"
-  }
- },
- {
-  "item_order": 225,
-  "data": {
-   "date": "2027-03-18"
-  }
- },
- {
-  "item_order": 226,
-  "data": {
-   "date": "2027-03-19"
-  }
- },
- {
-  "item_order": 227,
-  "data": {
-   "date": "2027-03-20"
-  }
- },
- {
-  "item_order": 228,
-  "data": {
-   "date": "2027-03-21"
-  }
- },
- {
-  "item_order": 229,
-  "data": {
-   "date": "2027-03-22"
-  }
- },
- {
-  "item_order": 230,
-  "data": {
-   "date": "2027-03-23"
-  }
- },
- {
-  "item_order": 231,
-  "data": {
-   "date": "2027-03-24"
-  }
- },
- {
-  "item_order": 232,
-  "data": {
-   "date": "2027-03-25"
-  }
- },
- {
-  "item_order": 233,
-  "data": {
-   "date": "2027-03-26"
-  }
- },
- {
-  "item_order": 234,
-  "data": {
-   "date": "2027-03-27"
-  }
- },
- {
-  "item_order": 235,
-  "data": {
-   "date": "2027-03-28"
-  }
- },
- {
-  "item_order": 236,
-  "data": {
-   "date": "2027-03-29"
-  }
- },
- {
-  "item_order": 237,
-  "data": {
-   "date": "2027-03-30"
-  }
- },
- {
-  "item_order": 238,
-  "data": {
-   "date": "2027-03-31"
-  }
- },
- {
-  "item_order": 239,
-  "data": {
-   "date": "2027-04-01"
-  }
- },
- {
-  "item_order": 240,
-  "data": {
-   "date": "2027-04-02"
-  }
- },
- {
-  "item_order": 241,
-  "data": {
-   "date": "2027-04-03"
-  }
- },
- {
-  "item_order": 242,
-  "data": {
-   "date": "2027-04-04"
-  }
- },
- {
-  "item_order": 243,
-  "data": {
-   "date": "2027-04-05"
-  }
- },
- {
-  "item_order": 244,
-  "data": {
-   "date": "2027-04-06"
-  }
- },
- {
-  "item_order": 245,
-  "data": {
-   "date": "2027-04-07"
-  }
- },
- {
-  "item_order": 246,
-  "data": {
-   "date": "2027-04-08"
-  }
- },
- {
-  "item_order": 247,
-  "data": {
-   "date": "2027-04-09"
-  }
- },
- {
-  "item_order": 248,
-  "data": {
-   "date": "2027-04-10"
-  }
- },
- {
-  "item_order": 249,
-  "data": {
-   "date": "2027-04-11"
-  }
- },
- {
-  "item_order": 250,
-  "data": {
-   "date": "2027-04-12"
-  }
- },
- {
-  "item_order": 251,
-  "data": {
-   "date": "2027-04-13"
-  }
- },
- {
-  "item_order": 252,
-  "data": {
-   "date": "2027-04-14"
-  }
- },
- {
-  "item_order": 253,
-  "data": {
-   "date": "2027-04-15"
-  }
- },
- {
-  "item_order": 254,
-  "data": {
-   "date": "2027-04-16"
-  }
- },
- {
-  "item_order": 255,
-  "data": {
-   "date": "2027-04-17"
-  }
- },
- {
-  "item_order": 256,
-  "data": {
-   "date": "2027-04-18"
-  }
- },
- {
-  "item_order": 257,
-  "data": {
-   "date": "2027-04-19"
-  }
- },
- {
-  "item_order": 258,
-  "data": {
-   "date": "2027-04-20"
-  }
- },
- {
-  "item_order": 259,
-  "data": {
-   "date": "2027-04-21"
-  }
- },
- {
-  "item_order": 260,
-  "data": {
-   "date": "2027-04-22"
-  }
- },
- {
-  "item_order": 261,
-  "data": {
-   "date": "2027-04-23"
-  }
- },
- {
-  "item_order": 262,
-  "data": {
-   "date": "2027-04-24"
-  }
- },
- {
-  "item_order": 263,
-  "data": {
-   "date": "2027-04-25"
-  }
- },
- {
-  "item_order": 264,
-  "data": {
-   "date": "2027-04-26"
-  }
- },
- {
-  "item_order": 265,
-  "data": {
-   "date": "2027-04-27"
-  }
- },
- {
-  "item_order": 266,
-  "data": {
-   "date": "2027-04-28"
-  }
- },
- {
-  "item_order": 267,
-  "data": {
-   "date": "2027-04-29"
-  }
- },
- {
-  "item_order": 268,
-  "data": {
-   "date": "2027-04-30"
-  }
- },
- {
-  "item_order": 269,
-  "data": {
-   "date": "2027-05-01"
-  }
- },
- {
-  "item_order": 270,
-  "data": {
-   "date": "2027-05-02"
-  }
- },
- {
-  "item_order": 271,
-  "data": {
-   "date": "2027-05-03"
-  }
- },
- {
-  "item_order": 272,
-  "data": {
-   "date": "2027-05-04"
-  }
- },
- {
-  "item_order": 273,
-  "data": {
-   "date": "2027-05-05"
-  }
- },
- {
-  "item_order": 274,
-  "data": {
-   "date": "2027-05-06"
-  }
- },
- {
-  "item_order": 275,
-  "data": {
-   "date": "2027-05-07"
-  }
- },
- {
-  "item_order": 276,
-  "data": {
-   "date": "2027-05-08"
-  }
- },
- {
-  "item_order": 277,
-  "data": {
-   "date": "2027-05-09"
-  }
- },
- {
-  "item_order": 278,
-  "data": {
-   "date": "2027-05-10"
-  }
- },
- {
-  "item_order": 279,
-  "data": {
-   "date": "2027-05-11"
-  }
- },
- {
-  "item_order": 280,
-  "data": {
-   "date": "2027-05-12"
-  }
- },
- {
-  "item_order": 281,
-  "data": {
-   "date": "2027-05-13"
-  }
- },
- {
-  "item_order": 282,
-  "data": {
-   "date": "2027-05-14"
-  }
- },
- {
-  "item_order": 283,
-  "data": {
-   "date": "2027-05-15"
-  }
- },
- {
-  "item_order": 284,
-  "data": {
-   "date": "2027-05-16"
-  }
- },
- {
-  "item_order": 285,
-  "data": {
-   "date": "2027-05-17"
-  }
- },
- {
-  "item_order": 286,
-  "data": {
-   "date": "2027-05-18"
-  }
- },
- {
-  "item_order": 287,
-  "data": {
-   "date": "2027-05-19"
-  }
- },
- {
-  "item_order": 288,
-  "data": {
-   "date": "2027-05-20"
-  }
- },
- {
-  "item_order": 289,
-  "data": {
-   "date": "2027-05-21"
-  }
- },
- {
-  "item_order": 290,
-  "data": {
-   "date": "2027-05-22"
-  }
- },
- {
-  "item_order": 291,
-  "data": {
-   "date": "2027-05-23"
-  }
- },
- {
-  "item_order": 292,
-  "data": {
-   "date": "2027-05-24"
-  }
- },
- {
-  "item_order": 293,
-  "data": {
-   "date": "2027-05-25"
-  }
- },
- {
-  "item_order": 294,
-  "data": {
-   "date": "2027-05-26"
-  }
- },
- {
-  "item_order": 295,
-  "data": {
-   "date": "2027-05-27"
-  }
- },
- {
-  "item_order": 296,
-  "data": {
-   "date": "2027-05-28"
-  }
- },
- {
-  "item_order": 297,
-  "data": {
-   "date": "2027-05-29"
-  }
- },
- {
-  "item_order": 298,
-  "data": {
-   "date": "2027-05-30"
-  }
- },
- {
-  "item_order": 299,
-  "data": {
-   "date": "2027-05-31"
-  }
- },
- {
-  "item_order": 300,
-  "data": {
-   "date": "2027-06-01"
-  }
- },
- {
-  "item_order": 301,
-  "data": {
-   "date": "2027-06-02"
-  }
- },
- {
-  "item_order": 302,
-  "data": {
-   "date": "2027-06-03"
-  }
- },
- {
-  "item_order": 303,
-  "data": {
-   "date": "2027-06-04"
-  }
- },
- {
-  "item_order": 304,
-  "data": {
-   "date": "2027-06-05"
-  }
- },
- {
-  "item_order": 305,
-  "data": {
-   "date": "2027-06-06"
-  }
- },
- {
-  "item_order": 306,
-  "data": {
-   "date": "2027-06-07"
-  }
- },
- {
-  "item_order": 307,
-  "data": {
-   "date": "2027-06-08"
-  }
- },
- {
-  "item_order": 308,
-  "data": {
-   "date": "2027-06-09"
-  }
- },
- {
-  "item_order": 309,
-  "data": {
-   "date": "2027-06-10"
-  }
- },
- {
-  "item_order": 310,
-  "data": {
-   "date": "2027-06-11"
-  }
- },
- {
-  "item_order": 311,
-  "data": {
-   "date": "2027-06-12"
-  }
- },
- {
-  "item_order": 312,
-  "data": {
-   "date": "2027-06-13"
-  }
- },
- {
-  "item_order": 313,
-  "data": {
-   "date": "2027-06-14"
-  }
- },
- {
-  "item_order": 314,
-  "data": {
-   "date": "2027-06-15"
-  }
- },
- {
-  "item_order": 315,
-  "data": {
-   "date": "2027-06-16"
-  }
- },
- {
-  "item_order": 316,
-  "data": {
-   "date": "2027-06-17"
-  }
- },
- {
-  "item_order": 317,
-  "data": {
-   "date": "2027-06-18"
-  }
- },
- {
-  "item_order": 318,
-  "data": {
-   "date": "2027-06-19"
-  }
- },
- {
-  "item_order": 319,
-  "data": {
-   "date": "2027-06-20"
-  }
- },
- {
-  "item_order": 320,
-  "data": {
-   "date": "2027-06-21"
-  }
- },
- {
-  "item_order": 321,
-  "data": {
-   "date": "2027-06-22"
-  }
- },
- {
-  "item_order": 322,
-  "data": {
-   "date": "2027-06-23"
-  }
- },
- {
-  "item_order": 323,
-  "data": {
-   "date": "2027-06-24"
-  }
- },
- {
-  "item_order": 324,
-  "data": {
-   "date": "2027-06-25"
-  }
- },
- {
-  "item_order": 325,
-  "data": {
-   "date": "2027-06-26"
-  }
- },
- {
-  "item_order": 326,
-  "data": {
-   "date": "2027-06-27"
-  }
- },
- {
-  "item_order": 327,
-  "data": {
-   "date": "2027-06-28"
-  }
- },
- {
-  "item_order": 328,
-  "data": {
-   "date": "2027-06-29"
-  }
- },
- {
-  "item_order": 329,
-  "data": {
-   "date": "2027-06-30"
-  }
- },
- {
-  "item_order": 330,
-  "data": {
-   "date": "2027-07-01"
-  }
- },
- {
-  "item_order": 331,
-  "data": {
-   "date": "2027-07-02"
-  }
- },
- {
-  "item_order": 332,
-  "data": {
-   "date": "2027-07-03"
-  }
- },
- {
-  "item_order": 333,
-  "data": {
-   "date": "2027-07-04"
-  }
- },
- {
-  "item_order": 334,
-  "data": {
-   "date": "2027-07-05"
-  }
- },
- {
-  "item_order": 335,
-  "data": {
-   "date": "2027-07-06"
-  }
- },
- {
-  "item_order": 336,
-  "data": {
-   "date": "2027-07-07"
-  }
- },
- {
-  "item_order": 337,
-  "data": {
-   "date": "2027-07-08"
-  }
- },
- {
-  "item_order": 338,
-  "data": {
-   "date": "2027-07-09"
-  }
- },
- {
-  "item_order": 339,
-  "data": {
-   "date": "2027-07-10"
-  }
- },
- {
-  "item_order": 340,
-  "data": {
-   "date": "2027-07-11"
-  }
- },
- {
-  "item_order": 341,
-  "data": {
-   "date": "2027-07-12"
-  }
- },
- {
-  "item_order": 342,
-  "data": {
-   "date": "2027-07-13"
-  }
- },
- {
-  "item_order": 343,
-  "data": {
-   "date": "2027-07-14"
-  }
- },
- {
-  "item_order": 344,
-  "data": {
-   "date": "2027-07-15"
-  }
- },
- {
-  "item_order": 345,
-  "data": {
-   "date": "2027-07-16"
-  }
- },
- {
-  "item_order": 346,
-  "data": {
-   "date": "2027-07-17"
-  }
- },
- {
-  "item_order": 347,
-  "data": {
-   "date": "2027-07-18"
-  }
- },
- {
-  "item_order": 348,
-  "data": {
-   "date": "2027-07-19"
-  }
- },
- {
-  "item_order": 349,
-  "data": {
-   "date": "2027-07-20"
-  }
- },
- {
-  "item_order": 350,
-  "data": {
-   "date": "2027-07-21"
-  }
- },
- {
-  "item_order": 351,
-  "data": {
-   "date": "2027-07-22"
-  }
- },
- {
-  "item_order": 352,
-  "data": {
-   "date": "2027-07-23"
-  }
- },
- {
-  "item_order": 353,
-  "data": {
-   "date": "2027-07-24"
-  }
- },
- {
-  "item_order": 354,
-  "data": {
-   "date": "2027-07-25"
-  }
- },
- {
-  "item_order": 355,
-  "data": {
-   "date": "2027-07-26"
-  }
- },
- {
-  "item_order": 356,
-  "data": {
-   "date": "2027-07-27"
-  }
- },
- {
-  "item_order": 357,
-  "data": {
-   "date": "2027-07-28"
-  }
- },
- {
-  "item_order": 358,
-  "data": {
-   "date": "2027-07-29"
-  }
- },
- {
-  "item_order": 359,
-  "data": {
-   "date": "2027-07-30"
-  }
- },
- {
-  "item_order": 360,
-  "data": {
-   "date": "2027-07-31"
-  }
- },
- {
-  "item_order": 361,
-  "data": {
-   "date": "2027-08-01"
-  }
- },
- {
-  "item_order": 362,
-  "data": {
-   "date": "2027-08-02"
-  }
- },
- {
-  "item_order": 363,
-  "data": {
-   "date": "2027-08-03"
-  }
- },
- {
-  "item_order": 364,
-  "data": {
-   "date": "2027-08-04"
-  }
- },
- {
-  "item_order": 365,
-  "data": {
-   "date": "2027-08-05"
-  }
- },
- {
-  "item_order": 366,
-  "data": {
-   "date": "2027-08-06"
-  }
- },
- {
-  "item_order": 367,
-  "data": {
-   "date": "2027-08-07"
-  }
- },
- {
-  "item_order": 368,
-  "data": {
-   "date": "2027-08-08"
-  }
- },
- {
-  "item_order": 369,
-  "data": {
-   "date": "2027-08-09"
-  }
- },
- {
-  "item_order": 370,
-  "data": {
-   "date": "2027-08-10"
-  }
- },
- {
-  "item_order": 371,
-  "data": {
-   "date": "2027-08-11"
-  }
- },
- {
-  "item_order": 372,
-  "data": {
-   "date": "2027-08-12"
-  }
- },
- {
-  "item_order": 373,
-  "data": {
-   "date": "2027-08-13"
-  }
- },
- {
-  "item_order": 374,
-  "data": {
-   "date": "2027-08-14"
-  }
- },
- {
-  "item_order": 375,
-  "data": {
-   "date": "2027-08-15"
-  }
- },
- {
-  "item_order": 376,
-  "data": {
-   "date": "2027-08-16"
-  }
- },
- {
-  "item_order": 377,
-  "data": {
-   "date": "2027-08-17"
-  }
- },
- {
-  "item_order": 378,
-  "data": {
-   "date": "2027-08-18"
-  }
- },
- {
-  "item_order": 379,
-  "data": {
-   "date": "2027-08-19"
-  }
- },
- {
-  "item_order": 380,
-  "data": {
-   "date": "2027-08-20"
-  }
- },
- {
-  "item_order": 381,
-  "data": {
-   "date": "2027-08-21"
-  }
- },
- {
-  "item_order": 382,
-  "data": {
-   "date": "2027-08-22"
-  }
- },
- {
-  "item_order": 383,
-  "data": {
-   "date": "2027-08-23"
-  }
- },
- {
-  "item_order": 384,
-  "data": {
-   "date": "2027-08-24"
-  }
- },
- {
-  "item_order": 385,
-  "data": {
-   "date": "2027-08-25"
-  }
- },
- {
-  "item_order": 386,
-  "data": {
-   "date": "2027-08-26"
-  }
- },
- {
-  "item_order": 387,
-  "data": {
-   "date": "2027-08-27"
-  }
- },
- {
-  "item_order": 388,
-  "data": {
-   "date": "2027-08-28"
-  }
- },
- {
-  "item_order": 389,
-  "data": {
-   "date": "2027-08-29"
-  }
- },
- {
-  "item_order": 390,
-  "data": {
-   "date": "2027-08-30"
-  }
- },
- {
-  "item_order": 391,
-  "data": {
-   "date": "2027-08-31"
-  }
- },
- {
-  "item_order": 392,
-  "data": {
-   "date": "2027-09-01"
-  }
- },
- {
-  "item_order": 393,
-  "data": {
-   "date": "2027-09-02"
-  }
- },
- {
-  "item_order": 394,
-  "data": {
-   "date": "2027-09-03"
-  }
- },
- {
-  "item_order": 395,
-  "data": {
-   "date": "2027-09-04"
-  }
- },
- {
-  "item_order": 396,
-  "data": {
-   "date": "2027-09-05"
-  }
- },
- {
-  "item_order": 397,
-  "data": {
-   "date": "2027-09-06"
-  }
- },
- {
-  "item_order": 398,
-  "data": {
-   "date": "2027-09-07"
-  }
- },
- {
-  "item_order": 399,
-  "data": {
-   "date": "2027-09-08"
-  }
- },
- {
-  "item_order": 400,
-  "data": {
-   "date": "2027-09-09"
-  }
- },
- {
-  "item_order": 401,
-  "data": {
-   "date": "2027-09-10"
-  }
- },
- {
-  "item_order": 402,
-  "data": {
-   "date": "2027-09-11"
-  }
- },
- {
-  "item_order": 403,
-  "data": {
-   "date": "2027-09-12"
-  }
+  "date": "2026-08-06",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 1
+ },
+ {
+  "date": "2026-08-07",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 2
+ },
+ {
+  "date": "2026-08-08",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 3
+ },
+ {
+  "date": "2026-08-09",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 4
+ },
+ {
+  "date": "2026-08-10",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 5
+ },
+ {
+  "date": "2026-08-11",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 6
+ },
+ {
+  "date": "2026-08-12",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 7
+ },
+ {
+  "date": "2026-08-13",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 8
+ },
+ {
+  "date": "2026-08-14",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 9
+ },
+ {
+  "date": "2026-08-15",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 10
+ },
+ {
+  "date": "2026-08-16",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 11
+ },
+ {
+  "date": "2026-08-17",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 12
+ },
+ {
+  "date": "2026-08-18",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 13
+ },
+ {
+  "date": "2026-08-19",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 14
+ },
+ {
+  "date": "2026-08-20",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 15
+ },
+ {
+  "date": "2026-08-21",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 16
+ },
+ {
+  "date": "2026-08-22",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 17
+ },
+ {
+  "date": "2026-08-23",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 18
+ },
+ {
+  "date": "2026-08-24",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 19
+ },
+ {
+  "date": "2026-08-25",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 20
+ },
+ {
+  "date": "2026-08-26",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 21
+ },
+ {
+  "date": "2026-08-27",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 22
+ },
+ {
+  "date": "2026-08-28",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 23
+ },
+ {
+  "date": "2026-08-29",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 24
+ },
+ {
+  "date": "2026-08-30",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 25
+ },
+ {
+  "date": "2026-08-31",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   }
+  ],
+  "item_order": 26
+ },
+ {
+  "date": "2026-09-01",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 27
+ },
+ {
+  "date": "2026-09-02",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 28
+ },
+ {
+  "date": "2026-09-03",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 29
+ },
+ {
+  "date": "2026-09-04",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 30
+ },
+ {
+  "date": "2026-09-05",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 31
+ },
+ {
+  "date": "2026-09-06",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 32
+ },
+ {
+  "date": "2026-09-07",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 33
+ },
+ {
+  "date": "2026-09-08",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 34
+ },
+ {
+  "date": "2026-09-09",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 35
+ },
+ {
+  "date": "2026-09-10",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 36
+ },
+ {
+  "date": "2026-09-11",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 37
+ },
+ {
+  "date": "2026-09-12",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 38
+ },
+ {
+  "date": "2026-09-13",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 39
+ },
+ {
+  "date": "2026-09-14",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 40
+ },
+ {
+  "date": "2026-09-15",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 41
+ },
+ {
+  "date": "2026-09-16",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 42
+ },
+ {
+  "date": "2026-09-17",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 43
+ },
+ {
+  "date": "2026-09-18",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 44
+ },
+ {
+  "date": "2026-09-19",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 45
+ },
+ {
+  "date": "2026-09-20",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 46
+ },
+ {
+  "date": "2026-09-21",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 47
+ },
+ {
+  "date": "2026-09-22",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 48
+ },
+ {
+  "date": "2026-09-23",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 49
+ },
+ {
+  "date": "2026-09-24",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 50
+ },
+ {
+  "date": "2026-09-25",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 51
+ },
+ {
+  "date": "2026-09-26",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 52
+ },
+ {
+  "date": "2026-09-27",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 53
+ },
+ {
+  "date": "2026-09-28",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 54
+ },
+ {
+  "date": "2026-09-29",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 55
+ },
+ {
+  "date": "2026-09-30",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 56
+ },
+ {
+  "date": "2026-10-01",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 57
+ },
+ {
+  "date": "2026-10-02",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 58
+ },
+ {
+  "date": "2026-10-03",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 59
+ },
+ {
+  "date": "2026-10-04",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 60
+ },
+ {
+  "date": "2026-10-05",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 61
+ },
+ {
+  "date": "2026-10-06",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 62
+ },
+ {
+  "date": "2026-10-07",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 63
+ },
+ {
+  "date": "2026-10-08",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 64
+ },
+ {
+  "date": "2026-10-09",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 65
+ },
+ {
+  "date": "2026-10-10",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 66
+ },
+ {
+  "date": "2026-10-11",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 67
+ },
+ {
+  "date": "2026-10-12",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 68
+ },
+ {
+  "date": "2026-10-13",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 69
+ },
+ {
+  "date": "2026-10-14",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 70
+ },
+ {
+  "date": "2026-10-15",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 71
+ },
+ {
+  "date": "2026-10-16",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 72
+ },
+ {
+  "date": "2026-10-17",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 73
+ },
+ {
+  "date": "2026-10-18",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 74
+ },
+ {
+  "date": "2026-10-19",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 75
+ },
+ {
+  "date": "2026-10-20",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 76
+ },
+ {
+  "date": "2026-10-21",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 77
+ },
+ {
+  "date": "2026-10-22",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 78
+ },
+ {
+  "date": "2026-10-23",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 79
+ },
+ {
+  "date": "2026-10-24",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 80
+ },
+ {
+  "date": "2026-10-25",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 81
+ },
+ {
+  "date": "2026-10-26",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 82
+ },
+ {
+  "date": "2026-10-27",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 83
+ },
+ {
+  "date": "2026-10-28",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 84
+ },
+ {
+  "date": "2026-10-29",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 85
+ },
+ {
+  "date": "2026-10-30",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 86
+ },
+ {
+  "date": "2026-10-31",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 87
+ },
+ {
+  "date": "2026-11-01",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 88
+ },
+ {
+  "date": "2026-11-02",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 89
+ },
+ {
+  "date": "2026-11-03",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 90
+ },
+ {
+  "date": "2026-11-04",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 91
+ },
+ {
+  "date": "2026-11-05",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 92
+ },
+ {
+  "date": "2026-11-06",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 93
+ },
+ {
+  "date": "2026-11-07",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 94
+ },
+ {
+  "date": "2026-11-08",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 95
+ },
+ {
+  "date": "2026-11-09",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 96
+ },
+ {
+  "date": "2026-11-10",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 97
+ },
+ {
+  "date": "2026-11-11",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 98
+ },
+ {
+  "date": "2026-11-12",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 99
+ },
+ {
+  "date": "2026-11-13",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 100
+ },
+ {
+  "date": "2026-11-14",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 101
+ },
+ {
+  "date": "2026-11-15",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 102
+ },
+ {
+  "date": "2026-11-16",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 103
+ },
+ {
+  "date": "2026-11-17",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 104
+ },
+ {
+  "date": "2026-11-18",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 105
+ },
+ {
+  "date": "2026-11-19",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 106
+ },
+ {
+  "date": "2026-11-20",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 107
+ },
+ {
+  "date": "2026-11-21",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 108
+ },
+ {
+  "date": "2026-11-22",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 109
+ },
+ {
+  "date": "2026-11-23",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 110
+ },
+ {
+  "date": "2026-11-24",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 111
+ },
+ {
+  "date": "2026-11-25",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 112
+ },
+ {
+  "date": "2026-11-26",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 113
+ },
+ {
+  "date": "2026-11-27",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 114
+ },
+ {
+  "date": "2026-11-28",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 115
+ },
+ {
+  "date": "2026-11-29",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 116
+ },
+ {
+  "date": "2026-11-30",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 117
+ },
+ {
+  "date": "2026-12-01",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 118
+ },
+ {
+  "date": "2026-12-02",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 119
+ },
+ {
+  "date": "2026-12-03",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 120
+ },
+ {
+  "date": "2026-12-04",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 121
+ },
+ {
+  "date": "2026-12-05",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 122
+ },
+ {
+  "date": "2026-12-06",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 123
+ },
+ {
+  "date": "2026-12-07",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 124
+ },
+ {
+  "date": "2026-12-08",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 125
+ },
+ {
+  "date": "2026-12-09",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 126
+ },
+ {
+  "date": "2026-12-10",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 127
+ },
+ {
+  "date": "2026-12-11",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 128
+ },
+ {
+  "date": "2026-12-12",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 129
+ },
+ {
+  "date": "2026-12-13",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 130
+ },
+ {
+  "date": "2026-12-14",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 131
+ },
+ {
+  "date": "2026-12-15",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 132
+ },
+ {
+  "date": "2026-12-16",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 133
+ },
+ {
+  "date": "2026-12-17",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 134
+ },
+ {
+  "date": "2026-12-18",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 135
+ },
+ {
+  "date": "2026-12-19",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 136
+ },
+ {
+  "date": "2026-12-20",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 137
+ },
+ {
+  "date": "2026-12-21",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 138
+ },
+ {
+  "date": "2026-12-22",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 139
+ },
+ {
+  "date": "2026-12-23",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 140
+ },
+ {
+  "date": "2026-12-24",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 141
+ },
+ {
+  "date": "2026-12-25",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 142
+ },
+ {
+  "date": "2026-12-26",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 143
+ },
+ {
+  "date": "2026-12-27",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 144
+ },
+ {
+  "date": "2026-12-28",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 145
+ },
+ {
+  "date": "2026-12-29",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 146
+ },
+ {
+  "date": "2026-12-30",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 147
+ },
+ {
+  "date": "2026-12-31",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 148
+ },
+ {
+  "date": "2027-01-01",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 149
+ },
+ {
+  "date": "2027-01-02",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 150
+ },
+ {
+  "date": "2027-01-03",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 151
+ },
+ {
+  "date": "2027-01-04",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 152
+ },
+ {
+  "date": "2027-01-05",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 153
+ },
+ {
+  "date": "2027-01-06",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 154
+ },
+ {
+  "date": "2027-01-07",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 155
+ },
+ {
+  "date": "2027-01-08",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 156
+ },
+ {
+  "date": "2027-01-09",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 157
+ },
+ {
+  "date": "2027-01-10",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 158
+ },
+ {
+  "date": "2027-01-11",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 159
+ },
+ {
+  "date": "2027-01-12",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 160
+ },
+ {
+  "date": "2027-01-13",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 161
+ },
+ {
+  "date": "2027-01-14",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 162
+ },
+ {
+  "date": "2027-01-15",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 163
+ },
+ {
+  "date": "2027-01-16",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 164
+ },
+ {
+  "date": "2027-01-17",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 165
+ },
+ {
+  "date": "2027-01-18",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 166
+ },
+ {
+  "date": "2027-01-19",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 167
+ },
+ {
+  "date": "2027-01-20",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 168
+ },
+ {
+  "date": "2027-01-21",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 169
+ },
+ {
+  "date": "2027-01-22",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 170
+ },
+ {
+  "date": "2027-01-23",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 171
+ },
+ {
+  "date": "2027-01-24",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 172
+ },
+ {
+  "date": "2027-01-25",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 173
+ },
+ {
+  "date": "2027-01-26",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 174
+ },
+ {
+  "date": "2027-01-27",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 175
+ },
+ {
+  "date": "2027-01-28",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 176
+ },
+ {
+  "date": "2027-01-29",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 177
+ },
+ {
+  "date": "2027-01-30",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 178
+ },
+ {
+  "date": "2027-01-31",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 179
+ },
+ {
+  "date": "2027-02-01",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 180
+ },
+ {
+  "date": "2027-02-02",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 181
+ },
+ {
+  "date": "2027-02-03",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 182
+ },
+ {
+  "date": "2027-02-04",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 183
+ },
+ {
+  "date": "2027-02-05",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 184
+ },
+ {
+  "date": "2027-02-06",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 185
+ },
+ {
+  "date": "2027-02-07",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 186
+ },
+ {
+  "date": "2027-02-08",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 187
+ },
+ {
+  "date": "2027-02-09",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 188
+ },
+ {
+  "date": "2027-02-10",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 189
+ },
+ {
+  "date": "2027-02-11",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 190
+ },
+ {
+  "date": "2027-02-12",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 191
+ },
+ {
+  "date": "2027-02-13",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 192
+ },
+ {
+  "date": "2027-02-14",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 193
+ },
+ {
+  "date": "2027-02-15",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 194
+ },
+ {
+  "date": "2027-02-16",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 195
+ },
+ {
+  "date": "2027-02-17",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 196
+ },
+ {
+  "date": "2027-02-18",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 197
+ },
+ {
+  "date": "2027-02-19",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 198
+ },
+ {
+  "date": "2027-02-20",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 199
+ },
+ {
+  "date": "2027-02-21",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 200
+ },
+ {
+  "date": "2027-02-22",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 201
+ },
+ {
+  "date": "2027-02-23",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 202
+ },
+ {
+  "date": "2027-02-24",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 203
+ },
+ {
+  "date": "2027-02-25",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 204
+ },
+ {
+  "date": "2027-02-26",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 205
+ },
+ {
+  "date": "2027-02-27",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 206
+ },
+ {
+  "date": "2027-02-28",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 207
+ },
+ {
+  "date": "2027-03-01",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 208
+ },
+ {
+  "date": "2027-03-02",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 209
+ },
+ {
+  "date": "2027-03-03",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 210
+ },
+ {
+  "date": "2027-03-04",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 211
+ },
+ {
+  "date": "2027-03-05",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 212
+ },
+ {
+  "date": "2027-03-06",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 213
+ },
+ {
+  "date": "2027-03-07",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 214
+ },
+ {
+  "date": "2027-03-08",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 215
+ },
+ {
+  "date": "2027-03-09",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 216
+ },
+ {
+  "date": "2027-03-10",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 217
+ },
+ {
+  "date": "2027-03-11",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 218
+ },
+ {
+  "date": "2027-03-12",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 219
+ },
+ {
+  "date": "2027-03-13",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 220
+ },
+ {
+  "date": "2027-03-14",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 221
+ },
+ {
+  "date": "2027-03-15",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 222
+ },
+ {
+  "date": "2027-03-16",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 223
+ },
+ {
+  "date": "2027-03-17",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 224
+ },
+ {
+  "date": "2027-03-18",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 225
+ },
+ {
+  "date": "2027-03-19",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 226
+ },
+ {
+  "date": "2027-03-20",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 227
+ },
+ {
+  "date": "2027-03-21",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 228
+ },
+ {
+  "date": "2027-03-22",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 229
+ },
+ {
+  "date": "2027-03-23",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 230
+ },
+ {
+  "date": "2027-03-24",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 231
+ },
+ {
+  "date": "2027-03-25",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 232
+ },
+ {
+  "date": "2027-03-26",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 233
+ },
+ {
+  "date": "2027-03-27",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 234
+ },
+ {
+  "date": "2027-03-28",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 235
+ },
+ {
+  "date": "2027-03-29",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 236
+ },
+ {
+  "date": "2027-03-30",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 237
+ },
+ {
+  "date": "2027-03-31",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 238
+ },
+ {
+  "date": "2027-04-01",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 239
+ },
+ {
+  "date": "2027-04-02",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 240
+ },
+ {
+  "date": "2027-04-03",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 241
+ },
+ {
+  "date": "2027-04-04",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 242
+ },
+ {
+  "date": "2027-04-05",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 243
+ },
+ {
+  "date": "2027-04-06",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 244
+ },
+ {
+  "date": "2027-04-07",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 245
+ },
+ {
+  "date": "2027-04-08",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 246
+ },
+ {
+  "date": "2027-04-09",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 247
+ },
+ {
+  "date": "2027-04-10",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 248
+ },
+ {
+  "date": "2027-04-11",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 249
+ },
+ {
+  "date": "2027-04-12",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 250
+ },
+ {
+  "date": "2027-04-13",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 251
+ },
+ {
+  "date": "2027-04-14",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 252
+ },
+ {
+  "date": "2027-04-15",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 253
+ },
+ {
+  "date": "2027-04-16",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 254
+ },
+ {
+  "date": "2027-04-17",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 255
+ },
+ {
+  "date": "2027-04-18",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 256
+ },
+ {
+  "date": "2027-04-19",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 257
+ },
+ {
+  "date": "2027-04-20",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 258
+ },
+ {
+  "date": "2027-04-21",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 259
+ },
+ {
+  "date": "2027-04-22",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 260
+ },
+ {
+  "date": "2027-04-23",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 261
+ },
+ {
+  "date": "2027-04-24",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 262
+ },
+ {
+  "date": "2027-04-25",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 263
+ },
+ {
+  "date": "2027-04-26",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 264
+ },
+ {
+  "date": "2027-04-27",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 265
+ },
+ {
+  "date": "2027-04-28",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 266
+ },
+ {
+  "date": "2027-04-29",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 267
+ },
+ {
+  "date": "2027-04-30",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 268
+ },
+ {
+  "date": "2027-05-01",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 269
+ },
+ {
+  "date": "2027-05-02",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 270
+ },
+ {
+  "date": "2027-05-03",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 271
+ },
+ {
+  "date": "2027-05-04",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 272
+ },
+ {
+  "date": "2027-05-05",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 273
+ },
+ {
+  "date": "2027-05-06",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 274
+ },
+ {
+  "date": "2027-05-07",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 275
+ },
+ {
+  "date": "2027-05-08",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 276
+ },
+ {
+  "date": "2027-05-09",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 277
+ },
+ {
+  "date": "2027-05-10",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 278
+ },
+ {
+  "date": "2027-05-11",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 279
+ },
+ {
+  "date": "2027-05-12",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 280
+ },
+ {
+  "date": "2027-05-13",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 281
+ },
+ {
+  "date": "2027-05-14",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 282
+ },
+ {
+  "date": "2027-05-15",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 283
+ },
+ {
+  "date": "2027-05-16",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 284
+ },
+ {
+  "date": "2027-05-17",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 285
+ },
+ {
+  "date": "2027-05-18",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 286
+ },
+ {
+  "date": "2027-05-19",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 287
+ },
+ {
+  "date": "2027-05-20",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 288
+ },
+ {
+  "date": "2027-05-21",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 289
+ },
+ {
+  "date": "2027-05-22",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 290
+ },
+ {
+  "date": "2027-05-23",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 291
+ },
+ {
+  "date": "2027-05-24",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 292
+ },
+ {
+  "date": "2027-05-25",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 293
+ },
+ {
+  "date": "2027-05-26",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 294
+ },
+ {
+  "date": "2027-05-27",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 295
+ },
+ {
+  "date": "2027-05-28",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 296
+ },
+ {
+  "date": "2027-05-29",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 297
+ },
+ {
+  "date": "2027-05-30",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 298
+ },
+ {
+  "date": "2027-05-31",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 299
+ },
+ {
+  "date": "2027-06-01",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 300
+ },
+ {
+  "date": "2027-06-02",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 301
+ },
+ {
+  "date": "2027-06-03",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 302
+ },
+ {
+  "date": "2027-06-04",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 303
+ },
+ {
+  "date": "2027-06-05",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 304
+ },
+ {
+  "date": "2027-06-06",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 305
+ },
+ {
+  "date": "2027-06-07",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 306
+ },
+ {
+  "date": "2027-06-08",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 307
+ },
+ {
+  "date": "2027-06-09",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 308
+ },
+ {
+  "date": "2027-06-10",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 309
+ },
+ {
+  "date": "2027-06-11",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 310
+ },
+ {
+  "date": "2027-06-12",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 311
+ },
+ {
+  "date": "2027-06-13",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 312
+ },
+ {
+  "date": "2027-06-14",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 313
+ },
+ {
+  "date": "2027-06-15",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 314
+ },
+ {
+  "date": "2027-06-16",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 315
+ },
+ {
+  "date": "2027-06-17",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 316
+ },
+ {
+  "date": "2027-06-18",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 317
+ },
+ {
+  "date": "2027-06-19",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 318
+ },
+ {
+  "date": "2027-06-20",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 319
+ },
+ {
+  "date": "2027-06-21",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 320
+ },
+ {
+  "date": "2027-06-22",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 321
+ },
+ {
+  "date": "2027-06-23",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 322
+ },
+ {
+  "date": "2027-06-24",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 323
+ },
+ {
+  "date": "2027-06-25",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 324
+ },
+ {
+  "date": "2027-06-26",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 325
+ },
+ {
+  "date": "2027-06-27",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 326
+ },
+ {
+  "date": "2027-06-28",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 327
+ },
+ {
+  "date": "2027-06-29",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 328
+ },
+ {
+  "date": "2027-06-30",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 329
+ },
+ {
+  "date": "2027-07-01",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 330
+ },
+ {
+  "date": "2027-07-02",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 331
+ },
+ {
+  "date": "2027-07-03",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 332
+ },
+ {
+  "date": "2027-07-04",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 333
+ },
+ {
+  "date": "2027-07-05",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 334
+ },
+ {
+  "date": "2027-07-06",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 335
+ },
+ {
+  "date": "2027-07-07",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 336
+ },
+ {
+  "date": "2027-07-08",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 337
+ },
+ {
+  "date": "2027-07-09",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 338
+ },
+ {
+  "date": "2027-07-10",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 339
+ },
+ {
+  "date": "2027-07-11",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 340
+ },
+ {
+  "date": "2027-07-12",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 341
+ },
+ {
+  "date": "2027-07-13",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 342
+ },
+ {
+  "date": "2027-07-14",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 343
+ },
+ {
+  "date": "2027-07-15",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 344
+ },
+ {
+  "date": "2027-07-16",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 345
+ },
+ {
+  "date": "2027-07-17",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 346
+ },
+ {
+  "date": "2027-07-18",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 347
+ },
+ {
+  "date": "2027-07-19",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 348
+ },
+ {
+  "date": "2027-07-20",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 349
+ },
+ {
+  "date": "2027-07-21",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 350
+ },
+ {
+  "date": "2027-07-22",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 351
+ },
+ {
+  "date": "2027-07-23",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 352
+ },
+ {
+  "date": "2027-07-24",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 353
+ },
+ {
+  "date": "2027-07-25",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 354
+ },
+ {
+  "date": "2027-07-26",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 355
+ },
+ {
+  "date": "2027-07-27",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 356
+ },
+ {
+  "date": "2027-07-28",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 357
+ },
+ {
+  "date": "2027-07-29",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 358
+ },
+ {
+  "date": "2027-07-30",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 359
+ },
+ {
+  "date": "2027-07-31",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 360
+ },
+ {
+  "date": "2027-08-01",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 361
+ },
+ {
+  "date": "2027-08-02",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 362
+ },
+ {
+  "date": "2027-08-03",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 363
+ },
+ {
+  "date": "2027-08-04",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 364
+ },
+ {
+  "date": "2027-08-05",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 365
+ },
+ {
+  "date": "2027-08-06",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 366
+ },
+ {
+  "date": "2027-08-07",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 367
+ },
+ {
+  "date": "2027-08-08",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 368
+ },
+ {
+  "date": "2027-08-09",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 369
+ },
+ {
+  "date": "2027-08-10",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 370
+ },
+ {
+  "date": "2027-08-11",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 371
+ },
+ {
+  "date": "2027-08-12",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 372
+ },
+ {
+  "date": "2027-08-13",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 373
+ },
+ {
+  "date": "2027-08-14",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 374
+ },
+ {
+  "date": "2027-08-15",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 375
+ },
+ {
+  "date": "2027-08-16",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 376
+ },
+ {
+  "date": "2027-08-17",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 377
+ },
+ {
+  "date": "2027-08-18",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 378
+ },
+ {
+  "date": "2027-08-19",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 379
+ },
+ {
+  "date": "2027-08-20",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 380
+ },
+ {
+  "date": "2027-08-21",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 381
+ },
+ {
+  "date": "2027-08-22",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 382
+ },
+ {
+  "date": "2027-08-23",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 383
+ },
+ {
+  "date": "2027-08-24",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 384
+ },
+ {
+  "date": "2027-08-25",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 385
+ },
+ {
+  "date": "2027-08-26",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 386
+ },
+ {
+  "date": "2027-08-27",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 387
+ },
+ {
+  "date": "2027-08-28",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 388
+ },
+ {
+  "date": "2027-08-29",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 389
+ },
+ {
+  "date": "2027-08-30",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 390
+ },
+ {
+  "date": "2027-08-31",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 391
+ },
+ {
+  "date": "2027-09-01",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 392
+ },
+ {
+  "date": "2027-09-02",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 393
+ },
+ {
+  "date": "2027-09-03",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 394
+ },
+ {
+  "date": "2027-09-04",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 395
+ },
+ {
+  "date": "2027-09-05",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 396
+ },
+ {
+  "date": "2027-09-06",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 397
+ },
+ {
+  "date": "2027-09-07",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 398
+ },
+ {
+  "date": "2027-09-08",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 399
+ },
+ {
+  "date": "2027-09-09",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 400
+ },
+ {
+  "date": "2027-09-10",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 401
+ },
+ {
+  "date": "2027-09-11",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 402
+ },
+ {
+  "date": "2027-09-12",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 403
+ },
+ {
+  "date": "2027-09-13",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 404
+ },
+ {
+  "date": "2027-09-14",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 405
+ },
+ {
+  "date": "2027-09-15",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 406
+ },
+ {
+  "date": "2027-09-16",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 407
+ },
+ {
+  "date": "2027-09-17",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 408
+ },
+ {
+  "date": "2027-09-18",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 409
+ },
+ {
+  "date": "2027-09-19",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 410
+ },
+ {
+  "date": "2027-09-20",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 411
+ },
+ {
+  "date": "2027-09-21",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 412
+ },
+ {
+  "date": "2027-09-22",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 413
+ },
+ {
+  "date": "2027-09-23",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 414
+ },
+ {
+  "date": "2027-09-24",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 415
+ },
+ {
+  "date": "2027-09-25",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 416
+ },
+ {
+  "date": "2027-09-26",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 417
+ },
+ {
+  "date": "2027-09-27",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 418
+ },
+ {
+  "date": "2027-09-28",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 419
+ },
+ {
+  "date": "2027-09-29",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 420
+ },
+ {
+  "date": "2027-09-30",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 421
+ },
+ {
+  "date": "2027-10-01",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 422
+ },
+ {
+  "date": "2027-10-02",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 423
+ },
+ {
+  "date": "2027-10-03",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 424
+ },
+ {
+  "date": "2027-10-04",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 425
+ },
+ {
+  "date": "2027-10-05",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 426
+ },
+ {
+  "date": "2027-10-06",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 427
+ },
+ {
+  "date": "2027-10-07",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 428
+ },
+ {
+  "date": "2027-10-08",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 429
+ },
+ {
+  "date": "2027-10-09",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 430
+ },
+ {
+  "date": "2027-10-10",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 431
+ },
+ {
+  "date": "2027-10-11",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 432
+ },
+ {
+  "date": "2027-10-12",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 433
+ },
+ {
+  "date": "2027-10-13",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 434
+ },
+ {
+  "date": "2027-10-14",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 435
+ },
+ {
+  "date": "2027-10-15",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 436
+ },
+ {
+  "date": "2027-10-16",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 437
+ },
+ {
+  "date": "2027-10-17",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 438
+ },
+ {
+  "date": "2027-10-18",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 439
+ },
+ {
+  "date": "2027-10-19",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 440
+ },
+ {
+  "date": "2027-10-20",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 441
+ },
+ {
+  "date": "2027-10-21",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 442
+ },
+ {
+  "date": "2027-10-22",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 443
+ },
+ {
+  "date": "2027-10-23",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 444
+ },
+ {
+  "date": "2027-10-24",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 445
+ },
+ {
+  "date": "2027-10-25",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 446
+ },
+ {
+  "date": "2027-10-26",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 447
+ },
+ {
+  "date": "2027-10-27",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 448
+ },
+ {
+  "date": "2027-10-28",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 449
+ },
+ {
+  "date": "2027-10-29",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 450
+ },
+ {
+  "date": "2027-10-30",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 451
+ },
+ {
+  "date": "2027-10-31",
+  "tasks": [
+   {
+    "action": "movie_20min",
+    "label": "每日 20 分钟美剧",
+    "hint": "看一集，20 分钟",
+    "icon": "fa-tv"
+   },
+   {
+    "action": "read_10pages",
+    "label": "阅读 10 页",
+    "hint": "随手翻十页",
+    "icon": "fa-book"
+   }
+  ],
+  "item_order": 452
  }
 ]
