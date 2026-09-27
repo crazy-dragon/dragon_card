@@ -1,9 +1,12 @@
 {
   "name": "Chinese HSK (Hanzi) HSK汉字卡组",
-  "description": "HSK 3.0 characters, HSK 1-3 (1011 free sample). HSK 3.0 汉字，1-3级（1011个免费示例）。",
+  "description": "HSK 3.0 characters, HSK 1-3 (1011 free sample); companion web tool provides a leveled word chart (level chips, toneless pinyin search, 100/page grid, click a cell to hear the word and jump) + word cards (hanzi read-aloud, English definition read-aloud, per-word Source attribution), 50/page. The tool adapts to whichever HSK deck it is bound to (free sample or full 11105). HSK 3.0 汉字 1-3 级（1011 个免费示例）；配套小工具提供分级词表（等级筛选 + 无声调拼音搜索 + 100/页网格，点格子读词并跳卡）与词卡（汉字点读、英文释义点读、逐词 Source 署名），50/页；工具自适应绑定的卡组（免费示例或全量 11105）。",
   "version": "1.0.0",
   "author": "Alfred Long",
   "email": "alfred.long@qq.com",
-  "license": "DragonCard Data License v1.0",
-  "updated": "2026-08-15"
+  "license": "CC BY-SA 4.0",
+  "updated": "2026-09-27",
+  "source": "HSK 3.0 official character/vocabulary lists (public exam specification); English definitions: CC-CEDICT (CC BY-SA 4.0)",
+  "attribution": "English definitions from CC-CEDICT (https://cc-cedict.org), CC BY-SA 4.0",
+  "tool": "chinese-hsk"
 }
