@@ -15,7 +15,10 @@ TOOL_MAX_BYTES = 30 * 1024 * 1024  # zip 上限 30MB
 TOOL_EXT_WHITELIST = {'.html', '.css', '.js', '.json', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg',
                       '.woff', '.woff2',
                       # 音频：音标 / 拼读类小工具要自带音素发音（assets/phonemes/*.mp3）
-                      '.mp3', '.m4a', '.ogg', '.oga', '.wav'}
+                      '.mp3', '.m4a', '.ogg', '.oga', '.wav',
+                      # 3D：恐龙等小工具自带 GLB 模型（assets/models/*.glb），
+                      #     不自带的话 zip 脱离宿主分发就只剩占位图
+                      '.glb'}
 
 
 def create_app():
