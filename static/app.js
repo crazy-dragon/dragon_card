@@ -512,114 +512,54 @@ function kindOptionsHtml(selected) {
     return html;
 }
 
-var TEMPLATE_API_MD = `# DragonCard Template Generator
+var TOOL_API_MD = `# 小工具（Tool）开发参考
 
-You generate JSON template files for DragonCard, a flashcard learning system.
+小工具 = 绑定到卡组的全屏 H5 zip 包（index.html + manifest.json + assets/）。
+进入卡组 = 打开工具；数据 / 进度 / 埋点通过 \`window.cardAPI\` 桥接。
 
-## Template File Format (JSON)
+> **开发工具请使用 skill：dragoncard-tool-builder**
+> \`dragoncard_tools/.skill/dragoncard-tool-builder/\`（SKILL.md + cardapi / manifest /
+> example 参考）；完整规范见 \`dragoncard_tools/TOOL_PACK.md\`。
 
-A template is a JSON file with these fields:
+## 工具结构
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| \`name\` | string | yes | Template display name |
-| \`lang\` | string | no | TTS language (BCP47: en/ja/zh), default en |
-| \`description\` | string | no | Short description |
-| \`cardHtml\` | string | yes | HTML skeleton with \`{{placeholder}}\` variables |
-| \`cardCss\` | string | yes | Card styles (plain CSS; Tailwind is not compiled here) |
-| \`cardJs\` | string | yes | JavaScript with \`window.cardTemplate\` (see below) |
-| \`sampleData\` | array | no | Example data items (array of objects) for preview |
-| \`trackedActions\` | array | no | Observability actions \`[{action,label}]\`, max 5 |
-
-### Example file
-
-\`\`\`json
-{
-  "name": "English Word Card",
-  "lang": "en",
-  "description": "English vocabulary card",
-  "cardHtml": "<div class=\"word-card\" data-card-id=\"{{id}}\">\\n  <div class=\"word-title\">{{data.word}}</div>\\n  <div class=\"word-phonetic\">{{data.phonetic}}</div>\\n</div>",
-  "cardCss": ".word-card { padding: 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--card-bg); }",
-  "cardJs": "(function () { 'use strict'; window.cardTemplate = { fields: [ { key: 'word', label: 'Word', hideable: true }, { key: 'def', label: 'Definition', hideable: true } ], render: function(cardHtml, cardData, api) { var data = cardData.data; var html = '<div class=\"word-card\" data-card-id=\"' + cardData.id + '\">'; html += '<div class=\"word-title\">' + (data.word || '') + '</div>'; html += '<div class=\"word-phonetic\">' + (data.phonetic || '') + '</div>'; return html; }, init: function(cardElement, cardData, api) { } }; })();",
-  "sampleData": [
-    { "word": "serendipity", "phonetic": "/ˌserənˈdɪpəti/", "def": "chance discovery", "examples": [] }
-  ],
-  "trackedActions": [
-    { "action": "audio_play", "label": "发音" },
-    { "action": "word_mark", "label": "标记" }
-  ]
-}
+\`\`\`
+my-tool/
+├── index.html     # 入口（必需）
+├── manifest.json  # 元信息
+└── assets/        # 自包含资源（css / js / 图片，不联网）
 \`\`\`
 
-**Tip:** Use \`\\n\` for newlines inside JSON strings, or escape quotes with \`\\"\`. For simpler escaping, use single quotes (\`'\`) in HTML/CSS/JS where possible.
+## manifest.json
 
-## \`window.cardTemplate\` Object (inside cardJs)
+| 字段 | 必填 | 说明 |
+|------|------|------|
+| name | 是 | 工具显示名 |
+| lang | 否 | TTS 语言（BCP47，默认 zh） |
+| description | 否 | 简介 |
+| fields | 否 | 卡片数据字段名列表 |
+| trackedActions | 否 | 埋点动作（≤5） |
+| icon | 否 | 工具图标（相对 assets 的路径） |
 
-\`\`\`js
-window.cardTemplate = {
-  fields: [
-    { key: 'word', label: 'Word', hideable: true },
-  ],
-  render: function(cardHtml, cardData, api) {
-    // Return HTML string for the card
-    return \`<div>...</div>\`;
-  },
-  init: function(cardElement, cardData, api) {
-    // Bind event listeners after card is in the DOM
-  },
-  update: function(cardElement, cardData, api) {
-    // Optional: partial update without re-render
-  }
-};
-\`\`\`
+## cardAPI（注入在工具 <head>）
 
-### \`fields\` Array (optional)
-Define fields to appear in the preview sidebar. Each item: \`{ key, label, hideable }\`.
+| 方法 | 说明 |
+|------|------|
+| getPage(page, size) | 分页取卡（含 is_unknown / is_favorite / current_order） |
+| mark(itemId, isUnknown) | 标记未知（true / false） |
+| favorite(itemId, fav) | 收藏 / 取消 |
+| track(action, itemId) | 埋点（**必须带 itemId**，用已声明动作） |
+| playAudio(text) | TTS 朗读 |
+| finish() | 结束 |
 
-### \`render(cardHtml, cardData, api) -> string\`
-Return the rendered HTML. \`cardHtml\` is the raw HTML skeleton from the template file. \`cardData\` contains the card data (see below).
+## 数据（cards.json）
 
-### \`init(cardElement, cardData, api)\`
-Called after card enters the DOM. \`cardElement\` is the root DOM element of the rendered card.
+- 对象数组，每条 \`{ item_order, data }\`；\`item_order\` 从 **1** 递增（导入覆盖键）
+- \`data\` 字段结构由工具定义（manifest.fields 约定）
 
-## \`cardData\` Object
+## 绑定
 
-| Field | Type | Description |
-|-------|------|-------------|
-| \`id\` | number | Database ID |
-| \`deck_id\` | number | Parent deck ID |
-| \`item_order\` | number | Original data order |
-| \`current_order\` | number | Current study order |
-| \`data\` | object | Your custom fields (e.g. \`data.word\`, \`data.phonetic\`) |
-| \`is_unknown\` | 0/1 | Marked unknown |
-| \`is_favorite\` | 0/1 | Favorited |
-
-## \`api\` Methods
-
-| Method | Description |
-|--------|-------------|
-| \`getCardData()\` | Returns the current card's data object |
-| \`getHiddenFields()\` | Returns Set of hidden field keys |
-| \`setHiddenFields(Set)\` | Replace hidden fields and re-render |
-| \`toggleMark()\` | Toggle unknown/mark status |
-| \`toggleFavorite()\` | Toggle favorite status |
-| \`isFavorite()\` | Returns boolean |
-| \`playAudio(text, lang?)\` | TTS via speechSynthesis; lang defaults to template lang |
-| \`rerender()\` | Re-render from template |
-| \`track(action)\` | Record action event (debounced 800ms) |
-| \`showTooltip(msg)\` / \`hideTooltip()\` | Show/hide tooltip near element |
-| \`confirmDialog(anchorEl, message, onConfirm)\` | Styled confirm popover near an element (callback on confirm) |
-
-## Styling Rules
-
-- Use **Tailwind utility classes** in cardHtml/cardJs (project loads the Tailwind Play CDN).
-  Do NOT use \`@apply\`/\`@tailwind\` inside cardCss — it is not compiled.
-- Prefer **project CSS variables** so dark mode works: \`var(--card-bg)\`, \`var(--ink)\`, \`var(--line)\`, \`var(--primary)\`. In Tailwind: \`bg-[var(--card-bg)]\`, \`text-[var(--ink)]\`.
-- Dark-only styles go in cardCss with the \`body.dark-mode .xxx\` prefix (Tailwind \`dark:\` follows the OS, not the app).
-- Use **Font Awesome** for icons (loaded globally): \`<i class="fa-solid fa-volume-high"></i>\` (play), \`fa-star\` (mark), \`fa-bookmark\` (favorite), \`fa-eye\` (toggle).
-- Font scale: \`calc(20px * var(--card-font-scale, 1))\`.
-- Max **5** \`data-action\` per template.
-`;
+管理卡组 → 上传 zip 绑定 / 重新上传 / 下载 / 解绑；进入卡组即打开工具。`;
 
 /* ===== Skin System =====
    default = light (no decor), dark = dark mode (no decor).
@@ -3089,7 +3029,7 @@ function setupEventListeners() {
         if (target.closest('#howto-btn')) {
             showModal('template-api');
             var el = $('#api-md-content');
-            if (el && !el.dataset.loaded) { el.textContent = TEMPLATE_API_MD; el.dataset.loaded = '1'; }
+            if (el && !el.dataset.loaded) { el.textContent = TOOL_API_MD; el.dataset.loaded = '1'; }
             return;
         }
         if (target.closest('#template-api-modal-close') || (target.closest('#template-api-modal') && !target.closest('.modal'))) {

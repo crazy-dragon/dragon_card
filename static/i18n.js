@@ -165,7 +165,7 @@
         'manage.renamed': '已改名',
         'manage.renameFailed': '改名失败',
         'manage.noDeck': 'Deck not found',
-        'manage.templateTitle': '模板 API 参考',
+        'manage.templateTitle': '小工具 API 参考',
         'manage.kindLabel': '类型',
         'manage.sub': '模版 · 描述',
 
@@ -449,7 +449,7 @@
         'manage.renamed': 'Renamed',
         'manage.renameFailed': 'Rename failed',
         'manage.noDeck': 'Deck not found',
-        'manage.templateTitle': 'Template API Reference',
+        'manage.templateTitle': 'Tool API Reference',
         'manage.kindLabel': 'Type',
         'manage.sub': 'Template · description',
 

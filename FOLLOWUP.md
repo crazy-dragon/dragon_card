@@ -6,27 +6,28 @@
 - [x] 备份项目到 `/Users/alfred/CodeBase/Python/dragoncard_backup/`，备份服务在 **5002**（独立 DB 快照，可回滚/对照）
 - [x] `Deck.tool_id`：卡组绑定一个 zip 工具（管理页上传 zip 绑定 / 解绑）
 - [x] 进入卡组 → 打开绑定工具（全屏新标签页）；未绑定 → 提示去管理页绑定
-- [x] 首页卡组卡片显示工具名 + 工具 icon（无 icon 用 kind 默认图标）
-- [x] `cardAPI.track(action, itemId)` 带 `deck_item_id`（工具埋点入库；模板埋点本就正常）
-- [x] 工具存储改文件系统 `minitools/<id>/`（DB 只存元数据 dir_path；重建 t_tool 表）；新增重新上传/下载；工具图标（无则默认）
-- [x] 主 dragoncard 提交：`434b1ce`
+- [x] 首页卡组卡片显示工具名 + 工具 icon（无 icon 用 kind 默认图标）+ 轮次（未轮回显示"尚未开始"）
+- [x] `cardAPI.track(action, itemId)` 带 `deck_item_id`（工具埋点入库）
+- [x] 工具存储改文件系统 `minitools/<id>/`（DB 只存元数据 dir_path）；新增重新上传/下载；工具图标（无则默认）
+- [x] 移除独立 tools 页与「用小工具打开」选择器（绑定=管理页上传 zip；进入卡组直接开工具）
+- [x] 备份 rsync 已 `--exclude='minitools'`（工具目录不随代码备份；工具重传即可）
+- [x] **默认卡组迁移**：default_cards 全部 19 个卡组已绑定工具（`tool.zip` + dist `cards.json` + meta 统一工具名）；`primary_english` 移往 `dragoncard_tools/primary-english/`（未提交），`exam_vocab`/`greek-latin-roots` 保留在工具源、不属 default_cards
+- [x] **seed_decks.py 工具化**：只导入 `tool.zip` 卡组（建 Deck + 绑工具 + 导数据），不再处理模板
+- [x] **文档清理**：删除 `TEMPLATE_PACK.md`、项目内 `.skill/minitool-zip-builder`（保留 `dragoncard_tools/.skill/dragoncard-tool-builder`）；`DB_relation.md` 更新为工具架构；程序内 HowTo 改为「小工具 API 参考」并指引 skill
 
 ## 待办（之后做）
 - [ ] **旧模板清理**：模板渲染路径已不用，`Template`/`DeckTemplate` 数据保留（迁移期）。确定工具稳定后：
-  - 清理 `templateEngine`/`createApiForCard`/`scopeTemplateCss` 等模板渲染代码
-  - 清理 `t_template`/`t_deck_template` 表（备份后）
+  - 清理 `templateEngine`/`createApiForCard`/`scopeTemplateCss` 等模板渲染代码（app.js）
+  - 清理 `t_template`/`t_deck_template` 表 + `t_deck.active_template_id`（备份后）
   - 清理 `/v1/templates/*`、`/v1/decks/:id/templates` 等路由
 - [ ] **study 视图移除**：`#study-view` HTML/CSS 保留但不再进入。稳定后删掉
   （`showStudyView`/`renderStudyPages`/`renderSingleCardStage`/`singleCardNav` 等）
-- [ ] **默认卡组迁移**：现有卡组逐个绑定工具（coca20000 → coca-cards 工具等）；未绑定工具前进入会提示
 - [ ] **卡组 icon**：当前显示工具 manifest 的 icon；如需卡组自定义 icon（emoji/URL），后续加 `Deck.icon` 字段 + 管理页输入
-- [x] 移除独立 tools 页与「用小工具打开」选择器（绑定=管理页上传 zip；进入卡组直接开工具）
 - [ ] **DB 备份**：替换期间主 DB 已变（绑定了 tool_id）。`backups/` 保留旧备份，必要时再快照
-- [x] 备份 rsync 已 `--exclude='minitools'`（工具目录不随代码备份；工具重传即可）
 - [ ] **dragoncard_tools 独立工程**：稳定后 `git init` 单独管理（build.py + 工具源码 + dist）
-- [ ] **种子/发行**：seed_decks.py 目前导模板；之后考虑打包工具随卡组分发
+- [ ] **README/README_zh**：整篇仍为模板时代描述（上传模板、TEMPLATE_PACK、`/v1/templates` 路由表），需改为工具时代
 
 ## 环境
 - 主服务：`5001`（`/Users/alfred/CodeBase/Python/dragoncard`）
 - 备份服务：`5002`（`/Users/alfred/CodeBase/Python/dragoncard_backup`）
-- 工具源码：`/Users/alfred/CodeBase/Python/dragoncard_tools`（build.py → dist/*.zip）
+- 工具源码：`/Users/alfred/CodeBase/Python/dragoncard_tools`（build.py → dist/*.zip；.skill/dragoncard-tool-builder）
