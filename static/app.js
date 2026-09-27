@@ -799,9 +799,15 @@ function renderDeckList(forceRefresh) {
                 html += '<span class="active-pill">' + t('home.active') + '</span>';
             }
 
-            /* Header: tool icon (if any) or kind icon + kind label + deck name */
+            /* Header: deck icon (custom) > tool icon > kind icon */
             html += '<div class="deck-header">';
-            if (deck.tool_icon) {
+            if (deck.icon) {
+                if (/^https?:\/\//i.test(deck.icon)) {
+                    html += '<div class="deck-icon" style="overflow:hidden;"><img src="' + escapeHtml(deck.icon) + '" alt="" style="width:100%;height:100%;object-fit:cover;"></div>';
+                } else {
+                    html += '<div class="deck-icon" style="background:' + kindMeta.bg + ';color:' + kindMeta.color + '">' + escapeHtml(deck.icon) + '</div>';
+                }
+            } else if (deck.tool_icon) {
                 html += '<div class="deck-icon" style="overflow:hidden;"><img src="' + escapeHtml(toolIconUrl(deck.tool_icon, deck.tool_id)) + '" alt="" style="width:100%;height:100%;object-fit:cover;"></div>';
             } else {
                 html += '<div class="deck-icon" style="background:' + kindMeta.bg + ';color:' + kindMeta.color + '">' + kindMeta.icon + '</div>';
@@ -2223,6 +2229,26 @@ function statsSetView(view) {
 /* ===== Management Modal ===== */
 var _manageDeckId = null;
 
+function applyMmIcon(icon, kindMeta) {
+    var el = document.getElementById('mm-icon');
+    if (!el) return;
+    if (icon) {
+        if (/^https?:\/\//i.test(icon)) {
+            el.innerHTML = '<img src="' + escapeHtml(icon) + '" alt="" style="width:100%;height:100%;object-fit:cover;">';
+            el.style.background = 'none';
+            el.style.color = '';
+        } else {
+            el.innerHTML = escapeHtml(icon);
+            el.style.background = kindMeta.bg;
+            el.style.color = kindMeta.color;
+        }
+    } else {
+        el.innerHTML = kindMeta.icon;
+        el.style.background = kindMeta.bg;
+        el.style.color = kindMeta.color;
+    }
+}
+
 function openManageModal(deckId) {
     _manageDeckId = deckId;
     fetch('/v1/decks/' + deckId).then(function (r) { return r.json(); }).then(function (d) {
@@ -2230,12 +2256,31 @@ function openManageModal(deckId) {
         var deck = d.deck;
         var kindMeta = getKindMeta(deck.kind);
 
-        document.getElementById('mm-icon').innerHTML = kindMeta.icon;
-        document.getElementById('mm-icon').style.background = kindMeta.bg;
-        document.getElementById('mm-icon').style.color = kindMeta.color;
+        applyMmIcon(deck.icon, kindMeta);
         document.getElementById('mm-name').textContent = deck.name;
         document.getElementById('mm-intro').textContent = deck.tool_description || deck.template_description || '';
         renderMmData(deck);
+
+        var iconInput = document.getElementById('mm-icon-input');
+        if (iconInput) {
+            iconInput.value = deck.icon || '';
+            iconInput.onchange = function () {
+                var v = this.value.trim();
+                fetch('/v1/decks/' + _manageDeckId, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ icon: v })
+                }).then(function (r) { return r.json(); }).then(function (res) {
+                    if (res.success) {
+                        showToast(t('kind.updated'));
+                        renderDeckList(true);
+                        applyMmIcon(res.deck.icon, getKindMeta(res.deck.kind));
+                    } else {
+                        showToast(res.error || t('kind.updateFailed'), true);
+                    }
+                }).catch(function () { showToast(t('kind.updateFailed'), true); });
+            };
+        }
 
         var kindSel = document.getElementById('mm-kind-select');
         if (kindSel) {
@@ -2253,12 +2298,8 @@ function openManageModal(deckId) {
                         showToast(t('kind.updated'));
                         renderDeckList(true);
                         var km = getKindMeta(val);
-                        var iconEl = document.getElementById('mm-icon');
-                        if (iconEl) {
-                            iconEl.innerHTML = km.icon;
-                            iconEl.style.background = km.bg;
-                            iconEl.style.color = km.color;
-                        }
+                        var iconInput2 = document.getElementById('mm-icon-input');
+                        applyMmIcon(iconInput2 ? iconInput2.value : '', km);
                     } else {
                         showToast(d.error || t('kind.updateFailed'), true);
                         this.value = d.deck && d.deck.kind || 'other';

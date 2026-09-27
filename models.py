@@ -78,6 +78,7 @@ class Deck(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
     name = db.Column(db.String(100), nullable=False)
     kind = db.Column(db.String(20), nullable=False, default='other')
+    icon = db.Column(db.String(255), nullable=True)
     active_template_id = db.Column(db.Integer, db.ForeignKey('t_template.id'), nullable=True)
     tool_id = db.Column(db.Integer, db.ForeignKey('t_tool.id'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -122,6 +123,7 @@ class Deck(db.Model):
             'user_id': self.user_id,
             'name': self.name,
             'kind': self.kind or 'other',
+            'icon': self.icon,
             'active_template_id': self.active_template_id,
             'template_name': active_t.name if active_t else None,
             'template_description': active_t.description if active_t else None,

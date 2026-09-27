@@ -62,6 +62,9 @@ def _migrate_schema():
     if 'kind' not in deck_cols:
         db.session.execute(db.text("ALTER TABLE t_deck ADD COLUMN kind VARCHAR(20) DEFAULT 'other'"))
         db.session.commit()
+    if 'icon' not in deck_cols:
+        db.session.execute(db.text('ALTER TABLE t_deck ADD COLUMN icon VARCHAR(255)'))
+        db.session.commit()
     if 'description' in deck_cols:
         db.session.execute(db.text('ALTER TABLE t_deck DROP COLUMN description'))
         db.session.commit()
@@ -710,6 +713,9 @@ def update_deck(deck_id):
         if kind not in DECK_KINDS:
             return jsonify({'error': f'Invalid kind: {kind}'}), 400
         d.kind = kind
+    if 'icon' in data:
+        icon = (data['icon'] or '').strip()
+        d.icon = icon[:255] or None
     db.session.commit()
     return jsonify({'success': True, 'deck': d.to_dict()})
 
