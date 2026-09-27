@@ -1,9 +1,10 @@
 {
   "name": "Reading Card 阅读卡组",
-  "description": "Flashcard-style reading: original on front, Chinese translation on flip. 闪卡式阅读：正面原文，翻面看翻译。",
+  "description": "3 chapters from The Wind in the Willows (Kenneth Grahame), English original with Chinese translation. Companion web tool renders long-form reading cards with an in-card Original / Side-by-side / Translation switch; the speaker button reads the English text aloud, tapping the translation reads the Chinese. 3 章《柳林风声》节选（英文原文 + 中文译文）；配套小工具提供长文阅读卡，卡内「原文/对照/译文」三段切换，喇叭键读英文原文，点译文读中文。",
   "version": "1.0.0",
   "author": "Alfred Long",
   "email": "alfred.long@qq.com",
   "license": "DragonCard Data License v1.0",
-  "updated": "2026-08-15"
+  "updated": "2026-09-27",
+  "tool": "english-reading"
 }
