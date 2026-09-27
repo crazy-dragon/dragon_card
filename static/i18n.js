@@ -167,8 +167,6 @@
         'manage.noDeck': 'Deck not found',
         'manage.templateTitle': '小工具 API 参考',
         'manage.kindLabel': '类型',
-        'manage.iconLabel': '图标',
-        'manage.iconPlaceholder': 'emoji 或图片 URL',
         'manage.sub': '模版 · 描述',
 
         /* 卡片操作 */
@@ -453,8 +451,6 @@
         'manage.noDeck': 'Deck not found',
         'manage.templateTitle': 'Tool API Reference',
         'manage.kindLabel': 'Type',
-        'manage.iconLabel': 'Icon',
-        'manage.iconPlaceholder': 'emoji or image URL',
         'manage.sub': 'Template · description',
 
         /* 卡片操作 */
