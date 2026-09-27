@@ -1,5 +1,5 @@
 {
-  "name": "三十六计卡组（古朴版）",
+  "name": "三十六计 · 36 Stratagems",
   "name_en": "36 Stratagems (Classical)",
   "description": "36 张计策卡 + 6 张总览卡。中文版含原文/释义/典故/现代应用；英文版含 Source/Meaning/Story/Reflection。支持翻面、朗读、标记、收藏。",
   "count": 42,
@@ -14,5 +14,6 @@
     "cards_en.json",
     "preview.html",
     "preview_en.html"
-  ]
+  ],
+  "tool": "stratagems-36"
 }

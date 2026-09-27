@@ -1,10 +1,11 @@
 {
-  "name": "英语不规则动词 · English Irregular Verbs",
-  "description": "200 个不规则动词，按五型分组，含过去式/过去分词与例句。",
+  "name": "英语不规则动词 · Irregular Verbs",
+  "description": "200 个不规则动词按五型分组（AAA 26 / AAB 1 / ABA 4 / ABB 85 / ABC 84），含例句；配套小工具提供五型筛选、自测模式（藏过去式/过去分词）、例句朗读。",
   "version": "1.0.0",
   "author": "Alfred Long",
   "email": "alfred.long@qq.com",
   "source": "自编整理",
   "license": "DragonCard Data License v1.0",
-  "updated": "2026-09-05"
+  "updated": "2026-09-27",
+  "tool": "english-irregular-verbs"
 }

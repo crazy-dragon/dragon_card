@@ -1,10 +1,11 @@
 {
-  "name": "汉字部首 214 · Chinese Radicals",
-  "description": "214 个部首（含引导卡），面向 HSK 学习者，常用部首靠前，含变体、例字与 HSK 标注。",
+  "name": "汉字部首 · Chinese Radicals 214",
+  "description": "214 个部首（常用在前），含变体、中英义类、例字与 HSK 标注；配套小工具提供部首表（按笔画分档）+ 卡片两种视图与笔顺演示。",
   "version": "1.0.0",
   "author": "Alfred Long",
   "email": "alfred.long@qq.com",
   "source": "自编整理",
   "license": "DragonCard Data License v1.0",
-  "updated": "2026-09-05"
+  "updated": "2026-09-27",
+  "tool": "chinese-radicals"
 }
