@@ -20,12 +20,13 @@
   - 清理 `templateEngine`/`createApiForCard`/`scopeTemplateCss` 等模板渲染代码（app.js）
   - 清理 `t_template`/`t_deck_template` 表 + `t_deck.active_template_id`（备份后）
   - 清理 `/v1/templates/*`、`/v1/decks/:id/templates` 等路由
-- [ ] **study 视图移除**：`#study-view` HTML/CSS 保留但不再进入。稳定后删掉
-  （`showStudyView`/`renderStudyPages`/`renderSingleCardStage`/`singleCardNav` 等）
-- [ ] **卡组 icon**：当前显示工具 manifest 的 icon；如需卡组自定义 icon（emoji/URL），后续加 `Deck.icon` 字段 + 管理页输入
-- [ ] **DB 备份**：替换期间主 DB 已变（绑定了 tool_id）。`backups/` 保留旧备份，必要时再快照
-- [ ] **dragoncard_tools 独立工程**：稳定后 `git init` 单独管理（build.py + 工具源码 + dist）
-- [ ] **README/README_zh**：整篇仍为模板时代描述（上传模板、TEMPLATE_PACK、`/v1/templates` 路由表），需改为工具时代
+- [x] **study 视图移除**：`#study-view` 整块已删（HTML/CSS/JS），含 catalogue/tabs/单卡/3D/相关监听
+  （`e9c68b0`）
+- [x] **卡组 icon**：从工具 `assets/icon.png`（/svg/jpg/webp）自动检测，替换文件重传即更新；无则默认
+  （`7321699` 回退 Deck.icon 输入，改为 assets 自动检测）
+- [x] **DB 备份**：已快照到 `backups/dragon_card_20260928_000942.db`
+- [x] **dragoncard_tools 独立工程**：已 `git init`（工具源码在 `tools/` 子目录，忽略 dist/_preview/phonemes）
+- [x] **README/README_zh**：已改为工具时代（zip 工具 + cardAPI + `/v1/tools`）
 
 ## 环境
 - 主服务：`5001`（`/Users/alfred/CodeBase/Python/dragoncard`）
