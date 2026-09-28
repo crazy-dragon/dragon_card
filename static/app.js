@@ -671,12 +671,7 @@ function toggleLang() {
     updateLangBtn();
     renderSagesPop();
     /* Re-render current view so dynamic text updates */
-    if (state.mode === 'study') {
-        if (state.activeTab && state.activeTab.startsWith('s')) renderStudyPage(parseInt(state.activeTab.slice(1)));
-        renderTabs();
-    } else {
-        renderDeckList();
-    }
+    renderDeckList();
     /* Refresh achievements page if visible (reloads data, avoids undefined) */
     var achPage = document.getElementById('ph-achievements');
     if (achPage && achPage.classList.contains('visible')) {
@@ -707,17 +702,8 @@ function updateLangBtn() {
 /* ===== View Switching ===== */
 function showDeckView() {
     state.mode = 'decks';
-    document.body.classList.remove('study-mode');
     $('#home-panel').style.display = 'flex';
-    $('#study-view').style.display = 'none';
     renderDeckList();
-}
-
-function showStudyView() {
-    state.mode = 'study';
-    document.body.classList.add('study-mode');
-    $('#home-panel').style.display = 'none';
-    $('#study-view').style.display = 'flex';
 }
 
 /* ===== Deck List (blue theme home page) ===== */
@@ -891,7 +877,6 @@ function enterDeck(deckId) {
         if (!d.success) { showToast('Deck not found', true); return; }
         state.currentDeck = d.deck;
         state.templateId = d.deck.active_template_id;
-        $('#study-deck-title').textContent = d.deck.name;
 
         /* 表现与数据分离：卡组绑定工具 → 打开工具（全屏新 tab）；未绑定 → 提示 */
         if (d.deck.tool_id) {
@@ -915,23 +900,7 @@ function loadInfo() {
                 .then(function (r) { return r.json(); })
                 .then(function (d) { state.markedPages = d.marked_pages_count || 0; });
         })
-        .then(function () { renderCatalogue(); updateStatsText(); });
-}
-
-function loadPage(pageNum) {
-    if (state.cards[pageNum]) return Promise.resolve(state.cards[pageNum]);
-    return fetch('/v1/learn/page?user_id=' + state.userId + '&deck_id=' + state.deckId + '&page=' + pageNum + '&page_size=100')
-        .then(function (r) { return r.json(); })
-        .then(function (d) {
-            state.cards[pageNum] = d.cards.map(function (c) {
-                c._pageNum = pageNum;
-                c.template_id = c.template_id || state.templateId;
-                c._showAnswer = false;
-                if (c.data && c.data.examples) c.data.examples.forEach(function (e) { e._show = false; });
-                return c;
-            });
-            return state.cards[pageNum];
-        });
+        .then(function () { updateStatsText(); });
 }
 
 /* ===== Init ===== */
@@ -950,555 +919,6 @@ function initApp() {
     initSages();
 
     /* Templates are uploaded later inside the deck management modal */
-}
-
-/* ===== Catalogue / Tabs / Pages ===== */
-function renderCatalogue() {
-    var container = $('#catalogue-grid');
-    if (!container) return;
-    if (!state.deckId) { container.innerHTML = ''; return; }
-    if (!state.templateId) {
-        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--unknown);">' +
-            '&#x26A0;&#xFE0F; This deck has no template. Go to Manage to add one.</div>';
-        return;
-    }
-    if (state.totalPages === 0) {
-        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--ink-3);">' +
-            'No data yet. Go to Manage to import data for this deck.</div>';
-        return;
-    }
-    var html = '';
-    for (var i = 1; i <= state.totalPages; i++) {
-        var marked = i <= state.markedPages;
-        html += '<button class="page-btn ' + (marked ? 'marked' : 'mastered') + '" data-page="' + i + '">' + String(i).padStart(3, '0') + '</button>';
-    }
-    container.innerHTML = html;
-}
-
-function renderTabs() {
-    var container = $('#study-tabs-container');
-    if (!container) return;
-    var studyTabs = state.tabs.filter(function (t) { return t.type === 'study'; }).map(function (t) {
-        var isActive = state.activeTab === t.id;
-        var isReview = t.pageNum > state.markedPages;
-        var tabClass = isReview ? 'review-tab' : 'study-tab';
-        return '<div class="tab-item ' + tabClass + ' ' + (isActive ? 'active' : '') + '" data-tab="' + t.id + '"><span>' + t.title + '</span><button class="tab-close-btn" data-tab-id="' + t.id + '" data-tooltip="Finish this page">&times;</button></div>';
-    }).join('');
-    container.innerHTML = studyTabs;
-    // Sync sidebar brand button
-    var brandBtn = $('#sidebar-home-btn');
-    if (brandBtn) brandBtn.classList.toggle('active', state.activeTab === 'catalogue');
-}
-
-function renderStudyPage(pageNum) {
-    var container = $('#study-' + pageNum);
-    if (!container) return;
-    var cards = state.cards[pageNum] || [];
-    if (cards.length === 0) {
-        container.innerHTML = '<div class="empty-state" style="padding:60px 20px;">No cards on this page.</div>';
-        return;
-    }
-    var firstEnter = !state.enteredPages.has(pageNum);
-    if (firstEnter) state.enteredPages.add(pageNum);
-    return loadPage(pageNum).then(function () {
-        if (state.singleCardMode && pageNum === currentStudyPageNum()) {
-            renderSingleCardStage(pageNum);
-            return;
-        }
-        var htmlArr = [];
-        cards.forEach(function (card, idx) {
-            if (firstEnter) htmlArr.push('<div class="enter" style="animation-delay:' + (idx * 28) + 'ms;">');
-            htmlArr.push(templateEngine.renderCard(card, ''));
-            if (firstEnter) htmlArr.push('</div>');
-        });
-        container.innerHTML = htmlArr.join('');
-        container.querySelectorAll('[data-card-id]:not(button)').forEach(function (el, idx) {
-            if (cards[idx]) templateEngine.initCard(el, cards[idx]);
-        });
-    });
-}
-
-/* ===== Single-Card Mode ===== */
-function currentStudyPageNum() {
-    if (state.activeTab && state.activeTab.charAt(0) === 's') {
-        var n = parseInt(state.activeTab.slice(1));
-        return isNaN(n) ? null : n;
-    }
-    return null;
-}
-
-function resetSingleCardMode() {
-    state.singleCardMode = false;
-    state._singleCard3D = false;
-    threeRenderer.dispose();
-    var btn = $('#card-view-btn');
-    if (btn) btn.classList.remove('active');
-}
-
-function toggleSingleCardMode() {
-    var pn = currentStudyPageNum();
-    if (pn == null) { showToast('Open a page first', true); return; }
-    state.singleCardMode = !state.singleCardMode;
-    var btn = $('#card-view-btn');
-    if (btn) btn.classList.toggle('active', state.singleCardMode);
-    if (state.singleCardMode) {
-        state.singleCardIndex = 0;
-        var cards = state.cards[pn] || [];
-        if (!cards.length) {
-            loadPage(pn).then(function () { renderSingleCardStage(pn); });
-        } else {
-            renderSingleCardStage(pn);
-        }
-    } else {
-        renderStudyPage(pn);
-    }
-}
-
-function renderSingleCardStage(pageNum) {
-    var container = $('#study-' + pageNum);
-    if (!container) return;
-    var cards = state.cards[pageNum] || [];
-    if (!cards.length) {
-        container.innerHTML = '<div class="empty-state" style="padding:60px 20px;">No cards on this page.</div>';
-        return;
-    }
-    var prevSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg>';
-    var nextSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
-    container.innerHTML =
-        '<div class="single-card-stage">' +
-            '<div class="sc-main">' +
-                '<div class="sc-card-wrap" id="sc-card-wrap"></div>' +
-            '</div>' +
-            '<div class="sc-nav-col">' +
-                '<button class="sc-nav sc-prev" data-sc="prev" data-tooltip="' + t('study.prev') + '" aria-label="Previous card">' + prevSvg + '</button>' +
-                '<div class="sc-progress"><span id="sc-idx">1</span> / ' + cards.length + '</div>' +
-                '<button class="sc-nav sc-next" data-sc="next" data-tooltip="' + t('study.next') + '" aria-label="Next card">' + nextSvg + '</button>' +
-                '<button class="sc-3d-btn" id="sc-3d-btn" data-sc-3d data-tooltip="3D 预览" style="display:none;"><i class="fa-solid fa-cube"></i></button>' +
-            '</div>' +
-        '</div>';
-    renderSingleCardContent(pageNum, state.singleCardIndex, false);
-}
-
-function renderSingleCardContent(pageNum, idx, animate) {
-    var cards = state.cards[pageNum] || [];
-    if (!cards.length) return;
-    if (idx < 0) idx = cards.length - 1;
-    if (idx >= cards.length) idx = 0;
-    state.singleCardIndex = idx;
-    var wrap = $('#sc-card-wrap');
-    if (!wrap) return;
-    var card = cards[idx];
-
-    /* Show/hide 3D preview button based on current card having a model */
-    var btn3d = $('#sc-3d-btn');
-    if (btn3d) {
-        btn3d.style.display = cardHasModel(card) ? '' : 'none';
-        btn3d.classList.remove('active');
-    }
-    state._singleCard3D = false;
-
-    wrap.innerHTML = templateEngine.renderCard(card, '');
-    var el = wrap.querySelector('[data-card-id]:not(button)');
-    if (el) templateEngine.initCard(el, card);
-    var idxEl = $('#sc-idx');
-    if (idxEl) idxEl.textContent = idx + 1;
-    if (animate) {
-        var animTarget = el || wrap;
-        animTarget.classList.remove('sc-anim');
-        void animTarget.offsetWidth;
-        animTarget.classList.add('sc-anim');
-    }
-}
-
-/* Whether a card data contains a 3D model field */
-function cardHasModel(card) {
-    if (!card || !card.data) return false;
-    var d = card.data;
-    return (typeof d.model === 'string' && d.model) || (typeof d.url === 'string' && d.url);
-}
-
-function singleCardNav(delta) {
-    var pn = currentStudyPageNum();
-    if (pn == null) return;
-    var cards = state.cards[pn] || [];
-    if (!cards.length) return;
-    var newIdx = state.singleCardIndex + delta;
-    if (newIdx < 0) newIdx = cards.length - 1;
-    if (newIdx >= cards.length) newIdx = 0;
-    state.singleCardIndex = newIdx;
-    var card = cards[newIdx];
-
-    var wrap = $('#sc-card-wrap');
-    if (!wrap) return;
-
-    /* If currently in 3D preview, keep 3D mode and load the new card's model */
-    if (state._singleCard3D) {
-        var btn3d = $('#sc-3d-btn');
-        if (btn3d) btn3d.style.display = cardHasModel(card) ? '' : 'none';
-        var idxEl = $('#sc-idx');
-        if (idxEl) idxEl.textContent = newIdx + 1;
-        if (cardHasModel(card)) {
-            /* Keep the existing 3D container/canvas in the DOM; just swap the model.
-               Removing the canvas (via innerHTML) loses the WebGL context and leaves a blank view. */
-            var sc3d = document.getElementById('sc-3d-wrap');
-            if (!sc3d) {
-                wrap.innerHTML = '<div class="sc-3d-wrap" id="sc-3d-wrap"></div>';
-                sc3d = document.getElementById('sc-3d-wrap');
-            }
-            var modelUrl = card.data.model || card.data.url;
-            threeRenderer.loadInto(sc3d, modelUrl);
-        } else {
-            /* New card has no model: exit 3D back to text card */
-            state._singleCard3D = false;
-            if (btn3d) btn3d.classList.remove('active');
-            threeRenderer.dispose();
-            renderSingleCardContent(pn, newIdx, true);
-        }
-        return;
-    }
-
-    renderSingleCardContent(pn, newIdx, true);
-}
-
-/* Toggle 3D preview inside single-card wrap */
-function toggleSingleCard3D() {
-    var pn = currentStudyPageNum();
-    if (pn == null) return;
-    var wrap = $('#sc-card-wrap');
-    var btn = $('#sc-3d-btn');
-    if (!wrap || !btn) return;
-    var cards = state.cards[pn] || [];
-    var card = cards[state.singleCardIndex];
-    if (!cardHasModel(card)) return;
-
-    if (state._singleCard3D) {
-        /* Back to card view */
-        state._singleCard3D = false;
-        btn.classList.remove('active');
-        threeRenderer.dispose();
-        renderSingleCardContent(pn, state.singleCardIndex, false);
-        return;
-    }
-
-    /* Show 3D */
-    state._singleCard3D = true;
-    btn.classList.add('active');
-    wrap.innerHTML = '<div class="sc-3d-wrap" id="sc-3d-wrap"></div>';
-    var modelUrl = card.data.model || card.data.url;
-    threeRenderer.loadInto($('#sc-3d-wrap'), modelUrl);
-}
-
-/* ===== Three.js renderer (lazy loaded via ES modules) ===== */
-var threeRenderer = {
-    ready: false,
-    THREE: null,
-    GLTFLoader: null,
-    renderer: null,
-    scene: null,
-    camera: null,
-    model: null,
-    animId: null,
-    container: null,
-    currentUrl: null,
-    autoRotate: true,
-    _rotX: 0,
-    _rotY: 0,
-    _zoom: 8,
-
-    /* Load three + GLTFLoader once (ES module dynamic import) */
-    load: function () {
-        var self = this;
-        if (this.ready) return Promise.resolve(true);
-        return Promise.all([
-            import('three'),
-            import('three/addons/loaders/GLTFLoader.js')
-        ]).then(function (mods) {
-            self.THREE = mods[0];
-            self.GLTFLoader = mods[1].GLTFLoader;
-            self.ready = true;
-            return true;
-        }).catch(function (e) {
-            console.error('three load failed', e);
-            return false;
-        });
-    },
-
-    loadInto: function (container, url) {
-        var self = this;
-        this.container = container;
-        this.currentUrl = url;
-        this._loadSeq = (this._loadSeq || 0) + 1;
-        var seq = this._loadSeq;
-        this.load().then(function (ok) {
-            if (seq !== self._loadSeq) return; /* stale request */
-            if (!ok) { container.innerHTML = '<div class="sc-3d-err">Three.js load failed</div>'; return; }
-            if (!self.renderer) {
-                self._init();
-            } else {
-                /* Reuse renderer: move existing canvas into the new container */
-                if (!self.renderer.domElement.parentNode) container.appendChild(self.renderer.domElement);
-                /* Wait one frame so the fresh container has its real size */
-                requestAnimationFrame(function () {
-                    if (seq !== self._loadSeq) return;
-                    self._resize();
-                });
-            }
-            self._loadModel(url, seq);
-        });
-    },
-
-    _resize: function () {
-        if (!this.renderer || !this.container) return;
-        var w = this.container.clientWidth || 600;
-        var h = this.container.clientHeight || 400;
-        this.renderer.setSize(w, h);
-        if (this.camera) {
-            this.camera.aspect = w / h;
-            this.camera.updateProjectionMatrix();
-        }
-    },
-
-    _init: function () {
-        var container = this.container;
-        var w = container.clientWidth || 600;
-        var h = container.clientHeight || 400;
-        this.renderer = new this.THREE.WebGLRenderer({ antialias: true, alpha: true });
-        this.renderer.setSize(w, h);
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        container.appendChild(this.renderer.domElement);
-
-        this.scene = new this.THREE.Scene();
-        this.camera = new this.THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
-        this.camera.position.set(0, 1.2, 4.2);
-        this.camera.lookAt(0, 0, 0);
-        this._zoom = 4.2;
-
-        var ambient = new this.THREE.AmbientLight(0xffffff, 0.6);
-        this.scene.add(ambient);
-        var dir = new this.THREE.DirectionalLight(0xffffff, 0.9);
-        dir.position.set(5, 10, 7);
-        this.scene.add(dir);
-        var dir2 = new this.THREE.DirectionalLight(0xffffff, 0.3);
-        dir2.position.set(-5, -3, -5);
-        this.scene.add(dir2);
-
-        this._setupControls();
-        this.animId = requestAnimationFrame(this._animate.bind(this));
-        if (!this._resizeBound) {
-            this._onResizeHandler = this._onResize.bind(this);
-            window.addEventListener('resize', this._onResizeHandler);
-            this._resizeBound = true;
-        }
-    },
-
-    _setupControls: function () {
-        var self = this;
-        var isDragging = false;
-        var prevX = 0, prevY = 0;
-        var dom = this.renderer.domElement;
-
-        dom.addEventListener('mousedown', function (e) {
-            isDragging = true;
-            self.autoRotate = false;
-            prevX = e.clientX; prevY = e.clientY;
-            dom.style.cursor = 'grabbing';
-        });
-        window.addEventListener('mouseup', function () {
-            if (isDragging) { isDragging = false; dom.style.cursor = 'grab'; }
-        });
-        dom.addEventListener('mousemove', function (e) {
-            if (!isDragging || !self.model) return;
-            var dx = e.clientX - prevX;
-            var dy = e.clientY - prevY;
-            prevX = e.clientX; prevY = e.clientY;
-            self._rotY += dx * 0.01;
-            self._rotX += dy * 0.01;
-            self._rotX = Math.max(-1.5, Math.min(1.5, self._rotX));
-            self.model.rotation.y = self._rotY;
-            self.model.rotation.x = self._rotX;
-        });
-        dom.addEventListener('wheel', function (e) {
-            e.preventDefault();
-            self._zoom += e.deltaY * 0.005;
-            self._zoom = Math.max(2, Math.min(20, self._zoom));
-        }, { passive: false });
-        dom.style.cursor = 'grab';
-    },
-
-    _loadModel: function (url, seq) {
-        var self = this;
-        if (this.model) { this.scene.remove(this.model); this.model = null; }
-        var loader = new this.GLTFLoader();
-        loader.load(url, function (gltf) {
-            if (seq !== self._loadSeq) return; /* stale request */
-            self.model = gltf.scene || gltf.scenes[0];
-            var box = new self.THREE.Box3().setFromObject(self.model);
-            var size = box.getSize(new self.THREE.Vector3());
-            var maxDim = Math.max(size.x, size.y, size.z);
-            var scale = maxDim > 0 ? 3.2 / maxDim : 1;
-            self.model.scale.setScalar(scale);
-            var center = box.getCenter(new self.THREE.Vector3());
-            self.model.position.sub(center);
-            self.scene.add(self.model);
-            self.model.rotation.y = self._rotY;
-            self.model.rotation.x = self._rotX;
-        }, undefined, function (err) {
-            if (seq !== self._loadSeq) return;
-            console.error('model load error', err);
-            if (self.container) self.container.innerHTML = '<div class="sc-3d-err">Failed to load model</div>';
-        });
-    },
-
-    _animate: function () {
-        if (!this.renderer) return;
-        if (this.model && this.autoRotate) this.model.rotation.y += 0.004;
-        this.camera.position.z = this._zoom;
-        this.camera.lookAt(0, 0, 0);
-        this.renderer.render(this.scene, this.camera);
-        this.animId = requestAnimationFrame(this._animate.bind(this));
-    },
-
-    _onResize: function () {
-        if (!this.renderer || !this.container) return;
-        this._resize();
-    },
-
-    dispose: function () {
-        if (this.animId) cancelAnimationFrame(this.animId);
-        this.animId = null;
-        if (this._resizeBound && this._onResizeHandler) {
-            window.removeEventListener('resize', this._onResizeHandler);
-            this._resizeBound = false;
-            this._onResizeHandler = null;
-        }
-        if (this.renderer) {
-            this.renderer.dispose();
-            if (this.renderer.domElement && this.renderer.domElement.parentNode) {
-                this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
-            }
-            this.renderer = null;
-        }
-        this.scene = null;
-        this.camera = null;
-        this.model = null;
-        this.container = null;
-        this.currentUrl = null;
-        this.autoRotate = true;
-        this._rotX = 0; this._rotY = 0; this._zoom = 4.2;
-        this._loadSeq = (this._loadSeq || 0) + 1;
-    }
-};
-
-function renderStudyPages() {
-    var container = $('#study-pages-container');
-    if (!container) return;
-    var existing = {};
-    container.querySelectorAll('.study-page').forEach(function (el) { existing[el.dataset.tabId] = el; });
-    var tabs = state.tabs.filter(function (t) { return t.type === 'study'; });
-    var html = '';
-    tabs.forEach(function (t) {
-        if (existing[t.id]) {
-            existing[t.id].style.display = state.activeTab === t.id ? 'block' : 'none';
-        } else {
-            html += '<div class="study-page" data-tab-id="' + t.id + '" style="display:' + (state.activeTab === t.id ? 'block' : 'none') + '"><div id="study-' + t.pageNum + '"></div></div>';
-        }
-    });
-    Object.keys(existing).forEach(function (id) {
-        if (!tabs.find(function (t) { return t.id === id; })) existing[id].remove();
-    });
-    if (html) container.insertAdjacentHTML('beforeend', html);
-    if (state.activeTab && state.activeTab.startsWith('s')) {
-        var pageNum = parseInt(state.activeTab.slice(1));
-        loadPage(pageNum).then(function () { renderStudyPage(pageNum); });
-    }
-}
-
-function renderContent() {
-    var catalogue = $('#catalogue-view');
-    var studyPages = $$('.study-page');
-    if (state.activeTab === 'catalogue') {
-        catalogue.style.display = 'block';
-        studyPages.forEach(function (el) { el.style.display = 'none'; });
-    } else {
-        catalogue.style.display = 'none';
-        studyPages.forEach(function (el) {
-            el.style.display = el.dataset.tabId === state.activeTab ? 'block' : 'none';
-        });
-    }
-}
-
-function openPage(n) {
-    var existing = state.tabs.find(function (t) { return t.type === 'study' && t.pageNum === n; });
-    if (existing) {
-        var tabEl = document.querySelector('[data-tab="' + existing.id + '"]');
-        if (tabEl) { tabEl.classList.add('shake'); setTimeout(function () { tabEl.classList.remove('shake'); }, 300); }
-        return;
-    }
-    state.tabs.push({ id: 's' + n, type: 'study', title: 'P' + String(n).padStart(3, '0'), pageNum: n });
-    state.tabs.sort(function (a, b) { return a.pageNum - b.pageNum; });
-    saveOpenTabs();
-    renderTabs();
-    renderStudyPages();
-}
-
-/* Mobile: jump straight into single-card study for a page. */
-function openMobilePage(n) {
-    if (!state.tabs.find(function (t) { return t.type === 'study' && t.pageNum === n; })) {
-        state.tabs.push({ id: 's' + n, type: 'study', title: 'P' + String(n).padStart(3, '0'), pageNum: n });
-        state.tabs.sort(function (a, b) { return a.pageNum - b.pageNum; });
-        saveOpenTabs();
-    }
-    state.activeTab = 's' + n;
-    renderTabs();
-    renderStudyPages();
-    renderContent();
-    state.singleCardMode = true;
-    state.singleCardIndex = 0;
-    var btn = $('#card-view-btn');
-    if (btn) btn.classList.add('active');
-    var cards = state.cards[n] || [];
-    var loadOk = cards.length ? Promise.resolve(cards) : loadPage(n);
-    loadOk.then(function () { renderSingleCardStage(n); });
-}
-
-function closeTab(id) {
-    state.tabs = state.tabs.filter(function (t) { return t.id !== id; });
-    saveOpenTabs();
-    if (state.activeTab === id) state.activeTab = 'catalogue';
-    renderTabs();
-    renderStudyPages();
-    renderContent();
-}
-
-function setActiveTab(id) {
-    state.activeTab = id;
-    renderTabs();
-    renderContent();
-    if (id.startsWith('s')) {
-        var pageNum = parseInt(id.slice(1));
-        loadPage(pageNum).then(function () { renderStudyPage(pageNum); });
-    }
-}
-
-function saveOpenTabs() {
-    if (!state.deckId) return;
-    localStorage.setItem('dc-open-tabs-' + state.deckId, JSON.stringify(state.tabs.filter(function (t) { return t.type === 'study'; }).map(function (t) { return t.pageNum; })));
-}
-
-function restoreOpenTabs() {
-    if (!state.deckId) return;
-    var saved = localStorage.getItem('dc-open-tabs-' + state.deckId);
-    if (saved) {
-        try {
-            var pages = JSON.parse(saved);
-            pages.forEach(function (n) {
-                if (!state.tabs.find(function (t) { return t.type === 'study' && t.pageNum === n; })) {
-                    state.tabs.push({ id: 's' + n, type: 'study', title: 'P' + String(n).padStart(3, '0'), pageNum: n });
-                }
-            });
-            state.tabs.sort(function (a, b) { return a.pageNum - b.pageNum; });
-        } catch (e) {}
-    }
 }
 
 /* ===== Stats ===== */
@@ -2425,26 +1845,6 @@ function unbindToolFromDeck(deckId) {
     }).catch(function () { showToast(t('common.loadFailed'), true); });
 }
 
-function setActiveMmTemplate(deckId, templateId) {
-    fetch('/v1/decks/' + deckId + '/active-template', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ template_id: templateId })
-    }).then(function (r) { return r.json(); }).then(function (d) {
-        if (d.success) {
-            showToast(t('manage.setActive'));
-            if (_manageDeckId == deckId) openManageModal(deckId);
-            renderDeckList(true);
-            if (state.deckId == deckId) {
-                state.templateId = templateId;
-                templateEngine.loadTemplate(templateId).then(function () {
-                    state.cards = {}; renderStudyPages(); loadInfo();
-                });
-            }
-        } else { showToast(d.error || 'Failed', true); }
-    }).catch(function () { showToast('Failed', true); });
-}
-
 /* ===== Create Deck (with kind picker + template select) ===== */
 var _newDeckKind = 'other';
 
@@ -2521,7 +1921,7 @@ function doUploadDeckData(deckId, anchorEl) {
                     if (d.success) {
                         showToast(t('manage.imported', { n: d.count }));
                         openManageModal(deckId);
-                        if (state.deckId == deckId) { state.cards = {}; loadInfo(); renderCatalogue(); }
+                        if (state.deckId == deckId) { state.cards = {}; loadInfo(); }
                     } else { showToast(d.error || t('toast.importFailed'), true); }
                 }).catch(function () { showToast(t('toast.importFailed'), true); });
             };
@@ -2640,20 +2040,6 @@ function doReorder(deckId) {
     input.oninput = function () {
         confirmBtn.disabled = this.value.trim() !== '广修万劫证吾道心';
     };
-}
-
-/* ===== Back to Home ===== */
- function goHomeFromStudy() {
-    resetSingleCardMode();
-    state.deckId = null;
-    state.templateId = null;
-    state.currentDeck = null;
-    state.cards = {};
-    state.tabs = [];
-    state.activeTab = 'catalogue';
-    state.enteredPages = new Set();
-    showDeckView();
-    switchGlobalPage('home');
 }
 
 /* ===== Popover Confirm (small near-button confirmation) ===== */
@@ -2845,51 +2231,6 @@ function setupEventListeners() {
             return;
         }
 
-        /* Back button (study -> home) */
-        if (target.closest('#study-back-btn')) {
-            if (isMobile()) {
-                /* Mobile: minimal flow. Step back from single-card to the page
-                   list, then straight home on the next tap (no confirm dialog). */
-                if (state.singleCardMode) {
-                    resetSingleCardMode();
-                    state.activeTab = 'catalogue';
-                    renderContent();
-                } else {
-                    goHomeFromStudy();
-                }
-                return;
-            }
-            if (state.mode === 'study') {
-                showPopoverConfirm(target.closest('#study-back-btn'), t('toast.returnHome'), goHomeFromStudy);
-            } else {
-                goHomeFromStudy();
-            }
-            return;
-        }
-
-        /* Sidebar DragonCard -> catalogue tab */
-        if (target.closest('#sidebar-home-btn')) {
-            setActiveTab('catalogue');
-            return;
-        }
-
-        /* Scroll to top / bottom */
-        if (target.closest('#scroll-top-btn')) {
-            var scroller = $('.study-scroll');
-            if (scroller) scroller.scrollTop = 0;
-            return;
-        }
-        if (target.closest('#scroll-bottom-btn')) {
-            var scroller = $('.study-scroll');
-            if (scroller) scroller.scrollTop = scroller.scrollHeight;
-            return;
-        }
-
-        /* Single-card mode toggle + navigation */
-        if (target.closest('#card-view-btn')) { toggleSingleCardMode(); return; }
-        if (target.closest('[data-sc="prev"]')) { singleCardNav(-1); return; }
-        if (target.closest('[data-sc="next"]')) { singleCardNav(1); return; }
-        if (target.closest('[data-sc-3d]')) { toggleSingleCard3D(); return; }
 
         /* New Deck (home page) */
         if (target.closest('#new-deck-btn')) { doCreateDeck(); return; }
@@ -3063,11 +2404,6 @@ function setupEventListeners() {
             var pts = document.getElementById('dc-template-script');
             if (pts) pts.remove();
             hideModal('preview');
-            if (state.templateId && state.deckId) {
-                templateEngine.loadTemplate(state.templateId).then(function () {
-                    if (state.activeTab && state.activeTab.startsWith('s')) { state.cards = {}; renderStudyPages(); }
-                });
-            }
             return;
         }
 
@@ -3098,7 +2434,7 @@ function setupEventListeners() {
                 hideModal('goagain');
                 showToast(t('reorder.success'));
                 state.cards = {}; state.tabs = []; state.activeTab = 'catalogue'; state.enteredPages = new Set();
-                renderTabs(); renderStudyPages(); renderContent(); loadInfo();
+                loadInfo();
             }).catch(function () { showToast(t('reorder.failed'), true); })
             .finally(function () { btn.disabled = false; btn.textContent = t('common.confirm'); });
             return;
@@ -3110,69 +2446,7 @@ function setupEventListeners() {
             return;
         }
 
-        /* Catalogue page click */
-        if (target.closest('.page-btn')) {
-            var page = parseInt(target.closest('.page-btn').dataset.page);
-            if (isMobile()) {
-                openMobilePage(page);
-            } else {
-                var alreadyOpen = state.tabs.find(function (t) { return t.type === 'study' && t.pageNum === page; });
-                if (alreadyOpen) {
-                    var tabEl = document.querySelector('[data-tab="' + alreadyOpen.id + '"]');
-                    if (tabEl) { tabEl.classList.add('shake'); setTimeout(function () { tabEl.classList.remove('shake'); }, 300); }
-                } else {
-                    openPage(page);
-                }
-            }
-            return;
-        }
-
-        /* Tab click */
-        if (target.closest('.tab-item') && !target.closest('.tab-close-btn')) {
-            var tabId = target.closest('.tab-item').dataset.tab;
-            if (state.activeTab === tabId) {
-                var el = target.closest('.tab-item');
-                el.classList.add('shake');
-                setTimeout(function () { el.classList.remove('shake'); }, 300);
-            } else {
-                setActiveTab(tabId);
-            }
-            return;
-        }
-
-        /* Tab close */
-        if (target.closest('.tab-close-btn')) {
-            showFinishModal(target.closest('.tab-close-btn').dataset.tabId);
-            return;
-        }
-
-        /* Font scale */
-        if (target.closest('#font-settings-btn')) {
-            var drawer = $('#font-drawer');
-            var btn = target.closest('#font-settings-btn');
-            var rect = btn.getBoundingClientRect();
-            drawer.style.top = (rect.bottom + 8) + 'px';
-            drawer.style.left = (rect.left + rect.width / 2) + 'px';
-            drawer.style.transform = 'translateX(-50%)';
-            drawer.style.display = drawer.style.display === 'none' ? 'block' : 'none';
-            return;
-        }
-        if (target.closest('#font-size-minus')) { state.fontSize = Math.max(0.8, Math.round((state.fontSize - 0.1) * 10) / 10); applyCardFont(); return; }
-        if (target.closest('#font-size-plus')) { state.fontSize = Math.min(1.8, Math.round((state.fontSize + 0.1) * 10) / 10); applyCardFont(); return; }
-        if (target.closest('#reset-fonts')) { state.fontSize = 1; applyCardFont(); return; }
-
-        /* Refresh stats */
-        if (target.closest('#refresh-stats')) {
-            if (!state._refreshLock) {
-                state._refreshLock = true;
-                loadInfo();
-                showToast('Stats refreshed');
-                setTimeout(function () { state._refreshLock = false; }, 1000);
-            }
-            return;
-        }
-
-        /* Skin selector */
+                                                /* Skin selector */
         if (target.closest('#dark-theme-btn')) {
             toggleSkinDropdown();
             return;
@@ -3218,7 +2492,6 @@ function setupEventListeners() {
         if (target.closest('#modal-finish-confirm')) {
             hideModal('finish');
             audioFeedback.playSuccess();
-            closeTab(state._closingTabId);
             loadInfo();
             return;
         }
@@ -3321,36 +2594,6 @@ function setupEventListeners() {
     document.addEventListener('mousedown', function () { hideTip(); });
     window.addEventListener('scroll', function () { hideTip(); }, true);
 
-    /* Keyboard navigation for single-card mode */
-    document.addEventListener('keydown', function (e) {
-        if (!state.singleCardMode) return;
-        var pn = currentStudyPageNum();
-        if (pn == null) return;
-        if (e.key === 'ArrowLeft') { e.preventDefault(); singleCardNav(-1); }
-        else if (e.key === 'ArrowRight') { e.preventDefault(); singleCardNav(1); }
-        else if (e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); singleCardNav(1); }
-        else if (e.key === 'Escape') { toggleSingleCardMode(); }
-    });
-
-    /* Swipe to navigate cards in single-card mode (mobile) */
-    var _touchStartX = null, _touchStartY = null;
-    document.addEventListener('touchstart', function (e) {
-        if (!isMobile() || !state.singleCardMode) return;
-        if (e.touches.length !== 1) return;
-        var t = e.touches[0];
-        _touchStartX = t.clientX; _touchStartY = t.clientY;
-    }, { passive: true });
-    document.addEventListener('touchend', function (e) {
-        if (_touchStartX == null || !isMobile() || !state.singleCardMode) return;
-        var t = e.changedTouches && e.changedTouches[0];
-        if (!t) return;
-        var dx = t.clientX - _touchStartX;
-        var dy = t.clientY - _touchStartY;
-        _touchStartX = null; _touchStartY = null;
-        /* Require horizontal intent and a decent swipe distance */
-        if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
-        singleCardNav(dx < 0 ? 1 : -1);
-    }, { passive: true });
 }
 
 /* ===== Finish Modal ===== */
