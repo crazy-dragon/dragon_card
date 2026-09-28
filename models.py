@@ -23,54 +23,6 @@ class User(db.Model):
         }
 
 
-class Template(db.Model):
-    __tablename__ = 't_template'
-
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=True)
-    name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text)
-    lang = db.Column(db.String(10), nullable=False, default='en')
-    card_html = db.Column(db.Text, nullable=False, default='')
-    card_css = db.Column(db.Text, nullable=False, default='')
-    card_js = db.Column(db.Text, nullable=False, default='')
-    sample_data = db.Column(db.Text)
-    tracked_actions = db.Column(db.Text)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    user = db.relationship('User', backref='templates')
-
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'user_id': self.user_id,
-            'name': self.name,
-            'description': self.description,
-            'lang': self.lang or 'en',
-            'tracked_actions': self.get_tracked_actions(),
-            'created_at': self.created_at.isoformat() if self.created_at else None,
-        }
-
-    def get_tracked_actions(self):
-        if not self.tracked_actions:
-            return []
-        try:
-            return json.loads(self.tracked_actions)
-        except (json.JSONDecodeError, TypeError):
-            return []
-
-    def to_dict_full(self):
-        d = self.to_dict()
-        d.update({
-            'card_html': self.card_html,
-            'card_css': self.card_css,
-            'card_js': self.card_js,
-            'sample_data': self.sample_data,
-        })
-        return d
-
-
 class Deck(db.Model):
     __tablename__ = 't_deck'
 
@@ -78,24 +30,18 @@ class Deck(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
     name = db.Column(db.String(100), nullable=False)
     kind = db.Column(db.String(20), nullable=False, default='other')
-    active_template_id = db.Column(db.Integer, db.ForeignKey('t_template.id'), nullable=True)
     tool_id = db.Column(db.Integer, db.ForeignKey('t_tool.id'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = db.relationship('User', backref='decks')
-    active_template = db.relationship('Template', foreign_keys=[active_template_id])
     tool = db.relationship('Tool', foreign_keys=[tool_id])
-    deck_templates = db.relationship('DeckTemplate', backref='deck', cascade='all, delete-orphan')
 
     def to_dict(self):
         # COUNT instead of len(deck_items) to avoid loading all card rows.
         item_count = db.session.query(db.func.count(DeckItem.id)).filter(
             DeckItem.deck_id == self.id
         ).scalar() or 0
-        active_t = self.active_template
-        t_list = sorted(self.deck_templates, key=lambda r: r.sort_order)
-
         unknown_count = 0
         mastered_count = 0
         round_count = 0
@@ -122,16 +68,11 @@ class Deck(db.Model):
             'user_id': self.user_id,
             'name': self.name,
             'kind': self.kind or 'other',
-            'active_template_id': self.active_template_id,
-            'template_name': active_t.name if active_t else None,
-            'template_description': active_t.description if active_t else None,
             'tool_id': self.tool_id,
             'tool_name': self.tool.name if self.tool else None,
             'tool_icon': self.tool.icon if self.tool else None,
             'tool_description': self.tool.description if self.tool else None,
-            'templates': [{'id': r.template_id, 'name': r.template.name} for r in t_list if r.template],
             'item_count': item_count,
-            'has_template': self.active_template_id is not None,
             'has_tool': self.tool_id is not None,
             'has_data': item_count > 0,
             'created_at': self.created_at.isoformat() if self.created_at else None,
@@ -139,14 +80,6 @@ class Deck(db.Model):
             'mastered_count': mastered_count,
             'round_count': round_count,
         }
-
-
-class DeckTemplate(db.Model):
-    __tablename__ = 't_deck_template'
-    deck_id = db.Column(db.Integer, db.ForeignKey('t_deck.id'), primary_key=True)
-    template_id = db.Column(db.Integer, db.ForeignKey('t_template.id'), primary_key=True)
-    sort_order = db.Column(db.Integer, default=0)
-    template = db.relationship('Template')
 
 
 class DeckItem(db.Model):
@@ -234,7 +167,6 @@ class LearningEvent(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
     deck_id = db.Column(db.Integer, db.ForeignKey('t_deck.id'), nullable=False)
     deck_item_id = db.Column(db.Integer, db.ForeignKey('t_deck_item.id'), nullable=False)
-    template_id = db.Column(db.Integer, db.ForeignKey('t_template.id'), nullable=True)
     action = db.Column(db.String(50), nullable=False)
     # 本地时间：/v1/observability/* 的"某一天"边界用的是本地时间（datetime.now），
     # 若这里存 UTC，凌晨 0-8 点（东八区）的埋点会被算到前一天。
@@ -246,7 +178,6 @@ class LearningEvent(db.Model):
             'user_id': self.user_id,
             'deck_id': self.deck_id,
             'deck_item_id': self.deck_item_id,
-            'template_id': self.template_id,
             'action': self.action,
             'created_at': self.created_at.isoformat() if self.created_at else None,
         }

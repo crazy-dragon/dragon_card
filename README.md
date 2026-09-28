@@ -138,7 +138,7 @@ DragonCard doesn't decide what cards look like or how they behave — the bound 
 ```
 dragoncard/
 ├── app.py                     # Flask entry + all API routes (auto-creates tables + default user)
-├── models.py                  # SQLAlchemy models (9 tables)
+├── models.py                  # SQLAlchemy models (7 tables)
 ├── config.py                  # Configuration
 ├── seed_decks.py              # Import bundled free decks (tool.zip + cards.json)
 ├── requirements.txt

@@ -6,7 +6,7 @@ import re
 import zipfile
 from datetime import datetime
 from flask import Flask, request, jsonify, render_template, send_file, Response
-from models import db, User, Template, Deck, DeckTemplate, DeckItem, Progress, StudyRound, LearningEvent, Tool
+from models import db, User, Deck, DeckItem, Progress, StudyRound, LearningEvent, Tool
 from config import Config
 
 MAX_ACTIONS = 5
@@ -47,11 +47,7 @@ def _migrate_schema():
     tables = inspector.get_table_names()
 
     if 't_deck' not in tables:
-        db.session.execute(db.text('CREATE TABLE t_deck (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL REFERENCES t_user(id), name VARCHAR(100) NOT NULL, kind VARCHAR(20) DEFAULT \'other\', active_template_id INTEGER REFERENCES t_template(id), created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP)'))
-        db.session.commit()
-
-    if 't_deck_template' not in tables:
-        db.session.execute(db.text('CREATE TABLE t_deck_template (deck_id INTEGER NOT NULL REFERENCES t_deck(id), template_id INTEGER NOT NULL REFERENCES t_template(id), sort_order INTEGER DEFAULT 0, PRIMARY KEY (deck_id, template_id))'))
+        db.session.execute(db.text('CREATE TABLE t_deck (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL REFERENCES t_user(id), name VARCHAR(100) NOT NULL, kind VARCHAR(20) DEFAULT \'other\', created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP)'))
         db.session.commit()
 
     if 't_deck_item' not in tables:
@@ -65,18 +61,41 @@ def _migrate_schema():
     if 'description' in deck_cols:
         db.session.execute(db.text('ALTER TABLE t_deck DROP COLUMN description'))
         db.session.commit()
-
-    tmpl_cols = [c['name'] for c in inspector.get_columns('t_template')]
-    if 'tracked_actions' not in tmpl_cols:
-        db.session.execute(db.text('ALTER TABLE t_template ADD COLUMN tracked_actions TEXT'))
+    if 'active_template_id' in deck_cols:
+        # SQLite 不支持 DROP 外键列 → 重建 t_deck（无 active_template_id）
+        db.session.execute(db.text("PRAGMA foreign_keys=OFF"))
+        db.session.execute(db.text('CREATE TABLE t_deck_new (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL REFERENCES t_user(id), name VARCHAR(100) NOT NULL, kind VARCHAR(20) DEFAULT \'other\', tool_id INTEGER REFERENCES t_tool(id), created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP)'))
+        db.session.execute(db.text('INSERT INTO t_deck_new (id, user_id, name, kind, tool_id, created_at, updated_at) SELECT id, user_id, name, kind, tool_id, created_at, updated_at FROM t_deck'))
+        db.session.execute(db.text('DROP TABLE t_deck'))
+        db.session.execute(db.text('ALTER TABLE t_deck_new RENAME TO t_deck'))
+        db.session.execute(db.text("PRAGMA foreign_keys=ON"))
         db.session.commit()
-    if 'lang' not in tmpl_cols:
-        db.session.execute(db.text("ALTER TABLE t_template ADD COLUMN lang VARCHAR(10) DEFAULT 'en'"))
+
+    # 模板时代遗留表清理（备份后）：t_template / t_deck_template 已废弃。
+    if 't_template' in tables:
+        db.session.execute(db.text("PRAGMA foreign_keys=OFF"))
+        db.session.execute(db.text('DROP TABLE IF EXISTS t_deck_template'))
+        db.session.execute(db.text('DROP TABLE IF EXISTS t_template'))
+        db.session.execute(db.text("PRAGMA foreign_keys=ON"))
+        db.session.commit()
+    elif 't_deck_template' in tables:
+        db.session.execute(db.text('DROP TABLE IF EXISTS t_deck_template'))
         db.session.commit()
 
     user_cols = [c['name'] for c in inspector.get_columns('t_user')]
     if 'display_name' not in user_cols:
         db.session.execute(db.text('ALTER TABLE t_user ADD COLUMN display_name VARCHAR(100)'))
+        db.session.commit()
+
+    ev_cols = [c['name'] for c in inspector.get_columns('t_learning_event')] if 't_learning_event' in tables else []
+    if 'template_id' in ev_cols:
+        # SQLite 不支持 DROP 外键列 → 重建 t_learning_event（无 template_id）
+        db.session.execute(db.text("PRAGMA foreign_keys=OFF"))
+        db.session.execute(db.text('CREATE TABLE t_learning_event_new (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL REFERENCES t_user(id), deck_id INTEGER NOT NULL REFERENCES t_deck(id), deck_item_id INTEGER NOT NULL REFERENCES t_deck_item(id), action VARCHAR(50) NOT NULL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)'))
+        db.session.execute(db.text('INSERT INTO t_learning_event_new (id, user_id, deck_id, deck_item_id, action, created_at) SELECT id, user_id, deck_id, deck_item_id, action, created_at FROM t_learning_event'))
+        db.session.execute(db.text('DROP TABLE t_learning_event'))
+        db.session.execute(db.text('ALTER TABLE t_learning_event_new RENAME TO t_learning_event'))
+        db.session.execute(db.text("PRAGMA foreign_keys=ON"))
         db.session.commit()
 
     # t_tool：文件系统存储（minitools/<id>/），DB 只存元数据。
@@ -148,209 +167,6 @@ def update_user(user_id):
 
 
 # ==================== Template ====================
-
-def _count_template_actions(js_text):
-    """Count distinct data-action values in card_html + card_js."""
-    actions = set()
-    for m in re.finditer(r'data-action=["\']([^"\']+)["\']', js_text):
-        actions.add(m.group(1))
-    return len(actions)
-
-
-@app.route('/v1/templates', methods=['GET'])
-def list_templates():
-    user_id = request.args.get('user_id', type=int)
-    q = Template.query
-    if user_id:
-        q = q.filter((Template.user_id == user_id) | (Template.user_id.is_(None)))
-    templates = q.all()
-    return jsonify({'success': True, 'templates': [t.to_dict() for t in templates]})
-
-
-@app.route('/v1/templates', methods=['POST'])
-def create_template():
-    data = request.get_json()
-    t = Template(
-        user_id=data.get('user_id'),
-        name=data.get('name', ''),
-        description=data.get('description', ''),
-        lang=data.get('lang', 'en') or 'en',
-        card_html=data.get('card_html', ''),
-        card_css=data.get('card_css', ''),
-        card_js=data.get('card_js', ''),
-    )
-    db.session.add(t)
-    db.session.commit()
-    return jsonify({'success': True, 'template': t.to_dict()}), 201
-
-
-@app.route('/v1/templates/<int:template_id>', methods=['GET'])
-def get_template(template_id):
-    t = db.session.get(Template, template_id)
-    if not t:
-        return jsonify({'error': 'Template not found'}), 404
-    return jsonify({'success': True, 'template': t.to_dict_full()})
-
-
-@app.route('/v1/templates/<int:template_id>', methods=['PUT'])
-def update_template(template_id):
-    t = db.session.get(Template, template_id)
-    if not t:
-        return jsonify({'error': 'Template not found'}), 404
-    data = request.get_json()
-    for field in ('name', 'description', 'lang', 'card_html', 'card_css', 'card_js', 'sample_data', 'tracked_actions'):
-        if field in data:
-            setattr(t, field, data[field])
-    db.session.commit()
-    return jsonify({'success': True, 'template': t.to_dict()})
-
-
-@app.route('/v1/templates/<int:template_id>', methods=['DELETE'])
-def delete_template(template_id):
-    t = db.session.get(Template, template_id)
-    if not t:
-        return jsonify({'error': 'Template not found'}), 404
-
-    backup_dir = os.path.join(os.path.dirname(__file__), 'backups', 'templates')
-    os.makedirs(backup_dir, exist_ok=True)
-    backup_path = os.path.join(backup_dir, f'{t.name}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json')
-    with open(backup_path, 'w', encoding='utf-8') as f:
-        json.dump(t.to_dict_full(), f, ensure_ascii=False, indent=2)
-
-    Deck.query.filter_by(active_template_id=template_id).update({'active_template_id': None})
-    DeckTemplate.query.filter_by(template_id=template_id).delete()
-    db.session.delete(t)
-    db.session.commit()
-    return jsonify({'success': True, 'backup': backup_path})
-
-
-def _auto_complete_tracked_actions(card_js, tracked_actions):
-    """Ensure every api.track('action') call is declared in tracked_actions.
-
-    Auto-appends any action referenced in cardJs that isn't already declared,
-    so statistics can always show every recorded event. Returns the updated
-    tracked_actions JSON string."""
-    if not card_js:
-        return tracked_actions
-
-    declared = set()
-    try:
-        existing = json.loads(tracked_actions) if tracked_actions else []
-        if not isinstance(existing, list):
-            existing = []
-    except (json.JSONDecodeError, TypeError):
-        existing = []
-    for item in existing:
-        if isinstance(item, dict) and item.get('action'):
-            declared.add(item['action'])
-        elif isinstance(item, str):
-            declared.add(item)
-
-    referenced = set()
-    for m in re.finditer(r'\.track\(\s*["\']([^"\']+)["\']', card_js):
-        referenced.add(m.group(1))
-
-    missing = [a for a in sorted(referenced) if a not in declared]
-    if not missing:
-        return tracked_actions
-
-    for a in missing:
-        existing.append({'action': a, 'label': a})
-    return json.dumps(existing, ensure_ascii=False)
-
-
-def _parse_template(text):
-    """Parse a JSON-format template file."""
-    data = json.loads(text.strip())
-    sample_data = None
-    if 'sampleData' in data:
-        sample_data = json.dumps(data['sampleData'], ensure_ascii=False)
-    tracked = data.get('trackedActions', [])
-    if isinstance(tracked, list):
-        tracked_actions = json.dumps(tracked, ensure_ascii=False)
-    else:
-        tracked_actions = ''
-    card_js = data.get('cardJs', '')
-    tracked_actions = _auto_complete_tracked_actions(card_js, tracked_actions)
-    return {
-        'name': data.get('name', ''),
-        'description': data.get('description', ''),
-        'lang': data.get('lang', 'en') or 'en',
-        'cardHtml': data.get('cardHtml', ''),
-        'cardCss': data.get('cardCss', ''),
-        'cardJs': card_js,
-        'sampleData': sample_data or '',
-        'trackedActions': tracked_actions,
-    }
-
-
-@app.route('/v1/templates/import', methods=['POST'])
-def import_template():
-    data = request.get_json()
-    text = data.get('content', '')
-    if not text:
-        return jsonify({'error': 'No template content'}), 400
-
-    parsed = _parse_template(text)
-    if not parsed['name']:
-        return jsonify({'error': 'Invalid template format: name not found'}), 400
-
-    # Validate action count
-    action_count = _count_template_actions(parsed['cardHtml'] + parsed['cardJs'])
-    if action_count > MAX_ACTIONS:
-        return jsonify({
-            'error': f'Template has {action_count} actions, maximum is {MAX_ACTIONS}'
-        }), 400
-
-    sample_data_raw = parsed.get('sampleData', '').strip()
-    if sample_data_raw:
-        try:
-            json.loads(sample_data_raw)
-        except json.JSONDecodeError:
-            return jsonify({'error': 'Invalid JSON in ==sampleData== section'}), 400
-
-    t = Template(
-        user_id=data.get('user_id'),
-        name=parsed['name'],
-        description=parsed['description'],
-        lang=parsed.get('lang', 'en') or 'en',
-        card_html=parsed['cardHtml'],
-        card_css=parsed['cardCss'],
-        card_js=parsed['cardJs'],
-        sample_data=sample_data_raw or None,
-        tracked_actions=parsed.get('trackedActions', ''),
-    )
-    db.session.add(t)
-    db.session.commit()
-    return jsonify({'success': True, 'template': t.to_dict()}), 201
-
-
-@app.route('/v1/templates/<int:template_id>/export')
-def export_template(template_id):
-    t = db.session.get(Template, template_id)
-    if not t:
-        return jsonify({'error': 'Template not found'}), 404
-
-    data = {
-        'name': t.name,
-        'description': t.description or '',
-        'lang': t.lang or 'en',
-        'cardHtml': t.card_html,
-        'cardCss': t.card_css,
-        'cardJs': t.card_js,
-    }
-    if t.sample_data:
-        try:
-            data['sampleData'] = json.loads(t.sample_data)
-        except json.JSONDecodeError:
-            pass
-
-    return jsonify({
-        'success': True,
-        'name': t.name + '.json',
-        'content': json.dumps(data, ensure_ascii=False, indent=2)
-    })
-
 
 # ==================== Tool (zip 小工具) ====================
 
@@ -821,148 +637,6 @@ def export_deck_data(deck_id):
     })
 
 
-@app.route('/v1/decks/<int:deck_id>/templates', methods=['POST'])
-def upload_deck_template(deck_id):
-    """Add (or replace) a template for a deck. Max 3."""
-    d = db.session.get(Deck, deck_id)
-    if not d:
-        return jsonify({'error': 'Deck not found'}), 404
-
-    data = request.get_json()
-    text = data.get('content', '')
-    if not text:
-        return jsonify({'error': 'No template content'}), 400
-
-    parsed = _parse_template(text)
-    if not parsed['name']:
-        return jsonify({'error': 'Invalid template format: name not found'}), 400
-
-    sample_data_raw = parsed.get('sampleData', '').strip()
-    if sample_data_raw:
-        try:
-            json.loads(sample_data_raw)
-        except json.JSONDecodeError:
-            return jsonify({'error': 'Invalid JSON in sampleData'}), 400
-
-    action_count = _count_template_actions(parsed['cardHtml'] + parsed['cardJs'])
-    if action_count > MAX_ACTIONS:
-        return jsonify({'error': f'Template has {action_count} actions, maximum is {MAX_ACTIONS}'}), 400
-
-    replace_id = data.get('replace_template_id')
-
-    if replace_id:
-        t = db.session.get(Template, replace_id)
-        if not t:
-            return jsonify({'error': 'Template not found'}), 404
-        if not DeckTemplate.query.filter_by(deck_id=deck_id, template_id=replace_id).first():
-            return jsonify({'error': 'Template not linked to this deck'}), 400
-        t.name = parsed['name']
-        t.description = parsed['description']
-        t.lang = parsed.get('lang', 'en') or 'en'
-        t.card_html = parsed['cardHtml']
-        t.card_css = parsed['cardCss']
-        t.card_js = parsed['cardJs']
-        t.sample_data = sample_data_raw or None
-        t.tracked_actions = parsed.get('trackedActions', '')
-    else:
-        existing = DeckTemplate.query.filter_by(deck_id=deck_id).count()
-        if existing >= 3:
-            return jsonify({'error': 'Maximum 3 templates per deck'}), 400
-        t = Template(
-            user_id=d.user_id,
-            name=parsed['name'],
-            description=parsed['description'],
-            lang=parsed.get('lang', 'en') or 'en',
-            card_html=parsed['cardHtml'],
-            card_css=parsed['cardCss'],
-            card_js=parsed['cardJs'],
-            sample_data=sample_data_raw or None,
-            tracked_actions=parsed.get('trackedActions', ''),
-        )
-        db.session.add(t)
-        db.session.flush()
-        ct = DeckTemplate(deck_id=deck_id, template_id=t.id, sort_order=existing)
-        db.session.add(ct)
-        if not d.active_template_id:
-            d.active_template_id = t.id
-
-    d.active_template_id = t.id
-    db.session.commit()
-    return jsonify({'success': True, 'template': t.to_dict(), 'deck': d.to_dict()})
-
-
-@app.route('/v1/decks/<int:deck_id>/preview')
-def preview_deck(deck_id):
-    """Preview a deck's template with its first data item. Optional ?template_id=N."""
-    d = db.session.get(Deck, deck_id)
-    if not d:
-        return jsonify({'error': 'Deck not found'}), 404
-    tid = request.args.get('template_id', type=int) or d.active_template_id
-    if not tid:
-        return jsonify({'error': 'No template assigned to this deck'}), 400
-    t = db.session.get(Template, tid)
-    if not t:
-        return jsonify({'error': 'Template not found'}), 404
-
-    item = DeckItem.query.filter_by(deck_id=deck_id).order_by(DeckItem.item_order).first()
-    sample_item = item.to_dict() if item else None
-
-    if not sample_item and t.sample_data:
-        try:
-            import json
-            sample_list = json.loads(t.sample_data)
-            if sample_list:
-                sample_item = {'id': 0, 'deck_id': deck_id, 'data': sample_list[0], 'is_unknown': 0, 'is_favorite': 0, 'item_order': 1, 'current_order': 1}
-        except (json.JSONDecodeError, TypeError, IndexError):
-            pass
-
-    return jsonify({
-        'success': True,
-        'template': t.to_dict_full(),
-        'sample_card': sample_item,
-    })
-
-
-@app.route('/v1/decks/<int:deck_id>/templates', methods=['GET'])
-def list_deck_templates(deck_id):
-    d = db.session.get(Deck, deck_id)
-    if not d:
-        return jsonify({'error': 'Deck not found'}), 404
-    return jsonify({'success': True, 'templates': d.to_dict()['templates']})
-
-
-@app.route('/v1/decks/<int:deck_id>/active-template', methods=['PUT'])
-def set_active_deck_template(deck_id):
-    d = db.session.get(Deck, deck_id)
-    if not d:
-        return jsonify({'error': 'Deck not found'}), 404
-    data = request.get_json()
-    tid = data.get('template_id')
-    if not tid:
-        return jsonify({'error': 'template_id required'}), 400
-    if not DeckTemplate.query.filter_by(deck_id=deck_id, template_id=tid).first():
-        return jsonify({'error': 'Template not linked to this deck'}), 400
-    d.active_template_id = tid
-    db.session.commit()
-    return jsonify({'success': True, 'deck': d.to_dict()})
-
-
-@app.route('/v1/decks/<int:deck_id>/templates/<int:template_id>', methods=['DELETE'])
-def remove_deck_template(deck_id, template_id):
-    d = db.session.get(Deck, deck_id)
-    if not d:
-        return jsonify({'error': 'Deck not found'}), 404
-    dt = DeckTemplate.query.filter_by(deck_id=deck_id, template_id=template_id).first()
-    if not dt:
-        return jsonify({'error': 'Template not linked to this deck'}), 400
-    db.session.delete(dt)
-    if d.active_template_id == template_id:
-        remaining = DeckTemplate.query.filter_by(deck_id=deck_id).order_by(DeckTemplate.sort_order).all()
-        d.active_template_id = remaining[0].template_id if remaining else None
-    db.session.commit()
-    return jsonify({'success': True, 'deck': d.to_dict()})
-
-
 # ==================== DeckItem (data entries) ====================
 
 @app.route('/v1/decks/<int:deck_id>/items', methods=['GET'])
@@ -1363,7 +1037,6 @@ def record_event():
     deck_id = data.get('deck_id')
     deck_item_id = data.get('deck_item_id')
     action = data.get('action')
-    template_id = data.get('template_id')
 
     if not all([user_id, deck_id, deck_item_id, action]):
         return jsonify({'error': 'user_id, deck_id, deck_item_id, action required'}), 400
@@ -1372,7 +1045,7 @@ def record_event():
 
     event = LearningEvent(
         user_id=user_id, deck_id=deck_id, deck_item_id=deck_item_id,
-        template_id=template_id, action=action.strip(),
+        action=action.strip(),
     )
     db.session.add(event)
     db.session.commit()
@@ -1389,14 +1062,13 @@ def record_events_batch():
         deck_id = e.get('deck_id')
         deck_item_id = e.get('deck_item_id')
         action = e.get('action')
-        template_id = e.get('template_id')
         tool_id = e.get('tool_id')
         if not _check_tool_deck_binding(deck_id, tool_id):
             continue  # 工具未绑定该卡组：丢弃该事件
         if all([user_id, deck_id, deck_item_id, action]) and isinstance(action, str) and action.strip():
             db.session.add(LearningEvent(
                 user_id=user_id, deck_id=deck_id, deck_item_id=deck_item_id,
-                template_id=template_id, action=action.strip(),
+                action=action.strip(),
             ))
             count += 1
     db.session.commit()
@@ -1405,27 +1077,14 @@ def record_events_batch():
 
 @app.route('/v1/observability/actions')
 def get_observability_actions():
-    """Return action types from template definition, falling back to distinct DB events."""
+    """Return action types from the bound tool's trackedActions, falling back to distinct DB events."""
     deck_id = request.args.get('deck_id', type=int)
-    template_id = request.args.get('template_id', type=int)
 
     if deck_id:
         d = db.session.get(Deck, deck_id)
-        if d:
-            tid = d.active_template_id
-            if tid:
-                t = db.session.get(Template, tid)
-                if t and t.tracked_actions:
-                    try:
-                        actions = json.loads(t.tracked_actions)
-                        return jsonify({'success': True, 'actions': actions})
-                    except json.JSONDecodeError:
-                        pass
-    if template_id:
-        t = db.session.get(Template, template_id)
-        if t and t.tracked_actions:
+        if d and d.tool and d.tool.tracked_actions:
             try:
-                actions = json.loads(t.tracked_actions)
+                actions = json.loads(d.tool.tracked_actions)
                 return jsonify({'success': True, 'actions': actions})
             except json.JSONDecodeError:
                 pass
@@ -1433,8 +1092,6 @@ def get_observability_actions():
     q = db.session.query(LearningEvent.action).distinct()
     if deck_id:
         q = q.filter(LearningEvent.deck_id == deck_id)
-    elif template_id:
-        q = q.filter(LearningEvent.template_id == template_id)
     actions = [r[0] for r in q.order_by(LearningEvent.action).all()]
     return jsonify({'success': True, 'actions': actions})
 
@@ -1444,7 +1101,6 @@ def get_observability_data():
     from datetime import datetime, timedelta
     user_id = request.args.get('user_id', type=int)
     deck_id = request.args.get('deck_id', type=int)
-    template_id = request.args.get('template_id', type=int)
     view = request.args.get('view', 'daily')
     date_str = request.args.get('date')
 
@@ -1484,8 +1140,6 @@ def get_observability_data():
         q = q.filter(LearningEvent.user_id == user_id)
     if deck_id:
         q = q.filter(LearningEvent.deck_id == deck_id)
-    if template_id:
-        q = q.filter(LearningEvent.template_id == template_id)
     events = q.order_by(LearningEvent.created_at).all()
 
     from collections import defaultdict
@@ -1517,7 +1171,6 @@ def get_observability_data():
     return jsonify({
         'success': True,
         'view': view,
-        'template_id': template_id,
         'date_range': {
             'start': start_dt.date().isoformat(),
             'end': (end_dt - timedelta(days=1)).date().isoformat(),
@@ -1562,27 +1215,6 @@ def toggle_favorite():
 @app.route('/')
 def index():
     return render_template('index.html')
-
-
-@app.route('/v1/templates/<int:template_id>/preview')
-def preview_template_cards(template_id):
-    """Return sample card data for template preview."""
-    t = db.session.get(Template, template_id)
-    if not t:
-        return jsonify({'error': 'Template not found'}), 404
-
-    d = Deck.query.filter(Deck.active_template_id == template_id).first()
-    sample_item = None
-    if d:
-        item = DeckItem.query.filter_by(deck_id=d.id).order_by(DeckItem.item_order).first()
-        if item:
-            sample_item = item.to_dict()
-
-    return jsonify({
-        'success': True,
-        'template': t.to_dict_full(),
-        'sample_card': sample_item,
-    })
 
 
 if __name__ == '__main__':

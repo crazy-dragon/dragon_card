@@ -16,10 +16,10 @@
 - [x] **文档清理**：删除 `TEMPLATE_PACK.md`、项目内 `.skill/minitool-zip-builder`（保留 `dragoncard_tools/.skill/dragoncard-tool-builder`）；`DB_relation.md` 更新为工具架构；程序内 HowTo 改为「小工具 API 参考」并指引 skill
 
 ## 待办（之后做）
-- [ ] **旧模板清理**：模板渲染路径已不用，`Template`/`DeckTemplate` 数据保留（迁移期）。确定工具稳定后：
-  - 清理 `templateEngine`/`createApiForCard`/`scopeTemplateCss` 等模板渲染代码（app.js）
-  - 清理 `t_template`/`t_deck_template` 表 + `t_deck.active_template_id`（备份后）
-  - 清理 `/v1/templates/*`、`/v1/decks/:id/templates` 等路由
+- [x] **旧模板清理**：模板渲染代码（templateEngine/createApiForCard/scopeTemplateCss）、`/v1/templates/*`、
+  `/v1/decks/:id/templates`、`/v1/decks/:id/preview`、`/v1/templates/:id/preview` 路由已删；observability 改从工具
+  tracked_actions 读动作；`t_template`/`t_deck_template` 表 + `t_deck.active_template_id` + `t_learning_event.template_id`
+  已迁移删除（DB 7 张表）
 - [x] **study 视图移除**：`#study-view` 整块已删（HTML/CSS/JS），含 catalogue/tabs/单卡/3D/相关监听
   （`e9c68b0`）
 - [x] **卡组 icon**：从工具 `assets/icon.png`（/svg/jpg/webp）自动检测，替换文件重传即更新；无则默认

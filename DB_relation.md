@@ -2,7 +2,7 @@
 
 ## 概述
 
-DragonCard 使用 SQLite + SQLAlchemy，共 **9 张表**。核心设计思路：
+DragonCard 使用 SQLite + SQLAlchemy，共 **7 张表**。核心设计思路：
 
 > **Deck（卡组）= 数据源（cards.json）+ 绑定小工具（tool.zip）**
 
@@ -21,8 +21,6 @@ User ──┬── Deck ────── Tool          (卡组绑定一个 z
        │
        └── Tool × N                   (用户上传的 zip 工具，文件系统 minitools/<id>/)
 ```
-
-迁移期保留（模板渲染已不用，待清理）：`t_template` / `t_deck_template` / `t_deck.active_template_id`。
 
 ## 表结构详解
 
@@ -69,41 +67,10 @@ User ──┬── Deck ────── Tool          (卡组绑定一个 z
 | name | String(100) | NOT NULL | 卡组名称 |
 | kind | String(20) | default 'other' | 类型：language / knowledge / logic / skill / other |
 | tool_id | Integer | FK → t_tool.id, nullable | 绑定的 zip 工具 |
-| active_template_id | Integer | FK → t_template.id, nullable | （迁移期）旧模板字段，待清理 |
 | created_at | DateTime | default now | |
 | updated_at | DateTime | onupdate now | |
 
 `tool_id` 可空，支持"先创建卡组、后上传工具绑定"的流程。`to_dict()` 计算 `has_tool`、`has_data`、`item_count`、`mastered_count`、`round_count` 等派生字段，并返回工具名/描述/图标（`tool_name`、`tool_description`、`tool_icon`）。
-
----
-
-### t_deck_template — 卡组-模板关联（迁移期）
-
-| 列名 | 类型 | 约束 | 说明 |
-|------|------|------|------|
-| deck_id | Integer | FK → t_deck.id, **PK** | 卡组 |
-| template_id | Integer | FK → t_template.id, **PK** | 模板 |
-| sort_order | Integer | default 0 | 排序 |
-
-旧模板时代的关联表，模板渲染已不用，待清理（备份后 DROP）。
-
----
-
-### t_template — 模板（迁移期）
-
-| 列名 | 类型 | 约束 | 说明 |
-|------|------|------|------|
-| id | Integer | PK, Auto | 主键 |
-| user_id | Integer | FK → t_user.id, nullable | 所属用户 |
-| name | String(100) | NOT NULL | 模板名称 |
-| description | Text | nullable | 描述 |
-| lang | String(10) | default 'en' | TTS 语音语言（BCP47） |
-| card_html / card_css / card_js | Text | default '' | 卡片三件套（定义 `window.cardTemplate`） |
-| sample_data | Text | nullable | 预览用示例数据 |
-| tracked_actions | Text | nullable | 观测埋点声明 |
-| created_at / updated_at | DateTime | | |
-
-旧模板时代的卡片渲染定义。已被 zip 工具替代，数据保留（迁移期），待清理。
 
 ---
 
@@ -168,11 +135,10 @@ User ──┬── Deck ────── Tool          (卡组绑定一个 z
 | user_id | Integer | FK → t_user.id, NOT NULL | 用户 |
 | deck_id | Integer | FK → t_deck.id, NOT NULL | 卡组 |
 | deck_item_id | Integer | FK → t_deck_item.id, NOT NULL | 条目 |
-| template_id | Integer | FK → t_template.id, nullable | （迁移期）旧模板字段 |
 | action | String(50) | NOT NULL | 动作名称（如 `audio_play`、`word_mark`、`favorite_toggle`）|
 | created_at | DateTime | default now, **indexed** | 事件时间（建索引加速查询） |
 
-工具通过 `cardAPI.track(action, itemId)` 上报（`deck_item_id` 必须带上），有 800ms 防抖 + 批量提交。统计页按 `deck_id`（或迁移期的 `template_id`）筛选数据。
+工具通过 `cardAPI.track(action, itemId)` 上报（`deck_item_id` 必须带上），有 800ms 防抖 + 批量提交。统计页按 `deck_id` 筛选数据。
 
 ## 关系图
 

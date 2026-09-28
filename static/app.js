@@ -3,7 +3,6 @@ var state = {
     mode: 'decks',
     currentDeck: null,
     deckId: null,
-    templateId: null,
 
     activeTab: 'catalogue',
     tabs: [],
@@ -182,316 +181,6 @@ var audioFeedback = (function () {
     };
 })();
 
-/* ===== Template CSS scoping =====
-   Every template's cardCss is auto-scoped to its own cards, so different decks
-   can safely reuse the same class names (e.g. .action-btn) without leaking.
-   - selectors are prefixed with :where([data-tpl-root="<id>"]) -> zero extra
-     specificity, so a template's internal cascade is unchanged
-   - @keyframes are renamed to dc<id>_<name> (and references rewritten), because
-     animation names are global
-   - :root becomes the card root (card-level custom properties)
-   - body./html.-rooted selectors keep their prefix with the scope inserted after it
-   Cards are tagged by initCard(); template JS that appends portal nodes to
-   <body> must copy data-tpl-root onto them (see the Chinese Radicals template). */
-function _firstCompound(sel) {
-    var depth = 0, i = 0, c;
-    for (; i < sel.length; i++) {
-        c = sel.charAt(i);
-        if (c === '(' || c === '[') depth++;
-        else if (c === ')' || c === ']') depth--;
-        /* ':' must also break the compound: the second scoping variant is built as
-           `<first>:where(<attr>)<rest>`. If `first` swallowed a pseudo-element
-           (e.g. `.dc-card.ew::before`) the result was `.dc-card.ew::before:where(...)`,
-           which the CSS parser rewrites to `.dc-card.ew::before:where()` — matching
-           NOTHING. Pseudo-elements on the card root were therefore silently dropped
-           (no error, no visual). Breaking at ':' yields `.dc-card.ew:where(<attr>)::before`,
-           which is valid; for pseudo-classes (`.x:hover`) it is equivalent to before. */
-        else if (depth === 0 && (c === ' ' || c === '\t' || c === '\n' || c === '\r'
-                                 || c === '>' || c === '+' || c === '~' || c === ':')) break;
-    }
-    return sel.slice(0, i);
-}
-function _scopeSelectorVariants(sel, attr) {
-    var m = sel.match(/^((?:html|body)\b(?:[.#][-\w]+|\[[^\]]*\])*)([\s\S]*)$/);
-    if (m) {
-        var rest = m[2].trim();
-        if (!rest) return [sel];
-        var variants = [];
-        rest.split(',').forEach(function (one) {
-            var t = one.trim();
-            if (!t) return;
-            _scopeSelectorVariants(t, attr).forEach(function (v) { variants.push(m[1] + ' ' + v); });
-        });
-        return variants;
-    }
-    if (/^:root\b/.test(sel)) return [sel.replace(/^:root/, attr)];
-    var out = [':where(' + attr + ') ' + sel];
-    var first = _firstCompound(sel);
-    if (first) out.push(first + ':where(' + attr + ')' + sel.slice(first.length));
-    return out;
-}
-function _scopeCssRules(css, attr) {
-    var out = '', i = 0, n = css.length;
-    while (i < n) {
-        var open = css.indexOf('{', i);
-        if (open < 0) { out += css.slice(i); break; }
-        var depth = 1, j = open + 1;
-        while (j < n && depth > 0) {
-            var ch = css.charAt(j);
-            if (ch === '{') depth++;
-            else if (ch === '}') depth--;
-            j++;
-        }
-        var prelude = css.slice(i, open);
-        var body = css.slice(open + 1, j - 1);
-        var probe = prelude.replace(/\/\*[\s\S]*?\*\//g, ' ').trim();
-        if (probe.charAt(0) === '@') {
-            if (/^@(media|supports|layer|container|document)\b/i.test(probe)) {
-                out += prelude + '{' + _scopeCssRules(body, attr) + '}';
-            } else {
-                out += prelude + '{' + body + '}';
-            }
-        } else {
-            var lead = '';
-            var lm = prelude.match(/^(\s*(?:\/\*[\s\S]*?\*\/\s*)*)/);
-            if (lm) lead = lm[1];
-            var tail = prelude.slice(lead.length);
-            var parts = [];
-            tail.split(',').forEach(function (one) {
-                var t = one.trim();
-                if (!t) return;
-                _scopeSelectorVariants(t, attr).forEach(function (v) { parts.push(v); });
-            });
-            if (!parts.length) out += prelude;
-            else out += lead + parts.join(', ');
-            out += '{' + body + '}';
-        }
-        i = j;
-    }
-    return out;
-}
-function scopeTemplateCss(css, templateId) {
-    if (!css) return '';
-    var attr = '[data-tpl-root="' + templateId + '"]';
-    var names = [];
-    var scoped = css.replace(/@keyframes\s+([-\w]+)/g, function (all, name) {
-        names.push(name);
-        return '@keyframes dc' + templateId + '_' + name;
-    });
-    if (names.length) {
-        scoped = scoped.replace(/(animation(?:-name)?\s*:[^;}]*)/g, function (decl) {
-            names.forEach(function (nm) {
-                decl = decl.replace(new RegExp('(^|[\\s,])' + nm + '(?=[\\s,;]|$)', 'g'), '$1dc' + templateId + '_' + nm);
-            });
-            return decl;
-        });
-    }
-    return _scopeCssRules(scoped, attr);
-}
-window.__dcScopeCss = scopeTemplateCss;
-
-/* ===== Template engine ===== */
-var _loadedTpl = {};
-var _tplCssEls = {};
-var _tplLangs = {};
-function templateLangOf(templateId) {
-    if (templateId != null && _tplLangs[templateId]) return _tplLangs[templateId];
-    return null;
-}
-var templateEngine = {
-    loadTemplate: function (templateId) {
-        var self = this;
-        if (_loadedTpl[templateId]) {
-            /* Re-eval JS so the global cardTemplate matches THIS template */
-            self._evalTemplateJs(templateId);
-            return Promise.resolve(_loadedTpl[templateId]);
-        }
-        return fetch('/v1/templates/' + templateId).then(function (r) { return r.json(); }).then(function (d) {
-            if (!d.success) throw new Error(d.error || 'template load failed');
-            var tpl = d.template;
-            _tplLangs[templateId] = tpl.lang || 'en';
-            var styleId = 'tpl-css-' + templateId;
-            var scopedCss = scopeTemplateCss(tpl.card_css || '', templateId);
-            if (_tplCssEls[templateId]) {
-                _tplCssEls[templateId].textContent = scopedCss;
-            } else {
-                var s = document.createElement('style');
-                s.id = styleId; s.textContent = scopedCss;
-                document.head.appendChild(s); _tplCssEls[templateId] = s;
-            }
-            _loadedTpl[templateId] = tpl;
-            self._evalTemplateJs(templateId);
-            return tpl;
-        });
-    },
-
-    /* Execute template JS and stash the resulting cardTemplate per template id */
-    _evalTemplateJs: function (templateId) {
-        var tpl = _loadedTpl[templateId];
-        if (!tpl || !tpl.card_js) return;
-        var prev = window.cardTemplate;
-        try { (0, eval)(tpl.card_js); } catch (e) { console.error('template js error', e); }
-        if (window.cardTemplate) _loadedTpl[templateId]._cardTemplate = window.cardTemplate;
-        window.cardTemplate = prev;
-    },
-
-    /* Return the cardTemplate object that belongs to the given template id */
-    getCardTemplate: function (templateId) {
-        if (templateId != null && _loadedTpl[templateId] && _loadedTpl[templateId]._cardTemplate) {
-            return _loadedTpl[templateId]._cardTemplate;
-        }
-        return window.cardTemplate || null;
-    },
-
-    renderCard: function (card, htmlOverride) {
-        var ct = this.getCardTemplate(card.template_id);
-        if (ct && typeof ct.render === 'function') {
-            var api = createApiForCard(card);
-            card.__api = api;
-            try { return ct.render(htmlOverride || '', card, api); }
-            catch (e) { return '<div class="error-state">Render error: ' + escapeHtml(e.message) + '</div>'; }
-        }
-        var data = card.data || {};
-        var title = data.word || data.name || data.term || '(no preview)';
-        return '<div class="word-card" data-card-id="' + card.id + '"><div class="word-title">' + escapeHtml(String(title)) + '</div></div>';
-    },
-    initCard: function (el, card) {
-        var api = card.__api || createApiForCard(card);
-        card.__api = api;
-        el.__cardApi = api;
-        /* Tag the card root so its template's scoped CSS only applies here */
-        var tplId = (card.template_id != null) ? card.template_id : state.templateId;
-        if (tplId != null && el.setAttribute) el.setAttribute('data-tpl-root', tplId);
-        var ct = this.getCardTemplate(card.template_id);
-        if (ct && typeof ct.init === 'function') {
-            try { ct.init(el, card, api); } catch (e) { console.error('template init error', e); }
-        }
-    }
-};
-
-/* ===== Batched observability tracking ===== */
-var _trackQueue = [];
-var _trackTimer = null;
-var _trackSeen = {};
-
-function flushTrackQueue() {
-    _trackTimer = null;
-    if (!_trackQueue.length) return;
-    var events = _trackQueue.splice(0, _trackQueue.length);
-    _trackSeen = {};
-    fetch('/v1/observability/events', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ events: events })
-    }).catch(function () {});
-}
-
-function trackEvent(evt) {
-    var key = evt.user_id + ':' + evt.deck_id + ':' + evt.deck_item_id + ':' + evt.action;
-    /* Audio plays are real user actions during fast scanning; don't dedupe them. */
-    if (evt.action !== 'audio_play') {
-        if (_trackSeen[key]) return;
-        _trackSeen[key] = true;
-    }
-    _trackQueue.push(evt);
-    if (_trackTimer) clearTimeout(_trackTimer);
-    _trackTimer = setTimeout(flushTrackQueue, 1500);
-}
-
-/* ===== Per-card API object (window.cardTemplate interface) ===== */
-function createApiForCard(cardData) {
-    var templateId = (cardData.template_id != null) ? cardData.template_id : state.templateId;
-    var deckId = (cardData.deck_id != null) ? cardData.deck_id : state.deckId;
-    var cardItemId = cardData.id;
-    var hiddenKey = 'dc-hidden-fields-' + templateId;
-    var _hidden = {};
-    try { _hidden = JSON.parse(localStorage.getItem(hiddenKey) || '{}') || {}; } catch (e) { _hidden = {}; }
-    var _isFavorite = !!cardData.is_favorite;
-    var _debug = false;
-    var _debounce = {};
-
-    function persistHidden() { try { localStorage.setItem(hiddenKey, JSON.stringify(_hidden)); } catch (e) {} }
-
-    function rerender() {
-        var el = document.querySelector('[data-card-id="' + cardItemId + '"]');
-        if (!el) return;
-        var html = templateEngine.renderCard(cardData, '');
-        var tmp = document.createElement('div');
-        tmp.innerHTML = html;
-        var newEl = tmp.firstElementChild || tmp;
-        if (el.parentNode) el.parentNode.replaceChild(newEl, el);
-        templateEngine.initCard(newEl, cardData);
-    }
-
-    return {
-        cardItemId: cardItemId,
-        cardId: deckId,
-        templateId: templateId,
-        getCardData: function () { return cardData; },
-        getViewMode: function () {
-            if (state.singleCardMode) return 'single';
-            return 'list';
-        },
-        getHiddenFields: function () { return JSON.parse(JSON.stringify(_hidden)); },
-        setHiddenFields: function (fields) { _hidden = fields || {}; persistHidden(); },
-        toggleMark: function (isUnknown) {
-            return fetch('/v1/learn/mark', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ deck_item_id: cardItemId, user_id: state.userId, deck_id: deckId, is_unknown: isUnknown })
-            }).then(function (r) { return r.json(); }).then(function (d) {
-                if (d.success) { cardData.is_unknown = d.is_unknown; }
-                return d;
-            });
-        },
-        toggleFavorite: function () {
-            return fetch('/v1/learn/favorite', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ deck_item_id: cardItemId, user_id: state.userId, deck_id: deckId })
-            }).then(function (r) { return r.json(); }).then(function (d) {
-                if (d.success) { _isFavorite = !!d.is_favorite; cardData.is_favorite = d.is_favorite; }
-                return d;
-            });
-        },
-        isFavorite: function () { return _isFavorite; },
-        toggleDebug: function () { _debug = !_debug; return _debug; },
-        isDebug: function () { return _debug; },
-        playAudio: function (text, lang) {
-            if (!text) return;
-            voiceMgr.speak(text, lang || templateLangOf(templateId));
-        },
-        rerender: rerender,
-        track: function (action) {
-            if (!action || !action.trim()) return;
-            action = action.trim();
-            var key = cardItemId + ':' + action;
-            /* Audio plays during fast scanning should all be counted. */
-            if (action !== 'audio_play') {
-                if (_debounce[key]) return;
-                _debounce[key] = true;
-                setTimeout(function () { delete _debounce[key]; }, 800);
-            }
-            trackEvent({ user_id: state.userId, deck_id: deckId, deck_item_id: cardItemId, template_id: templateId, action: action });
-        },
-        showTooltip: function (text, x, y) {
-            var tip = document.getElementById('card-tooltip');
-            if (!tip) { tip = document.createElement('div'); tip.id = 'card-tooltip'; tip.className = 'card-tooltip'; document.body.appendChild(tip); }
-            tip.textContent = text;
-            tip.style.left = (x || 0) + 'px';
-            tip.style.top = (y || 0) + 'px';
-            tip.classList.add('show');
-        },
-        hideTooltip: function () {
-            var tip = document.getElementById('card-tooltip');
-            if (tip) tip.classList.remove('show');
-        },
-        confirmDialog: function (anchorEl, message, onConfirm) {
-            if (typeof showPopoverConfirm === 'function') {
-                showPopoverConfirm(anchorEl, message, onConfirm);
-            } else if (onConfirm && window.confirm) {
-                if (window.confirm(message)) onConfirm();
-            }
-        }
-    };
-}
 
 /* Deck kind meta: stored value (EN) -> i18n key + Font Awesome icon */
 var DECK_KIND_META = {
@@ -771,7 +460,6 @@ function renderDeckList(forceRefresh) {
         decks.forEach(function (deck) {
             var kindMeta = getKindMeta(deck.kind);
             var pct = deck.item_count > 0 ? Math.round((deck.mastered_count || 0) / deck.item_count * 100) : 0;
-            var hasTpl = !!deck.template_name;
             var isActive = deck.is_active;
 
             html += '<div class="deck-card" data-deck-id="' + deck.id + '" data-study-deck="' + deck.id + '">';
@@ -799,7 +487,7 @@ function renderDeckList(forceRefresh) {
             html += '</div>';
 
             /* Description: tool description (falls back to template description). */
-            html += '<div class="deck-desc" title="' + (deck.tool_description ? escapeHtml(deck.tool_description) : (deck.template_description ? escapeHtml(deck.template_description) : '')) + '">' + (deck.tool_description ? escapeHtml(deck.tool_description) : (deck.template_description ? escapeHtml(deck.template_description) : t('home.notBound'))) + '</div>';
+            html += '<div class="deck-desc" title="' + (deck.tool_description ? escapeHtml(deck.tool_description) : '') + '">' + (deck.tool_description ? escapeHtml(deck.tool_description) : t('home.notBound')) + '</div>';
 
             /* Stats (mastered count left, study rounds right) */
             html += '<div class="deck-stats">';
@@ -876,7 +564,6 @@ function enterDeck(deckId) {
     fetch('/v1/decks/' + deckId).then(function (r) { return r.json(); }).then(function (d) {
         if (!d.success) { showToast('Deck not found', true); return; }
         state.currentDeck = d.deck;
-        state.templateId = d.deck.active_template_id;
 
         /* 表现与数据分离：卡组绑定工具 → 打开工具（全屏新 tab）；未绑定 → 提示 */
         if (d.deck.tool_id) {
@@ -1654,7 +1341,7 @@ function openManageModal(deckId) {
         document.getElementById('mm-icon').style.background = kindMeta.bg;
         document.getElementById('mm-icon').style.color = kindMeta.color;
         document.getElementById('mm-name').textContent = deck.name;
-        document.getElementById('mm-intro').textContent = deck.tool_description || deck.template_description || '';
+        document.getElementById('mm-intro').textContent = deck.tool_description || '';
         renderMmData(deck);
 
         var kindSel = document.getElementById('mm-kind-select');
@@ -1832,7 +1519,7 @@ function refreshManageTool(deck) {
     renderMmTool(deck);
     renderMmData(deck);
     var intro = document.getElementById('mm-intro');
-    if (intro) intro.textContent = deck.tool_description || deck.template_description || '';
+    if (intro) intro.textContent = deck.tool_description || '';
 }
 
 function unbindToolFromDeck(deckId) {
@@ -1876,33 +1563,6 @@ function doCreateDeck() {
     renderKindPicker('new-deck-kind-picker', 'other');
     showModal('new-deck');
     $('#new-deck-name-input').focus();
-}
-
-/* ===== Template & Data Upload ===== */
-function doUploadDeckTemplate(deckId, replaceTid) {
-    var input = $('#deck-template-input');
-    input.onchange = function () {
-        if (!input.files || !input.files[0]) return;
-        var file = input.files[0];
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            var body = { content: e.target.result };
-            if (replaceTid) body.replace_template_id = replaceTid;
-            fetch('/v1/decks/' + deckId + '/templates', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
-            }).then(function (r) { return r.json(); }).then(function (d) {
-                if (d.success) {
-                    showToast(t('manage.uploaded', { name: d.template.name }));
-                    if (_manageDeckId == deckId) openManageModal(deckId);
-                    else openManageModal(deckId);
-                    if (state.deckId === deckId) state.templateId = d.template.id || state.templateId;
-                } else { showToast(d.error || t('manage.uploadFailed'), true); }
-            }).catch(function () { showToast(t('manage.uploadFailed'), true); });
-        };
-        reader.readAsText(file);
-        input.value = '';
-    };
-    input.click();
 }
 
 function doUploadDeckData(deckId, anchorEl) {
@@ -1959,71 +1619,6 @@ function doExportDeckData(deckId) {
         URL.revokeObjectURL(url);
         showToast(t('manage.exported', { n: d.count }));
     }).catch(function () { showToast(t('toast.exportFailed'), true); });
-}
-
-function doExportDeckTemplate(deckId) {
-    fetch('/v1/decks/' + deckId).then(function (r) { return r.json(); }).then(function (d) {
-        if (!d.success || !d.deck.active_template_id) { showToast('No template to export', true); return; }
-        return fetch('/v1/templates/' + d.deck.active_template_id + '/export');
-    }).then(function (r) { return r.json(); }).then(function (d) {
-        if (!d.success) { showToast('Export failed', true); return; }
-        var blob = new Blob([d.content], { type: 'application/json' });
-        var url = URL.createObjectURL(blob);
-        var a = $('#download-helper');
-        a.href = url; a.download = d.name; a.click();
-        URL.revokeObjectURL(url);
-        showToast('Template exported');
-    }).catch(function () { showToast('Export failed', true); });
-}
-
-function exportTemplate(templateId) {
-    fetch('/v1/templates/' + templateId + '/export').then(function (r) { return r.json(); }).then(function (d) {
-        if (!d.success) { showToast('Export failed', true); return; }
-        var blob = new Blob([d.content], { type: 'application/json' });
-        var url = URL.createObjectURL(blob);
-        var a = $('#download-helper');
-        a.href = url; a.download = d.name; a.click();
-        URL.revokeObjectURL(url);
-        showToast('Template exported');
-    }).catch(function () { showToast('Export failed', true); });
-}
-
-/* ===== Template Preview (standalone modal, no sidebar) ===== */
-function openDeckPreview(deckId) {
-    showModal('preview');
-    var canvas = $('#preview-canvas');
-    canvas.innerHTML = '<div class="preview-loading">' + t('preview.loading') + '</div>';
-    fetch('/v1/decks/' + deckId + '/preview').then(function (r) { return r.json(); }).then(function (d) {
-        if (!d.success) { canvas.innerHTML = '<div class="error-state">' + (d.error || t('preview.failed')) + '</div>'; return; }
-        var oldScript = document.getElementById('dc-template-script');
-        if (oldScript) oldScript.remove();
-        var script = document.createElement('script');
-        script.id = 'dc-template-script';
-        script.textContent = '\n' + d.template.card_js + '\n//# sourceURL=preview-deck-' + deckId + '\n';
-        document.head.appendChild(script);
-        renderPreviewCard(canvas, d.template, d.sample_card);
-    }).catch(function () { canvas.innerHTML = '<div class="error-state">' + t('preview.failed') + '</div>'; });
-}
-
-function renderPreviewCard(canvas, template, sampleCard) {
-    if (!sampleCard) {
-        canvas.innerHTML = '<div class="preview-no-card">' + t('preview.noCard') + '</div>';
-        return;
-    }
-    var cardData = JSON.parse(JSON.stringify(sampleCard));
-    cardData._pageNum = 0;
-    cardData._showAnswer = false;
-    if (cardData.data && cardData.data.examples) cardData.data.examples.forEach(function (e) { e._show = false; });
-    cardData.is_unknown = 0;
-    cardData.is_favorite = 0;
-    cardData.current_order = cardData.current_order || cardData.item_order || 1;
-    var html = templateEngine.renderCard(cardData, '');
-    canvas.innerHTML = '<style>' + scopeTemplateCss(template.card_css || '', template.id) + '</style><div style="max-width:600px;margin:0 auto;">' + html + '</div>';
-    var cardEl = canvas.querySelector('[data-card-id]');
-    if (cardEl) {
-        templateEngine.initCard(cardEl, cardData);
-        cardEl.setAttribute('data-tpl-root', template.id);
-    }
 }
 
 /* ===== Reorder ===== */
@@ -2391,19 +1986,6 @@ function setupEventListeners() {
                     showToast('Copied!');
                 }
             }
-            return;
-        }
-
-        if (target.closest('[data-preview-deck]')) {
-            openDeckPreview(parseInt(target.closest('[data-preview-deck]').dataset.previewDeck));
-            return;
-        }
-
-        /* Preview modal close */
-        if (target.closest('#preview-modal-close') || (target.closest('#preview-modal') && !target.closest('.preview-modal-content'))) {
-            var pts = document.getElementById('dc-template-script');
-            if (pts) pts.remove();
-            hideModal('preview');
             return;
         }
 

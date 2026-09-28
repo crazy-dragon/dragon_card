@@ -137,7 +137,7 @@ DragonCard 不决定卡片长什么样、怎么交互——这些全由绑定的
 ```
 dragoncard/
 ├── app.py                     # Flask 入口 + 所有 API 路由（启动自动建表 + 默认用户）
-├── models.py                  # SQLAlchemy 模型 (9 张表)
+├── models.py                  # SQLAlchemy 模型 (7 张表)
 ├── config.py                  # 配置
 ├── seed_decks.py              # 导入内置免费卡组（tool.zip + cards.json）
 ├── requirements.txt
