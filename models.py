@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 
@@ -70,7 +71,7 @@ class Deck(db.Model):
             'kind': self.kind or 'other',
             'tool_id': self.tool_id,
             'tool_name': self.tool.name if self.tool else None,
-            'tool_icon': self.tool.icon if self.tool else None,
+            'tool_icon': self.tool.effective_icon if self.tool else None,
             'tool_description': self.tool.description if self.tool else None,
             'item_count': item_count,
             'has_tool': self.tool_id is not None,
@@ -222,6 +223,17 @@ class Tool(db.Model):
             return json.loads(self.tracked_actions)
         except (json.JSONDecodeError, TypeError):
             return []
+
+    @property
+    def effective_icon(self):
+        """图标：DB 字段优先；否则探测工具目录 assets/icon.*（放文件 + 刷新即生效）。"""
+        if self.icon:
+            return self.icon
+        base = os.path.join(os.path.dirname(__file__), self.dir_path or '')
+        for cand in ('icon.png', 'icon.svg', 'icon.jpg', 'icon.webp'):
+            if os.path.exists(os.path.join(base, 'assets', cand)):
+                return 'assets/' + cand
+        return None
 
     def to_dict(self):
         return {
