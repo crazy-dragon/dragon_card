@@ -185,17 +185,6 @@ def _safe_zip_name(name):
     return n
 
 
-def _detect_tool_icon(zf, manifest_icon):
-    """工具图标：manifest 声明优先；否则约定 assets/icon.*（png/svg/jpg/webp）。
-    替换图标文件 → 重新上传工具（replace）即动态更新。"""
-    if manifest_icon:
-        return manifest_icon
-    for cand in ('assets/icon.png', 'assets/icon.svg', 'assets/icon.jpg', 'assets/icon.webp'):
-        if cand in zf.namelist():
-            return cand
-    return ''
-
-
 def _extract_tool_zip(tool, blob):
     """清空并解压 zip 到工具目录（文件系统）。返回成功与否。"""
     try:
@@ -433,7 +422,7 @@ def replace_tool(tool_id):
         return jsonify({'error': 'Failed to extract zip'}), 500
     t.name = (manifest.get('name') or '').strip() or t.name
     t.description = manifest.get('description') or t.description
-    t.icon = _detect_tool_icon(zf, manifest.get('icon') or '') or t.icon
+    t.icon = manifest.get('icon') or t.icon
     t.lang = manifest.get('lang') or t.lang
     t.manifest_json = json.dumps(manifest, ensure_ascii=False)
     ta = manifest.get('trackedActions')
@@ -577,7 +566,7 @@ def bind_tool_to_deck(deck_id):
         user_id=user_id,
         name=name[:100],
         description=(manifest.get('description') or ''),
-        icon=_detect_tool_icon(zf, manifest.get('icon') or ''),
+        icon=(manifest.get('icon') or ''),
         lang=(manifest.get('lang') or 'zh'),
         dir_path='',
         manifest_json=json.dumps(manifest, ensure_ascii=False),

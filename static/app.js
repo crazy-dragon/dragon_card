@@ -473,13 +473,9 @@ function renderDeckList(forceRefresh) {
                 html += '<span class="active-pill">' + t('home.active') + '</span>';
             }
 
-            /* Header: tool icon (if any) or kind icon + kind label + deck name */
+            /* Header: kind icon + kind label + deck name */
             html += '<div class="deck-header">';
-            if (deck.tool_icon) {
-                html += '<div class="deck-icon" style="overflow:hidden;"><img src="' + escapeHtml(toolIconUrl(deck.tool_icon, deck.tool_id)) + '" alt="" style="width:100%;height:100%;object-fit:cover;"></div>';
-            } else {
-                html += '<div class="deck-icon" style="background:' + kindMeta.bg + ';color:' + kindMeta.color + '">' + kindMeta.icon + '</div>';
-            }
+            html += '<div class="deck-icon" style="background:' + kindMeta.bg + ';color:' + kindMeta.color + '">' + kindMeta.icon + '</div>';
             html += '<div class="deck-header-text">';
             html += '<div class="deck-title">' + escapeHtml(deck.name) + '</div>';
             html += '<div class="deck-kind-label" style="color:' + kindMeta.color + '"><i class="fa-solid fa-tag"></i> ' + kindLabel(deck.kind) + '</div>';
@@ -1390,9 +1386,7 @@ function renderMmTool(deck) {
     if (!card) return;
     card.innerHTML = '';
     if (deck.tool_id) {
-        var iconHtml = deck.tool_icon
-            ? '<img src="' + escapeHtml(toolIconUrl(deck.tool_icon, deck.tool_id)) + '" alt="">'
-            : '<i class="fa-solid fa-dragon"></i>';
+        var iconHtml = '<i class="fa-solid fa-dragon"></i>';
         card.innerHTML =
             '<div class="mm-app-head">' +
                 '<div class="mm-app-title">' + escapeHtml(deck.tool_name || '小工具') + '</div>' +
@@ -1462,12 +1456,6 @@ function renderMmData(deck) {
             if (_manageDeckId) doUploadDeckData(_manageDeckId);
         });
     }
-}
-
-function toolIconUrl(icon, toolId) {
-    if (!icon) return null;
-    if (/^https?:/i.test(icon)) return icon;
-    return '/v1/tools/' + toolId + '/assets/' + icon.replace(/^assets\//, '');
 }
 
 function replaceTool(toolId, deckId) {
