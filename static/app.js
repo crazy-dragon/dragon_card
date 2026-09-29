@@ -473,12 +473,12 @@ function renderDeckList(forceRefresh) {
                 html += '<span class="active-pill">' + t('home.active') + '</span>';
             }
 
-            /* Header: small tool icon + title + kind label */
+            /* Header: tool icon (if any) or kind icon + kind label + deck name */
             html += '<div class="deck-header">';
             if (deck.tool_icon) {
                 html += '<div class="deck-icon" style="overflow:hidden;"><img src="' + escapeHtml(toolIconUrl(deck.tool_icon, deck.tool_id)) + '" alt="" style="width:100%;height:100%;object-fit:cover;"></div>';
             } else {
-                html += '<div class="deck-icon" style="background:' + kindMeta.bg + ';color:' + kindMeta.color + '"><i class="fa-solid fa-dragon"></i></div>';
+                html += '<div class="deck-icon" style="background:' + kindMeta.bg + ';color:' + kindMeta.color + '">' + kindMeta.icon + '</div>';
             }
             html += '<div class="deck-header-text">';
             html += '<div class="deck-title">' + escapeHtml(deck.name) + '</div>';
@@ -486,14 +486,8 @@ function renderDeckList(forceRefresh) {
             html += '</div>';
             html += '</div>';
 
-            /* Centered app icon (tool icon or default dragon) where the description used to be */
-            html += '<div class="deck-app-icon">';
-            if (deck.tool_icon) {
-                html += '<div class="deck-app-icon-box" style="overflow:hidden;"><img src="' + escapeHtml(toolIconUrl(deck.tool_icon, deck.tool_id)) + '" alt="" style="width:100%;height:100%;object-fit:cover;"></div>';
-            } else {
-                html += '<div class="deck-app-icon-box" style="background:' + kindMeta.bg + ';color:' + kindMeta.color + '"><i class="fa-solid fa-dragon"></i></div>';
-            }
-            html += '</div>';
+            /* Description: tool description (falls back to template description). */
+            html += '<div class="deck-desc" title="' + (deck.tool_description ? escapeHtml(deck.tool_description) : '') + '">' + (deck.tool_description ? escapeHtml(deck.tool_description) : t('home.notBound')) + '</div>';
 
             /* Stats (mastered count left, study rounds right) */
             html += '<div class="deck-stats">';
