@@ -473,8 +473,13 @@ function renderDeckList(forceRefresh) {
                 html += '<span class="active-pill">' + t('home.active') + '</span>';
             }
 
-            /* Header: title + kind label (icon shown centered below) */
+            /* Header: small tool icon + title + kind label */
             html += '<div class="deck-header">';
+            if (deck.tool_icon) {
+                html += '<div class="deck-icon" style="overflow:hidden;"><img src="' + escapeHtml(toolIconUrl(deck.tool_icon, deck.tool_id)) + '" alt="" style="width:100%;height:100%;object-fit:cover;"></div>';
+            } else {
+                html += '<div class="deck-icon" style="background:' + kindMeta.bg + ';color:' + kindMeta.color + '"><i class="fa-solid fa-dragon"></i></div>';
+            }
             html += '<div class="deck-header-text">';
             html += '<div class="deck-title">' + escapeHtml(deck.name) + '</div>';
             html += '<div class="deck-kind-label" style="color:' + kindMeta.color + '"><i class="fa-solid fa-tag"></i> ' + kindLabel(deck.kind) + '</div>';
