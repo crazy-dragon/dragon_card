@@ -68,4 +68,4 @@ HSK 3.0 官方词汇表（公开考试大纲）；
 
 ------------------------------------------------------------
 
-Author: Alfred Long (alfred.long@qq.com)
+Author: Alfred Long (alfred.long@qq.com) ｜ 作者：Alfred Long（alfred.long@qq.com）

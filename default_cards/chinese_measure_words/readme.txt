@@ -46,4 +46,4 @@ How to use
 
 ------------------------------------------------------------
 
-Author: Alfred Long (alfred.long@qq.com)
+Author: Alfred Long (alfred.long@qq.com) ｜ 作者：Alfred Long（alfred.long@qq.com）

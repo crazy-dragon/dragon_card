@@ -1,6 +1,6 @@
 {
   "name": "COCA20000 词卡",
-  "description": "COCA top 2000 high-frequency words with phonetic, EN/ZH definitions and examples. COCA前2000高频词：音标、中英释义、例句。（两个模板均已升级为轻立体+翡翠配色，支持暗色皮肤；序号徽章随应用字号等比缩放）",
+  "description": "COCA 前 2000 高频词卡：音标 + 中英释义 + 例句。2000 张。记录：发音、看释义、标记、收藏、看例句。",
   "version": "1.1.1",
   "author": "Alfred Long",
   "email": "alfred.long@qq.com",

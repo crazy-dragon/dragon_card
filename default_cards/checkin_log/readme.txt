@@ -90,3 +90,7 @@
   原地更新（**别重复导入**，否则会多出一个 t_tool 行）：
       python3 dragoncard_tools/build.py voyage-log
       POST /v1/tools/<id>/replace   -F zip=@dist/voyage-log.zip
+
+------------------------------------------------------------
+
+Author: Alfred Long (alfred.long@qq.com) ｜ 作者：Alfred Long（alfred.long@qq.com）

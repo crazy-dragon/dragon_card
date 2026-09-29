@@ -54,4 +54,4 @@ Using the tool / 使用小工具
 
 数据字段：name（中文名）/ model（.glb 地址）/ latin（拉丁学名）/ desc（描述）
 
-Author: alfred.long@qq.com
+Author: Alfred Long (alfred.long@qq.com) ｜ 作者：Alfred Long（alfred.long@qq.com）

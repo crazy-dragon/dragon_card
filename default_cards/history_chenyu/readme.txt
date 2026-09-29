@@ -39,4 +39,4 @@ Using the tool / 使用小工具
 
 数据字段：dynasty（朝代）/ text（谶语原文）/ source（出处）/ gloss（白话疏解）
 
-Author: alfred.long@qq.com
+Author: Alfred Long (alfred.long@qq.com) ｜ 作者：Alfred Long（alfred.long@qq.com）

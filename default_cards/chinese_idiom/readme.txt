@@ -31,4 +31,4 @@ Using the tool / 使用小工具
 
 数据字段：idiom（成语）/ pinyin（拼音）/ meaning（释义）/ example（例句）
 
-Author: alfred.long@qq.com
+Author: Alfred Long (alfred.long@qq.com) ｜ 作者：Alfred Long（alfred.long@qq.com）

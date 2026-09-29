@@ -17,3 +17,7 @@
   （assets/phonemes/*.mp3，48 段，来源 soundsamerican.net，CC BY-NC-ND 4.0，仅供自用）。
 
 词条内容受 DragonCard Data License v1.0 保护，见 LICENSE。
+
+------------------------------------------------------------
+
+Author: Alfred Long (alfred.long@qq.com) ｜ 作者：Alfred Long（alfred.long@qq.com）

@@ -1,51 +1,53 @@
-化学元素周期表 (元素+科普)
-=============================
+Periodic Table · 元素周期表
+============================
 
-118 个化学元素卡（原子序数/符号/中英文名/相对原子质量/类别/族/周期/
-电子排布/常温状态/发现/宇宙来源/趣味知识，翻转查看详情）
-+ 10 张从宇宙大爆炸到元素生成的科普故事卡。
-
-数据
-----
-- cards.json      128 张卡（118 元素 + 10 科普）
-- template.json   卡片模板
-- meta.json       元信息（作者 / 版本 / 来源 / 许可）
-- LICENSE         DragonCard 数据许可 v1.0
-
-使用
-----
-1. 新建卡组，选择包内模板
-2. 导入数据 cards.json
-3. 学习：翻转、朗读、标记、收藏
-
-使用条款见随附 LICENSE 文件。
-
-------------------------------------------------------------
-
-Chemical Elements Periodic Table (Elements + Science)
-=====================================================
-
-118 chemical element cards (atomic number / symbol / EN-ZH name /
-relative atomic mass / category / group / period / electron
-configuration / phase / discovery / cosmic origin / fun fact, flip
-for details) + 10 science story cards from the Big Bang to element
-formation.
+118 chemical element flip cards (symbol, EN/ZH names, atomic mass, phase,
+discovery, cosmic origin) + 10 science story cards from the Big Bang to
+element formation. 128 cards.
 
 Files
 -----
-- cards.json  128 cards (118 elements + 10 science)
-- template.json  card template
-- meta.json  metadata (author / version / source / license)
-- LICENSE  DragonCard Data License v1.0
+- cards.json  data (128 cards)
+- tool.zip    companion web tool「元素周期表 · Periodic Table」:
+              true 7×18 periodic table (lanthanides/actinides as two extra rows,
+              colored by category) + flip-card view; tap a cell to jump to the
+              element; toggle 周期表 / 卡片 views, zh TTS, mark / favorite
+- meta.json   metadata (author / version / source / license)
+- LICENSE     DragonCard Data License v1.0
 
-Usage
------
-1. Create a deck, pick the included template
-2. Import cards.json
-3. Study with flip, pronunciation, mark, favorite
+How to use
+----------
+1. Import cards.json into a deck
+2. In deck detail, upload tool.zip as the deck's mini tool
+3. Study: flip, pronunciation, mark, favorite
 
 See the included LICENSE for usage terms.
 
 ------------------------------------------------------------
 
-Author: Alfred Long (alfred.long@qq.com)
+元素周期表 · 化学元素 + 科普
+============================
+
+118 张化学元素翻面卡（符号、中英文名、相对原子质量、常温状态、发现、宇宙来源）
++ 10 张从宇宙大爆炸到元素生成的科普故事卡。共 128 张。
+
+文件
+----
+- cards.json  数据（128 张）
+- tool.zip    配套小工具「元素周期表 · Periodic Table」：
+              真·7×18 周期表（镧系/锕系抽成两行、按类别上色）+ 翻面卡视图，
+              点格子跳到该元素；顶栏切换「周期表 / 卡片」、中文朗读、标记/收藏
+- meta.json   元信息（作者 / 版本 / 来源 / 许可）
+- LICENSE     DragonCard 数据许可 v1.0
+
+使用
+----
+1. 导入 cards.json 建卡组
+2. 在卡组详情里把 tool.zip 上传为该卡组的小工具
+3. 学习：翻面、朗读、标记、收藏
+
+使用条款见随附 LICENSE 文件。
+
+------------------------------------------------------------
+
+Author: Alfred Long (alfred.long@qq.com) ｜ 作者：Alfred Long（alfred.long@qq.com）

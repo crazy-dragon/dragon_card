@@ -36,4 +36,4 @@ Source: The Wind in the Willows by Kenneth Grahame (1908), public domain.
 
 数据字段：title（章节标题）/ source（作者）/ text（英文原文）/ translation（中文译文）
 
-Author: alfred.long@qq.com
+Author: Alfred Long (alfred.long@qq.com) ｜ 作者：Alfred Long（alfred.long@qq.com）

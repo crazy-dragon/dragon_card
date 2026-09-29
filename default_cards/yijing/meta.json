@@ -1,6 +1,6 @@
 {
   "name": "I Ching 64 Hexagrams 易经卦象卡组",
-  "description": "The 64 hexagrams with line diagram, structure, judgment and plain meaning; companion web tool provides the 8x8 hexagram chart (upper x lower trigram) + hexagram cards. 六十四卦：卦画、卦象结构、卦辞与白话释义；配套小工具提供卦序方图（上卦×下卦 8×8，点格子跳卡）+ 卦卡两种视图。",
+  "description": "周易六十四卦：卦象、卦辞与释义。64 张。记录：发音、例词、标记、收藏。",
   "version": "1.0.0",
   "author": "Alfred Long",
   "email": "alfred.long@qq.com",
