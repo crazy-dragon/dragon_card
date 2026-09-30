@@ -36,7 +36,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .theme-btn:hover{color:var(--primary)}
 
 /* ---------- Deck view ---------- */
-.view{padding:20px 24px 60px;max-width:1000px;margin:0 auto}
+.view{padding:20px 24px 60px;max-width:720px;margin:0 auto}
 .stats-bar{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow);margin-bottom:16px;flex-wrap:wrap}
 .stat{text-align:center;min-width:64px}
 .stat .num{font-size:20px;font-weight:800}
@@ -164,8 +164,8 @@ td .pk{color:var(--primary);font-weight:700}
 <section id="view-db" class="view" style="display:none">
   <div class="db-wrap">
     <div class="db-canvas">
-      <svg id="er-svg" viewBox="0 0 640 500"></svg>
-      <div class="flow-tip">悬停 / 点击表节点查看关联与结构</div>
+      <svg id="er-svg" viewBox="0 0 700 460"></svg>
+      <div class="flow-tip">思维导图 · 悬停查看关联，点击节点看字段详情</div>
     </div>
     <div class="db-panel" id="db-panel"></div>
   </div>
@@ -180,8 +180,7 @@ let unknownSet = new Set();           // 标记为「未知」的词索引
 let roundCount = 0;
 let showAllZh = false;
 
-function rerender(){
-  const list = document.getElementById('word-list');
+function updateStats(){
   const total = WORDS.length;
   const unknown = unknownSet.size;
   const mastered = total - unknown;
@@ -192,6 +191,11 @@ function rerender(){
   const fill = document.getElementById('prog-fill');
   fill.style.width = (total? mastered/total*100 : 0) + '%';
   document.getElementById('prog-label').textContent = total? (mastered + ' / ' + total) : '尚未开始';
+}
+
+function rerender(){
+  const list = document.getElementById('word-list');
+  updateStats();
   list.innerHTML = '';
   order.forEach((idx,pos)=>{ list.appendChild(cardEl(idx,pos)); });
 }
@@ -231,7 +235,12 @@ function cardEl(idx,pos){
     (ex.length?'<div class="examples">'+ex.map(e=>'<div class="example-item"><div>'+esc(e.en)+'</div><div class="zh">'+esc(e.zh)+'</div></div>').join('')+'</div>':'');
   card.querySelector('.play').onclick = ()=>speak(w.word);
   card.querySelector('.eye').onclick = ()=>{ card.classList.toggle('showzh'); card.querySelector('.eye').classList.toggle('active',card.classList.contains('showzh')); };
-  card.querySelector('.mark').onclick = ()=>{ unknownSet.has(idx)?unknownSet.delete(idx):unknownSet.add(idx); rerender(); };
+  card.querySelector('.mark').onclick = ()=>{
+    if(unknownSet.has(idx)) unknownSet.delete(idx); else unknownSet.add(idx);
+    card.classList.toggle('highlighted', unknownSet.has(idx));
+    card.querySelector('.mark').classList.toggle('active', unknownSet.has(idx));
+    updateStats();
+  };
   const exT = card.querySelector('.ex-toggle');
   if(exT) exT.onclick = ()=>{ card.classList.toggle('showex'); exT.textContent = card.classList.contains('showex')?'例句 ▴':'例句 ▾'; };
   return card;
@@ -275,58 +284,77 @@ const TABLES = [
   {id:'t_learning_event',name:'t_learning_event',zh:'交互事件',color:'#3b82f6',desc:'cardAPI.track 埋点日志',
    fields:[['id','Integer','PK',1],['user_id','Integer','FK→t_user',0],['deck_id','Integer','FK→t_deck',0],['deck_item_id','Integer','FK→t_deck_item',0],['action','String(50)','',0],['created_at','DateTime','indexed',0]]}
 ];
-const LINKS = [
-  ['t_user','t_deck',1],['t_deck','t_tool',1],['t_deck','t_deck_item',1],['t_deck','t_study_round',1],['t_deck_item','t_progress',1],['t_deck_item','t_learning_event',1],
-  ['t_user','t_tool',0],['t_user','t_progress',0],['t_user','t_study_round',0],['t_user','t_learning_event',0],['t_deck','t_progress',0],['t_deck','t_learning_event',0]
-];
-// 节点坐标（分层布局：用户→卡组/工具→数据→学习，减少交叉）
-const NODE_POS = {
-  t_user:{x:270,y:30}, t_tool:{x:400,y:160}, t_deck:{x:110,y:160},
-  t_deck_item:{x:255,y:290}, t_progress:{x:40,y:410}, t_study_round:{x:255,y:410}, t_learning_event:{x:470,y:410}
+const MIND_COL = { t_user:'#22d3ee', t_tool:'#a855f7', t_deck:'#6366f1', t_deck_item:'#f59e0b', t_progress:'#10b981', t_study_round:'#ef4444', t_learning_event:'#3b82f6' };
+const REL_MAP = {
+  t_user:['卡组'], t_deck:['用户','小工具','卡片数据','学习进度'], t_tool:['卡组'],
+  t_deck_item:['卡组','学习进度'], t_progress:['学习进度','卡片数据'], t_study_round:['学习进度','卡组'], t_learning_event:['学习进度','卡片数据']
 };
-const NODE_W = 150, NODE_H = 62;
+// [id, 标题, 副标题, 底层表, x, y, opts{weak:弱化(用户), center:中心(卡组)}]
+const MIND_NODES = [
+  ['user','用户','本地单用户','t_user',10,215,{weak:true}],
+  ['deck','卡组','Deck = 数据 + 工具','t_deck',120,205,{center:true}],
+  ['tool','小工具','怎么展示','t_tool',320,90,{}],
+  ['item','卡片数据','学什么','t_deck_item',320,205,{}],
+  ['prog','学习进度','学到哪 · 哪不会',null,320,320,{}],
+  ['mark','标记 · 收藏','未知 / 掌握','t_progress',520,245,{}],
+  ['round','轮回轮次','Samsara','t_study_round',520,320,{}],
+  ['event','交互埋点','记录','t_learning_event',520,395,{}]
+];
+const MIND_LINKS = [
+  ['user','deck',1],['deck','tool',0],['deck','item',0],['deck','prog',0],
+  ['prog','mark',0],['prog','round',0],['prog','event',0]
+];
+function mindSize(n){ const o=n[6]; return o&&o.weak?[64,40]:o&&o.center?[170,56]:[150,44]; }
 
-function renderER(){
+function renderMind(){
   const svg = document.getElementById('er-svg');
   svg.innerHTML = '';
-  LINKS.forEach(([a,b,primary])=>{
-    const pa = NODE_POS[a], pb = NODE_POS[b];
-    const x1 = pa.x+NODE_W/2, y1 = pa.y+NODE_H/2, x2 = pb.x+NODE_W/2, y2 = pb.y+NODE_H/2;
-    const mx=(x1+x2)/2, my=(y1+y2)/2;
-    const p = document.createElementNS('http://www.w3.org/2000/svg','path');
-    p.setAttribute('d',`M${x1},${y1} Q${mx},${my} ${x2},${y2}`);
-    p.setAttribute('class', primary?'db-link':'db-link db-link-minor');
-    p.dataset.link = a+'|'+b;
+  MIND_LINKS.forEach(([a,b,weak])=>{
+    const pa=MIND_NODES.find(n=>n[0]===a), pb=MIND_NODES.find(n=>n[0]===b);
+    const [wA,hA]=mindSize(pa), [wB,hB]=mindSize(pb);
+    const x1=pa[4]+wA, y1=pa[5]+hA/2, x2=pb[4], y2=pb[5]+hB/2, mx=(x1+x2)/2;
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`);
+    p.setAttribute('class', weak?'db-link-minor':'db-link');
+    p.dataset.link=a+'|'+b;
     svg.appendChild(p);
   });
-  TABLES.forEach(t=>{
-    const p = NODE_POS[t.id];
-    const g = document.createElementNS('http://www.w3.org/2000/svg','g'); g.dataset.node = t.id; g.style.cursor='pointer';
-    const r = document.createElementNS('http://www.w3.org/2000/svg','rect');
-    r.setAttribute('x',p.x); r.setAttribute('y',p.y); r.setAttribute('width',NODE_W); r.setAttribute('height',NODE_H); r.setAttribute('rx',10);
-    r.setAttribute('fill','var(--card)'); r.setAttribute('stroke',t.color); r.setAttribute('stroke-width',1.4);
-    const color = document.createElementNS('http://www.w3.org/2000/svg','rect');
-    color.setAttribute('x',p.x); color.setAttribute('y',p.y); color.setAttribute('width',6); color.setAttribute('height',NODE_H); color.setAttribute('rx',3); color.setAttribute('fill',t.color);
-    const t1 = document.createElementNS('http://www.w3.org/2000/svg','text');
-    t1.setAttribute('x',p.x+14); t1.setAttribute('y',p.y+26); t1.setAttribute('font-size',13); t1.setAttribute('font-weight',700); t1.setAttribute('fill','var(--text)');
-    t1.textContent = t.name;
-    const t2 = document.createElementNS('http://www.w3.org/2000/svg','text');
-    t2.setAttribute('x',p.x+14); t2.setAttribute('y',p.y+44); t2.setAttribute('font-size',11); t2.setAttribute('fill','var(--sub)');
-    t2.textContent = t.zh;
-    g.appendChild(r); g.appendChild(color); g.appendChild(t1); g.appendChild(t2);
-    g.onmouseenter = ()=>highlight(t.id);
-    g.onmouseleave = ()=>clearHighlight();
-    g.onclick = ()=>showTable(t.id);
+  MIND_NODES.forEach(n=>{
+    const [id,label,sub,table,x,y,opts]=n;
+    const [w,h]=mindSize(n);
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g'); g.dataset.node=id; g.style.cursor=table?'pointer':'default';
+    const col = MIND_COL[table]||'#6366f1';
+    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x',x); r.setAttribute('y',y); r.setAttribute('width',w); r.setAttribute('height',h); r.setAttribute('rx',opts.center?14:10);
+    r.setAttribute('fill', opts.weak?'none':'var(--card)');
+    r.setAttribute('stroke', opts.weak?'var(--light)':col); r.setAttribute('stroke-width', opts.center?2:1.4);
+    if(opts.weak) r.setAttribute('stroke-dasharray','4 3');
+    g.appendChild(r);
+    if(!opts.weak){
+      const c=document.createElementNS('http://www.w3.org/2000/svg','rect');
+      c.setAttribute('x',x); c.setAttribute('y',y); c.setAttribute('width',5); c.setAttribute('height',h); c.setAttribute('rx',2.5); c.setAttribute('fill',col);
+      g.appendChild(c);
+    }
+    const t1=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t1.setAttribute('x', opts.weak?x+w/2:x+13); t1.setAttribute('y',y+(opts.center?25:19)); t1.setAttribute('font-size',opts.center?15:13); t1.setAttribute('font-weight',700);
+    t1.setAttribute('fill', opts.weak?'var(--sub)':'var(--text)'); t1.setAttribute('text-anchor',opts.weak?'middle':'start');
+    t1.textContent=label; g.appendChild(t1);
+    if(!opts.weak){
+      const t2=document.createElementNS('http://www.w3.org/2000/svg','text');
+      t2.setAttribute('x',x+13); t2.setAttribute('y',y+(opts.center?44:37)); t2.setAttribute('font-size',10); t2.setAttribute('fill','var(--sub)');
+      t2.textContent = sub + (table?('  →  '+table):''); g.appendChild(t2);
+    }
+    g.onmouseenter=()=>highlightMind(id);
+    g.onmouseleave=()=>clearHighlight();
+    if(table) g.onclick=()=>showTable(table);
     svg.appendChild(g);
   });
 }
 
-function highlight(id){
+function highlightMind(id){
   document.querySelectorAll('.db-link,.db-link-minor').forEach(el=>el.classList.remove('hot'));
-  const g = document.querySelector(`g[data-node="${id}"]`); if(g) g.classList.add('active');
-  document.querySelectorAll('.db-link,.db-link-minor').forEach(p=>{
-    if(p.dataset.link.split('|').includes(id)) p.classList.add('hot');
-  });
+  const g=document.querySelector(`g[data-node="${id}"]`); if(g) g.classList.add('active');
+  document.querySelectorAll('.db-link,.db-link-minor').forEach(p=>{ if(p.dataset.link.split('|').includes(id)) p.classList.add('hot'); });
 }
 function clearHighlight(){
   if(!document.querySelector('.db-panel').dataset.pinned){
@@ -336,8 +364,8 @@ function clearHighlight(){
 function showTable(id){
   const t = TABLES.find(x=>x.id===id);
   const panel = document.getElementById('db-panel');
-  const rels = LINKS.filter(([a,b])=>a===id||b===id).map(([a,b])=>a===id?b:a);
-  const relT = rels.map(r=>TABLES.find(x=>x.id===r).zh).join(' · ');
+  const rels = (REL_MAP[id]||[]).join(' · ');
+  const relT = rels;
   let rows = t.fields.map(f=>`<tr><td><span class="${f[2]==='PK'?'pk':''}">${f[0]}</span></td><td>${f[1]}</td><td>${f[2]}</td></tr>`).join('');
   panel.dataset.pinned = id;
   panel.innerHTML = `<h3 style="color:${t.color}">${t.name} <span style="font-size:12px;color:var(--sub);font-weight:600">${t.zh}</span></h3>`+
@@ -353,7 +381,7 @@ function showTable(id){
     `<li>埋点 <code>cardAPI.track</code> → t_learning_event</li>`+
     `<li>轮回 <code>POST /v1/reorder</code> → t_progress.current_order + t_study_round</li>`+
     `</ol></div>`;
-  highlight(id);
+  highlightMind(id);
 }
 
 /* ============ Tab / 主题 ============ */
@@ -362,7 +390,7 @@ document.querySelectorAll('.tabs button').forEach(b=>{
     document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active')); b.classList.add('active');
     document.getElementById('view-deck').style.display = b.dataset.view==='deck'?'block':'none';
     document.getElementById('view-db').style.display = b.dataset.view==='db'?'block':'none';
-    if(b.dataset.view==='db') renderER();
+    if(b.dataset.view==='db') renderMind();
   };
 });
 const themeBtn = document.getElementById('theme-btn');
