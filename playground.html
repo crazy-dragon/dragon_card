@@ -97,10 +97,28 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 /* ---------- DB view ---------- */
-.db-wrap{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
-@media(max-width:900px){.db-wrap{grid-template-columns:1fr}}
-.db-canvas{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:10px;position:sticky;top:80px}
+.db-wrap{display:block}
+.db-canvas{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:14px;position:sticky;top:80px}
 #er-svg{width:100%;height:auto;display:block}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-lg);width:min(600px,92vw);max-height:82vh;display:flex;flex-direction:column;overflow:hidden;transform:translateY(12px) scale(.98);transition:transform .2s}
+.modal-overlay.open .modal-box{transform:none}
+.modal-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 20px;border-bottom:1px solid var(--border)}
+.modal-title{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px}
+.modal-close{width:32px;height:32px;border-radius:8px;background:var(--bg);color:var(--sub);font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.modal-close:hover{color:var(--primary)}
+.modal-body{padding:18px 20px;overflow:auto;font-size:13px}
+.modal-body .desc{font-size:12px;color:var(--sub);margin:0 0 12px;line-height:1.5}
+.modal-body table{width:100%;border-collapse:collapse;font-size:12px}
+.modal-body th,.modal-body td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)}
+.modal-body th{color:var(--sub);font-weight:600}
+.modal-body td .pk{color:var(--primary);font-weight:700}
+.modal-body .flow{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
+.modal-body .flow h4{font-size:13px;margin:0 0 8px}
+.modal-body .flow ol{margin:0;padding-left:20px;font-size:12px;color:var(--sub);line-height:1.9}
+.modal-body .flow code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:11px}
+.modal-body .hint{color:var(--sub);font-size:12px}
 .db-node{fill:var(--card);stroke:var(--border);stroke-width:1.2;rx:10;transition:.2s;cursor:pointer}
 .db-node:hover{stroke:var(--primary);filter:drop-shadow(0 4px 10px rgba(0,0,0,.12))}
 .db-node.active{stroke:var(--primary);stroke-width:2}
@@ -113,10 +131,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .db-arrow{fill:var(--light)}
 .db-arrow.hot{fill:var(--primary)}
 .flow-tip{font-size:11px;color:var(--sub);text-align:center;margin-top:6px}
-.db-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:18px;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow:auto}
-.db-panel h3{font-size:16px;display:flex;align-items:center;gap:8px}
-.db-panel .desc{font-size:12px;color:var(--sub);margin:6px 0 12px;line-height:1.5}
-table{width:100%;border-collapse:collapse;font-size:12px}
 th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)}
 th{color:var(--sub);font-weight:600}
 td .pk{color:var(--primary);font-weight:700}
@@ -167,9 +181,19 @@ td .pk{color:var(--primary);font-weight:700}
       <svg id="er-svg" viewBox="0 0 700 460"></svg>
       <div class="flow-tip">思维导图 · 悬停查看关联，点击节点看字段详情</div>
     </div>
-    <div class="db-panel" id="db-panel"></div>
   </div>
 </section>
+
+<!-- 表详情弹窗 -->
+<div id="table-modal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="tm-title"></div>
+      <button class="modal-close" id="tm-close" title="关闭">✕</button>
+    </div>
+    <div class="modal-body" id="tm-body"></div>
+  </div>
+</div>
 
 <script>
 const WORDS = [{"word": "nutty", "phonetic": "ˈnʌti", "en": ["Containing or flavored with nuts.", "Informal: slightly crazy or eccentric."], "zh": ["adj. 含有坚果的；有坚果味的。", "adj. 非正式：有点疯狂或古怪的。"], "ex": [{"en": "This chocolate cake has a nutty flavor.", "zh": "这个巧克力蛋糕有坚果味。"}, {"en": "He has some nutty ideas about time travel.", "zh": "他对时间旅行有一些古怪的想法。"}]}, {"word": "looter", "phonetic": "ˈluːtər", "en": ["A person who loots, especially during a riot, war, or natural disaster."], "zh": ["n. 抢劫者，掠夺者"], "ex": [{"en": "Police arrested several looters after the earthquake.", "zh": "地震后，警察逮捕了几名抢劫者。"}]}, {"word": "worsening", "phonetic": "ˈwɜːrsənɪŋ", "en": ["(present participle of worsen): becoming or making worse.", "The act or process of becoming worse."], "zh": ["v. (worsen的现在分词) 恶化，变坏", "n. 恶化，加剧"], "ex": [{"en": "The weather is worsening; we should stay indoors.", "zh": "天气在恶化，我们应该待在室内。"}, {"en": "The worsening of the economy concerned everyone.", "zh": "经济的恶化让每个人担忧。"}]}, {"word": "sovereign", "phonetic": "ˈsɑːvrɪn", "en": ["A supreme ruler, especially a monarch.", "A former British gold coin worth one pound.", "Having supreme power or authority; independent."], "zh": ["n. 君主，统治者", "n. 金币（英国旧时一英镑金币）", "adj. 至高无上的，主权的"], "ex": [{"en": "The sovereign addressed the nation on television.", "zh": "君主在电视上向全国发表讲话。"}, {"en": "He collected ancient sovereigns as a hobby.", "zh": "他收集古代金币作为爱好。"}, {"en": "Each state has sovereign power over its internal affairs.", "zh": "每个州对其内政拥有主权权力。"}]}, {"word": "veiled", "phonetic": "veɪld", "en": ["Wearing or covered with a veil.", "Partially concealed or disguised; not openly expressed."], "zh": ["adj. 戴面纱的，遮盖的", "adj. 含蓄的，掩饰的"], "ex": [{"en": "She walked into the room with a veiled face.", "zh": "她遮着脸走进房间。"}, {"en": "His veiled threat was clear to everyone.", "zh": "他的含蓄威胁对每个人来说都很明显。"}]}, {"word": "anonymously", "phonetic": "əˈnɑːnɪməsli", "en": ["Without being identified by name; in an anonymous manner."], "zh": ["adv. 匿名地，不具名地"], "ex": [{"en": "The donation was made anonymously.", "zh": "捐款是匿名进行的。"}]}, {"word": "tad", "phonetic": "tæd", "en": ["slightly; to a small degree."], "zh": ["adv. 稍微，有点儿"], "ex": [{"en": "This coffee is a tad too strong for me.", "zh": "这杯咖啡对我来说稍微太浓了。"}]}, {"word": "parenthood", "phonetic": "ˈperənthʊd", "en": ["The state or experience of having or raising a child or children."], "zh": ["n. 父母身份，育儿状态"], "ex": [{"en": "Parenthood has changed their lives completely.", "zh": "为人父母彻底改变了他们的生活。"}]}, {"word": "scribe", "phonetic": "skraɪb", "en": ["A person who copies out documents, especially in times before printing was common.", "A writer or journalist, sometimes used humorously."], "zh": ["n. 抄写员，文书", "n. 作家，记者"], "ex": [{"en": "In medieval times, monks often worked as scribes.", "zh": "在中世纪，僧侣们常充当抄写员。"}, {"en": "The journalist referred to himself as a humble scribe.", "zh": "那位记者自谦地称自己为卑微的写手。"}]}, {"word": "chauffeur", "phonetic": "ʃoʊˈfɜːr", "en": ["A person whose job is to drive a car, especially for a private employer.", "To drive someone as or like a chauffeur."], "zh": ["n. 司机，专车司机", "v. 开车，驾车"], "ex": [{"en": "He hired a chauffeur to take him to the airport.", "zh": "他雇了一个司机送他去机场。"}, {"en": "She chauffeured her children to school every day.", "zh": "她每天开车送孩子们去学校。"}]}, {"word": "hospitable", "phonetic": "hɑːˈspɪtəbl", "en": ["Friendly and welcoming to guests or strangers.", "(of a place or climate) pleasant and favorable for living or visiting."], "zh": ["adj. 好客的，热情款待的", "adj. 宜人的，舒适的"], "ex": [{"en": "The hospitable family invited us in for tea.", "zh": "那个好客的家庭邀请我们进去喝茶。"}, {"en": "The island has a hospitable climate year-round.", "zh": "这个岛屿全年气候宜人。"}]}, {"word": "brawl", "phonetic": "brɔːl", "en": ["A rough or noisy fight or quarrel.", "To engage in a brawl."], "zh": ["n. 争吵，打斗。", "v. 参与打斗。"], "ex": [{"en": "A brawl erupted in the bar after a disagreement.", "zh": "酒吧里一场争吵在分歧后爆发。"}, {"en": "The fans brawled outside the stadium after the game.", "zh": "比赛后，球迷们在体育场外打斗。"}]}, {"word": "smite", "phonetic": "smaɪt", "en": ["To strike with a firm blow.", "To defeat or punish severely."], "zh": ["v. 重击，猛打。", "v. 惩罚，击败。"], "ex": [{"en": "The warrior smote his enemy with a mighty sword.", "zh": "战士用巨剑重击了他的敌人。"}, {"en": "The disease smote the population, causing widespread suffering.", "zh": "疾病袭击了人群，造成了广泛的痛苦。"}]}, {"word": "chi-square", "phonetic": "kaɪ skwɛr", "en": ["A statistical test used to compare observed data with expected data."], "zh": ["n. 卡方检验，用于比较观测数据与期望数据的统计检验。"], "ex": [{"en": "The chi-square test revealed a significant association between the variables.", "zh": "卡方检验揭示了变量之间的显著关联。"}]}, {"word": "Federalist", "phonetic": "ˈfedərəlɪst", "en": ["A supporter of federalism, especially in US history.", "Relating to or supporting federalism."], "zh": ["n. 联邦主义者，尤指美国历史上的。", "adj. 联邦制的。"], "ex": [{"en": "The Federalists played a key role in shaping the US Constitution.", "zh": "联邦主义者在塑造美国宪法方面发挥了关键作用。"}, {"en": "The Federalist system divides power between national and state governments.", "zh": "联邦制体系将权力在国家和州政府之间分配。"}]}];
@@ -357,21 +381,17 @@ function highlightMind(id){
   document.querySelectorAll('.db-link,.db-link-minor').forEach(p=>{ if(p.dataset.link.split('|').includes(id)) p.classList.add('hot'); });
 }
 function clearHighlight(){
-  if(!document.querySelector('.db-panel').dataset.pinned){
-    document.querySelectorAll('.db-link,.db-link-minor').forEach(el=>el.classList.remove('hot'));
-  }
+  document.querySelectorAll('.db-link,.db-link-minor').forEach(el=>el.classList.remove('hot'));
 }
 function showTable(id){
   const t = TABLES.find(x=>x.id===id);
-  const panel = document.getElementById('db-panel');
   const rels = (REL_MAP[id]||[]).join(' · ');
-  const relT = rels;
   let rows = t.fields.map(f=>`<tr><td><span class="${f[2]==='PK'?'pk':''}">${f[0]}</span></td><td>${f[1]}</td><td>${f[2]}</td></tr>`).join('');
-  panel.dataset.pinned = id;
-  panel.innerHTML = `<h3 style="color:${t.color}">${t.name} <span style="font-size:12px;color:var(--sub);font-weight:600">${t.zh}</span></h3>`+
+  document.getElementById('tm-title').innerHTML = `<span style="color:${t.color}">${t.name}</span> <span style="font-size:13px;color:var(--sub);font-weight:600">${t.zh}</span>`;
+  document.getElementById('tm-body').innerHTML =
     `<div class="desc">${t.desc}</div>`+
     `<table><thead><tr><th>列名</th><th>类型</th><th>约束</th></tr></thead><tbody>${rows}</tbody></table>`+
-    `<div class="flow"><h4>关联</h4><div class="hint">${relT}</div></div>`+
+    `<div class="flow"><h4>关联</h4><div class="hint">${rels}</div></div>`+
     `<div class="flow"><h4>数据流转</h4><ol>`+
     `<li>创建卡组 <code>POST /v1/decks</code> → t_deck</li>`+
     `<li>绑定工具 <code>POST /v1/decks/:id/tool</code> → t_tool + tool_id</li>`+
@@ -381,8 +401,12 @@ function showTable(id){
     `<li>埋点 <code>cardAPI.track</code> → t_learning_event</li>`+
     `<li>轮回 <code>POST /v1/reorder</code> → t_progress.current_order + t_study_round</li>`+
     `</ol></div>`;
+  document.getElementById('table-modal').classList.add('open');
   highlightMind(id);
 }
+function closeModal(){ document.getElementById('table-modal').classList.remove('open'); clearHighlight(); }
+document.getElementById('tm-close').onclick = closeModal;
+document.getElementById('table-modal').onclick = function(e){ if(e.target===this) closeModal(); };
 
 /* ============ Tab / 主题 ============ */
 document.querySelectorAll('.tabs button').forEach(b=>{
