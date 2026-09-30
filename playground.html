@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DragonCard Playground · COCA 演示</title>
+<style>
+:root{
+  --bg:#eef1f6; --card:#ffffff; --text:#1f2937; --sub:#6b7280; --light:#9ca3af;
+  --primary:#0969da; --primary-soft:rgba(9,105,218,.10);
+  --unknown:#e07600; --unknown-soft:rgba(224,118,0,.12);
+  --mastered:#1f9d6b; --mastered-soft:rgba(31,157,107,.12);
+  --border:#e5e7eb; --shadow:0 4px 20px rgba(0,0,0,.06); --shadow-lg:0 10px 32px rgba(0,0,0,.12);
+  --grad:linear-gradient(135deg,#22d3ee,#6366f1 55%,#a855f7);
+}
+body.dark{
+  --bg:#0d1117; --card:#161b22; --text:#e6edf3; --sub:#8b949e; --light:#6e7681;
+  --primary-soft:rgba(88,166,255,.12); --unknown-soft:rgba(224,118,0,.15); --mastered-soft:rgba(52,211,153,.12);
+  --border:#2d333b; --shadow:0 4px 20px rgba(0,0,0,.4); --shadow-lg:0 12px 36px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);transition:background .25s,color .25s}
+h1,h2,h3{margin:0;font-weight:700}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+/* ---------- Header ---------- */
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:16px;padding:14px 24px;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--shadow)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo .dragon{width:40px;height:40px;border-radius:12px;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo h1{font-size:18px}
+.logo small{display:block;color:var(--sub);font-size:11px;font-weight:500}
+.tabs{display:flex;gap:6px;margin-left:8px;background:var(--bg);padding:4px;border-radius:12px}
+.tabs button{padding:8px 18px;border-radius:9px;font-size:13px;font-weight:600;color:var(--sub);transition:.15s}
+.tabs button.active{background:var(--card);color:var(--primary);box-shadow:var(--shadow)}
+.theme-btn{margin-left:auto;width:38px;height:38px;border-radius:10px;background:var(--bg);color:var(--sub);font-size:16px;display:flex;align-items:center;justify-content:center}
+.theme-btn:hover{color:var(--primary)}
+
+/* ---------- Deck view ---------- */
+.view{padding:20px 24px 60px;max-width:1000px;margin:0 auto}
+.stats-bar{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow);margin-bottom:16px;flex-wrap:wrap}
+.stat{text-align:center;min-width:64px}
+.stat .num{font-size:20px;font-weight:800}
+.stat .lbl{font-size:11px;color:var(--sub)}
+.stat.unknown .num{color:var(--unknown)}
+.stat.mastered .num{color:var(--mastered)}
+.stat.total .num{color:var(--primary)}
+.progress{flex:1;min-width:140px}
+.progress .bar{height:8px;background:var(--bg);border-radius:6px;overflow:hidden;margin-top:6px}
+.progress .fill{height:100%;background:var(--grad);border-radius:6px;transition:width .5s}
+.progress .meta{font-size:11px;color:var(--sub);display:flex;justify-content:space-between;margin-top:4px}
+.toolbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.btn{padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text);transition:.15s;box-shadow:var(--shadow)}
+.btn:hover{border-color:var(--primary);color:var(--primary)}
+.btn.primary{background:var(--grad);color:#fff;border:none}
+.btn.primary:hover{opacity:.92;color:#fff}
+.btn.ghost{background:var(--bg);box-shadow:none}
+
+/* Word cards */
+.word-list{display:flex;flex-direction:column;gap:12px}
+.word-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s;opacity:0;animation:pop .35s forwards}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.word-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-1px)}
+.word-card.unknown{border-color:var(--unknown);background:linear-gradient(0deg,var(--unknown-soft),transparent 40%)}
+.word-card.mastered{border-color:var(--mastered)}
+.wc-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.wc-word{font-size:24px;font-weight:800;letter-spacing:.5px}
+.wc-phonetic{color:var(--sub);font-size:15px}
+.speak-btn{width:34px;height:34px;border-radius:50%;background:var(--primary-soft);color:var(--primary);font-size:14px;display:flex;align-items:center;justify-content:center}
+.speak-btn:hover{transform:scale(1.08)}
+.wc-mark{margin-left:auto;display:flex;gap:6px}
+.mark-btn{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;border:1px solid var(--border);color:var(--sub);transition:.15s}
+.mark-btn:hover{color:var(--unknown)}
+.mark-btn.done{background:var(--mastered-soft);color:var(--mastered);border-color:var(--mastered)}
+.mark-btn.done:hover{color:var(--unknown)}
+.wc-def{margin-top:12px;font-size:14px;line-height:1.6}
+.wc-def .en{color:var(--sub)}
+.wc-def .zh{color:var(--text);margin-top:4px;display:none}
+.word-card.showzh .wc-def .zh{display:block}
+.zh-toggle{margin-top:8px;font-size:12px;color:var(--primary);font-weight:600;cursor:pointer;background:none;padding:0}
+.wc-ex{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);font-size:13px;color:var(--sub);display:none}
+.word-card.showex .wc-ex{display:block}
+.wc-ex .en{color:var(--sub)}
+.wc-ex .zh{color:var(--text);margin-top:2px}
+.ex-toggle{margin-top:8px;font-size:12px;color:var(--primary);font-weight:600;cursor:pointer;background:none;padding:0}
+.empty-hint{text-align:center;color:var(--sub);padding:40px;font-size:14px}
+
+/* ---------- DB view ---------- */
+.db-wrap{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
+@media(max-width:900px){.db-wrap{grid-template-columns:1fr}}
+.db-canvas{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:10px;position:sticky;top:80px}
+#er-svg{width:100%;height:auto;display:block}
+.db-node{fill:var(--card);stroke:var(--border);stroke-width:1.2;rx:10;transition:.2s;cursor:pointer}
+.db-node:hover{stroke:var(--primary);filter:drop-shadow(0 4px 10px rgba(0,0,0,.12))}
+.db-node.active{stroke:var(--primary);stroke-width:2}
+.db-node-title{font-size:13px;font-weight:700;fill:var(--text)}
+.db-node-sub{font-size:10px;fill:var(--sub)}
+.db-link{stroke:var(--light);stroke-width:1.4;fill:none;transition:.2s}
+.db-link.arrow{stroke:var(--light)}
+.db-link.hot{stroke:var(--primary);stroke-width:2.4}
+.db-arrow{fill:var(--light)}
+.db-arrow.hot{fill:var(--primary)}
+.flow-tip{font-size:11px;color:var(--sub);text-align:center;margin-top:6px}
+.db-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:18px;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow:auto}
+.db-panel h3{font-size:16px;display:flex;align-items:center;gap:8px}
+.db-panel .desc{font-size:12px;color:var(--sub);margin:6px 0 12px;line-height:1.5}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)}
+th{color:var(--sub);font-weight:600}
+td .pk{color:var(--primary);font-weight:700}
+.flow{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
+.flow h4{font-size:13px;margin:0 0 8px}
+.flow ol{margin:0;padding-left:20px;font-size:12px;color:var(--sub);line-height:1.9}
+.flow code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:11px}
+.hint{color:var(--sub);font-size:12px}
+@media(max-width:640px){.view{padding:14px 12px 40px}.word-list{gap:10px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo">
+    <div class="dragon">🐉</div>
+    <div><h1>DragonCard Playground</h1><small>COCA 卡组 × 数据结构 · 交互演示</small></div>
+  </div>
+  <nav class="tabs">
+    <button data-view="deck" class="active">卡组演示</button>
+    <button data-view="db">数据结构</button>
+  </nav>
+  <button class="theme-btn" id="theme-btn" title="切换主题">🌙</button>
+</header>
+
+<!-- ============ COCA 卡组 ============ -->
+<section id="view-deck" class="view">
+  <div class="stats-bar">
+    <div class="stat mastered"><div class="num" id="st-mastered">0</div><div class="lbl">掌握</div></div>
+    <div class="stat unknown"><div class="num" id="st-unknown">0</div><div class="lbl">未知</div></div>
+    <div class="stat total"><div class="num" id="st-total">0</div><div class="lbl">总数</div></div>
+    <div class="progress">
+      <div class="bar"><div class="fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="meta"><span id="prog-label">尚未开始</span><span id="round-num">轮回 0</span></div>
+    </div>
+  </div>
+  <div class="toolbar">
+    <button class="btn primary" id="goagain-btn">↻ 轮回</button>
+    <button class="btn ghost" id="reset-btn">重置标记</button>
+    <button class="btn ghost" id="clear-ex-btn">收起例句</button>
+  </div>
+  <div class="word-list" id="word-list"></div>
+</section>
+
+<!-- ============ 数据结构 ============ -->
+<section id="view-db" class="view" style="display:none">
+  <div class="db-wrap">
+    <div class="db-canvas">
+      <svg id="er-svg" viewBox="0 0 620 560"></svg>
+      <div class="flow-tip">悬停 / 点击表节点查看关联与结构</div>
+    </div>
+    <div class="db-panel" id="db-panel"></div>
+  </div>
+</section>
+
+<script>
+const WORDS = [{"word": "nutty", "phonetic": "ˈnʌti", "en": ["Containing or flavored with nuts.", "Informal: slightly crazy or eccentric."], "zh": ["adj. 含有坚果的；有坚果味的。", "adj. 非正式：有点疯狂或古怪的。"], "ex": [{"en": "This chocolate cake has a nutty flavor.", "zh": "这个巧克力蛋糕有坚果味。"}, {"en": "He has some nutty ideas about time travel.", "zh": "他对时间旅行有一些古怪的想法。"}]}, {"word": "looter", "phonetic": "ˈluːtər", "en": ["A person who loots, especially during a riot, war, or natural disaster."], "zh": ["n. 抢劫者，掠夺者"], "ex": [{"en": "Police arrested several looters after the earthquake.", "zh": "地震后，警察逮捕了几名抢劫者。"}]}, {"word": "worsening", "phonetic": "ˈwɜːrsənɪŋ", "en": ["(present participle of worsen): becoming or making worse.", "The act or process of becoming worse."], "zh": ["v. (worsen的现在分词) 恶化，变坏", "n. 恶化，加剧"], "ex": [{"en": "The weather is worsening; we should stay indoors.", "zh": "天气在恶化，我们应该待在室内。"}, {"en": "The worsening of the economy concerned everyone.", "zh": "经济的恶化让每个人担忧。"}]}, {"word": "sovereign", "phonetic": "ˈsɑːvrɪn", "en": ["A supreme ruler, especially a monarch.", "A former British gold coin worth one pound.", "Having supreme power or authority; independent."], "zh": ["n. 君主，统治者", "n. 金币（英国旧时一英镑金币）", "adj. 至高无上的，主权的"], "ex": [{"en": "The sovereign addressed the nation on television.", "zh": "君主在电视上向全国发表讲话。"}, {"en": "He collected ancient sovereigns as a hobby.", "zh": "他收集古代金币作为爱好。"}, {"en": "Each state has sovereign power over its internal affairs.", "zh": "每个州对其内政拥有主权权力。"}]}, {"word": "veiled", "phonetic": "veɪld", "en": ["Wearing or covered with a veil.", "Partially concealed or disguised; not openly expressed."], "zh": ["adj. 戴面纱的，遮盖的", "adj. 含蓄的，掩饰的"], "ex": [{"en": "She walked into the room with a veiled face.", "zh": "她遮着脸走进房间。"}, {"en": "His veiled threat was clear to everyone.", "zh": "他的含蓄威胁对每个人来说都很明显。"}]}, {"word": "anonymously", "phonetic": "əˈnɑːnɪməsli", "en": ["Without being identified by name; in an anonymous manner."], "zh": ["adv. 匿名地，不具名地"], "ex": [{"en": "The donation was made anonymously.", "zh": "捐款是匿名进行的。"}]}, {"word": "tad", "phonetic": "tæd", "en": ["slightly; to a small degree."], "zh": ["adv. 稍微，有点儿"], "ex": [{"en": "This coffee is a tad too strong for me.", "zh": "这杯咖啡对我来说稍微太浓了。"}]}, {"word": "parenthood", "phonetic": "ˈperənthʊd", "en": ["The state or experience of having or raising a child or children."], "zh": ["n. 父母身份，育儿状态"], "ex": [{"en": "Parenthood has changed their lives completely.", "zh": "为人父母彻底改变了他们的生活。"}]}, {"word": "scribe", "phonetic": "skraɪb", "en": ["A person who copies out documents, especially in times before printing was common.", "A writer or journalist, sometimes used humorously."], "zh": ["n. 抄写员，文书", "n. 作家，记者"], "ex": [{"en": "In medieval times, monks often worked as scribes.", "zh": "在中世纪，僧侣们常充当抄写员。"}, {"en": "The journalist referred to himself as a humble scribe.", "zh": "那位记者自谦地称自己为卑微的写手。"}]}, {"word": "chauffeur", "phonetic": "ʃoʊˈfɜːr", "en": ["A person whose job is to drive a car, especially for a private employer.", "To drive someone as or like a chauffeur."], "zh": ["n. 司机，专车司机", "v. 开车，驾车"], "ex": [{"en": "He hired a chauffeur to take him to the airport.", "zh": "他雇了一个司机送他去机场。"}, {"en": "She chauffeured her children to school every day.", "zh": "她每天开车送孩子们去学校。"}]}, {"word": "hospitable", "phonetic": "hɑːˈspɪtəbl", "en": ["Friendly and welcoming to guests or strangers.", "(of a place or climate) pleasant and favorable for living or visiting."], "zh": ["adj. 好客的，热情款待的", "adj. 宜人的，舒适的"], "ex": [{"en": "The hospitable family invited us in for tea.", "zh": "那个好客的家庭邀请我们进去喝茶。"}, {"en": "The island has a hospitable climate year-round.", "zh": "这个岛屿全年气候宜人。"}]}, {"word": "brawl", "phonetic": "brɔːl", "en": ["A rough or noisy fight or quarrel.", "To engage in a brawl."], "zh": ["n. 争吵，打斗。", "v. 参与打斗。"], "ex": [{"en": "A brawl erupted in the bar after a disagreement.", "zh": "酒吧里一场争吵在分歧后爆发。"}, {"en": "The fans brawled outside the stadium after the game.", "zh": "比赛后，球迷们在体育场外打斗。"}]}, {"word": "smite", "phonetic": "smaɪt", "en": ["To strike with a firm blow.", "To defeat or punish severely."], "zh": ["v. 重击，猛打。", "v. 惩罚，击败。"], "ex": [{"en": "The warrior smote his enemy with a mighty sword.", "zh": "战士用巨剑重击了他的敌人。"}, {"en": "The disease smote the population, causing widespread suffering.", "zh": "疾病袭击了人群，造成了广泛的痛苦。"}]}, {"word": "chi-square", "phonetic": "kaɪ skwɛr", "en": ["A statistical test used to compare observed data with expected data."], "zh": ["n. 卡方检验，用于比较观测数据与期望数据的统计检验。"], "ex": [{"en": "The chi-square test revealed a significant association between the variables.", "zh": "卡方检验揭示了变量之间的显著关联。"}]}, {"word": "Federalist", "phonetic": "ˈfedərəlɪst", "en": ["A supporter of federalism, especially in US history.", "Relating to or supporting federalism."], "zh": ["n. 联邦主义者，尤指美国历史上的。", "adj. 联邦制的。"], "ex": [{"en": "The Federalists played a key role in shaping the US Constitution.", "zh": "联邦主义者在塑造美国宪法方面发挥了关键作用。"}, {"en": "The Federalist system divides power between national and state governments.", "zh": "联邦制体系将权力在国家和州政府之间分配。"}]}];
+
+/* ============ 卡组逻辑 ============ */
+let order = WORDS.map((_,i)=>i);      // 当前展示顺序
+let unknownSet = new Set();           // 标记为「未知」的词索引
+let roundCount = 0;
+let showAllZh = false;
+
+function rerender(){
+  const list = document.getElementById('word-list');
+  const total = WORDS.length;
+  const unknown = unknownSet.size;
+  const mastered = total - unknown;
+  document.getElementById('st-mastered').textContent = mastered;
+  document.getElementById('st-unknown').textContent = unknown;
+  document.getElementById('st-total').textContent = total;
+  document.getElementById('round-num').textContent = '轮回 ' + roundCount;
+  const fill = document.getElementById('prog-fill');
+  fill.style.width = (total? mastered/total*100 : 0) + '%';
+  document.getElementById('prog-label').textContent = total? (mastered + ' / ' + total) : '尚未开始';
+  list.innerHTML = '';
+  order.forEach((idx,pos)=>{ list.appendChild(cardEl(idx,pos)); });
+}
+
+function cardEl(idx,pos){
+  const w = WORDS[idx];
+  const card = document.createElement('div');
+  card.className = 'word-card' + (unknownSet.has(idx)?' unknown':(pos < WORDS.length?' mastered':''));
+  card.style.animationDelay = (pos*0.02)+'s';
+  const zh = w.zh.join('；');
+  const en = w.en.join('；');
+  const ex = w.ex && w.ex.length ? w.ex[0] : null;
+  card.innerHTML =
+    '<div class="wc-top">' +
+      '<div class="wc-word">'+esc(w.word)+'</div>' +
+      (w.phonetic?'<div class="wc-phonetic">'+esc(w.phonetic)+'</div>':'') +
+      '<button class="speak-btn" title="发音">🔊</button>' +
+      '<div class="wc-mark">' +
+        '<button class="mark-btn" data-mark="unknown">标记未知</button>' +
+        '<button class="mark-btn done" data-mark="known">✓ 掌握</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="wc-def">' +
+      '<div class="en">'+esc(en)+'</div>' +
+      '<div class="zh">'+esc(zh)+'</div>' +
+    '</div>' +
+    '<button class="zh-toggle">显示中文释义</button>' +
+    (ex?'<button class="ex-toggle">显示例句</button>':'') +
+    (ex?'<div class="wc-ex"><div class="en">'+esc(ex.en)+'</div><div class="zh">'+esc(ex.zh)+'</div></div>':'');
+  card.querySelector('.speak-btn').onclick = ()=>speak(w.word);
+  card.querySelector('.zh-toggle').onclick = ()=>{ card.classList.toggle('showzh'); card.querySelector('.zh-toggle').textContent = card.classList.contains('showzh')?'隐藏中文释义':'显示中文释义'; };
+  const exT = card.querySelector('.ex-toggle');
+  if(exT) exT.onclick = ()=>{ card.classList.toggle('showex'); exT.textContent = card.classList.contains('showex')?'隐藏例句':'显示例句'; };
+  card.querySelector('[data-mark="unknown"]').onclick = ()=>{ unknownSet.add(idx); rerender(); };
+  card.querySelector('[data-mark="known"]').onclick = ()=>{ unknownSet.delete(idx); rerender(); };
+  return card;
+}
+
+function goagain(){
+  // 未知排前，其余保持相对顺序（与应用 Samsara 一致）
+  order = order.filter(i=>unknownSet.has(i)).concat(order.filter(i=>!unknownSet.has(i)));
+  roundCount++;
+  rerender();
+}
+
+document.getElementById('goagain-btn').onclick = goagain;
+document.getElementById('reset-btn').onclick = ()=>{ unknownSet.clear(); order = WORDS.map((_,i)=>i); roundCount=0; rerender(); };
+document.getElementById('clear-ex-btn').onclick = ()=>{ document.querySelectorAll('.word-card').forEach(c=>{c.classList.remove('showex');}); };
+
+function speak(text){
+  if(!('speechSynthesis' in window)){ alert('当前浏览器不支持发音 (Web Speech API)'); return; }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US'; u.rate = 0.9;
+  speechSynthesis.speak(u);
+}
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ============ 数据结构 ============ */
+const TABLES = [
+  {id:'t_user',name:'t_user',zh:'用户',color:'#22d3ee',desc:'应用用户（默认 default）',
+   fields:[['id','Integer','PK',1],['username','String(50)','UNIQUE',0],['display_name','String(100)','nullable',0],['created_at','DateTime','',0],['updated_at','DateTime','',0]]},
+  {id:'t_tool',name:'t_tool',zh:'小工具',color:'#a855f7',desc:'zip 小工具元数据（源码在 minitools/<id>/）',
+   fields:[['id','Integer','PK',1],['user_id','Integer','FK→t_user',0],['name','String(100)','NOT NULL',0],['description','Text','nullable',0],['icon','String(255)','',0],['lang','String(10)','',0],['dir_path','String(255)','',0],['manifest_json','Text','',0],['tracked_actions','Text','',0],['created_at','DateTime','',0],['updated_at','DateTime','',0]]},
+  {id:'t_deck',name:'t_deck',zh:'卡组',color:'#6366f1',desc:'Deck = 数据源 + 绑定 zip 工具',
+   fields:[['id','Integer','PK',1],['user_id','Integer','FK→t_user',0],['name','String(100)','NOT NULL',0],['kind','String(20)','',0],['tool_id','Integer','FK→t_tool',0],['created_at','DateTime','',0],['updated_at','DateTime','',0]]},
+  {id:'t_deck_item',name:'t_deck_item',zh:'卡组条目',color:'#f59e0b',desc:'单条卡片数据（JSON）',
+   fields:[['id','Integer','PK',1],['deck_id','Integer','FK→t_deck',0],['item_order','Integer','NOT NULL',0],['data','JSON','NOT NULL',0],['debug','Boolean','',0],['created_at','DateTime','',0],['updated_at','DateTime','',0]]},
+  {id:'t_progress',name:'t_progress',zh:'学习进度',color:'#10b981',desc:'每用户×每卡组×每条目一条进度',
+   fields:[['id','Integer','PK',1],['user_id','Integer','FK→t_user',0],['deck_id','Integer','FK→t_deck',0],['deck_item_id','Integer','FK→t_deck_item',0],['is_unknown','Integer','',0],['is_favorite','Integer','',0],['current_order','Integer','',0],['created_at','DateTime','',0],['updated_at','DateTime','',0]]},
+  {id:'t_study_round',name:'t_study_round',zh:'学习轮次',color:'#ef4444',desc:'每次轮回（Samsara）记一条',
+   fields:[['id','Integer','PK',1],['user_id','Integer','FK→t_user',0],['deck_id','Integer','FK→t_deck',0],['round_number','Integer','',0],['end_time','DateTime','',0],['marked_count','Integer','',0]]},
+  {id:'t_learning_event',name:'t_learning_event',zh:'交互事件',color:'#3b82f6',desc:'cardAPI.track 埋点日志',
+   fields:[['id','Integer','PK',1],['user_id','Integer','FK→t_user',0],['deck_id','Integer','FK→t_deck',0],['deck_item_id','Integer','FK→t_deck_item',0],['action','String(50)','',0],['created_at','DateTime','indexed',0]]}
+];
+const LINKS = [
+  ['t_user','t_deck'],['t_user','t_tool'],['t_user','t_progress'],['t_user','t_study_round'],['t_user','t_learning_event'],
+  ['t_deck','t_tool'],['t_deck','t_deck_item'],['t_deck','t_progress'],['t_deck','t_study_round'],['t_deck','t_learning_event'],
+  ['t_deck_item','t_progress'],['t_deck_item','t_learning_event']
+];
+// 节点坐标（手排布局）
+const NODE_POS = {
+  t_user:{x:90,y:40}, t_tool:{x:470,y:90}, t_deck:{x:280,y:150},
+  t_deck_item:{x:120,y:290}, t_progress:{x:330,y:290}, t_study_round:{x:470,y:410}, t_learning_event:{x:180,y:430}
+};
+const NODE_W = 150, NODE_H = 62;
+
+function renderER(){
+  const svg = document.getElementById('er-svg');
+  svg.innerHTML = '';
+  // links first
+  LINKS.forEach(([a,b])=>{
+    const pa = NODE_POS[a], pb = NODE_POS[b];
+    const x1 = pa.x+NODE_W/2, y1 = pa.y+NODE_H/2, x2 = pb.x+NODE_W/2, y2 = pb.y+NODE_H/2;
+    const mx=(x1+x2)/2, my=(y1+y2)/2;
+    const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',`M${x1},${y1} Q${mx},${my} ${x2},${y2}`);
+    p.setAttribute('class','db-link'); p.dataset.link = a+'|'+b;
+    svg.appendChild(p);
+  });
+  TABLES.forEach(t=>{
+    const p = NODE_POS[t.id];
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g'); g.dataset.node = t.id; g.style.cursor='pointer';
+    const r = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x',p.x); r.setAttribute('y',p.y); r.setAttribute('width',NODE_W); r.setAttribute('height',NODE_H); r.setAttribute('rx',10);
+    r.setAttribute('fill','var(--card)'); r.setAttribute('stroke',t.color); r.setAttribute('stroke-width',1.4);
+    const color = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    color.setAttribute('x',p.x); color.setAttribute('y',p.y); color.setAttribute('width',6); color.setAttribute('height',NODE_H); color.setAttribute('rx',3); color.setAttribute('fill',t.color);
+    const t1 = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t1.setAttribute('x',p.x+14); t1.setAttribute('y',p.y+26); t1.setAttribute('font-size',13); t1.setAttribute('font-weight',700); t1.setAttribute('fill','var(--text)');
+    t1.textContent = t.name;
+    const t2 = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t2.setAttribute('x',p.x+14); t2.setAttribute('y',p.y+44); t2.setAttribute('font-size',11); t2.setAttribute('fill','var(--sub)');
+    t2.textContent = t.zh;
+    g.appendChild(r); g.appendChild(color); g.appendChild(t1); g.appendChild(t2);
+    g.onmouseenter = ()=>highlight(t.id);
+    g.onmouseleave = ()=>clearHighlight();
+    g.onclick = ()=>showTable(t.id);
+    svg.appendChild(g);
+  });
+}
+
+function highlight(id){
+  document.querySelectorAll('.db-node,.db-link').forEach(el=>el.classList.remove('active','hot'));
+  const g = document.querySelector(`g[data-node="${id}"]`); if(g) g.classList.add('active');
+  document.querySelectorAll('.db-link').forEach(p=>{
+    if(p.dataset.link.split('|').includes(id)) p.classList.add('hot');
+  });
+}
+function clearHighlight(){
+  if(!document.querySelector('.db-panel').dataset.pinned){
+    document.querySelectorAll('.db-node,.db-link').forEach(el=>el.classList.remove('active','hot'));
+  }
+}
+function showTable(id){
+  const t = TABLES.find(x=>x.id===id);
+  const panel = document.getElementById('db-panel');
+  const rels = LINKS.filter(([a,b])=>a===id||b===id).map(([a,b])=>a===id?b:a);
+  const relT = rels.map(r=>TABLES.find(x=>x.id===r).zh).join(' · ');
+  let rows = t.fields.map(f=>`<tr><td><span class="${f[2]==='PK'?'pk':''}">${f[0]}</span></td><td>${f[1]}</td><td>${f[2]}</td></tr>`).join('');
+  panel.dataset.pinned = id;
+  panel.innerHTML = `<h3 style="color:${t.color}">${t.name} <span style="font-size:12px;color:var(--sub);font-weight:600">${t.zh}</span></h3>`+
+    `<div class="desc">${t.desc}</div>`+
+    `<table><thead><tr><th>列名</th><th>类型</th><th>约束</th></tr></thead><tbody>${rows}</tbody></table>`+
+    `<div class="flow"><h4>关联</h4><div class="hint">${relT}</div></div>`+
+    `<div class="flow"><h4>数据流转</h4><ol>`+
+    `<li>创建卡组 <code>POST /v1/decks</code> → t_deck</li>`+
+    `<li>绑定工具 <code>POST /v1/decks/:id/tool</code> → t_tool + tool_id</li>`+
+    `<li>导入数据 <code>POST /v1/decks/:id/import</code> → t_deck_item</li>`+
+    `<li>分页取卡 <code>cardAPI.getPage</code> → 自动建 t_progress</li>`+
+    `<li>标记 <code>cardAPI.mark</code> → t_progress.is_unknown</li>`+
+    `<li>埋点 <code>cardAPI.track</code> → t_learning_event</li>`+
+    `<li>轮回 <code>POST /v1/reorder</code> → t_progress.current_order + t_study_round</li>`+
+    `</ol></div>`;
+  highlight(id);
+}
+
+/* ============ Tab / 主题 ============ */
+document.querySelectorAll('.tabs button').forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active')); b.classList.add('active');
+    document.getElementById('view-deck').style.display = b.dataset.view==='deck'?'block':'none';
+    document.getElementById('view-db').style.display = b.dataset.view==='db'?'block':'none';
+    if(b.dataset.view==='db') renderER();
+  };
+});
+const themeBtn = document.getElementById('theme-btn');
+themeBtn.onclick = ()=>{ document.body.classList.toggle('dark'); themeBtn.textContent = document.body.classList.contains('dark')?'☀️':'🌙'; };
+
+/* ============ Init ============ */
+rerender();
+</script>
+</body>
+</html>
