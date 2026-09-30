@@ -19,14 +19,22 @@ body.dark{
   --border:#2d333b; --shadow:0 4px 20px rgba(0,0,0,.4); --shadow-lg:0 12px 36px rgba(0,0,0,.55);
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);transition:background .25s,color .25s}
+body{margin:0;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;color:var(--text);transition:background .25s,color .25s;
+  background:
+    radial-gradient(900px 420px at 12% -6%, rgba(34,211,238,.13), transparent 60%),
+    radial-gradient(900px 420px at 88% -6%, rgba(168,85,247,.13), transparent 60%),
+    var(--bg)}
+body.dark{background:
+    radial-gradient(900px 420px at 12% -6%, rgba(34,211,238,.10), transparent 60%),
+    radial-gradient(900px 420px at 88% -6%, rgba(168,85,247,.10), transparent 60%),
+    var(--bg)}
 h1,h2,h3{margin:0;font-weight:700}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 
 /* ---------- Header ---------- */
-.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:16px;padding:14px 24px;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--shadow)}
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:16px;padding:14px 24px;background:color-mix(in srgb,var(--card) 78%,transparent);border-bottom:1px solid var(--border);box-shadow:var(--shadow);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .logo{display:flex;align-items:center;gap:10px}
-.logo .dragon{width:40px;height:40px;border-radius:12px;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo .dragon{width:40px;height:40px;border-radius:12px;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 16px rgba(99,102,241,.38)}
 .logo h1{font-size:18px}
 .logo small{display:block;color:var(--sub);font-size:11px;font-weight:500}
 .tabs{display:flex;gap:6px;margin-left:8px;background:var(--bg);padding:4px;border-radius:12px}
@@ -36,8 +44,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .theme-btn:hover{color:var(--primary)}
 
 /* ---------- Deck view ---------- */
-.view{padding:20px 24px 60px;max-width:720px;margin:0 auto}
-.stats-bar{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow);margin-bottom:16px;flex-wrap:wrap}
+.view{padding:20px 24px 24px;max-width:720px;margin:0 auto}
+#view-db{max-width:920px}
+.stats-bar{display:flex;align-items:center;gap:14px;background:linear-gradient(180deg,var(--card),color-mix(in srgb,var(--card) 92%,transparent));border:1px solid var(--border);border-radius:20px;padding:14px 18px;box-shadow:var(--shadow);margin-bottom:16px;flex-wrap:wrap}
 .stat{text-align:center;min-width:64px}
 .stat .num{font-size:20px;font-weight:800}
 .stat .lbl{font-size:11px;color:var(--sub)}
@@ -51,8 +60,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .toolbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .btn{padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text);transition:.15s;box-shadow:var(--shadow)}
 .btn:hover{border-color:var(--primary);color:var(--primary)}
-.btn.primary{background:var(--grad);color:#fff;border:none}
-.btn.primary:hover{opacity:.92;color:#fff}
+.btn.primary{background:var(--grad);color:#fff;border:none;box-shadow:0 4px 16px rgba(99,102,241,.35)}
+.btn.primary:hover{opacity:.95;color:#fff;box-shadow:0 6px 22px rgba(99,102,241,.48);transform:translateY(-1px)}
 .btn.ghost{background:var(--bg);box-shadow:none}
 
 /* Word cards */
@@ -64,7 +73,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
     linear-gradient(180deg,var(--card) 0%,var(--card) 100%);
   border:1px solid var(--border);border-left:4px solid transparent;box-shadow:var(--shadow);
   transition:transform .2s,box-shadow .2s;opacity:0;animation:pop .35s forwards}
-.word-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.word-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(99,102,241,.16),var(--shadow-lg)}
+.word-card.highlighted:hover{box-shadow:0 8px 28px rgba(225,29,72,.18),var(--shadow-lg)}
 .word-card.highlighted{
   background:
     linear-gradient(180deg,#e11d48 0%,#f43f5e 100%) left top / 4px 100% no-repeat,
@@ -77,7 +87,10 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .word-phonetic{font-size:13px;color:var(--sub);background:var(--primary-soft);padding:3px 10px;border-radius:8px}
 .actions{display:flex;gap:8px}
 .action-btn{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--sub);border:1px solid var(--border);background:var(--card);transition:.15s;flex-shrink:0}
-.action-btn:hover{transform:scale(1.12)}
+.action-btn:hover{transform:scale(1.14)}
+.action-btn.play:hover{box-shadow:0 2px 12px rgba(5,150,105,.35)}
+.action-btn.eye:hover{box-shadow:0 2px 12px rgba(8,145,178,.35)}
+.action-btn.mark:hover{box-shadow:0 2px 12px rgba(225,29,72,.3)}
 .action-btn.play{color:#059669;background:rgba(5,150,105,.1);border-color:rgba(5,150,105,.25)}
 .action-btn.eye{color:#0891b2;background:rgba(8,145,178,.1);border-color:rgba(8,145,178,.25)}
 .action-btn.eye.active{background:#0891b2;color:#fff}
@@ -104,7 +117,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .modal-overlay.open{opacity:1;pointer-events:auto}
 .modal-box{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-lg);width:min(600px,92vw);max-height:82vh;display:flex;flex-direction:column;overflow:hidden;transform:translateY(12px) scale(.98);transition:transform .2s}
 .modal-overlay.open .modal-box{transform:none}
-.modal-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 20px;border-bottom:1px solid var(--border)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 20px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--primary-soft),transparent)}
 .modal-title{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px}
 .modal-close{width:32px;height:32px;border-radius:8px;background:var(--bg);color:var(--sub);font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .modal-close:hover{color:var(--primary)}
@@ -124,10 +137,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .db-node.active{stroke:var(--primary);stroke-width:2}
 .db-node-title{font-size:13px;font-weight:700;fill:var(--text)}
 .db-node-sub{font-size:10px;fill:var(--sub)}
-.db-link{stroke:var(--light);stroke-width:1.4;fill:none;transition:.2s}
+.db-link{stroke:url(#linkGrad);stroke-width:1.8;fill:none;stroke-dasharray:7 7;animation:linkflow .9s linear infinite}
+@keyframes linkflow{to{stroke-dashoffset:-14}}
 .db-link-minor{stroke:var(--light);stroke-width:1.2;fill:none;opacity:0;transition:opacity .2s}
 .db-link-minor.hot{opacity:1}
-.db-link.hot{stroke:var(--primary);stroke-width:2.4}
+.db-link.hot{stroke-width:2.6;stroke-dasharray:none}
+g[data-node] rect{transition:filter .2s}
+g[data-node]:hover rect{filter:drop-shadow(0 6px 14px rgba(99,102,241,.26))}
+g[data-node="user"]:hover rect{filter:drop-shadow(0 4px 10px rgba(0,0,0,.12))}
 .db-arrow{fill:var(--light)}
 .db-arrow.hot{fill:var(--primary)}
 .flow-tip{font-size:11px;color:var(--sub);text-align:center;margin-top:6px}
@@ -178,7 +195,7 @@ td .pk{color:var(--primary);font-weight:700}
 <section id="view-db" class="view" style="display:none">
   <div class="db-wrap">
     <div class="db-canvas">
-      <svg id="er-svg" viewBox="0 0 700 460"></svg>
+      <svg id="er-svg" viewBox="0 0 900 400"></svg>
       <div class="flow-tip">思维导图 · 悬停查看关联，点击节点看字段详情</div>
     </div>
   </div>
@@ -315,14 +332,14 @@ const REL_MAP = {
 };
 // [id, 标题, 副标题, 底层表, x, y, opts{weak:弱化(用户), center:中心(卡组)}]
 const MIND_NODES = [
-  ['user','用户','本地单用户','t_user',10,215,{weak:true}],
-  ['deck','卡组','Deck = 数据 + 工具','t_deck',120,205,{center:true}],
-  ['tool','小工具','怎么展示','t_tool',320,90,{}],
-  ['item','卡片数据','学什么','t_deck_item',320,205,{}],
-  ['prog','学习进度','学到哪 · 哪不会',null,320,320,{}],
-  ['mark','标记 · 收藏','未知 / 掌握','t_progress',520,245,{}],
-  ['round','轮回轮次','Samsara','t_study_round',520,320,{}],
-  ['event','交互埋点','记录','t_learning_event',520,395,{}]
+  ['user','用户','本地单用户','t_user',30,195,{weak:true}],
+  ['deck','卡组','Deck = 数据 + 工具','t_deck',150,190,{center:true}],
+  ['tool','小工具','怎么展示','t_tool',430,70,{}],
+  ['item','卡片数据','学什么','t_deck_item',430,190,{}],
+  ['prog','学习进度','学到哪 · 哪不会',null,430,310,{}],
+  ['mark','标记 · 收藏','未知 / 掌握','t_progress',700,200,{}],
+  ['round','轮回轮次','Samsara','t_study_round',700,275,{}],
+  ['event','交互埋点','记录','t_learning_event',700,350,{}]
 ];
 const MIND_LINKS = [
   ['user','deck',1],['deck','tool',0],['deck','item',0],['deck','prog',0],
@@ -333,6 +350,15 @@ function mindSize(n){ const o=n[6]; return o&&o.weak?[64,40]:o&&o.center?[170,56
 function renderMind(){
   const svg = document.getElementById('er-svg');
   svg.innerHTML = '';
+  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  const mkGrad = (id,d1,d2)=>{
+    const g=document.createElementNS('http://www.w3.org/2000/svg','linearGradient');
+    g.id=id; g.setAttribute('x1','0'); g.setAttribute('y1','0'); g.setAttribute('x2',d1); g.setAttribute('y2',d2);
+    [[0,'#22d3ee'],[.55,'#6366f1'],[1,'#a855f7']].forEach(([o,c])=>{ const st=document.createElementNS('http://www.w3.org/2000/svg','stop'); st.setAttribute('offset',o); st.setAttribute('stop-color',c); g.appendChild(st); });
+    defs.appendChild(g);
+  };
+  mkGrad('linkGrad','1','0'); mkGrad('deckGrad','1','1');
+  svg.appendChild(defs);
   MIND_LINKS.forEach(([a,b,weak])=>{
     const pa=MIND_NODES.find(n=>n[0]===a), pb=MIND_NODES.find(n=>n[0]===b);
     const [wA,hA]=mindSize(pa), [wB,hB]=mindSize(pb);
@@ -349,23 +375,23 @@ function renderMind(){
     const g=document.createElementNS('http://www.w3.org/2000/svg','g'); g.dataset.node=id; g.style.cursor=table?'pointer':'default';
     const col = MIND_COL[table]||'#6366f1';
     const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
-    r.setAttribute('x',x); r.setAttribute('y',y); r.setAttribute('width',w); r.setAttribute('height',h); r.setAttribute('rx',opts.center?14:10);
-    r.setAttribute('fill', opts.weak?'none':'var(--card)');
-    r.setAttribute('stroke', opts.weak?'var(--light)':col); r.setAttribute('stroke-width', opts.center?2:1.4);
+    r.setAttribute('x',x); r.setAttribute('y',y); r.setAttribute('width',w); r.setAttribute('height',h); r.setAttribute('rx',opts.center?16:10);
+    r.setAttribute('fill', opts.weak?'none':(opts.center?'url(#deckGrad)':'var(--card)'));
+    r.setAttribute('stroke', opts.weak?'var(--light)':(opts.center?'none':col)); r.setAttribute('stroke-width', opts.center?0:1.4);
     if(opts.weak) r.setAttribute('stroke-dasharray','4 3');
     g.appendChild(r);
-    if(!opts.weak){
+    if(!opts.weak && !opts.center){
       const c=document.createElementNS('http://www.w3.org/2000/svg','rect');
       c.setAttribute('x',x); c.setAttribute('y',y); c.setAttribute('width',5); c.setAttribute('height',h); c.setAttribute('rx',2.5); c.setAttribute('fill',col);
       g.appendChild(c);
     }
     const t1=document.createElementNS('http://www.w3.org/2000/svg','text');
     t1.setAttribute('x', opts.weak?x+w/2:x+13); t1.setAttribute('y',y+(opts.center?25:19)); t1.setAttribute('font-size',opts.center?15:13); t1.setAttribute('font-weight',700);
-    t1.setAttribute('fill', opts.weak?'var(--sub)':'var(--text)'); t1.setAttribute('text-anchor',opts.weak?'middle':'start');
+    t1.setAttribute('fill', opts.weak?'var(--sub)':(opts.center?'#fff':'var(--text)')); t1.setAttribute('text-anchor',opts.weak?'middle':'start');
     t1.textContent=label; g.appendChild(t1);
     if(!opts.weak){
       const t2=document.createElementNS('http://www.w3.org/2000/svg','text');
-      t2.setAttribute('x',x+13); t2.setAttribute('y',y+(opts.center?44:37)); t2.setAttribute('font-size',10); t2.setAttribute('fill','var(--sub)');
+      t2.setAttribute('x',x+13); t2.setAttribute('y',y+(opts.center?44:37)); t2.setAttribute('font-size',10); t2.setAttribute('fill', opts.center?'rgba(255,255,255,.85)':'var(--sub)');
       t2.textContent = sub + (table?('  →  '+table):''); g.appendChild(t2);
     }
     g.onmouseenter=()=>highlightMind(id);
