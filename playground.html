@@ -57,32 +57,44 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
 /* Word cards */
 .word-list{display:flex;flex-direction:column;gap:12px}
-.word-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s;opacity:0;animation:pop .35s forwards}
-@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.word-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-1px)}
-.word-card.unknown{border-color:var(--unknown);background:linear-gradient(0deg,var(--unknown-soft),transparent 40%)}
-.word-card.mastered{border-color:var(--mastered)}
-.wc-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.wc-word{font-size:24px;font-weight:800;letter-spacing:.5px}
-.wc-phonetic{color:var(--sub);font-size:15px}
-.speak-btn{width:34px;height:34px;border-radius:50%;background:var(--primary-soft);color:var(--primary);font-size:14px;display:flex;align-items:center;justify-content:center}
-.speak-btn:hover{transform:scale(1.08)}
-.wc-mark{margin-left:auto;display:flex;gap:6px}
-.mark-btn{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;border:1px solid var(--border);color:var(--sub);transition:.15s}
-.mark-btn:hover{color:var(--unknown)}
-.mark-btn.done{background:var(--mastered-soft);color:var(--mastered);border-color:var(--mastered)}
-.mark-btn.done:hover{color:var(--unknown)}
-.wc-def{margin-top:12px;font-size:14px;line-height:1.6}
-.wc-def .en{color:var(--sub)}
-.wc-def .zh{color:var(--text);margin-top:4px;display:none}
-.word-card.showzh .wc-def .zh{display:block}
-.zh-toggle{margin-top:8px;font-size:12px;color:var(--primary);font-weight:600;cursor:pointer;background:none;padding:0}
-.wc-ex{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);font-size:13px;color:var(--sub);display:none}
-.word-card.showex .wc-ex{display:block}
-.wc-ex .en{color:var(--sub)}
-.wc-ex .zh{color:var(--text);margin-top:2px}
-.ex-toggle{margin-top:8px;font-size:12px;color:var(--primary);font-weight:600;cursor:pointer;background:none;padding:0}
+.word-card{position:relative;border-radius:16px;padding:16px 18px;min-height:120px;
+  background:
+    linear-gradient(180deg,#059669 0%,#0891b2 100%) left top / 4px 100% no-repeat,
+    radial-gradient(125% 100% at 100% 0%, rgba(5,150,105,.10) 0%, rgba(255,255,255,0) 60%),
+    linear-gradient(180deg,var(--card) 0%,var(--card) 100%);
+  border:1px solid var(--border);border-left:4px solid transparent;box-shadow:var(--shadow);
+  transition:transform .2s,box-shadow .2s;opacity:0;animation:pop .35s forwards}
+.word-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.word-card.highlighted{
+  background:
+    linear-gradient(180deg,#e11d48 0%,#f43f5e 100%) left top / 4px 100% no-repeat,
+    radial-gradient(125% 100% at 100% 0%, rgba(244,63,94,.10) 0%, rgba(255,255,255,0) 60%),
+    linear-gradient(180deg,var(--card) 0%,var(--card) 100%)}
+.card-header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.word-basic{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.word-index{font-size:12px;color:var(--sub);font-weight:800;min-width:22px}
+.word-title{font-size:24px;font-weight:800;color:#15803d;letter-spacing:.3px}
+.word-phonetic{font-size:13px;color:var(--sub);background:var(--primary-soft);padding:3px 10px;border-radius:8px}
+.actions{display:flex;gap:8px}
+.action-btn{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--sub);border:1px solid var(--border);background:var(--card);transition:.15s;flex-shrink:0}
+.action-btn:hover{transform:scale(1.12)}
+.action-btn.play{color:#059669;background:rgba(5,150,105,.1);border-color:rgba(5,150,105,.25)}
+.action-btn.eye{color:#0891b2;background:rgba(8,145,178,.1);border-color:rgba(8,145,178,.25)}
+.action-btn.eye.active{background:#0891b2;color:#fff}
+.action-btn.mark{color:#e11d48;background:rgba(225,29,72,.08);border-color:rgba(225,29,72,.2)}
+.action-btn.mark.active{background:#e11d48;color:#fff}
+.definition{margin-top:12px;font-size:14px;line-height:1.6}
+.definition .en{color:var(--sub)}
+.definition .zh{color:var(--text);margin-top:4px;display:none}
+.word-card.showzh .definition .zh{display:block}
+.ex-toggle{margin-top:10px;font-size:12px;color:var(--primary);font-weight:600;cursor:pointer;background:none;padding:0}
+.examples{margin-top:8px;padding-top:10px;border-top:1px dashed var(--border);font-size:13px;color:var(--sub);display:none}
+.word-card.showex .examples{display:block}
+.example-item{padding:4px 0;border-bottom:1px dashed var(--border)}
+.example-item:last-child{border-bottom:none}
+.example-item .zh{color:var(--text);margin-top:2px}
 .empty-hint{text-align:center;color:var(--sub);padding:40px;font-size:14px}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 /* ---------- DB view ---------- */
 .db-wrap{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
@@ -95,7 +107,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .db-node-title{font-size:13px;font-weight:700;fill:var(--text)}
 .db-node-sub{font-size:10px;fill:var(--sub)}
 .db-link{stroke:var(--light);stroke-width:1.4;fill:none;transition:.2s}
-.db-link.arrow{stroke:var(--light)}
+.db-link-minor{stroke:var(--light);stroke-width:1.2;fill:none;opacity:0;transition:opacity .2s}
+.db-link-minor.hot{opacity:1}
 .db-link.hot{stroke:var(--primary);stroke-width:2.4}
 .db-arrow{fill:var(--light)}
 .db-arrow.hot{fill:var(--primary)}
@@ -151,7 +164,7 @@ td .pk{color:var(--primary);font-weight:700}
 <section id="view-db" class="view" style="display:none">
   <div class="db-wrap">
     <div class="db-canvas">
-      <svg id="er-svg" viewBox="0 0 620 560"></svg>
+      <svg id="er-svg" viewBox="0 0 640 500"></svg>
       <div class="flow-tip">悬停 / 点击表节点查看关联与结构</div>
     </div>
     <div class="db-panel" id="db-panel"></div>
@@ -183,37 +196,44 @@ function rerender(){
   order.forEach((idx,pos)=>{ list.appendChild(cardEl(idx,pos)); });
 }
 
+const ICO = {
+  play: '<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
+  eye: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>',
+  star: '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8-6.2-3.7-6.2 3.7 1.6-6.8L2.2 8.9l6.9-.6z"/></svg>'
+};
+
 function cardEl(idx,pos){
   const w = WORDS[idx];
   const card = document.createElement('div');
-  card.className = 'word-card' + (unknownSet.has(idx)?' unknown':(pos < WORDS.length?' mastered':''));
+  card.className = 'word-card' + (unknownSet.has(idx)?' highlighted':'');
   card.style.animationDelay = (pos*0.02)+'s';
   const zh = w.zh.join('；');
   const en = w.en.join('；');
-  const ex = w.ex && w.ex.length ? w.ex[0] : null;
+  const ex = w.ex && w.ex.length ? w.ex : [];
   card.innerHTML =
-    '<div class="wc-top">' +
-      '<div class="wc-word">'+esc(w.word)+'</div>' +
-      (w.phonetic?'<div class="wc-phonetic">'+esc(w.phonetic)+'</div>':'') +
-      '<button class="speak-btn" title="发音">🔊</button>' +
-      '<div class="wc-mark">' +
-        '<button class="mark-btn" data-mark="unknown">标记未知</button>' +
-        '<button class="mark-btn done" data-mark="known">✓ 掌握</button>' +
+    '<div class="card-header">' +
+      '<div class="word-basic">' +
+        '<span class="word-index">'+String(pos+1).padStart(2,'0')+'</span>' +
+        '<span class="word-title">'+esc(w.word)+'</span>' +
+        (w.phonetic?'<span class="word-phonetic">'+esc(w.phonetic)+'</span>':'') +
+      '</div>' +
+      '<div class="actions">' +
+        '<button class="action-btn play" title="发音">'+ICO.play+'</button>' +
+        '<button class="action-btn eye" title="显示中文释义">'+ICO.eye+'</button>' +
+        '<button class="action-btn mark'+(unknownSet.has(idx)?' active':'')+'" title="标记未知">'+ICO.star+'</button>' +
       '</div>' +
     '</div>' +
-    '<div class="wc-def">' +
+    '<div class="definition">' +
       '<div class="en">'+esc(en)+'</div>' +
       '<div class="zh">'+esc(zh)+'</div>' +
     '</div>' +
-    '<button class="zh-toggle">显示中文释义</button>' +
-    (ex?'<button class="ex-toggle">显示例句</button>':'') +
-    (ex?'<div class="wc-ex"><div class="en">'+esc(ex.en)+'</div><div class="zh">'+esc(ex.zh)+'</div></div>':'');
-  card.querySelector('.speak-btn').onclick = ()=>speak(w.word);
-  card.querySelector('.zh-toggle').onclick = ()=>{ card.classList.toggle('showzh'); card.querySelector('.zh-toggle').textContent = card.classList.contains('showzh')?'隐藏中文释义':'显示中文释义'; };
+    (ex.length?'<button class="ex-toggle">例句 ▾</button>':'') +
+    (ex.length?'<div class="examples">'+ex.map(e=>'<div class="example-item"><div>'+esc(e.en)+'</div><div class="zh">'+esc(e.zh)+'</div></div>').join('')+'</div>':'');
+  card.querySelector('.play').onclick = ()=>speak(w.word);
+  card.querySelector('.eye').onclick = ()=>{ card.classList.toggle('showzh'); card.querySelector('.eye').classList.toggle('active',card.classList.contains('showzh')); };
+  card.querySelector('.mark').onclick = ()=>{ unknownSet.has(idx)?unknownSet.delete(idx):unknownSet.add(idx); rerender(); };
   const exT = card.querySelector('.ex-toggle');
-  if(exT) exT.onclick = ()=>{ card.classList.toggle('showex'); exT.textContent = card.classList.contains('showex')?'隐藏例句':'显示例句'; };
-  card.querySelector('[data-mark="unknown"]').onclick = ()=>{ unknownSet.add(idx); rerender(); };
-  card.querySelector('[data-mark="known"]').onclick = ()=>{ unknownSet.delete(idx); rerender(); };
+  if(exT) exT.onclick = ()=>{ card.classList.toggle('showex'); exT.textContent = card.classList.contains('showex')?'例句 ▴':'例句 ▾'; };
   return card;
 }
 
@@ -256,28 +276,27 @@ const TABLES = [
    fields:[['id','Integer','PK',1],['user_id','Integer','FK→t_user',0],['deck_id','Integer','FK→t_deck',0],['deck_item_id','Integer','FK→t_deck_item',0],['action','String(50)','',0],['created_at','DateTime','indexed',0]]}
 ];
 const LINKS = [
-  ['t_user','t_deck'],['t_user','t_tool'],['t_user','t_progress'],['t_user','t_study_round'],['t_user','t_learning_event'],
-  ['t_deck','t_tool'],['t_deck','t_deck_item'],['t_deck','t_progress'],['t_deck','t_study_round'],['t_deck','t_learning_event'],
-  ['t_deck_item','t_progress'],['t_deck_item','t_learning_event']
+  ['t_user','t_deck',1],['t_deck','t_tool',1],['t_deck','t_deck_item',1],['t_deck','t_study_round',1],['t_deck_item','t_progress',1],['t_deck_item','t_learning_event',1],
+  ['t_user','t_tool',0],['t_user','t_progress',0],['t_user','t_study_round',0],['t_user','t_learning_event',0],['t_deck','t_progress',0],['t_deck','t_learning_event',0]
 ];
-// 节点坐标（手排布局）
+// 节点坐标（分层布局：用户→卡组/工具→数据→学习，减少交叉）
 const NODE_POS = {
-  t_user:{x:90,y:40}, t_tool:{x:470,y:90}, t_deck:{x:280,y:150},
-  t_deck_item:{x:120,y:290}, t_progress:{x:330,y:290}, t_study_round:{x:470,y:410}, t_learning_event:{x:180,y:430}
+  t_user:{x:270,y:30}, t_tool:{x:400,y:160}, t_deck:{x:110,y:160},
+  t_deck_item:{x:255,y:290}, t_progress:{x:40,y:410}, t_study_round:{x:255,y:410}, t_learning_event:{x:470,y:410}
 };
 const NODE_W = 150, NODE_H = 62;
 
 function renderER(){
   const svg = document.getElementById('er-svg');
   svg.innerHTML = '';
-  // links first
-  LINKS.forEach(([a,b])=>{
+  LINKS.forEach(([a,b,primary])=>{
     const pa = NODE_POS[a], pb = NODE_POS[b];
     const x1 = pa.x+NODE_W/2, y1 = pa.y+NODE_H/2, x2 = pb.x+NODE_W/2, y2 = pb.y+NODE_H/2;
     const mx=(x1+x2)/2, my=(y1+y2)/2;
     const p = document.createElementNS('http://www.w3.org/2000/svg','path');
     p.setAttribute('d',`M${x1},${y1} Q${mx},${my} ${x2},${y2}`);
-    p.setAttribute('class','db-link'); p.dataset.link = a+'|'+b;
+    p.setAttribute('class', primary?'db-link':'db-link db-link-minor');
+    p.dataset.link = a+'|'+b;
     svg.appendChild(p);
   });
   TABLES.forEach(t=>{
@@ -303,15 +322,15 @@ function renderER(){
 }
 
 function highlight(id){
-  document.querySelectorAll('.db-node,.db-link').forEach(el=>el.classList.remove('active','hot'));
+  document.querySelectorAll('.db-link,.db-link-minor').forEach(el=>el.classList.remove('hot'));
   const g = document.querySelector(`g[data-node="${id}"]`); if(g) g.classList.add('active');
-  document.querySelectorAll('.db-link').forEach(p=>{
+  document.querySelectorAll('.db-link,.db-link-minor').forEach(p=>{
     if(p.dataset.link.split('|').includes(id)) p.classList.add('hot');
   });
 }
 function clearHighlight(){
   if(!document.querySelector('.db-panel').dataset.pinned){
-    document.querySelectorAll('.db-node,.db-link').forEach(el=>el.classList.remove('active','hot'));
+    document.querySelectorAll('.db-link,.db-link-minor').forEach(el=>el.classList.remove('hot'));
   }
 }
 function showTable(id){
