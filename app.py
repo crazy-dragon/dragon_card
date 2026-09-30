@@ -1206,5 +1206,10 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/playground')
+def playground():
+    return send_file(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'playground.html'))
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
