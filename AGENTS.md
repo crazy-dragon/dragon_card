@@ -35,9 +35,15 @@ They are **not** auto-imported. To import them (idempotent — existing decks
 are skipped by name):
 
 ```bash
-python seed_decks.py            # import all missing bundled free decks
-python seed_decks.py --force    # re-import (replace) them
+python seed_decks.py                  # import all missing bundled free decks
+python seed_decks.py laozi chinese_hsk  # only the named folders (or deck names)
+python seed_decks.py --force          # replace existing decks in place
+python seed_decks.py --force laozi    # replace one deck in place
 ```
+
+`--force` replaces in place (no duplicate rows): deck row is reused, bound
+tool is re-imported keeping its id, items are upserted by `item_order`
+(absent cards removed, study progress kept). Unknown deck names exit 1.
 
 A user can also import any deck manually in the UI: Manage deck → upload
 template (`template.json`) → upload data (`cards.json`).
