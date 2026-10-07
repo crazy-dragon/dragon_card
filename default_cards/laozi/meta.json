@@ -1,0 +1,19 @@
+{
+  "name": "道德经",
+  "name_en": "Tao Te Ching (Laozi)",
+  "description": "《道德经》八十一章全文 + 5 张篇首导语，共 86 张。只给原文、生僻字读音与极少的背景注 —— 不附白话、不带英译。免费卡组。",
+  "count": 86,
+  "count_chapter": 81,
+  "count_overview": 5,
+  "free": true,
+  "license": "《道德经》原文及河上公二字章题均属公有领域；注释与注音为原创层 © 作者，随卡组分发。",
+  "source": "原文：通行王弼本，用维基文库《老子道德經注》（華亭張氏原本）与 ctext.org（中國哲學書電子化計劃）两份独立文本交叉校订。章题：托名汉文帝时河上公《老子河上公章句》（四部丛刊影宋本）。",
+  "files": [
+    "cards.json",
+    "tool.zip",
+    "meta.json",
+    "readme.txt",
+    "LICENSE"
+  ],
+  "tool": "laozi"
+}
