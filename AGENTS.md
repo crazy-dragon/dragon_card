@@ -30,9 +30,9 @@ tables, and a default user `default`. The app is empty until decks are added
 ## Seeding bundled free decks
 
 The repo ships free decks under `default_cards/` (each folder = one deck:
-`template.json` + `cards.json`, optional `_en` variants, `meta.json`).
-They are **not** auto-imported. To import them (idempotent — existing decks
-are skipped by name):
+`tool.zip` + `cards.json` + `meta.json`, most also ship `readme.txt` and a
+`LICENSE`). They are **not** auto-imported. To import them (idempotent —
+existing decks are skipped by name):
 
 ```bash
 python seed_decks.py                  # import all missing bundled free decks
@@ -46,7 +46,7 @@ tool is re-imported keeping its id, items are upserted by `item_order`
 (absent cards removed, study progress kept). Unknown deck names exit 1.
 
 A user can also import any deck manually in the UI: Manage deck → upload
-template (`template.json`) → upload data (`cards.json`).
+tool (`tool.zip`) → upload data (`cards.json`).
 
 ## Dependencies
 
@@ -60,20 +60,25 @@ template (`template.json`) → upload data (`cards.json`).
 
 ```
 app.py            Flask routes + schema bootstrap/migration
-models.py         SQLAlchemy models (User, Deck, Template, DeckItem, ...)
+models.py         SQLAlchemy models (User, Deck, Tool, DeckItem, Progress, ...)
 config.py         Config (env overridable)
 seed_decks.py     CLI to import default_cards/ free decks
-default_cards/    bundled deck packs (template.json + cards.json + meta)
-static/           SPA: app.js (engine/i18n), styles.css, vendor/, media/
+default_cards/    bundled deck packs (tool.zip + cards.json + meta)
+static/           SPA: app.js (home/manage/i18n/skins), styles.css, vendor/
 templates/index.html  single-page shell
+playground.html   standalone demo page (served at /playground)
+minitools/        extracted tool zips at runtime (gitignored)
 instance/         SQLite DB (created at runtime, not committed)
 ```
 
 Key concepts:
 
-- **Deck** = a study list. **Template** = how a card renders (self-contained
-  JSON with cardHtml/cardCss/cardJs + fields + trackedActions). **DeckItem**
-  = one card's data (JSON), ordered by `item_order`.
+- **Deck** = a study list (`cards.json` data). **Tool** = how a card renders
+  — a self-contained zip (`index.html` + `manifest.json` + `assets/`) bound
+  to a deck via `Deck.tool_id`; entering the deck opens the tool full-screen
+  in a new tab, and the tool talks to the app through the injected
+  `window.cardAPI`. **DeckItem** = one card's data (JSON), ordered by
+  `item_order`.
 - `Deck.to_dict()` returns per-deck stats used by the home grid
   (item_count / unknown / mastered / round_count / year_study_days /
   last_studied_at). `_study_activity_map` computes study activity in one query.
@@ -86,23 +91,25 @@ Key concepts:
 |--------|----------|
 | User | `POST /v1/users/login`, `GET /v1/users` |
 | Decks | `GET/POST /v1/decks`, `GET/PUT/DEL /v1/decks/:id` |
-| Deck templates | `POST /v1/decks/:id/templates` (upload/replace) |
+| Deck tool | `POST /v1/decks/:id/tool` (bind), `DELETE /v1/decks/:id/tool` (unbind) |
 | Deck data | `POST /v1/decks/:id/import`, `GET /v1/decks/:id/items`, export |
+| Tools | `GET /v1/tools/:id/run`, `GET /v1/tools/:id/assets/*`, `POST /v1/tools/:id/validate`, `POST /v1/tools/:id/replace`, `GET /v1/tools/:id/export` |
 | Learning | `GET /v1/learn/info`, `GET /v1/learn/page`, `POST /v1/learn/mark`, `/v1/learn/favorite`, `POST /v1/reorder` |
 | Observability | `POST /v1/observability/events` (batched), `GET /v1/observability/actions`, `/data` |
-| Templates | `POST /v1/templates/import`, `GET /v1/templates/:id`, preview, export |
 | Achievements | `GET /v1/achievements` |
 
 ## Common tasks
 
-- **Add a bundled free deck**: create `default_cards/<name>/` with
-  `template.json` + `cards.json` (+ optional `_en`), then `python seed_decks.py`.
-  Follow the spec in `TEMPLATE_PACK.md` and use `_pack_template/` as a scaffold.
-- **Change how cards look**: edit `template.json` `cardCss`/`cardHtml`/`cardJs`
-  (the template is fully self-contained; `window.cardTemplate` contract is
-  documented in the in-app "Template API Reference").
-- **Add a tracked action**: call `api.track('action')` in `cardJs`; it is
-  auto-declared on import. Keep ≤5 actions.
+- **Add a bundled free deck**: build the tool in the separate
+  `dragoncard_tools` repo (`tools/<name>/`, spec in its `TOOL_PACK.md`,
+  packaged by its `build.py`), then create `default_cards/<name>/` with
+  `tool.zip` + `cards.json` (`item_order` 1-based) + `meta.json`, and run
+  `python seed_decks.py`.
+- **Change how cards look**: edit the tool source in `dragoncard_tools`,
+  re-run its `build.py`, then replace the zip in the UI (Manage deck →
+  替换工具) or `python seed_decks.py --force <name>`.
+- **Add a tracked action**: call `api.track('action')` in the tool JS and
+  declare it in `manifest.json` `trackedActions`. Keep ≤5 actions.
 
 ## Gotchas
 
@@ -116,5 +123,9 @@ Key concepts:
   decoration layer). Skin CSS must **not** change layout widths or
   card-content variables.
 - The built-in themed skins live in `static/app.js` `SKINS`; card
-  content variables are intentionally untouched so template cards keep their
+  content variables are intentionally untouched so tool cards keep their
   user-defined look.
+- `minitools/<id>.retired-<hex>/` dirs are **intentional** recovery backups
+  from the atomic tool replace (old dir renamed aside, staging swapped in);
+  `minitools/` is gitignored, and stale `.retired-*`/`.staging-*` dirs can
+  be deleted once a replace is confirmed working.

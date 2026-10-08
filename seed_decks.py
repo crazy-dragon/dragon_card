@@ -29,7 +29,6 @@ import zipfile
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CARDS = os.path.join(BASE_DIR, 'default_cards')
-SKIP_DIRS = {'_pack_template'}
 
 
 def _load_json(path):
@@ -155,7 +154,7 @@ def seed(force=False, user_id=1, only=None):
 
     folders = sorted(
         f for f in os.listdir(DEFAULT_CARDS)
-        if os.path.isdir(os.path.join(DEFAULT_CARDS, f)) and f not in SKIP_DIRS
+        if os.path.isdir(os.path.join(DEFAULT_CARDS, f))
     )
     errors = []
 
