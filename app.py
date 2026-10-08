@@ -3,6 +3,9 @@ import os
 import io
 import json
 import re
+import shutil
+import tempfile
+import uuid
 import zipfile
 from datetime import datetime
 from flask import Flask, request, jsonify, render_template, send_file, Response
@@ -186,35 +189,53 @@ def _safe_zip_name(name):
 
 
 def _extract_tool_zip(tool, blob):
-    """清空并解压 zip 到工具目录（文件系统）。返回成功与否。"""
+    """解压 zip 到工具目录（文件系统）。返回成功与否。
+
+    先整包解到同级的**临时目录**，成功后再原子换过去（旧目录让位 → 新目录就位 → 删旧）。
+    这样中途失败（断流 / 磁盘满 / 进程被杀）不会把已部署的工具留成半成品 ——
+    旧版原样可用，重传一次即可。旧实现是"先清空再解压"，一旦中断
+    目录里就只剩一半文件（index.html 没了 ⇒ 工具直接 500）。
+    """
     try:
         zf = zipfile.ZipFile(io.BytesIO(blob))
     except zipfile.BadZipFile:
         return False
     target = _tool_dir(tool)
-    os.makedirs(target, exist_ok=True)
-    for n in os.listdir(target):  # 清空旧内容（保留目录本身）
-        p = os.path.join(target, n)
-        if os.path.isdir(p):
-            import shutil
-            shutil.rmtree(p)
-        else:
-            os.remove(p)
-    base = os.path.realpath(target)
-    for name in zf.namelist():
-        safe = _safe_zip_name(name)
-        if safe is None:
-            continue
-        dest = os.path.realpath(os.path.join(target, *safe.split('/')))
-        if os.path.commonpath([dest, base]) != base:
-            continue  # 防穿越
-        if name.endswith('/'):
-            os.makedirs(dest, exist_ok=True)
-        else:
-            os.makedirs(os.path.dirname(dest), exist_ok=True)
-            with open(dest, 'wb') as f:
-                f.write(zf.read(name))
-    return True
+    parent = os.path.dirname(target) or '.'
+    os.makedirs(parent, exist_ok=True)
+    staging = tempfile.mkdtemp(prefix='.staging-', dir=parent)
+    try:
+        base = os.path.realpath(staging)
+        for name in zf.namelist():
+            safe = _safe_zip_name(name)
+            if safe is None:
+                continue
+            dest = os.path.realpath(os.path.join(staging, *safe.split('/')))
+            if os.path.commonpath([dest, base]) != base:
+                continue  # 防穿越
+            if name.endswith('/'):
+                os.makedirs(dest, exist_ok=True)
+            else:
+                os.makedirs(os.path.dirname(dest), exist_ok=True)
+                with open(dest, 'wb') as f:
+                    f.write(zf.read(name))
+        retired = None
+        if os.path.exists(target):
+            retired = '%s.retired-%s' % (target, uuid.uuid4().hex[:8])
+            os.rename(target, retired)
+        try:
+            os.rename(staging, target)
+        except OSError:
+            if retired:  # 换不过去就把旧的放回来
+                os.rename(retired, target)
+            return False
+        staging = None
+        if retired:
+            shutil.rmtree(retired, ignore_errors=True)
+        return True
+    finally:
+        if staging and os.path.isdir(staging):
+            shutil.rmtree(staging, ignore_errors=True)
 
 
 def _tool_file_path(tool, path):
