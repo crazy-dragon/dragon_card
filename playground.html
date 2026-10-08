@@ -3,451 +3,852 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DragonCard Playground · COCA 演示</title>
+<title>DragonCard · 卡组长什么样，数据就长什么样</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f46e5'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23fff'/%3E%3C/svg%3E">
 <style>
 :root{
-  --bg:#eef1f6; --card:#ffffff; --text:#1f2937; --sub:#6b7280; --light:#9ca3af;
-  --primary:#0969da; --primary-soft:rgba(9,105,218,.10);
-  --unknown:#e07600; --unknown-soft:rgba(224,118,0,.12);
-  --mastered:#1f9d6b; --mastered-soft:rgba(31,157,107,.12);
-  --border:#e5e7eb; --shadow:0 4px 20px rgba(0,0,0,.06); --shadow-lg:0 10px 32px rgba(0,0,0,.12);
-  --grad:linear-gradient(135deg,#22d3ee,#6366f1 55%,#a855f7);
+  --bg:#f3f6fb; --card:#ffffff; --ink:#0f172a; --sub:#566580; --faint:#93a1b8;
+  --line:#e3e9f2; --line2:#eef2f8; --sunken:#f7f9fc;
+  --brand:#4f46e5; --brand-soft:rgba(79,70,229,.10);
+  --grad:linear-gradient(118deg,#0ea5e9,#4f46e5 52%,#9333ea);
+  --c-content:#2563eb; --c-study:#0d9488; --c-log:#b45309; --c-ach:#7c3aed;
+  --unknown:#dc2626; --fav:#d97706;
+  --shadow:0 1px 2px rgba(16,24,40,.05),0 10px 26px -14px rgba(16,24,40,.20);
+  --shadow-lg:0 28px 64px -28px rgba(16,24,40,.38);
 }
 body.dark{
-  --bg:#0d1117; --card:#161b22; --text:#e6edf3; --sub:#8b949e; --light:#6e7681;
-  --primary-soft:rgba(88,166,255,.12); --unknown-soft:rgba(224,118,0,.15); --mastered-soft:rgba(52,211,153,.12);
-  --border:#2d333b; --shadow:0 4px 20px rgba(0,0,0,.4); --shadow-lg:0 12px 36px rgba(0,0,0,.55);
+  --bg:#090d15; --card:#121926; --ink:#e9eefb; --sub:#96a7c0; --faint:#64748b;
+  --line:#212b3b; --line2:#1a2331; --sunken:#0e141f;
+  --brand:#8b93f8; --brand-soft:rgba(139,147,248,.14);
+  --c-content:#60a5fa; --c-study:#2dd4bf; --c-log:#fbbf24; --c-ach:#a78bfa;
+  --unknown:#f87171; --fav:#fbbf24;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 12px 30px -16px rgba(0,0,0,.75);
+  --shadow-lg:0 34px 76px -34px rgba(0,0,0,.9);
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;color:var(--text);transition:background .25s,color .25s;
-  background:
-    radial-gradient(900px 420px at 12% -6%, rgba(34,211,238,.13), transparent 60%),
-    radial-gradient(900px 420px at 88% -6%, rgba(168,85,247,.13), transparent 60%),
-    var(--bg)}
-body.dark{background:
-    radial-gradient(900px 420px at 12% -6%, rgba(34,211,238,.10), transparent 60%),
-    radial-gradient(900px 420px at 88% -6%, rgba(168,85,247,.10), transparent 60%),
-    var(--bg)}
-h1,h2,h3{margin:0;font-weight:700}
-button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;
+  background:var(--bg);transition:background .25s,color .25s;line-height:1.6}
+h1,h2,h3{margin:0;font-weight:700;line-height:1.3}
+p{margin:0}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 
-/* ---------- Header ---------- */
-.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:16px;padding:14px 24px;background:color-mix(in srgb,var(--card) 78%,transparent);border-bottom:1px solid var(--border);box-shadow:var(--shadow);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-.logo{display:flex;align-items:center;gap:10px}
-.logo .dragon{width:40px;height:40px;border-radius:12px;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 16px rgba(99,102,241,.38)}
-.logo h1{font-size:18px}
-.logo small{display:block;color:var(--sub);font-size:11px;font-weight:500}
-.tabs{display:flex;gap:6px;margin-left:8px;background:var(--bg);padding:4px;border-radius:12px}
-.tabs button{padding:8px 18px;border-radius:9px;font-size:13px;font-weight:600;color:var(--sub);transition:.15s}
-.tabs button.active{background:var(--card);color:var(--primary);box-shadow:var(--shadow)}
-.theme-btn{margin-left:auto;width:38px;height:38px;border-radius:10px;background:var(--bg);color:var(--sub);font-size:16px;display:flex;align-items:center;justify-content:center}
-.theme-btn:hover{color:var(--primary)}
+/* ---------- 顶栏 ---------- */
+.topbar{position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:14px;
+  padding:12px 22px;background:color-mix(in srgb,var(--card) 82%,transparent);
+  border-bottom:1px solid var(--line);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand .mark{width:36px;height:36px;border-radius:11px;background:var(--grad);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.brand b{font-size:15px;display:block;white-space:nowrap}
+.brand small{display:block;color:var(--sub);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
+.icon-btn{width:40px;height:40px;border-radius:11px;background:var(--sunken);color:var(--sub);
+  display:flex;align-items:center;justify-content:center;font-size:17px;transition:.15s;border:1px solid var(--line)}
+.icon-btn:hover{color:var(--brand);border-color:var(--brand)}
 
-/* ---------- Deck view ---------- */
-.view{padding:20px 24px 24px;max-width:720px;margin:0 auto}
-#view-db{max-width:920px}
-.stats-bar{display:flex;align-items:center;gap:14px;background:linear-gradient(180deg,var(--card),color-mix(in srgb,var(--card) 92%,transparent));border:1px solid var(--border);border-radius:20px;padding:14px 18px;box-shadow:var(--shadow);margin-bottom:16px;flex-wrap:wrap}
-.stat{text-align:center;min-width:64px}
-.stat .num{font-size:20px;font-weight:800}
+/* ---------- 通用 ---------- */
+main{max-width:1180px;margin:0 auto;padding:0 22px 60px}
+.section{margin-top:34px}
+.section > h2{font-size:19px;letter-spacing:-.2px}
+.section > .lede{margin-top:6px;color:var(--sub);font-size:13.5px;max-width:760px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--brand);text-transform:uppercase}
+
+/* ---------- Hero ---------- */
+.hero{padding:38px 0 6px;max-width:820px}
+.hero h1{font-size:30px;letter-spacing:-.6px;margin-top:12px}
+.hero h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin-top:12px;font-size:15px;color:var(--sub);max-width:660px}
+.anatomy{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:22px}
+.anatomy .part{padding:12px 16px;border-radius:14px;background:var(--card);border:1px solid var(--line);
+  box-shadow:var(--shadow);min-width:168px}
+.anatomy .part b{display:block;font-size:13.5px}
+.anatomy .part span{font-size:11.5px;color:var(--sub)}
+.anatomy .part .tick{display:block;width:26px;height:3px;border-radius:2px;margin-bottom:8px}
+.anatomy .op{font-size:19px;color:var(--faint);font-weight:700}
+.anatomy .part.is-deck{background:var(--grad);border-color:transparent;box-shadow:0 14px 30px -14px rgba(79,70,229,.7)}
+.anatomy .part.is-deck b,.anatomy .part.is-deck span{color:#fff}
+.anatomy .part.is-deck span{opacity:.9}
+.anatomy .part.is-deck .tick{background:rgba(255,255,255,.85)}
+.pledges{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.pledge{display:flex;gap:8px;align-items:flex-start;flex:1 1 250px;padding:10px 14px;border-radius:12px;
+  background:var(--card);border:1px solid var(--line);font-size:12.5px;color:var(--sub);box-shadow:var(--shadow)}
+.pledge b{color:var(--ink);font-weight:600}
+.pledge i{width:15px;height:15px;border-radius:50%;background:var(--brand-soft);color:var(--brand);
+  font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;
+  font-style:normal;flex-shrink:0;margin-top:3px}
+
+/* ---------- 试学区 ---------- */
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:20px;align-items:start;margin-top:14px}
+.stage-main{min-width:0}
+
+.life{display:flex;gap:0;margin:16px 0 14px;border-radius:14px;background:var(--card);
+  border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;flex-wrap:wrap}
+.life-step{flex:1 1 120px;min-width:112px;text-align:left;padding:13px 16px;position:relative;
+  border-right:1px solid var(--line2);transition:background .18s}
+.life-step:last-child{border-right:none}
+.life-step:hover{background:var(--sunken)}
+.life-step .n{font-size:11px;font-weight:800;color:var(--faint);letter-spacing:.06em}
+.life-step .t{display:block;font-size:13.5px;font-weight:600;margin-top:2px}
+.life-step .s{display:block;font-size:11.5px;color:var(--faint);margin-top:2px}
+.life-step.done .n{color:var(--c-study)}
+.life-step.done::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2.5px;background:var(--c-study);opacity:.55}
+.life-step.active{background:var(--brand-soft)}
+.life-step.active::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2.5px;background:var(--grad)}
+
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:16px}
+.stats-bar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--line2)}
+.stat{text-align:center;min-width:58px}
+.stat .num{font-size:19px;font-weight:800;line-height:1.1}
 .stat .lbl{font-size:11px;color:var(--sub)}
+.stat.total .num{color:var(--brand)}
 .stat.unknown .num{color:var(--unknown)}
-.stat.mastered .num{color:var(--mastered)}
-.stat.total .num{color:var(--primary)}
-.progress{flex:1;min-width:140px}
-.progress .bar{height:8px;background:var(--bg);border-radius:6px;overflow:hidden;margin-top:6px}
-.progress .fill{height:100%;background:var(--grad);border-radius:6px;transition:width .5s}
-.progress .meta{font-size:11px;color:var(--sub);display:flex;justify-content:space-between;margin-top:4px}
-.toolbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.btn{padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text);transition:.15s;box-shadow:var(--shadow)}
-.btn:hover{border-color:var(--primary);color:var(--primary)}
-.btn.primary{background:var(--grad);color:#fff;border:none;box-shadow:0 4px 16px rgba(99,102,241,.35)}
-.btn.primary:hover{opacity:.95;color:#fff;box-shadow:0 6px 22px rgba(99,102,241,.48);transform:translateY(-1px)}
-.btn.ghost{background:var(--bg);box-shadow:none}
+.stat.mastered .num{color:var(--c-study)}
+.progress{flex:1;min-width:150px}
+.progress .bar{height:7px;background:var(--sunken);border-radius:6px;overflow:hidden}
+.progress .fill{height:100%;width:0;background:var(--grad);border-radius:6px;transition:width .45s cubic-bezier(.4,0,.2,1)}
+.progress .meta{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-top:6px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 4px}
+.btn{padding:11px 20px;border-radius:12px;font-size:14px;font-weight:600;border:1px solid var(--line);
+  background:var(--card);transition:.15s;box-shadow:var(--shadow)}
+.btn:hover{border-color:var(--brand);color:var(--brand)}
+.btn.primary{background:var(--grad);color:#fff;border-color:transparent;box-shadow:0 10px 22px -10px rgba(79,70,229,.75)}
+.btn.primary:hover{color:#fff;transform:translateY(-1px)}
+.btn.ghost{background:var(--sunken);box-shadow:none}
 
-/* Word cards */
-.word-list{display:flex;flex-direction:column;gap:12px}
-.word-card{position:relative;border-radius:16px;padding:16px 18px;min-height:120px;
-  background:
-    linear-gradient(180deg,#059669 0%,#0891b2 100%) left top / 4px 100% no-repeat,
-    radial-gradient(125% 100% at 100% 0%, rgba(5,150,105,.10) 0%, rgba(255,255,255,0) 60%),
-    linear-gradient(180deg,var(--card) 0%,var(--card) 100%);
-  border:1px solid var(--border);border-left:4px solid transparent;box-shadow:var(--shadow);
-  transition:transform .2s,box-shadow .2s;opacity:0;animation:pop .35s forwards}
-.word-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(99,102,241,.16),var(--shadow-lg)}
-.word-card.highlighted:hover{box-shadow:0 8px 28px rgba(225,29,72,.18),var(--shadow-lg)}
-.word-card.highlighted{
-  background:
-    linear-gradient(180deg,#e11d48 0%,#f43f5e 100%) left top / 4px 100% no-repeat,
-    radial-gradient(125% 100% at 100% 0%, rgba(244,63,94,.10) 0%, rgba(255,255,255,0) 60%),
-    linear-gradient(180deg,var(--card) 0%,var(--card) 100%)}
-.card-header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.word-basic{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.word-index{font-size:12px;color:var(--sub);font-weight:800;min-width:22px}
-.word-title{font-size:24px;font-weight:800;color:#15803d;letter-spacing:.3px}
-.word-phonetic{font-size:13px;color:var(--sub);background:var(--primary-soft);padding:3px 10px;border-radius:8px}
-.actions{display:flex;gap:8px}
-.action-btn{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--sub);border:1px solid var(--border);background:var(--card);transition:.15s;flex-shrink:0}
-.action-btn:hover{transform:scale(1.14)}
-.action-btn.play:hover{box-shadow:0 2px 12px rgba(5,150,105,.35)}
-.action-btn.eye:hover{box-shadow:0 2px 12px rgba(8,145,178,.35)}
-.action-btn.mark:hover{box-shadow:0 2px 12px rgba(225,29,72,.3)}
-.action-btn.play{color:#059669;background:rgba(5,150,105,.1);border-color:rgba(5,150,105,.25)}
-.action-btn.eye{color:#0891b2;background:rgba(8,145,178,.1);border-color:rgba(8,145,178,.25)}
-.action-btn.eye.active{background:#0891b2;color:#fff}
-.action-btn.mark{color:#e11d48;background:rgba(225,29,72,.08);border-color:rgba(225,29,72,.2)}
-.action-btn.mark.active{background:#e11d48;color:#fff}
-.definition{margin-top:12px;font-size:14px;line-height:1.6}
-.definition .en{color:var(--sub)}
-.definition .zh{color:var(--text);margin-top:4px;display:none}
-.word-card.showzh .definition .zh{display:block}
-.ex-toggle{margin-top:10px;font-size:12px;color:var(--primary);font-weight:600;cursor:pointer;background:none;padding:0}
-.examples{margin-top:8px;padding-top:10px;border-top:1px dashed var(--border);font-size:13px;color:var(--sub);display:none}
-.word-card.showex .examples{display:block}
-.example-item{padding:4px 0;border-bottom:1px dashed var(--border)}
-.example-item:last-child{border-bottom:none}
-.example-item .zh{color:var(--text);margin-top:2px}
-.empty-hint{text-align:center;color:var(--sub);padding:40px;font-size:14px}
-@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.word-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.word-card{position:relative;border-radius:14px;padding:14px 16px;background:var(--card);
+  border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s,border-color .18s;
+  animation:pop .3s both;overflow:hidden}
+.word-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c-study);opacity:.75;transition:.18s}
+.word-card.is-unknown::before{background:var(--unknown);opacity:1}
+.word-card.is-unknown{border-color:color-mix(in srgb,var(--unknown) 42%,var(--line))}
+.word-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.word-card.pulse{animation:pulse 1.1s ease}
+@keyframes pulse{0%,100%{box-shadow:var(--shadow)}30%{box-shadow:0 0 0 4px var(--brand-soft),var(--shadow-lg)}}
+@keyframes pop{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.card-head{display:flex;align-items:flex-start;gap:12px}
+.word-basic{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;min-width:0}
+.word-idx{font-size:11px;font-weight:800;color:var(--faint);min-width:18px}
+.word-title{font-size:22px;font-weight:800;letter-spacing:.2px;color:var(--c-study)}
+.word-card.is-unknown .word-title{color:var(--ink)}
+.word-ph{font-size:12px;color:var(--sub);background:var(--brand-soft);padding:2px 9px;border-radius:7px}
+.acts{display:flex;gap:8px;margin-left:auto;flex-shrink:0}
+.act{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);background:var(--card);color:var(--sub);transition:.15s;flex-shrink:0}
+.act:hover{transform:scale(1.08);border-color:var(--brand);color:var(--brand)}
+.act.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.act.on-fav{background:var(--fav);border-color:var(--fav);color:#fff}
+.act.on-unknown{background:var(--unknown);border-color:var(--unknown);color:#fff}
+.word-def{margin-top:9px;font-size:13.5px;color:var(--sub)}
 
-/* ---------- DB view ---------- */
-.db-wrap{display:block}
-.db-canvas{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:14px;position:sticky;top:80px}
-#er-svg{width:100%;height:auto;display:block}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .2s}
-.modal-overlay.open{opacity:1;pointer-events:auto}
-.modal-box{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-lg);width:min(600px,92vw);max-height:82vh;display:flex;flex-direction:column;overflow:hidden;transform:translateY(12px) scale(.98);transition:transform .2s}
-.modal-overlay.open .modal-box{transform:none}
-.modal-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 20px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--primary-soft),transparent)}
-.modal-title{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px}
-.modal-close{width:32px;height:32px;border-radius:8px;background:var(--bg);color:var(--sub);font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.modal-close:hover{color:var(--primary)}
-.modal-body{padding:18px 20px;overflow:auto;font-size:13px}
-.modal-body .desc{font-size:12px;color:var(--sub);margin:0 0 12px;line-height:1.5}
-.modal-body table{width:100%;border-collapse:collapse;font-size:12px}
-.modal-body th,.modal-body td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)}
-.modal-body th{color:var(--sub);font-weight:600}
-.modal-body td .pk{color:var(--primary);font-weight:700}
-.modal-body .flow{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
-.modal-body .flow h4{font-size:13px;margin:0 0 8px}
-.modal-body .flow ol{margin:0;padding-left:20px;font-size:12px;color:var(--sub);line-height:1.9}
-.modal-body .flow code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:11px}
-.modal-body .hint{color:var(--sub);font-size:12px}
-.db-node{fill:var(--card);stroke:var(--border);stroke-width:1.2;rx:10;transition:.2s;cursor:pointer}
-.db-node:hover{stroke:var(--primary);filter:drop-shadow(0 4px 10px rgba(0,0,0,.12))}
-.db-node.active{stroke:var(--primary);stroke-width:2}
-.db-node-title{font-size:13px;font-weight:700;fill:var(--text)}
-.db-node-sub{font-size:10px;fill:var(--sub)}
-.db-link{stroke:url(#linkGrad);stroke-width:1.8;fill:none;stroke-dasharray:7 7;animation:linkflow .9s linear infinite}
-@keyframes linkflow{to{stroke-dashoffset:-14}}
-.db-link-minor{stroke:var(--light);stroke-width:1.2;fill:none;opacity:0;transition:opacity .2s}
-.db-link-minor.hot{opacity:1}
-.db-link.hot{stroke-width:2.6;stroke-dasharray:none}
-g[data-node] rect{transition:filter .2s}
-g[data-node]:hover rect{filter:drop-shadow(0 6px 14px rgba(99,102,241,.26))}
-g[data-node="user"]:hover rect{filter:drop-shadow(0 4px 10px rgba(0,0,0,.12))}
-.db-arrow{fill:var(--light)}
-.db-arrow.hot{fill:var(--primary)}
-.flow-tip{font-size:11px;color:var(--sub);text-align:center;margin-top:6px}
-th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)}
-th{color:var(--sub);font-weight:600}
-td .pk{color:var(--primary);font-weight:700}
-.flow{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
-.flow h4{font-size:13px;margin:0 0 8px}
-.flow ol{margin:0;padding-left:20px;font-size:12px;color:var(--sub);line-height:1.9}
-.flow code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:11px}
-.hint{color:var(--sub);font-size:12px}
-@media(max-width:640px){.view{padding:14px 12px 40px}.word-list{gap:10px}}
+/* ---------- 数据透视镜 ---------- */
+.lens{position:sticky;top:76px;background:var(--card);border:1px solid var(--line);
+  border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.lens-head{padding:13px 16px 11px;border-bottom:1px solid var(--line2);
+  background:linear-gradient(180deg,var(--brand-soft),transparent)}
+.lens-head b{font-size:14px;display:block}
+.lens-head span{font-size:11.5px;color:var(--sub)}
+.lens-body{padding:8px 10px 12px;max-height:min(70vh,660px);overflow:auto}
+.grp{margin-top:9px;border-radius:12px;padding:8px 9px 9px;background:var(--sunken);border:1px solid var(--line2)}
+.grp-h{display:flex;align-items:baseline;gap:7px;margin-bottom:6px}
+.grp-h .dot{width:7px;height:7px;border-radius:2px;flex-shrink:0;transform:translateY(-1px)}
+.grp-h b{font-size:12px}
+.grp-h span{font-size:10.5px;color:var(--faint);margin-left:auto}
+.trow{display:flex;align-items:center;gap:7px;padding:5px 7px;border-radius:8px;
+  background:var(--card);border:1px solid transparent;margin-top:4px;transition:.2s}
+.trow .tn{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;font-weight:600}
+.trow .tz{font-size:10.5px;color:var(--sub)}
+.trow .tc{margin-left:auto;font-size:11.5px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--brand)}
+.trow.flash{border-color:var(--brand);background:var(--brand-soft)}
+.trow.flash .tc{transform:scale(1.22)}
+.trow.is-derived{background:transparent;border:1px dashed color-mix(in srgb,var(--c-ach) 55%,var(--line))}
+.trow.is-derived .tc{color:var(--c-ach);font-size:11px;font-weight:600}
+.grp.is-ach{background:color-mix(in srgb,var(--c-ach) 7%,var(--sunken))}
+.lens-foot{border-top:1px solid var(--line2);padding:10px 14px 13px}
+.lens-foot h4{margin:0 0 7px;font-size:11px;letter-spacing:.1em;color:var(--faint);font-weight:700}
+.writes{display:flex;flex-direction:column;gap:5px;max-height:152px;overflow:auto}
+.w{font-size:11px;font-family:ui-monospace,Menlo,monospace;color:var(--sub);
+  padding:5px 8px;border-radius:7px;background:var(--sunken);border-left:2px solid var(--line);
+  animation:slidein .28s ease}
+.w:first-child{border-left-color:var(--brand);color:var(--ink)}
+.w .op{font-weight:700}
+.w .op.i{color:var(--c-study)}
+.w .op.u{color:var(--c-log)}
+.w-empty{font-size:11.5px;color:var(--faint);padding:2px 0}
+@keyframes slidein{from{opacity:0;transform:translateX(-5px)}to{opacity:1;transform:none}}
+
+/* ---------- 全貌 ---------- */
+.layers{display:flex;flex-direction:column;gap:11px;margin-top:16px}
+.layer{border-radius:15px;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);padding:13px 15px}
+.layer-h{display:flex;align-items:baseline;gap:9px;margin-bottom:10px;flex-wrap:wrap}
+.layer-h .dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.layer-h b{font-size:13.5px}
+.layer-h span{font-size:11.5px;color:var(--sub)}
+.layer-h .rel{margin-left:auto;font-size:11px;color:var(--faint);font-family:ui-monospace,Menlo,monospace}
+.chips{display:flex;gap:9px;flex-wrap:wrap}
+.chip{display:flex;flex-direction:column;gap:2px;align-items:flex-start;padding:11px 16px;border-radius:12px;
+  background:var(--sunken);border:1px solid var(--line);transition:.15s;text-align:left;min-width:132px}
+.chip:hover{border-color:var(--brand);transform:translateY(-2px);box-shadow:var(--shadow)}
+.chip .tt{font-family:ui-monospace,Menlo,monospace;font-size:13px;font-weight:600}
+.chip .ct{font-size:11.5px;color:var(--sub)}
+.chip.is-derived{border-style:dashed;border-color:color-mix(in srgb,var(--c-ach) 55%,var(--line))}
+.chip.is-user{border-style:dashed;border-color:var(--line);opacity:.78}
+.note-strip{margin-top:14px;padding:12px 15px;border-radius:12px;background:var(--sunken);
+  border:1px solid var(--line);font-size:12.5px;color:var(--sub)}
+.note-strip b{color:var(--ink);font-weight:600}
+
+/* ---------- 弹窗 ---------- */
+.mask{position:fixed;inset:0;background:rgba(8,12,22,.5);backdrop-filter:blur(3px);
+  display:flex;align-items:center;justify-content:center;z-index:200;padding:18px;
+  opacity:0;pointer-events:none;transition:opacity .18s}
+.mask.open{opacity:1;pointer-events:auto}
+.modal{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-lg);
+  width:min(620px,100%);max-height:84vh;display:flex;flex-direction:column;overflow:hidden;
+  transform:translateY(10px) scale(.985);transition:transform .18s}
+.mask.open .modal{transform:none}
+.modal-h{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line2)}
+.modal-h b{font-family:ui-monospace,Menlo,monospace;font-size:15px}
+.modal-h em{font-style:normal;font-size:12px;color:var(--sub)}
+.modal-x{margin-left:auto;width:36px;height:36px;border-radius:9px;background:var(--sunken);color:var(--sub);
+  font-size:15px;display:flex;align-items:center;justify-content:center}
+.modal-x:hover{color:var(--brand)}
+.modal-b{padding:16px 18px;overflow:auto;font-size:12.5px}
+.modal-b .desc{font-size:12px;color:var(--sub);margin-bottom:12px}
+.modal-b table{width:100%;border-collapse:collapse;font-size:12px}
+.modal-b th{text-align:left;color:var(--faint);font-weight:600;font-size:10.5px;letter-spacing:.06em;padding:5px 8px}
+.modal-b td{padding:6px 8px;border-top:1px solid var(--line2)}
+.modal-b td:first-child{font-family:ui-monospace,Menlo,monospace;font-weight:600}
+.modal-b td .key{color:var(--brand);font-weight:700}
+.modal-b .block{margin-top:14px;padding-top:12px;border-top:1px solid var(--line2)}
+.modal-b .block h5{margin:0 0 6px;font-size:12px}
+.modal-b .block p{font-size:12px;color:var(--sub)}
+
+/* ---------- Toast ---------- */
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);z-index:300;
+  background:var(--ink);color:var(--bg);font-size:12.5px;padding:9px 16px;border-radius:10px;
+  box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.22s;max-width:88vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+.foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:11.5px;color:var(--faint);display:flex;gap:12px;flex-wrap:wrap}
+
+/* ---------- 响应式 ---------- */
+@media (max-width:1000px){
+  .stage{grid-template-columns:minmax(0,1fr)}
+  .lens{position:static;top:auto}
+  .lens-body{max-height:none}
+}
+@media (max-width:640px){
+  main{padding:0 13px 46px}
+  .topbar{padding:10px 13px}
+  .brand small{display:none}
+  .hero{padding-top:24px}
+  .hero h1{font-size:23px}
+  .hero p{font-size:14px}
+  .anatomy .part{min-width:0;flex:1 1 130px}
+  .anatomy .op{display:none}
+  .word-title{font-size:19px}
+  .life-step{flex:1 1 50%;min-width:0;padding:12px 14px;border-bottom:1px solid var(--line2)}
+  .life-step:nth-child(2n){border-right:none}
+  .acts{gap:7px}
+  .act{width:38px;height:38px}
+  .btn{padding:10px 16px;font-size:13.5px}
+  .section > h2{font-size:17px}
+}
 </style>
 </head>
 <body>
+
 <header class="topbar">
-  <div class="logo">
-    <div class="dragon">🐉</div>
-    <div><h1>DragonCard Playground</h1><small>COCA 卡组 × 数据结构 · 交互演示</small></div>
+  <div class="brand">
+    <div class="mark">🐉</div>
+    <div>
+      <b>DragonCard</b>
+      <small>卡组长什么样，你学的每一步就记成什么样</small>
+    </div>
   </div>
-  <nav class="tabs">
-    <button data-view="deck" class="active">卡组演示</button>
-    <button data-view="db">数据结构</button>
-  </nav>
-  <button class="theme-btn" id="theme-btn" title="切换主题">🌙</button>
+  <div class="top-actions">
+    <button class="icon-btn" id="theme-btn" title="切换深浅色">🌙</button>
+  </div>
 </header>
 
-<!-- ============ COCA 卡组 ============ -->
-<section id="view-deck" class="view">
-  <div class="stats-bar">
-    <div class="stat mastered"><div class="num" id="st-mastered">0</div><div class="lbl">掌握</div></div>
-    <div class="stat unknown"><div class="num" id="st-unknown">0</div><div class="lbl">未知</div></div>
-    <div class="stat total"><div class="num" id="st-total">0</div><div class="lbl">总数</div></div>
-    <div class="progress">
-      <div class="bar"><div class="fill" id="prog-fill" style="width:0%"></div></div>
-      <div class="meta"><span id="prog-label">尚未开始</span><span id="round-num">轮回 0</span></div>
-    </div>
-  </div>
-  <div class="toolbar">
-    <button class="btn primary" id="goagain-btn">↻ 轮回</button>
-    <button class="btn ghost" id="reset-btn">重置标记</button>
-    <button class="btn ghost" id="clear-ex-btn">收起例句</button>
-  </div>
-  <div class="word-list" id="word-list"></div>
-</section>
+<main>
 
-<!-- ============ 数据结构 ============ -->
-<section id="view-db" class="view" style="display:none">
-  <div class="db-wrap">
-    <div class="db-canvas">
-      <svg id="er-svg" viewBox="0 0 900 400"></svg>
-      <div class="flow-tip">思维导图 · 悬停查看关联，点击节点看字段详情</div>
-    </div>
-  </div>
-</section>
+  <!-- ================= Hero ================= -->
+  <section class="hero">
+    <div class="eyebrow">Flashcards, without the fuss</div>
+    <h1>一套卡组，其实就是<em>一份内容 + 一个工具</em>。</h1>
+    <p>DragonCard 的卡组打包成一个 zip：里面装着你今天要学的东西，也装着把这些东西展示出来的界面。
+       打开就能学，不用装环境。而你学的每一步——学到哪、哪不会、什么时候学的——都会落进你自己的记录里。</p>
 
-<!-- 表详情弹窗 -->
-<div id="table-modal" class="modal-overlay">
-  <div class="modal-box">
-    <div class="modal-header">
-      <div class="modal-title" id="tm-title"></div>
-      <button class="modal-close" id="tm-close" title="关闭">✕</button>
+    <div class="anatomy">
+      <div class="part"><i class="tick" style="background:var(--c-content)"></i>
+        <b>内容 · 学什么</b><span>卡片数据，一条一条</span></div>
+      <div class="op">+</div>
+      <div class="part"><i class="tick" style="background:var(--c-study)"></i>
+        <b>工具 · 怎么展示</b><span>离线 H5 界面</span></div>
+      <div class="op">=</div>
+      <div class="part is-deck"><i class="tick"></i>
+        <b>卡组 · 一个 zip</b><span>导入即用</span></div>
     </div>
-    <div class="modal-body" id="tm-body"></div>
+
+    <div class="pledges">
+      <div class="pledge"><i>1</i><span><b>内容能带走。</b>卡组是个压缩包，数据在里面，随时导出。</span></div>
+      <div class="pledge"><i>2</i><span><b>不用装东西。</b>打开就是能学的界面，手机电脑都行。</span></div>
+      <div class="pledge"><i>3</i><span><b>它记得住你。</b>哪些不会、哪些收藏了，下次打开还在。</span></div>
+    </div>
+  </section>
+
+  <!-- ================= 试学 + 透视镜 ================= -->
+  <section class="section">
+    <h2>试一下：学 <span id="try-n">6</span> 个词，看数据怎么变</h2>
+    <p class="lede">左边是真能点的卡组。右边那栏是「这个卡组背后的数据」——你每做一个动作，对应的地方就会亮一下、加一笔。
+       那不是动画效果，那是程序真实运行时发生的事。</p>
+
+    <div class="life" id="life"></div>
+
+    <div class="stage">
+      <div class="stage-main">
+        <div class="panel">
+          <div class="stats-bar">
+            <div class="stat total"><div class="num" id="st-total">0</div><div class="lbl">卡片总数</div></div>
+            <div class="stat unknown"><div class="num" id="st-unknown">0</div><div class="lbl">还不会</div></div>
+            <div class="stat mastered"><div class="num" id="st-known">0</div><div class="lbl">已经会了</div></div>
+            <div class="progress">
+              <div class="bar"><div class="fill" id="prog-fill"></div></div>
+              <div class="meta"><span id="prog-label">还没开始</span><span id="round-label">第 0 轮</span></div>
+            </div>
+          </div>
+          <div class="toolbar">
+            <button class="btn primary" id="round-btn">↻ 轮回一次</button>
+            <button class="btn ghost" id="reset-btn">从头开始</button>
+            <button class="btn ghost" id="export-btn">导出卡组数据</button>
+          </div>
+          <div class="word-list" id="word-list"></div>
+        </div>
+      </div>
+
+      <aside class="lens">
+        <div class="lens-head">
+          <b>数据透视镜</b>
+          <span>这个卡组在数据库里长这样</span>
+        </div>
+        <div class="lens-body" id="lens-body"></div>
+        <div class="lens-foot">
+          <h4>刚刚发生</h4>
+          <div class="writes" id="writes"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= 全貌 ================= -->
+  <section class="section">
+    <h2>想细看？整套数据结构</h2>
+    <p class="lede">上面演示的是一个卡组。放到整个系统里，一共 7 张表，天然分成三组——看它「是什么」、你「学到哪」、以及你「做过什么」。
+       点任意一张可以看字段。</p>
+
+    <div class="layers" id="layers"></div>
+
+    <div class="note-strip">
+      <b>两个容易被误会的点：</b>
+      ① 用户表 <code>t_user</code> 现在恒为 1 行（单用户），它只是被其它表引用的分区键，没有注册登录那套；
+      ② <b>成就没有表</b>——「连续学习 N 天」「发音多少次」都是从上面的行为记录里现算出来的，不额外占地方。
+    </div>
+  </section>
+
+  <div class="foot">
+    <span>DragonCard · 本地演示页</span>
+    <span>单文件、零依赖，离线可开</span>
+  </div>
+</main>
+
+<div class="mask" id="mask">
+  <div class="modal">
+    <div class="modal-h"><b id="m-title"></b><em id="m-zh"></em>
+      <button class="modal-x" id="m-x">✕</button></div>
+    <div class="modal-b" id="m-body"></div>
   </div>
 </div>
+<div class="toast" id="toast"></div>
 
 <script>
-const WORDS = [{"word": "nutty", "phonetic": "ˈnʌti", "en": ["Containing or flavored with nuts.", "Informal: slightly crazy or eccentric."], "zh": ["adj. 含有坚果的；有坚果味的。", "adj. 非正式：有点疯狂或古怪的。"], "ex": [{"en": "This chocolate cake has a nutty flavor.", "zh": "这个巧克力蛋糕有坚果味。"}, {"en": "He has some nutty ideas about time travel.", "zh": "他对时间旅行有一些古怪的想法。"}]}, {"word": "looter", "phonetic": "ˈluːtər", "en": ["A person who loots, especially during a riot, war, or natural disaster."], "zh": ["n. 抢劫者，掠夺者"], "ex": [{"en": "Police arrested several looters after the earthquake.", "zh": "地震后，警察逮捕了几名抢劫者。"}]}, {"word": "worsening", "phonetic": "ˈwɜːrsənɪŋ", "en": ["(present participle of worsen): becoming or making worse.", "The act or process of becoming worse."], "zh": ["v. (worsen的现在分词) 恶化，变坏", "n. 恶化，加剧"], "ex": [{"en": "The weather is worsening; we should stay indoors.", "zh": "天气在恶化，我们应该待在室内。"}, {"en": "The worsening of the economy concerned everyone.", "zh": "经济的恶化让每个人担忧。"}]}, {"word": "sovereign", "phonetic": "ˈsɑːvrɪn", "en": ["A supreme ruler, especially a monarch.", "A former British gold coin worth one pound.", "Having supreme power or authority; independent."], "zh": ["n. 君主，统治者", "n. 金币（英国旧时一英镑金币）", "adj. 至高无上的，主权的"], "ex": [{"en": "The sovereign addressed the nation on television.", "zh": "君主在电视上向全国发表讲话。"}, {"en": "He collected ancient sovereigns as a hobby.", "zh": "他收集古代金币作为爱好。"}, {"en": "Each state has sovereign power over its internal affairs.", "zh": "每个州对其内政拥有主权权力。"}]}, {"word": "veiled", "phonetic": "veɪld", "en": ["Wearing or covered with a veil.", "Partially concealed or disguised; not openly expressed."], "zh": ["adj. 戴面纱的，遮盖的", "adj. 含蓄的，掩饰的"], "ex": [{"en": "She walked into the room with a veiled face.", "zh": "她遮着脸走进房间。"}, {"en": "His veiled threat was clear to everyone.", "zh": "他的含蓄威胁对每个人来说都很明显。"}]}, {"word": "anonymously", "phonetic": "əˈnɑːnɪməsli", "en": ["Without being identified by name; in an anonymous manner."], "zh": ["adv. 匿名地，不具名地"], "ex": [{"en": "The donation was made anonymously.", "zh": "捐款是匿名进行的。"}]}, {"word": "tad", "phonetic": "tæd", "en": ["slightly; to a small degree."], "zh": ["adv. 稍微，有点儿"], "ex": [{"en": "This coffee is a tad too strong for me.", "zh": "这杯咖啡对我来说稍微太浓了。"}]}, {"word": "parenthood", "phonetic": "ˈperənthʊd", "en": ["The state or experience of having or raising a child or children."], "zh": ["n. 父母身份，育儿状态"], "ex": [{"en": "Parenthood has changed their lives completely.", "zh": "为人父母彻底改变了他们的生活。"}]}, {"word": "scribe", "phonetic": "skraɪb", "en": ["A person who copies out documents, especially in times before printing was common.", "A writer or journalist, sometimes used humorously."], "zh": ["n. 抄写员，文书", "n. 作家，记者"], "ex": [{"en": "In medieval times, monks often worked as scribes.", "zh": "在中世纪，僧侣们常充当抄写员。"}, {"en": "The journalist referred to himself as a humble scribe.", "zh": "那位记者自谦地称自己为卑微的写手。"}]}, {"word": "chauffeur", "phonetic": "ʃoʊˈfɜːr", "en": ["A person whose job is to drive a car, especially for a private employer.", "To drive someone as or like a chauffeur."], "zh": ["n. 司机，专车司机", "v. 开车，驾车"], "ex": [{"en": "He hired a chauffeur to take him to the airport.", "zh": "他雇了一个司机送他去机场。"}, {"en": "She chauffeured her children to school every day.", "zh": "她每天开车送孩子们去学校。"}]}, {"word": "hospitable", "phonetic": "hɑːˈspɪtəbl", "en": ["Friendly and welcoming to guests or strangers.", "(of a place or climate) pleasant and favorable for living or visiting."], "zh": ["adj. 好客的，热情款待的", "adj. 宜人的，舒适的"], "ex": [{"en": "The hospitable family invited us in for tea.", "zh": "那个好客的家庭邀请我们进去喝茶。"}, {"en": "The island has a hospitable climate year-round.", "zh": "这个岛屿全年气候宜人。"}]}, {"word": "brawl", "phonetic": "brɔːl", "en": ["A rough or noisy fight or quarrel.", "To engage in a brawl."], "zh": ["n. 争吵，打斗。", "v. 参与打斗。"], "ex": [{"en": "A brawl erupted in the bar after a disagreement.", "zh": "酒吧里一场争吵在分歧后爆发。"}, {"en": "The fans brawled outside the stadium after the game.", "zh": "比赛后，球迷们在体育场外打斗。"}]}, {"word": "smite", "phonetic": "smaɪt", "en": ["To strike with a firm blow.", "To defeat or punish severely."], "zh": ["v. 重击，猛打。", "v. 惩罚，击败。"], "ex": [{"en": "The warrior smote his enemy with a mighty sword.", "zh": "战士用巨剑重击了他的敌人。"}, {"en": "The disease smote the population, causing widespread suffering.", "zh": "疾病袭击了人群，造成了广泛的痛苦。"}]}, {"word": "chi-square", "phonetic": "kaɪ skwɛr", "en": ["A statistical test used to compare observed data with expected data."], "zh": ["n. 卡方检验，用于比较观测数据与期望数据的统计检验。"], "ex": [{"en": "The chi-square test revealed a significant association between the variables.", "zh": "卡方检验揭示了变量之间的显著关联。"}]}, {"word": "Federalist", "phonetic": "ˈfedərəlɪst", "en": ["A supporter of federalism, especially in US history.", "Relating to or supporting federalism."], "zh": ["n. 联邦主义者，尤指美国历史上的。", "adj. 联邦制的。"], "ex": [{"en": "The Federalists played a key role in shaping the US Constitution.", "zh": "联邦主义者在塑造美国宪法方面发挥了关键作用。"}, {"en": "The Federalist system divides power between national and state governments.", "zh": "联邦制体系将权力在国家和州政府之间分配。"}]}];
+/* ==========================================================================
+   DragonCard Playground
+   --------------------------------------------------------------------------
+   这一页要回答买家一个问题：我买到的「卡组」到底是什么，我学的东西记在哪？
+   所以主线是「功能」——收卡组 → 打开学 → 标记 → 轮回 → 留下记录；
+   数据是它的投影，右侧那块「数据透视镜」就是数据库的实时样子。
+   下面这个 db 对象就是浏览器里的一个迷你数据库，字段与真实库一致。
+   ========================================================================== */
 
-/* ============ 卡组逻辑 ============ */
-let order = WORDS.map((_,i)=>i);      // 当前展示顺序
-let unknownSet = new Set();           // 标记为「未知」的词索引
-let roundCount = 0;
-let showAllZh = false;
-
-function updateStats(){
-  const total = WORDS.length;
-  const unknown = unknownSet.size;
-  const mastered = total - unknown;
-  document.getElementById('st-mastered').textContent = mastered;
-  document.getElementById('st-unknown').textContent = unknown;
-  document.getElementById('st-total').textContent = total;
-  document.getElementById('round-num').textContent = '轮回 ' + roundCount;
-  const fill = document.getElementById('prog-fill');
-  fill.style.width = (total? mastered/total*100 : 0) + '%';
-  document.getElementById('prog-label').textContent = total? (mastered + ' / ' + total) : '尚未开始';
+var $ = function(s){ return document.querySelector(s); };
+var $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function nowStr(){
+  var d = new Date(), p = function(n){ return (n<10?'0':'')+n; };
+  return p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());
 }
 
-function rerender(){
-  const list = document.getElementById('word-list');
-  updateStats();
-  list.innerHTML = '';
-  order.forEach((idx,pos)=>{ list.appendChild(cardEl(idx,pos)); });
+/* ---------- 演示用的 6 张卡（真 COCA 词条的样子） ---------- */
+var SEED = [
+  {word:'nutty',      ph:'ˈnʌti',        zh:'adj. 有坚果味的；有点古怪的'},
+  {word:'looter',     ph:'ˈluːtər',      zh:'n. 抢劫者，掠夺者'},
+  {word:'worsening',  ph:'ˈwɜːrsənɪŋ',   zh:'v./n. 恶化，加剧'},
+  {word:'sovereign',  ph:'ˈsɑːvrɪn',     zh:'n. 君主；adj. 至高无上的'},
+  {word:'veiled',     ph:'veɪld',        zh:'adj. 蒙面的；含蓄的'},
+  {word:'anonymously',ph:'əˈnɑːnɪməsli', zh:'adv. 匿名地'}
+];
+
+/* ---------- 浏览器里的迷你数据库 ---------- */
+var db = { user:null, tool:null, deck:null, items:[], progress:[], rounds:[], events:[] };
+
+function resetDB(){
+  db.user = {id:1, username:'default', display_name:'我'};
+  db.tool = {id:1, name:'COCA 单词卡', lang:'zh', dir_path:'minitools/1/'};
+  db.deck = {id:1, user_id:1, name:'COCA 20000 · 试学', kind:'knowledge', tool_id:1};
+  db.items = SEED.map(function(w, i){
+    return {id:i+1, deck_id:1, item_order:i+1, data:w};
+  });
+  db.progress = [];
+  db.rounds = [];
+  db.events = [];
+}
+/* 真实系统里，第一次打开卡组会为每张卡自动建一条进度行（= /v1/learn/page 的 _init_progress） */
+function openDeck(){
+  if (db.progress.length) return false;
+  db.items.forEach(function(it){
+    db.progress.push({id:it.id, user_id:1, deck_id:1, deck_item_id:it.id,
+      is_unknown:0, is_favorite:0, current_order:it.item_order});
+  });
+  return true;
+}
+function progOf(id){
+  for (var i=0;i<db.progress.length;i++) if (db.progress[i].deck_item_id===id) return db.progress[i];
+  return null;
+}
+function orderedItems(){
+  if (!db.progress.length) return db.items.slice();
+  var byId = {};
+  db.progress.forEach(function(p){ byId[p.deck_item_id] = p; });
+  return db.items.slice().sort(function(a,b){
+    var pa = byId[a.id], pb = byId[b.id];
+    if (!pa || !pb) return a.item_order - b.item_order;
+    /* 只按 current_order 排 —— 与真实系统一致：标记一张卡只改它的状态，卡片不会立刻跳位；
+       真正把它挪到前面的是「轮回」（= /v1/reorder 重写整列）。 */
+    return pa.current_order - pb.current_order;
+  });
 }
 
-const ICO = {
-  play: '<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
-  eye: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>',
-  star: '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8-6.2-3.7-6.2 3.7 1.6-6.8L2.2 8.9l6.9-.6z"/></svg>'
+/* ---------- 写入日志 ---------- */
+var writes = [];
+function log(op, table, detail){
+  writes.unshift({op:op, table:table, detail:detail, t:nowStr()});
+  if (writes.length > 40) writes.pop();
+}
+function renderWrites(){
+  var box = $('#writes');
+  if (!writes.length){
+    box.innerHTML = '<div class="w-empty">还没有动作。点左边卡片上的按钮试试。</div>';
+    return;
+  }
+  box.innerHTML = writes.map(function(w){
+    var cls = w.op === 'INSERT' ? 'i' : 'u';
+    return '<div class="w"><span class="op '+cls+'">'+w.op+'</span> '+esc(w.table)+
+           (w.detail ? ' <span>· '+esc(w.detail)+'</span>' : '')+'</div>';
+  }).join('');
+}
+
+/* ==========================================================================
+   左侧：卡组演示
+   ========================================================================== */
+var ICO = {
+  play:'<svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
+  eye:'<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>',
+  star:'<svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8-6.2-3.7-6.2 3.7 1.6-6.8L2.2 8.9l6.9-.6z"/></svg>',
+  bookmark:'<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 2h12v20l-6-4-6 4z"/></svg>'
 };
 
-function cardEl(idx,pos){
-  const w = WORDS[idx];
-  const card = document.createElement('div');
-  card.className = 'word-card' + (unknownSet.has(idx)?' highlighted':'');
-  card.style.animationDelay = (pos*0.02)+'s';
-  const zh = w.zh.join('；');
-  const en = w.en.join('；');
-  const ex = w.ex && w.ex.length ? w.ex : [];
-  card.innerHTML =
-    '<div class="card-header">' +
-      '<div class="word-basic">' +
-        '<span class="word-index">'+String(pos+1).padStart(2,'0')+'</span>' +
-        '<span class="word-title">'+esc(w.word)+'</span>' +
-        (w.phonetic?'<span class="word-phonetic">'+esc(w.phonetic)+'</span>':'') +
-      '</div>' +
-      '<div class="actions">' +
-        '<button class="action-btn play" title="发音">'+ICO.play+'</button>' +
-        '<button class="action-btn eye" title="显示中文释义">'+ICO.eye+'</button>' +
-        '<button class="action-btn mark'+(unknownSet.has(idx)?' active':'')+'" title="标记未知">'+ICO.star+'</button>' +
-      '</div>' +
-    '</div>' +
-    '<div class="definition">' +
-      '<div class="en">'+esc(en)+'</div>' +
-      '<div class="zh">'+esc(zh)+'</div>' +
-    '</div>' +
-    (ex.length?'<button class="ex-toggle">例句 ▾</button>':'') +
-    (ex.length?'<div class="examples">'+ex.map(e=>'<div class="example-item"><div>'+esc(e.en)+'</div><div class="zh">'+esc(e.zh)+'</div></div>').join('')+'</div>':'');
-  card.querySelector('.play').onclick = ()=>speak(w.word);
-  card.querySelector('.eye').onclick = ()=>{ card.classList.toggle('showzh'); card.querySelector('.eye').classList.toggle('active',card.classList.contains('showzh')); };
-  card.querySelector('.mark').onclick = ()=>{
-    if(unknownSet.has(idx)) unknownSet.delete(idx); else unknownSet.add(idx);
-    card.classList.toggle('highlighted', unknownSet.has(idx));
-    card.querySelector('.mark').classList.toggle('active', unknownSet.has(idx));
-    updateStats();
-  };
-  const exT = card.querySelector('.ex-toggle');
-  if(exT) exT.onclick = ()=>{ card.classList.toggle('showex'); exT.textContent = card.classList.contains('showex')?'例句 ▴':'例句 ▾'; };
-  return card;
+function renderStats(){
+  var total = db.tool ? db.items.length : 0;
+  var unknown = db.progress.filter(function(p){ return p.is_unknown===1; }).length;
+  var known = db.progress.length - unknown;
+  $('#st-total').textContent = total;
+  $('#st-unknown').textContent = unknown;
+  $('#st-known').textContent = known;
+  $('#prog-fill').style.width = (total ? known/total*100 : 0) + '%';
+  $('#prog-label').textContent = db.progress.length ? (known + ' / ' + total + ' 已经会了') : '还没开始';
+  $('#round-label').textContent = '第 ' + db.rounds.length + ' 轮';
 }
 
-function goagain(){
-  // 未知排前，其余保持相对顺序（与应用 Samsara 一致）
-  order = order.filter(i=>unknownSet.has(i)).concat(order.filter(i=>!unknownSet.has(i)));
-  roundCount++;
-  rerender();
+function renderCards(){
+  var list = $('#word-list');
+  var items = orderedItems();
+  list.innerHTML = items.map(function(it, pos){
+    var p = progOf(it.id);
+    var unk = p && p.is_unknown === 1;
+    var fav = p && p.is_favorite === 1;
+    return '<div class="word-card'+(unk?' is-unknown':'')+'" data-card="'+it.id+'" style="animation-delay:'+(pos*0.03)+'s">'+
+      '<div class="card-head">'+
+        '<div class="word-basic">'+
+          '<span class="word-idx">'+String(pos+1).padStart(2,'0')+'</span>'+
+          '<span class="word-title">'+esc(it.data.word)+'</span>'+
+          '<span class="word-ph">'+esc(it.data.ph)+'</span>'+
+        '</div>'+
+        '<div class="acts">'+
+          '<button class="act" data-play="'+it.id+'" title="听发音">'+ICO.play+'</button>'+
+          '<button class="act'+(fav?' on-fav':'')+'" data-fav="'+it.id+'" title="收藏">'+ICO.bookmark+'</button>'+
+          '<button class="act'+(unk?' on-unknown':'')+'" data-mark="'+it.id+'" title="标记为还不会">'+ICO.star+'</button>'+
+        '</div>'+
+      '</div>'+
+      '<div class="word-def">'+esc(it.data.zh)+'</div>'+
+    '</div>';
+  }).join('');
+  renderStats();
 }
 
-document.getElementById('goagain-btn').onclick = goagain;
-document.getElementById('reset-btn').onclick = ()=>{ unknownSet.clear(); order = WORDS.map((_,i)=>i); roundCount=0; rerender(); };
-document.getElementById('clear-ex-btn').onclick = ()=>{ document.querySelectorAll('.word-card').forEach(c=>{c.classList.remove('showex');}); };
+/* ---------- 动作 ---------- */
+function actPlay(id){
+  var it = itemById(id); if (!it) return;
+  speak(it.data.word);
+  db.events.push({user_id:1, deck_id:1, deck_item_id:id, action:'audio_play'});
+  log('INSERT','t_learning_event','action = audio_play');
+  pulse('t_learning_event');
+  refreshLens(); renderLife();
+}
+function actFav(id){
+  var p = progOf(id); if (!p) return;
+  p.is_favorite = p.is_favorite ? 0 : 1;
+  db.events.push({user_id:1, deck_id:1, deck_item_id:id, action:'favorite_toggle'});
+  log('UPDATE','t_progress','#'+p.id+' is_favorite → '+p.is_favorite);
+  log('INSERT','t_learning_event','action = favorite_toggle');
+  pulse('t_progress'); pulse('t_learning_event');
+  renderCards(); refreshLens(); renderLife();
+}
+function actMark(id){
+  var p = progOf(id); if (!p) return;
+  p.is_unknown = p.is_unknown ? 0 : 1;
+  db.events.push({user_id:1, deck_id:1, deck_item_id:id, action:'word_mark'});
+  log('UPDATE','t_progress','#'+p.id+' is_unknown → '+p.is_unknown);
+  log('INSERT','t_learning_event','action = word_mark');
+  pulse('t_progress'); pulse('t_learning_event');
+  renderCards(); refreshLens(); renderLife();
+}
+function actRound(){
+  if (!db.progress.length){ openDeck(); }
+  /* 真实实现：/v1/reorder —— 不会的排前面，其次按原顺序，然后整列重写 current_order */
+  var unknown = db.progress.filter(function(p){ return p.is_unknown===1; });
+  var rest = db.progress.filter(function(p){ return p.is_unknown!==1; });
+  var order = unknown.concat(rest);
+  order.forEach(function(p, i){ p.current_order = i + 1; });
+  db.rounds.push({user_id:1, deck_id:1, round_number:db.rounds.length+1,
+    end_time:nowStr(), marked_count:unknown.length});
+  log('UPDATE','t_progress','整列重写 current_order（'+order.length+' 行）');
+  log('INSERT','t_study_round','round_number = '+db.rounds.length+', marked_count = '+unknown.length);
+  pulse('t_progress'); pulse('t_study_round');
+  renderCards(); refreshLens(); renderLife();
+  toast(unknown.length
+    ? ('轮回完成：不会的 ' + unknown.length + ' 张排到了前面，并记下第 ' + db.rounds.length + ' 轮。')
+    : ('轮回完成：这一轮还没标记过卡片，已记下第 ' + db.rounds.length + ' 轮。'));
+}
+function actReset(){
+  resetDB(); openDeck(); writes = [];
+  log('INSERT','t_deck','name = COCA 20000 · 试学');
+  log('INSERT','t_tool','name = COCA 单词卡');
+  log('INSERT','t_deck_item','批量导入 '+db.items.length+' 张卡');
+  log('INSERT','t_progress','为 '+db.progress.length+' 张卡建学习记录');
+  renderCards(); renderWrites(); refreshLens(); renderLife();
+  toast('已回到刚导入卡组的状态。');
+}
+function itemById(id){ for (var i=0;i<db.items.length;i++) if (db.items[i].id===id) return db.items[i]; return null; }
 
 function speak(text){
-  if(!('speechSynthesis' in window)){ alert('当前浏览器不支持发音 (Web Speech API)'); return; }
+  if (!('speechSynthesis' in window)){ toast('这个浏览器不支持朗读。'); return; }
   speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
+  var u = new SpeechSynthesisUtterance(text);
   u.lang = 'en-US'; u.rate = 0.9;
   speechSynthesis.speak(u);
 }
 
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-/* ============ 数据结构 ============ */
-const TABLES = [
-  {id:'t_user',name:'t_user',zh:'用户',color:'#22d3ee',desc:'应用用户（默认 default）',
-   fields:[['id','Integer','PK',1],['username','String(50)','UNIQUE',0],['display_name','String(100)','nullable',0],['created_at','DateTime','',0],['updated_at','DateTime','',0]]},
-  {id:'t_tool',name:'t_tool',zh:'小工具',color:'#a855f7',desc:'zip 小工具元数据（源码在 minitools/<id>/）',
-   fields:[['id','Integer','PK',1],['user_id','Integer','FK→t_user',0],['name','String(100)','NOT NULL',0],['description','Text','nullable',0],['icon','String(255)','',0],['lang','String(10)','',0],['dir_path','String(255)','',0],['manifest_json','Text','',0],['tracked_actions','Text','',0],['created_at','DateTime','',0],['updated_at','DateTime','',0]]},
-  {id:'t_deck',name:'t_deck',zh:'卡组',color:'#6366f1',desc:'Deck = 数据源 + 绑定 zip 工具',
-   fields:[['id','Integer','PK',1],['user_id','Integer','FK→t_user',0],['name','String(100)','NOT NULL',0],['kind','String(20)','',0],['tool_id','Integer','FK→t_tool',0],['created_at','DateTime','',0],['updated_at','DateTime','',0]]},
-  {id:'t_deck_item',name:'t_deck_item',zh:'卡组条目',color:'#f59e0b',desc:'单条卡片数据（JSON）',
-   fields:[['id','Integer','PK',1],['deck_id','Integer','FK→t_deck',0],['item_order','Integer','NOT NULL',0],['data','JSON','NOT NULL',0],['debug','Boolean','',0],['created_at','DateTime','',0],['updated_at','DateTime','',0]]},
-  {id:'t_progress',name:'t_progress',zh:'学习进度',color:'#10b981',desc:'每用户×每卡组×每条目一条进度',
-   fields:[['id','Integer','PK',1],['user_id','Integer','FK→t_user',0],['deck_id','Integer','FK→t_deck',0],['deck_item_id','Integer','FK→t_deck_item',0],['is_unknown','Integer','',0],['is_favorite','Integer','',0],['current_order','Integer','',0],['created_at','DateTime','',0],['updated_at','DateTime','',0]]},
-  {id:'t_study_round',name:'t_study_round',zh:'学习轮次',color:'#ef4444',desc:'每次轮回（Samsara）记一条',
-   fields:[['id','Integer','PK',1],['user_id','Integer','FK→t_user',0],['deck_id','Integer','FK→t_deck',0],['round_number','Integer','',0],['end_time','DateTime','',0],['marked_count','Integer','',0]]},
-  {id:'t_learning_event',name:'t_learning_event',zh:'交互事件',color:'#3b82f6',desc:'cardAPI.track 埋点日志',
-   fields:[['id','Integer','PK',1],['user_id','Integer','FK→t_user',0],['deck_id','Integer','FK→t_deck',0],['deck_item_id','Integer','FK→t_deck_item',0],['action','String(50)','',0],['created_at','DateTime','indexed',0]]}
+/* ==========================================================================
+   右侧：数据透视镜
+   ========================================================================== */
+var GROUPS = [
+  {key:'content', label:'卡组内容', hint:'导入后基本不变', color:'var(--c-content)',
+   tables:[['t_deck','卡组'],['t_deck_item','卡片数据'],['t_tool','展示工具']]},
+  {key:'study', label:'学习记录', hint:'随学随变', color:'var(--c-study)',
+   tables:[['t_progress','学到哪 · 哪不会'],['t_study_round','轮回了几轮']]},
+  {key:'log', label:'行为记录', hint:'只追加，不回改', color:'var(--c-log)',
+   tables:[['t_learning_event','点过什么']]}
 ];
-const MIND_COL = { t_user:'#22d3ee', t_tool:'#a855f7', t_deck:'#6366f1', t_deck_item:'#f59e0b', t_progress:'#10b981', t_study_round:'#ef4444', t_learning_event:'#3b82f6' };
-const REL_MAP = {
-  t_user:['卡组'], t_deck:['用户','小工具','卡片数据','学习进度'], t_tool:['卡组'],
-  t_deck_item:['卡组','学习进度'], t_progress:['学习进度','卡片数据'], t_study_round:['学习进度','卡组'], t_learning_event:['学习进度','卡片数据']
+function countOf(t){
+  if (t==='t_user') return 1;
+  if (t==='t_tool') return 1;
+  if (t==='t_deck') return 1;
+  if (t==='t_deck_item') return db.items.length;
+  if (t==='t_progress') return db.progress.length;
+  if (t==='t_study_round') return db.rounds.length;
+  if (t==='t_learning_event') return db.events.length;
+  return 0;
+}
+function renderLens(){
+  var html = '';
+  GROUPS.forEach(function(g){
+    html += '<div class="grp"><div class="grp-h"><span class="dot" style="background:'+g.color+'"></span>'+
+      '<b>'+esc(g.label)+'</b><span>'+esc(g.hint)+'</span></div>';
+    g.tables.forEach(function(t){
+      html += '<div class="trow" data-tbl="'+t[0]+'"><span class="tn">'+t[0]+'</span>'+
+        '<span class="tz">'+esc(t[1])+'</span><span class="tc">'+countOf(t[0])+' 行</span></div>';
+    });
+    html += '</div>';
+  });
+  /* 成就：派生，没有表 */
+  var ach = achievements();
+  html += '<div class="grp is-ach"><div class="grp-h"><span class="dot" style="background:var(--c-ach)"></span>'+
+    '<b>成就</b><span>算出来的，不占表</span></div>'+
+    '<div class="trow is-derived" data-tbl="ach"><span class="tn">连续学习</span>'+
+    '<span class="tz">按行为记录现算</span><span class="tc">'+ach.streak+' 天</span></div>'+
+    '<div class="trow is-derived"><span class="tn">发音次数</span><span class="tz">audio_play</span>'+
+    '<span class="tc">'+ach.audio+' 次</span></div>'+
+    '<div class="trow is-derived"><span class="tn">标记次数</span><span class="tz">word_mark</span>'+
+    '<span class="tc">'+ach.mark+' 次</span></div></div>';
+  $('#lens-body').innerHTML = html;
+}
+function refreshLens(){
+  /* 只更新数字与"刚刚发生"，不重建 DOM —— 重建会打断闪烁动画 */
+  $$('#lens-body [data-tbl]').forEach(function(row){
+    var t = row.dataset.tbl; if (t === 'ach') return;
+    var el = row.querySelector('.tc'); if (el) el.textContent = countOf(t) + ' 行';
+  });
+  var ach = achievements();
+  var achRows = $$('#lens-body .grp.is-ach .trow');
+  if (achRows.length === 3){
+    achRows[0].querySelector('.tc').textContent = ach.streak + ' 天';
+    achRows[1].querySelector('.tc').textContent = ach.audio + ' 次';
+    achRows[2].querySelector('.tc').textContent = ach.mark + ' 次';
+  }
+  renderWrites();
+}
+function achievements(){
+  var audio = db.events.filter(function(e){ return e.action==='audio_play'; }).length;
+  var mark  = db.events.filter(function(e){ return e.action==='word_mark'; }).length;
+  return {streak: db.events.length ? 1 : 0, audio: audio, mark: mark};
+}
+var flashTimers = {};
+function pulse(t){
+  var row = document.querySelector('#lens-body [data-tbl="'+t+'"]');
+  if (!row) return;
+  row.classList.add('flash');
+  clearTimeout(flashTimers[t]);
+  flashTimers[t] = setTimeout(function(){ row.classList.remove('flash'); }, 620);
+}
+
+/* ==========================================================================
+   生命线
+   ========================================================================== */
+var LIFE = [
+  {id:'import', n:'①', t:'卡组到手',   s:'内容 + 工具'},
+  {id:'open',   n:'②', t:'打开学习',   s:'自动建记录'},
+  {id:'mark',   n:'③', t:'标记 / 收藏', s:'改学习记录'},
+  {id:'round',  n:'④', t:'轮回重排',   s:'重排 + 记一笔'},
+  {id:'keep',   n:'⑤', t:'留下记录',   s:'埋点 / 成就'}
+];
+function lifeState(){
+  var anyMark = db.progress.some(function(p){ return p.is_unknown===1 || p.is_favorite===1; });
+  return {
+    import: !!db.deck,
+    open: db.progress.length > 0,
+    mark: anyMark,
+    round: db.rounds.length > 0,
+    keep: db.events.length > 0
+  };
+}
+function renderLife(){
+  var st = lifeState();
+  var firstPending = LIFE.filter(function(s){ return !st[s.id]; })[0];
+  $('#life').innerHTML = LIFE.map(function(s){
+    var cls = st[s.id] ? 'done' : (firstPending && firstPending.id===s.id ? 'active' : '');
+    return '<button class="life-step '+cls+'" data-life="'+s.id+'">'+
+      '<span class="n">'+s.n+(st[s.id]?' 已完成':'')+'</span>'+
+      '<span class="t">'+s.t+'</span><span class="s">'+s.s+'</span></button>';
+  }).join('');
+}
+function lifeClick(id){
+  if (id==='import'){ actReset(); }
+  else if (id==='open'){
+    if (openDeck()){ log('INSERT','t_progress','为 '+db.progress.length+' 张卡建学习记录'); pulse('t_progress'); }
+    else toast('学习记录已经建好了 —— 第一次打开卡组时自动建的。');
+    renderCards(); refreshLens(); renderLife();
+  }
+  else if (id==='mark'){
+    var f = $('.word-card');
+    if (f){ f.scrollIntoView({behavior:'smooth', block:'center'}); f.classList.add('pulse');
+      setTimeout(function(){ f.classList.remove('pulse'); }, 1200); }
+    toast('点卡片右边的 ☆ 标记「还不会」，点 🔖 收藏。');
+  }
+  else if (id==='round'){ actRound(); renderLife(); }
+  else if (id==='keep'){ pulse('t_learning_event'); pulse('ach');
+    $('.lens').scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+
+/* ==========================================================================
+   全貌（7 张表）
+   ========================================================================== */
+var TABLES = {
+  t_user:{zh:'用户', desc:'目前是单用户模式，这张表恒为 1 行。它不提供注册登录，只是被其它表引用的分区键。',
+    fields:[['id','Integer','主键'],['username','String(50)','唯一'],['display_name','String(100)','可空'],
+            ['created_at','DateTime',''],['updated_at','DateTime','']],
+    note:'系统里 5 张表都带 user_id 指向它。多用户是结构上预留好的，功能上还没开放。'},
+  t_tool:{zh:'展示工具', desc:'卡组的界面本身。源码放在 minitools/<id>/，库里只存元数据。',
+    fields:[['id','Integer','主键'],['user_id','Integer','→ t_user'],['name','String(100)','必填'],
+            ['description','Text',''],['icon','String(255)',''],['lang','String(10)',''],
+            ['dir_path','String(255)',''],['manifest_json','Text',''],['tracked_actions','Text',''],
+            ['created_at','DateTime',''],['updated_at','DateTime','']],
+    note:'一个工具可以被多个卡组绑定 —— 比如同一个「单词卡」界面，既可以装 COCA 也可以装 HSK。'},
+  t_deck:{zh:'卡组', desc:'一个卡组 = 一份卡片数据 + 一个绑定的展示工具。',
+    fields:[['id','Integer','主键'],['user_id','Integer','→ t_user'],['name','String(100)','必填'],
+            ['kind','String(20)',''],['tool_id','Integer','→ t_tool'],['created_at','DateTime',''],['updated_at','DateTime','']],
+    note:'tool_id 为空时卡组只有数据、没有界面；绑上工具后，打开卡组才会进入全屏学习界面。'},
+  t_deck_item:{zh:'卡片数据', desc:'每一张卡片一行。内容存在 data 这个 JSON 字段里，所以什么卡组都能装。',
+    fields:[['id','Integer','主键'],['deck_id','Integer','→ t_deck'],['item_order','Integer','必填'],
+            ['data','JSON','必填'],['debug','Boolean',''],['created_at','DateTime',''],['updated_at','DateTime','']],
+    note:'item_order 只保证先后，不保证是 1、2、3… —— 删过卡片就会留空号。所以排序一律按「排完的位置」算。'},
+  t_progress:{zh:'学习记录', desc:'每个用户 × 每张卡一行（唯一约束）。你的学习状态就存在这里。',
+    fields:[['id','Integer','主键'],['user_id','Integer','→ t_user'],['deck_id','Integer','→ t_deck'],
+            ['deck_item_id','Integer','→ t_deck_item'],['is_unknown','Integer','会不会'],
+            ['is_favorite','Integer','收藏'],['current_order','Integer','必填 · 队列位置'],
+            ['created_at','DateTime',''],['updated_at','DateTime','']],
+    note:'第一次打开卡组时，会一次性为所有卡片建好这些行；之后每次标记只是改其中一行。唯一约束 '+
+         '(user_id, deck_id, deck_item_id) 保证不会重复建。'},
+  t_study_round:{zh:'轮回轮次', desc:'每「轮回」一次追加一行，记录这一轮结束时还有多少张不会。',
+    fields:[['id','Integer','主键'],['user_id','Integer','→ t_user'],['deck_id','Integer','→ t_deck'],
+            ['round_number','Integer','必填'],['end_time','DateTime','必填'],['marked_count','Integer','必填']],
+    note:'唯一约束 (user_id, deck_id, round_number) 保证轮次不会重复。成就里的「这个卡组学了 N 轮」就来自这里。'},
+  t_learning_event:{zh:'行为记录', desc:'每点一次按钮就追加一行：听了发音、标记了、收藏了。只增不改。',
+    fields:[['id','Integer','主键'],['user_id','Integer','→ t_user'],['deck_id','Integer','→ t_deck'],
+            ['deck_item_id','Integer','→ t_deck_item'],['action','String(50)','必填'],
+            ['created_at','DateTime','本地时间']],
+    note:'时间特意存本地时间：如果存成 UTC，东八区凌晨 0–8 点的记录会被算到前一天，连续学习天数就断了。'}
 };
-// [id, 标题, 副标题, 底层表, x, y, opts{weak:弱化(用户), center:中心(卡组)}]
-const MIND_NODES = [
-  ['user','用户','本地单用户','t_user',30,195,{weak:true}],
-  ['deck','卡组','Deck = 数据 + 工具','t_deck',150,190,{center:true}],
-  ['tool','小工具','怎么展示','t_tool',430,70,{}],
-  ['item','卡片数据','学什么','t_deck_item',430,190,{}],
-  ['prog','学习进度','学到哪 · 哪不会',null,430,310,{}],
-  ['mark','标记 · 收藏','未知 / 掌握','t_progress',700,200,{}],
-  ['round','轮回轮次','Samsara','t_study_round',700,275,{}],
-  ['event','交互埋点','记录','t_learning_event',700,350,{}]
+
+var LAYERS = [
+  {label:'卡组内容', hint:'导入后基本不变', color:'var(--c-content)', rel:'t_deck_item.deck_id → t_deck · t_deck.tool_id → t_tool',
+   chips:[['t_deck','卡组'],['t_deck_item','卡片数据'],['t_tool','展示工具']]},
+  {label:'学习记录', hint:'随学随变', color:'var(--c-study)', rel:'三张表都挂 user_id / deck_id / deck_item_id',
+   chips:[['t_progress','学到哪 · 哪不会'],['t_study_round','轮回了几轮']]},
+  {label:'行为记录', hint:'只追加，不回改', color:'var(--c-log)', rel:'最长的一张表 · 成就的数据源',
+   chips:[['t_learning_event','点过什么']]}
 ];
-const MIND_LINKS = [
-  ['user','deck',1],['deck','tool',0],['deck','item',0],['deck','prog',0],
-  ['prog','mark',0],['prog','round',0],['prog','event',0]
-];
-function mindSize(n){ const o=n[6]; return o&&o.weak?[64,40]:o&&o.center?[170,56]:[150,44]; }
-
-function renderMind(){
-  const svg = document.getElementById('er-svg');
-  svg.innerHTML = '';
-  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
-  const mkGrad = (id,d1,d2)=>{
-    const g=document.createElementNS('http://www.w3.org/2000/svg','linearGradient');
-    g.id=id; g.setAttribute('x1','0'); g.setAttribute('y1','0'); g.setAttribute('x2',d1); g.setAttribute('y2',d2);
-    [[0,'#22d3ee'],[.55,'#6366f1'],[1,'#a855f7']].forEach(([o,c])=>{ const st=document.createElementNS('http://www.w3.org/2000/svg','stop'); st.setAttribute('offset',o); st.setAttribute('stop-color',c); g.appendChild(st); });
-    defs.appendChild(g);
-  };
-  mkGrad('linkGrad','1','0'); mkGrad('deckGrad','1','1');
-  svg.appendChild(defs);
-  MIND_LINKS.forEach(([a,b,weak])=>{
-    const pa=MIND_NODES.find(n=>n[0]===a), pb=MIND_NODES.find(n=>n[0]===b);
-    const [wA,hA]=mindSize(pa), [wB,hB]=mindSize(pb);
-    const x1=pa[4]+wA, y1=pa[5]+hA/2, x2=pb[4], y2=pb[5]+hB/2, mx=(x1+x2)/2;
-    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
-    p.setAttribute('d',`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`);
-    p.setAttribute('class', weak?'db-link-minor':'db-link');
-    p.dataset.link=a+'|'+b;
-    svg.appendChild(p);
+function renderLayers(){
+  var html = '';
+  /* 用户：横切面 */
+  html += '<div class="layer"><div class="layer-h"><span class="dot" style="background:var(--faint)"></span>'+
+    '<b>用户</b><span>结构上是全局分区键，功能上恒为 1 行（单用户）</span>'+
+    '<span class="rel">被上面三组表引用</span></div>'+
+    '<div class="chips"><button class="chip is-user" data-tbl="t_user"><span class="tt">t_user</span>'+
+    '<span class="ct">用户（恒 1 行）</span></button></div></div>';
+  LAYERS.forEach(function(L){
+    html += '<div class="layer"><div class="layer-h"><span class="dot" style="background:'+L.color+'"></span>'+
+      '<b>'+esc(L.label)+'</b><span>'+esc(L.hint)+'</span><span class="rel">'+esc(L.rel)+'</span></div><div class="chips">'+
+      L.chips.map(function(c){
+        return '<button class="chip" data-tbl="'+c[0]+'"><span class="tt">'+c[0]+'</span>'+
+               '<span class="ct">'+esc(c[1])+'</span></button>';
+      }).join('')+'</div></div>';
   });
-  MIND_NODES.forEach(n=>{
-    const [id,label,sub,table,x,y,opts]=n;
-    const [w,h]=mindSize(n);
-    const g=document.createElementNS('http://www.w3.org/2000/svg','g'); g.dataset.node=id; g.style.cursor=table?'pointer':'default';
-    const col = MIND_COL[table]||'#6366f1';
-    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
-    r.setAttribute('x',x); r.setAttribute('y',y); r.setAttribute('width',w); r.setAttribute('height',h); r.setAttribute('rx',opts.center?16:10);
-    r.setAttribute('fill', opts.weak?'none':(opts.center?'url(#deckGrad)':'var(--card)'));
-    r.setAttribute('stroke', opts.weak?'var(--light)':(opts.center?'none':col)); r.setAttribute('stroke-width', opts.center?0:1.4);
-    if(opts.weak) r.setAttribute('stroke-dasharray','4 3');
-    g.appendChild(r);
-    if(!opts.weak && !opts.center){
-      const c=document.createElementNS('http://www.w3.org/2000/svg','rect');
-      c.setAttribute('x',x); c.setAttribute('y',y); c.setAttribute('width',5); c.setAttribute('height',h); c.setAttribute('rx',2.5); c.setAttribute('fill',col);
-      g.appendChild(c);
-    }
-    const t1=document.createElementNS('http://www.w3.org/2000/svg','text');
-    t1.setAttribute('x', opts.weak?x+w/2:x+13); t1.setAttribute('y',y+(opts.center?25:19)); t1.setAttribute('font-size',opts.center?15:13); t1.setAttribute('font-weight',700);
-    t1.setAttribute('fill', opts.weak?'var(--sub)':(opts.center?'#fff':'var(--text)')); t1.setAttribute('text-anchor',opts.weak?'middle':'start');
-    t1.textContent=label; g.appendChild(t1);
-    if(!opts.weak){
-      const t2=document.createElementNS('http://www.w3.org/2000/svg','text');
-      t2.setAttribute('x',x+13); t2.setAttribute('y',y+(opts.center?44:37)); t2.setAttribute('font-size',10); t2.setAttribute('fill', opts.center?'rgba(255,255,255,.85)':'var(--sub)');
-      t2.textContent = sub + (table?('  →  '+table):''); g.appendChild(t2);
-    }
-    g.onmouseenter=()=>highlightMind(id);
-    g.onmouseleave=()=>clearHighlight();
-    if(table) g.onclick=()=>showTable(table);
-    svg.appendChild(g);
+  /* 成就：派生 */
+  html += '<div class="layer"><div class="layer-h"><span class="dot" style="background:var(--c-ach)"></span>'+
+    '<b>成就</b><span>连学天数 / 发音次数 / 标记次数</span>'+
+    '<span class="rel">库里没有这张表 · 用行为记录现算</span></div>'+
+    '<div class="chips"><button class="chip is-derived" data-tbl="ach"><span class="tt">（派生）</span>'+
+    '<span class="ct">不占存储，随时可重算</span></button></div></div>';
+  $('#layers').innerHTML = html;
+}
+function openTable(t){
+  if (t === 'ach'){
+    $('#m-title').textContent = '成就（派生）';
+    $('#m-zh').textContent = '';
+    $('#m-body').innerHTML = '<div class="desc">成就没有自己的表。它是由别的数据现算出来的 —— '+
+      '「这个卡组学了 N 轮」来自 <code>t_study_round</code>，「连续学习 N 天」「发音多少次」来自 <code>t_learning_event</code>。'+
+      '好处是不用额外维护，坏处是每次查都要算一遍。</div>'+
+      '<div class="block"><h5>算它用了哪些数据</h5><p>t_study_round（卡组轮次）· t_learning_event（连学天数 / 发音 / 标记）· '+
+      't_progress（已掌握卡片数）· t_deck（卡组数）</p></div>';
+    $('#mask').classList.add('open'); return;
+  }
+  var T = TABLES[t]; if (!T) return;
+  var rows = T.fields.map(function(f){
+    return '<tr><td'+(f[2].indexOf('主键')===0?' class="key"':'')+'>'+f[0]+'</td><td>'+f[1]+'</td><td>'+f[2]+'</td></tr>';
+  }).join('');
+  $('#m-title').textContent = t;
+  $('#m-zh').textContent = T.zh;
+  $('#m-body').innerHTML =
+    '<div class="desc">'+T.desc+'</div>'+
+    '<table><thead><tr><th>列名</th><th>类型</th><th>说明</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+    '<div class="block"><h5>为什么要这么设计</h5><p>'+T.note+'</p></div>';
+  $('#mask').classList.add('open');
+}
+
+/* ==========================================================================
+   事件绑定 / 主题 / 启动
+   ========================================================================== */
+var toastTimer = null;
+function toast(msg){
+  var el = $('#toast'); el.textContent = msg; el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 2400);
+}
+
+function onCardClick(e){
+  var b = e.target.closest('[data-play],[data-mark],[data-fav]');
+  if (!b) return;
+  if (b.dataset.play) actPlay(+b.dataset.play);
+  else if (b.dataset.mark) actMark(+b.dataset.mark);
+  else if (b.dataset.fav) actFav(+b.dataset.fav);
+}
+function applyTheme(dark){
+  document.body.classList.toggle('dark', dark);
+  $('#theme-btn').textContent = dark ? '☀️' : '🌙';
+  try { localStorage.setItem('dc-playground-theme', dark ? 'dark' : 'light'); } catch(e){}
+}
+function init(){
+  renderLayers();
+  resetDB(); openDeck();
+  log('INSERT','t_deck','name = COCA 20000 · 试学');
+  log('INSERT','t_tool','name = COCA 单词卡');
+  log('INSERT','t_deck_item','批量导入 '+db.items.length+' 张卡');
+  log('INSERT','t_progress','为 '+db.progress.length+' 张卡建学习记录');
+  $('#try-n').textContent = db.items.length;
+  renderCards(); renderLens(); renderWrites(); renderLife();
+
+  $('#word-list').addEventListener('click', onCardClick);
+  $('#life').addEventListener('click', function(e){
+    var b = e.target.closest('[data-life]'); if (b) lifeClick(b.dataset.life);
   });
-}
+  $('#layers').addEventListener('click', function(e){
+    var b = e.target.closest('[data-tbl]'); if (b) openTable(b.dataset.tbl);
+  });
+  $('#round-btn').addEventListener('click', function(){ actRound(); renderLife(); });
+  $('#reset-btn').addEventListener('click', actReset);
+  $('#export-btn').addEventListener('click', function(){
+    toast('导出会把整个卡组（数据 + 工具）打成一个 zip —— 换台电脑导入照样能学。');
+  });
+  $('#m-x').addEventListener('click', function(){ $('#mask').classList.remove('open'); });
+  $('#mask').addEventListener('click', function(e){ if (e.target === this) this.classList.remove('open'); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') $('#mask').classList.remove('open');
+  });
+  $('#theme-btn').addEventListener('click', function(){
+    applyTheme(!document.body.classList.contains('dark'));
+  });
 
-function highlightMind(id){
-  document.querySelectorAll('.db-link,.db-link-minor').forEach(el=>el.classList.remove('hot'));
-  const g=document.querySelector(`g[data-node="${id}"]`); if(g) g.classList.add('active');
-  document.querySelectorAll('.db-link,.db-link-minor').forEach(p=>{ if(p.dataset.link.split('|').includes(id)) p.classList.add('hot'); });
+  var saved = null;
+  try { saved = localStorage.getItem('dc-playground-theme'); } catch(e){}
+  applyTheme(saved ? saved === 'dark'
+    : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches));
 }
-function clearHighlight(){
-  document.querySelectorAll('.db-link,.db-link-minor').forEach(el=>el.classList.remove('hot'));
-}
-function showTable(id){
-  const t = TABLES.find(x=>x.id===id);
-  const rels = (REL_MAP[id]||[]).join(' · ');
-  let rows = t.fields.map(f=>`<tr><td><span class="${f[2]==='PK'?'pk':''}">${f[0]}</span></td><td>${f[1]}</td><td>${f[2]}</td></tr>`).join('');
-  document.getElementById('tm-title').innerHTML = `<span style="color:${t.color}">${t.name}</span> <span style="font-size:13px;color:var(--sub);font-weight:600">${t.zh}</span>`;
-  document.getElementById('tm-body').innerHTML =
-    `<div class="desc">${t.desc}</div>`+
-    `<table><thead><tr><th>列名</th><th>类型</th><th>约束</th></tr></thead><tbody>${rows}</tbody></table>`+
-    `<div class="flow"><h4>关联</h4><div class="hint">${rels}</div></div>`+
-    `<div class="flow"><h4>数据流转</h4><ol>`+
-    `<li>创建卡组 <code>POST /v1/decks</code> → t_deck</li>`+
-    `<li>绑定工具 <code>POST /v1/decks/:id/tool</code> → t_tool + tool_id</li>`+
-    `<li>导入数据 <code>POST /v1/decks/:id/import</code> → t_deck_item</li>`+
-    `<li>分页取卡 <code>cardAPI.getPage</code> → 自动建 t_progress</li>`+
-    `<li>标记 <code>cardAPI.mark</code> → t_progress.is_unknown</li>`+
-    `<li>埋点 <code>cardAPI.track</code> → t_learning_event</li>`+
-    `<li>轮回 <code>POST /v1/reorder</code> → t_progress.current_order + t_study_round</li>`+
-    `</ol></div>`;
-  document.getElementById('table-modal').classList.add('open');
-  highlightMind(id);
-}
-function closeModal(){ document.getElementById('table-modal').classList.remove('open'); clearHighlight(); }
-document.getElementById('tm-close').onclick = closeModal;
-document.getElementById('table-modal').onclick = function(e){ if(e.target===this) closeModal(); };
-
-/* ============ Tab / 主题 ============ */
-document.querySelectorAll('.tabs button').forEach(b=>{
-  b.onclick = ()=>{
-    document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active')); b.classList.add('active');
-    document.getElementById('view-deck').style.display = b.dataset.view==='deck'?'block':'none';
-    document.getElementById('view-db').style.display = b.dataset.view==='db'?'block':'none';
-    if(b.dataset.view==='db') renderMind();
-  };
-});
-const themeBtn = document.getElementById('theme-btn');
-themeBtn.onclick = ()=>{ document.body.classList.toggle('dark'); themeBtn.textContent = document.body.classList.contains('dark')?'☀️':'🌙'; };
-
-/* ============ Init ============ */
-rerender();
+init();
 </script>
 </body>
 </html>
