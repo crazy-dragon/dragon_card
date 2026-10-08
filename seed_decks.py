@@ -1,27 +1,34 @@
 #!/usr/bin/env python3
 """Seed DragonCard with the free decks bundled in default_cards/.
 
-Idempotent: decks that already exist (matched by name) are skipped, so
-it's safe to run any time. An AI agent (or a human) can run:
+Idempotent: decks that already exist (matched by name) are skipped, so it's
+safe to run any time. An AI agent (or a human) can run:
 
-    python seed_decks.py            # import all missing free decks
-    python seed_decks.py --force    # re-import (replace) every bundled deck
+    python seed_decks.py                     # import all missing free decks
+    python seed_decks.py laozi chinese_hsk   # only the named folders (or deck names)
+    python seed_decks.py --force             # replace every existing deck in place
+    python seed_decks.py --force laozi       # replace one deck in place
+
+--force replaces a deck **in place** (no duplicate rows): the deck row is
+reused, its bound tool is re-imported keeping the tool id (mirrors
+POST /v1/tools/<id>/replace), and items are upserted by item_order —
+cards absent from cards.json are removed, study progress is kept.
 
 Convention per deck folder:
-    template.json  + cards.json           -> one deck (main template)
-    template_en.json + cards_en.json      -> an extra English deck (if present)
+    tool.zip  + cards.json          -> one deck bound to the zip tool
 
 Requires an initialized database (running `python app.py` once creates it),
 or the tables will be created automatically on import.
 """
 import argparse
+import io
 import json
 import os
 import sys
+import zipfile
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CARDS = os.path.join(BASE_DIR, 'default_cards')
-SKIP_DIRS = {'_pack_template'}
 
 
 def _load_json(path):
@@ -29,43 +36,83 @@ def _load_json(path):
         return json.load(f)
 
 
-def _import_template_text(deck_id, text, user_id):
-    """Create a Template linked to a deck (mirrors upload_deck_template)."""
-    from app import _parse_template, _count_template_actions, MAX_ACTIONS
-    parsed = _parse_template(text)
-    if not parsed['name']:
-        raise ValueError('template has no name')
-    action_count = _count_template_actions(parsed['cardHtml'] + parsed['cardJs'])
-    if action_count > MAX_ACTIONS:
-        raise ValueError(f'template has {action_count} actions > {MAX_ACTIONS}')
+def _read_tool_zip(zip_path):
+    """Validate tool.zip, returning (blob, manifest, trackedActions)."""
+    from app import TOOL_MAX_BYTES
 
-    from models import Template, DeckTemplate, db
-    existing = DeckTemplate.query.filter_by(deck_id=deck_id).count()
-    if existing >= 3:
-        raise ValueError('deck already has 3 templates')
-    t = Template(
-        user_id=user_id,
-        name=parsed['name'],
-        description=parsed['description'],
-        lang=parsed.get('lang', 'en') or 'en',
-        card_html=parsed['cardHtml'],
-        card_css=parsed['cardCss'],
-        card_js=parsed['cardJs'],
-        sample_data=parsed['sampleData'] or None,
-        tracked_actions=parsed['trackedActions'] or '',
-    )
-    db.session.add(t)
-    db.session.flush()
-    db.session.add(DeckTemplate(deck_id=deck_id, template_id=t.id, sort_order=existing))
-    return t
+    blob = open(zip_path, 'rb').read()
+    if not blob or len(blob) > TOOL_MAX_BYTES:
+        raise ValueError('tool.zip too large')
+    try:
+        zf = zipfile.ZipFile(io.BytesIO(blob))
+    except zipfile.BadZipFile:
+        raise ValueError('invalid zip')
+    if 'index.html' not in zf.namelist():
+        raise ValueError('index.html must be at the zip root')
+    manifest = {}
+    if 'manifest.json' in zf.namelist():
+        try:
+            manifest = json.loads(zf.read('manifest.json').decode('utf-8'))
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            raise ValueError('manifest.json is not valid JSON')
+    ta = manifest.get('trackedActions')
+    if isinstance(ta, list) and len(ta) > 5:
+        raise ValueError('trackedActions exceeds 5')
+    return blob, manifest, ta
+
+
+def _import_tool_zip(deck, zip_path, user_id):
+    """Read tool.zip and bind/refresh the deck's tool.
+
+    Deck already bound -> replace the tool in place (keeps tool id + binding,
+    mirrors POST /v1/tools/<id>/replace); otherwise create + bind a new tool
+    (mirrors POST /v1/decks/<id>/tool)."""
+    from app import _extract_tool_zip
+    from models import Tool, db
+
+    blob, manifest, ta = _read_tool_zip(zip_path)
+
+    tool = db.session.get(Tool, deck.tool_id) if deck.tool_id else None
+    created = tool is None
+    if created:
+        tool = Tool(user_id=user_id, name='', description='', icon='',
+                    lang='zh', dir_path='', manifest_json='{}')
+        db.session.add(tool)
+        db.session.flush()
+
+    if not _extract_tool_zip(tool, blob):
+        db.session.rollback()
+        raise ValueError('failed to extract zip')
+
+    if created:
+        tool.name = (manifest.get('name') or '').strip() \
+            or os.path.splitext(os.path.basename(zip_path))[0][:100]
+        tool.description = manifest.get('description') or ''
+        tool.icon = manifest.get('icon') or ''
+        tool.lang = manifest.get('lang') or 'zh'
+        tool.tracked_actions = json.dumps(ta, ensure_ascii=False) if ta else None
+        tool.dir_path = os.path.join('minitools', str(tool.id))
+        deck.tool_id = tool.id
+    else:
+        tool.name = (manifest.get('name') or '').strip() or tool.name
+        tool.description = manifest.get('description') or tool.description
+        tool.icon = manifest.get('icon') or tool.icon
+        tool.lang = manifest.get('lang') or tool.lang
+        tool.tracked_actions = json.dumps(ta, ensure_ascii=False) if isinstance(ta, list) else tool.tracked_actions
+    tool.manifest_json = json.dumps(manifest, ensure_ascii=False)
 
 
 def _import_items(deck_id, cards):
-    """Insert deck items aligned by item_order (mirrors import_deck_items)."""
+    """Upsert deck items aligned by item_order (mirrors import_deck_items):
+    update matching orders, add missing, remove cards absent from the
+    incoming set — study progress (Progress/LearningEvent) is kept."""
     from models import DeckItem, db
+
     existing = {di.item_order: di for di in DeckItem.query.filter_by(deck_id=deck_id).all()}
     max_order = max(existing) if existing else 0
     next_free = max_order + 1
+    removed = set(existing.keys())
+
     for item in cards:
         order = item.get('item_order') if isinstance(item, dict) else None
         if order is None or order == 0:
@@ -73,20 +120,17 @@ def _import_items(deck_id, cards):
             next_free += 1
         else:
             order = int(order)
+        removed.discard(order)
         data = item.get('data', item) if isinstance(item, dict) else item
+        debug = item.get('debug', False) if isinstance(item, dict) else False
         if order in existing:
             existing[order].data = data
-            existing[order].debug = item.get('debug', False) if isinstance(item, dict) else False
+            existing[order].debug = debug
         else:
-            db.session.add(DeckItem(
-                deck_id=deck_id, item_order=order, data=data,
-                debug=item.get('debug', False) if isinstance(item, dict) else False,
-            ))
+            db.session.add(DeckItem(deck_id=deck_id, item_order=order, data=data, debug=debug))
 
-
-def _deck_exists(name):
-    from models import Deck
-    return Deck.query.filter_by(name=name).first() is not None
+    for order in removed:
+        db.session.delete(existing[order])
 
 
 def _create_deck(name, user_id, kind='other'):
@@ -105,72 +149,86 @@ def _meta_name(folder):
         return os.path.basename(folder)
 
 
-def seed(force=False, user_id=1):
-    from models import db
-    imported = []
-    skipped = []
+def seed(force=False, user_id=1, only=None):
+    from models import Deck, db
 
-    for folder in sorted(os.listdir(DEFAULT_CARDS)):
+    folders = sorted(
+        f for f in os.listdir(DEFAULT_CARDS)
+        if os.path.isdir(os.path.join(DEFAULT_CARDS, f))
+    )
+    errors = []
+
+    if only:
+        by_meta = {f: _meta_name(os.path.join(DEFAULT_CARDS, f)) for f in folders}
+        picks = []
+        for want in only:
+            hit = next((f for f in folders if f == want or by_meta[f] == want), None)
+            if hit is None:
+                errors.append((want, 'no such folder/deck in default_cards/'))
+            elif hit not in picks:
+                picks.append(hit)
+        folders = picks
+
+    created, replaced, skipped = [], [], []
+
+    for folder in folders:
         path = os.path.join(DEFAULT_CARDS, folder)
-        if not os.path.isdir(path) or folder in SKIP_DIRS:
-            continue
-
-        tpl_path = os.path.join(path, 'template.json')
+        tool_zip = os.path.join(path, 'tool.zip')
         cards_path = os.path.join(path, 'cards.json')
-        if not (os.path.exists(tpl_path) and os.path.exists(cards_path)):
-            skipped.append((folder, 'missing template.json/cards.json'))
+        if not (os.path.exists(tool_zip) and os.path.exists(cards_path)):
+            skipped.append((folder, 'missing tool.zip/cards.json'))
             continue
 
         main_name = _meta_name(path)
-        if force or not _deck_exists(main_name):
-            tpl_text = open(tpl_path, encoding='utf-8').read()
-            cards = _load_json(cards_path)
+        deck = Deck.query.filter_by(name=main_name).first()
+        if deck is None:
             deck = _create_deck(main_name, user_id)
-            t = _import_template_text(deck.id, tpl_text, user_id)
-            _import_items(deck.id, cards)
-            deck.active_template_id = t.id
-            imported.append(main_name)
+            mode = 'created'
+        elif force:
+            mode = 'replaced'
         else:
-            skipped.append((folder, 'already exists'))
+            skipped.append((folder, 'already exists (use --force to replace)'))
+            continue
 
-        # English variant (template_en.json + cards_en.json)
-        en_tpl = os.path.join(path, 'template_en.json')
-        en_cards = os.path.join(path, 'cards_en.json')
-        if os.path.exists(en_tpl) and os.path.exists(en_cards):
-            en_name = (_meta_name(path) or folder) + ' (EN)'
-            if force or not _deck_exists(en_name):
-                tpl_text = open(en_tpl, encoding='utf-8').read()
-                cards = _load_json(en_cards)
-                deck = _create_deck(en_name, user_id)
-                t = _import_template_text(deck.id, tpl_text, user_id)
-                _import_items(deck.id, cards)
-                deck.active_template_id = t.id
-                imported.append(en_name)
-            else:
-                skipped.append((folder, 'EN already exists'))
+        _import_tool_zip(deck, tool_zip, user_id)
+        _import_items(deck.id, _load_json(cards_path))
+        (created if mode == 'created' else replaced).append(main_name)
 
     db.session.commit()
-    return imported, skipped
+    return created, replaced, skipped, errors
 
 
 def main():
     parser = argparse.ArgumentParser(description='Seed free decks from default_cards/')
-    parser.add_argument('--force', action='store_true', help='Re-import even if deck exists')
+    parser.add_argument('decks', nargs='*', metavar='folder',
+                        help='Only these folders (or deck names) under default_cards/; default: all')
+    parser.add_argument('--force', action='store_true', help='Replace existing decks in place (no duplicates)')
     parser.add_argument('--user-id', type=int, default=1, help='Owner user id (default 1)')
     args = parser.parse_args()
 
     from app import create_app
     app = create_app()
     with app.app_context():
-        imported, skipped = seed(force=args.force, user_id=args.user_id)
+        created, replaced, skipped, errors = seed(
+            force=args.force, user_id=args.user_id, only=args.decks or None)
 
-    print(f'Imported {len(imported)} deck(s):')
-    for name in imported:
-        print('  +', name)
+    if created:
+        print(f'Imported {len(created)} deck(s):')
+        for name in created:
+            print('  +', name)
+    if replaced:
+        print(f'Replaced {len(replaced)} deck(s) in place:')
+        for name in replaced:
+            print('  ↻', name)
     if skipped:
-        print(f'\nSkipped {len(skipped)} (already present or incomplete):')
+        print(f'Skipped {len(skipped)} (already present or incomplete):')
         for name, why in skipped:
             print('  -', name, f'({why})')
+    if errors:
+        print(f'Error: unknown deck(s):')
+        for name, why in errors:
+            print('  !', name, f'({why})')
+        sys.exit(1)
 
 
 if __name__ == '__main__':

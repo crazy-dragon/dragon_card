@@ -42,3 +42,8 @@ Thumbs.db
 
 # 日志
 *.log
+
+# 小工具文件系统存储（外部导入，不纳入 git）
+minitools/
+
+_reports/

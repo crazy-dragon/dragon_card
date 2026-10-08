@@ -24,14 +24,14 @@
 
 ## ✨ 功能特性
 
-- **三层模板系统**：数据 / 样式 / 交互完全解耦，一个 JSON 模板文件定义卡片的一切
-- **语言感知 TTS**：模板声明 `lang`，发音自动选择对应语言的语音，语音按语言分组记忆
+- **Zip 小工具系统**：每个卡组绑定一个自包含的 H5 小工具（`index.html` + `manifest.json` + `assets/`），数据 / 展示 / 交互完全解耦——卡片长什么样、怎么交互，全由小工具决定，框架只提供"货架"
+- **cardAPI 桥接**：小工具通过 `window.cardAPI`（getPage / mark / favorite / track / playAudio）读取数据、标记未知 / 收藏、上报埋点
+- **语言感知 TTS**：小工具声明 `lang`，发音自动选择对应语言的语音，语音按语言分组记忆
 - **中英双语界面**：一键切换中/EN，全界面（含内置文档）实时刷新
 - **分类卡组**：语言 / 知识 / 逻辑 / 技能 / 其它 五种类型，各有专属图标与配色
 - **简单的学习引擎**：标记未掌握 → 重排 → 多轮学习，进度自动持久化
 - **统计与成就**：活动热力图、掌握分布、轮次金字塔、称号与成就系统
-- **数据导入导出**：JSON 导入（按 item_order 对齐覆盖），JSON 导出，模板删除自动备份
-- **模板预览**：管理面板内实时预览卡片渲染效果，支持字段隐藏勾选
+- **数据导入导出**：JSON 导入（按 item_order 对齐覆盖），JSON 导出
 - **本地优先**：SQLite 存储，开箱即用，无需外部服务
 
 ## 🚀 快速开始
@@ -62,15 +62,14 @@ python app.py
 
 浏览器访问 <http://localhost:5001>（端口可在 `app.py` 末尾修改）。
 
-首次启动会自动创建数据库表、默认用户 `default`，并准备一套默认模板。
+首次启动会自动创建数据库表、默认用户 `default`。
 
 ### 首次使用
 
-1. （可选）导入内置免费卡组：`python seed_decks.py`
+1. （可选）导入内置免费卡组：`python seed_decks.py`（每个卡组已自带 `tool.zip`）
 2. 点击「新建卡组」，填写名称并选择类型
-3. 进入卡组 → 「管理卡组」→ 在模板区上传模板文件（JSON）
-4. 在数据区上传数据文件（JSON）
-5. 返回目录，点击页码开始学习
+3. 进入卡组 → 「管理卡组」→ 在工具卡上传该卡组的小工具 zip（绑定），在数据卡上传数据（JSON）
+4. 返回目录点击卡组 → 打开绑定的小工具（全屏新标签页）开始学习
 
 > 本地 AI 助手（如 Claude Code / Cursor / opencode）可运行与扩展本项目；
 > 面向 AI 的指引见 `AGENTS.md`。内置免费卡组通过 `python seed_decks.py` 导入（幂等）。
@@ -84,47 +83,48 @@ python app.py
 
 ## 📦 精品卡组
 
-精品模板/数据包为一次性付费内容，详见商店。购买后获得 `template.json` + `cards.json`，在应用内导入即可：**管理卡组 → 上传模版 → 上传数据**。
+精品小工具/数据包为一次性付费内容，详见商店。购买后获得 `tool.zip` + `cards.json`，在应用内导入即可：**管理卡组 → 上传 zip（绑定小工具）→ 上传数据**。
 
 > 详细操作见应用内「使用文档」（侧边栏进入，支持中英切换）。
 
-## 🎴 自定义模板
+## 🧩 自定义小工具
 
-DragonCard 的核心是模板。模板是一个自包含的 JSON 文件：
+**小工具（Tool）** 是绑定到卡组、打开即全屏运行的自包含离线 H5 包：
 
-```json
-{
-  "name": "My Card",
-  "lang": "en",
-  "description": "...",
-  "cardHtml": "<div class=\"word-card\" data-card-id=\"{{id}}\">...</div>",
-  "cardCss": ".word-card { ... }",
-  "cardJs": "(function(){ 'use strict'; window.cardTemplate = {...}; })();",
-  "sampleData": [ { "word": "hello" } ],
-  "trackedActions": [
-    { "action": "audio_play", "label": "发音" },
-    { "action": "word_mark", "label": "标记" }
-  ]
-}
+```
+my-tool/
+├── index.html     # 入口（必需）
+├── manifest.json  # 元信息
+└── assets/        # 自包含资源（css / js / 图片，不联网）
 ```
 
-- **HTML / CSS / JS**：定义卡片结构、样式（支持 Tailwind 工具类 + Font Awesome 图标 + 项目 CSS 变量）、交互（`window.cardTemplate` 的 `render` / `init` / `update`）
-- **lang**：发音语言（`en` / `ja` / `zh` …）
-- **trackedActions**：观测埋点声明（最多 5 个）
-- **sampleData**：预览示例数据
+**manifest.json** 声明 `name`、`lang`、`description`、`fields`、`trackedActions`（≤5）与可选 `icon`。
 
-> 模板的详细格式、`window.cardTemplate` 契约与 api 方法，可在应用内主页顶栏的「模板 API 参考」弹窗中查看。
+小工具通过 **`window.cardAPI`**（注入在工具 `<head>`）读取数据与上报进度：
+
+| 方法 | 说明 |
+|------|------|
+| `getPage(page, size)` | 分页取卡（含 `is_unknown` / `is_favorite` / `current_order`） |
+| `mark(itemId, isUnknown)` | 标记未知（true / false） |
+| `favorite(itemId, fav)` | 收藏 / 取消 |
+| `track(action, itemId)` | 上报埋点（**必须带 itemId**，用已声明动作） |
+| `playAudio(text)` | TTS 朗读 |
+| `finish()` | 结束 |
+
+> 开发小工具请使用 **dragoncard-tool-builder** skill
+> （`dragoncard_tools/.skill/dragoncard-tool-builder/`）；完整规范见
+> `dragoncard_tools/TOOL_PACK.md`。用 `dragoncard_tools/build.py` 打包 → `dist/*.zip`。
 
 ## 🏗️ 技术架构
 
 ```
-用户提供 ──→  template.json (HTML + CSS + JS + lang + trackedActions)
+用户提供 ──→  tool.zip (index.html + manifest.json + assets/)
                     │
-DragonCard ──→  加载模板 → 渲染卡片 → 注入 api 对象
-               学习引擎 (标记/重排/分页) 保持不变
+DragonCard ──→  全屏托管小工具 (/v1/tools/<id>/run)，注入 window.cardAPI
+               数据分页 / 进度 / 学习轮次保持不变
 ```
 
-DragonCard 不决定卡片长什么样、怎么交互——这些全由模板定义。框架只提供"货架"（学习流程 + 后端接口）。
+DragonCard 不决定卡片长什么样、怎么交互——这些全由绑定的小工具定义。框架只提供"货架"（学习引擎 + 后端接口：数据、进度、事件）。
 
 ### 技术栈
 
@@ -137,62 +137,68 @@ DragonCard 不决定卡片长什么样、怎么交互——这些全由模板定
 ```
 dragoncard/
 ├── app.py                     # Flask 入口 + 所有 API 路由（启动自动建表 + 默认用户）
-├── models.py                  # SQLAlchemy 模型 (8 张表)
+├── models.py                  # SQLAlchemy 模型 (7 张表)
 ├── config.py                  # 配置
+├── seed_decks.py              # 导入内置免费卡组（tool.zip + cards.json）
 ├── requirements.txt
 ├── DB_relation.md             # 数据库关系说明
-├── README.md
-├── TEMPLATE_PACK.md           # 模板包发布规范
+├── FOLLOWUP.md                # 模板→工具迁移待办清单
+├── README.md / README_zh.md
 │
-├── default_cards/             # 内置卡组资产（模板 + 数据，通过页面「上传」导入）
-│   ├── english_coca20000/      # English Word Card + template_simple（精简版）
-│   ├── chinese_idiom/
-│   ├── history_chenyu/
-│   ├── japanese_gojuon/
-│   ├── prelude_yijing/
-│   ├── yijing/
-│   ├── checkin_log/            # 星际航行日志（按天多任务打卡）
-│   ├── dino_alphabet/
-│   └── dinosaur_3d/
+├── default_cards/             # 内置卡组包（tool.zip + cards.json + meta.json）
+│   ├── english_coca20000/      # COCA20000 词卡（coca-cards 小工具）
+│   ├── english_phonetics/      # 音标拼读（english-phonetics 小工具）
+│   ├── japanese_gojuon/        # 日语五十音图
+│   ├── yijing/ + prelude_yijing/  # 周易（一 zip 双卡组）
+│   ├── checkin_log/            # 星际航行日志（Voyage Log，按天多任务打卡）
+│   ├── chinese_hsk/ chinese_idiom/ chinese_measure_words/ chinese_radicals/
+│   ├── chemistry_periodic/ stratagems_36/ western_allusions/ history_chenyu/
+│   ├── dino_alphabet/ dinosaur_3d/ english_sentence_patterns/
+│   ├── english_irregular_verbs/ reading_card/ ...
 │
 ├── templates/
 │   └── index.html             # SPA 主页面
 │
 └── static/
     ├── media/                 # 本地多媒体资源（3D 模型等）
-    ├── app.js                 # 框架 JS (模板加载/学习引擎/国际化)
+    ├── app.js                 # 框架 JS (小工具加载/学习引擎/国际化)
     ├── i18n.js                # 中英文案字典
     ├── docs.js                # 内置使用文档（中英双语）
     ├── styles.css             # 框架 UI 样式
     └── vendor/                # 本地依赖 (Tailwind / Font Awesome)
 ```
 
+小工具源码在独立的 **`dragoncard_tools/`** 工程（build.py → `dist/*.zip`，`TOOL_PACK.md`，`.skill/dragoncard-tool-builder/`）。
+
 ## 🔌 API 概览
 
 | 模块 | 路径 | 说明 |
 |------|------|------|
 | 用户 | `GET /v1/users`、`POST /v1/users/login` | 用户列表 / 登录创建 |
-| 模板 | `GET/POST /v1/templates`、`GET/PUT/DEL /v1/templates/:id` | 模板 CRUD |
-| 模板 | `POST /v1/templates/import`、`GET /v1/templates/:id/export` | 模板导入 / 导出 |
-| 模板 | `GET /v1/templates/:id/preview` | 模板预览数据 |
+| 工具绑定 | `POST /v1/decks/:id/tool`、`DELETE /v1/decks/:id/tool` | 绑定 / 解绑小工具 zip |
+| 工具 | `POST /v1/tools/:id/replace`、`GET /v1/tools/:id/export` | 重新上传 / 下载小工具 |
+| 工具 | `GET /v1/tools/:id/run`、`GET /v1/tools/:id/assets/<path>` | 全屏运行小工具 / 静态资源 |
 | 卡组 | `GET/POST /v1/decks`、`GET/PUT/DEL /v1/decks/:id` | 卡组 CRUD |
-| 卡组 | `POST /v1/decks/:id/templates`、`PUT /v1/decks/:id/active-template` | 绑定模板 / 设当前模板 |
-| 卡组 | `GET /v1/decks/:id/preview`、`GET /v1/decks/:id/mastery` | 卡组预览 / 掌握统计 |
 | 数据 | `GET /v1/decks/:id/items`、`POST /v1/decks/:id/import`、`GET /v1/decks/:id/export` | 数据列表 / 导入 / 导出 |
-| 学习 | `GET /v1/learn/info`、`GET /v1/learn/page` | 学习统计 / 分页卡片 |
+| 学习 | `GET /v1/learn/info`、`GET /v1/learn/page` | 学习统计 / 分页卡片（cardAPI） |
 | 学习 | `POST /v1/learn/mark`、`POST /v1/learn/favorite` | 标记 / 收藏 |
-| 学习 | `POST /v1/reorder`、`GET /v1/rounds` | 重新打乱 / 轮次 |
-| 观测 | `POST /v1/observability/event`、`POST /v1/observability/events` | 事件上报（单条 / 批量） |
+| 学习 | `POST /v1/reorder`、`GET /v1/rounds` | 轮回 / 轮次 |
+| 观测 | `POST /v1/observability/events` | 事件上报（批量，cardAPI.track） |
 | 观测 | `GET /v1/observability/actions`、`GET /v1/observability/data` | 动作类型 / 统计数据 |
 | 成就 | `GET /v1/achievements` | 成就数据 |
+
+工具访问须通过绑定校验：`/v1/learn/page`、`/v1/learn/mark`、`/v1/learn/favorite`、`/v1/observability/events` 在 `tool_id` 与卡组不匹配时返回 403 / 丢弃事件。
 
 ## 📚 文档索引
 
 | 文档 | 用途 |
 |------|------|
 | [`DB_relation.md`](./DB_relation.md) | 数据库表结构与关系 |
-| 应用内「模板 API 参考」 | 模板格式与 `window.cardTemplate` 契约（主页顶栏 `</>` 按钮） |
+| [`AGENTS.md`](./AGENTS.md) | 面向 AI 编码代理的指引 |
+| 应用内「小工具 API 参考」 | 小工具格式与 cardAPI 契约（主页顶栏 `</>` 按钮） |
 | 应用内「使用文档」 | 面向最终用户的操作指南（中英双语） |
+| `dragoncard_tools/TOOL_PACK.md` | 小工具包发布规范 |
+| `.skill/dragoncard-tool-builder/` | 小工具构建 skill（供 AI 代理使用） |
 
 ## 📝 License
 

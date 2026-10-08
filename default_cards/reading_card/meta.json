@@ -1,9 +1,10 @@
 {
-  "name": "Reading Card 阅读卡组",
-  "description": "Flashcard-style reading: original on front, Chinese translation on flip. 闪卡式阅读：正面原文，翻面看翻译。",
+  "name": "双语阅读 · Bilingual Reading",
+  "description": "双语阅读：《柳林风声》章节中英对照。3 张。记录：发音、例词、标记、收藏。",
   "version": "1.0.0",
   "author": "Alfred Long",
   "email": "alfred.long@qq.com",
   "license": "DragonCard Data License v1.0",
-  "updated": "2026-08-15"
+  "updated": "2026-09-27",
+  "tool": "english-reading"
 }

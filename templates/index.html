@@ -71,7 +71,7 @@
                         <button id="lang-toggle-btn" class="hh-btn" data-tooltip="切换语言 / Switch Language" title="切换语言 / Switch Language">
                             <span class="lang-label">中/EN</span>
                         </button>
-                        <button id="howto-btn" class="hh-btn" data-i18n-tooltip="manage.templateTitle" data-tooltip="模板 API 参考" title="模板 API 参考">
+                        <button id="howto-btn" class="hh-btn" data-i18n-tooltip="manage.templateTitle" data-tooltip="小工具 API 参考" title="小工具 API 参考">
                             <i class="fa-solid fa-code"></i>
                         </button>
                         <button class="hh-btn-primary" id="new-deck-btn">
@@ -163,62 +163,6 @@
                 </div>
             </div>
 
-            <!-- === STUDY VIEW (teal/sage theme) === -->
-            <div id="study-view" style="display:none;">
-                <div class="layout-row">
-                    <div class="sidebar">
-                        <div class="sidebar-content">
-                            <button id="sidebar-home-btn" class="sidebar-brand-btn flex items-center justify-center gap-1.5 p-3 rounded-full text-sm font-semibold cursor-pointer transition-all text-[var(--ink-2)] whitespace-nowrap w-[calc(100%-8px)] my-0.5 mx-1 text-center min-h-[44px] border-0 box-border hover:bg-[var(--slate-soft)] hover:text-[var(--primary)] [.active]:bg-[var(--primary-soft)] [.active]:text-[var(--primary)] [.active]:font-bold [.active]:shadow-[0_2px_8px_rgba(15,118,110,0.12)] active" data-tab="catalogue">
-                                <i class="fa-solid fa-dragon"></i>
-                                <span>DragonCard</span>
-                            </button>
-                            <div class="study-tabs" id="study-tabs-container"></div>
-                        </div>
-                    </div>
-                    <div class="main-content">
-                        <div class="study-top-bar">
-                            <button id="study-back-btn" class="top-btn study-back-btn" data-i18n-tooltip="study.back" data-tooltip="返回主页">
-                                <i class="fa-solid fa-arrow-left"></i>
-                            </button>
-                            <span id="study-deck-title" class="study-deck-title"></span>
-                            <span style="flex:1"></span>
-                            <button id="font-settings-btn" class="top-btn" data-i18n-tooltip="study.font" data-tooltip="字体设置">
-                                <i class="fa-solid fa-font"></i>
-                            </button>
-                            <div class="control-group">
-                                <button class="top-btn voice-select-btn" data-i18n-tooltip="study.voice" data-tooltip="Voice">
-                                    <i class="fa-solid fa-microphone"></i>
-                                </button>
-                                <div class="voice-dropdown" style="display:none;">
-                                    <div class="voice-dropdown-header" data-i18n="voice.selectVoice">Select Voice</div>
-                                    <div class="voice-list"></div>
-                                </div>
-                            </div>
-                            <button class="top-btn" id="scroll-top-btn" data-i18n-tooltip="study.scrollTop" data-tooltip="Scroll to Top">
-                                <i class="fa-solid fa-arrow-up"></i>
-                            </button>
-                            <button class="top-btn" id="scroll-bottom-btn" data-i18n-tooltip="study.scrollBottom" data-tooltip="Scroll to Bottom">
-                                <i class="fa-solid fa-arrow-down"></i>
-                            </button>
-                            <button id="card-view-btn" class="top-btn" data-i18n-tooltip="study.singleCard" data-tooltip="Single Card">
-                                <i class="fa-solid fa-grip"></i>
-                            </button>
-                            <button id="refresh-stats" class="stats-text" data-i18n-tooltip="study.refresh" data-tooltip="Refresh">
-                                <i class="fa-solid fa-arrows-rotate"></i>
-                                <span>0 / 0</span>
-                            </button>
-                        </div>
-                        <div class="study-scroll">
-                            <div class="study-content">
-                                <div id="catalogue-view" style="padding:16px 20px;">
-                                    <div id="catalogue-grid" class="grid"></div>
-                                </div>
-                                <div id="study-pages-container"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
         </div><!-- end .app-main -->
 
@@ -353,7 +297,6 @@
                                 <div class="mm-head-name" id="mm-name">卡组名</div>
                                 <button class="mm-rename-btn" id="mm-rename-btn" data-i18n-tooltip="common.rename" title="改名"><i class="fa-solid fa-pen"></i></button>
                             </div>
-                            <div class="mm-head-sub" id="mm-sub">模版 · 描述</div>
                             <div class="mm-kind-row">
                                 <label class="mm-kind-label" data-i18n="manage.kindLabel">类型</label>
                                 <select id="mm-kind-select" class="mm-kind-select"></select>
@@ -362,47 +305,14 @@
                     <button class="mm-head-close" id="manage-modal-close"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div class="mm-body">
-                    <!-- Top: Templates + Data -->
+                    <!-- Intro (tool description) -->
+                    <div class="mm-intro" id="mm-intro"></div>
+                    <!-- Top: Tool + Data (desktop-app style cards) -->
                     <div class="mm-top">
-                        <!-- Templates -->
-                        <div class="mm-tpl-section">
-                            <div class="section-header">
-                                <h3><i class="fa-solid fa-clipboard-list"></i> <span data-i18n="manage.templates">模板</span></h3>
-                                <span data-i18n="manage.max3">最多 3 个</span>
-                            </div>
-                            <div class="tpl-cards" id="mm-tpl-list"></div>
-                        </div>
-                        <!-- Data -->
-                        <div class="mm-data-section">
-                            <div class="section-header">
-                                <h3><i class="fa-solid fa-database"></i> <span data-i18n="manage.data">数据</span></h3>
-                                <span></span>
-                            </div>
-                            <div class="data-cards">
-                                <div class="data-card">
-                                    <div class="data-count" id="mm-data-count">0</div>
-                                    <div class="data-count-label" data-i18n="manage.items">条数据</div>
-                                    <div class="data-actions">
-                                        <button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" id="mma-data" data-i18n-tooltip="manage.uploadData" title="上传数据"><i class="fa-solid fa-upload"></i></button>
-                                        <button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-[var(--hp-primary-soft)] hover:text-[var(--hp-primary)] hover:border-[var(--hp-primary)]" id="ma-export" data-i18n-tooltip="manage.exportData" title="导出数据"><i class="fa-solid fa-download"></i></button>
-                                        <button class="tpl-icon-btn flex items-center justify-center w-7 h-7 border border-[var(--hp-border)] rounded-lg bg-transparent cursor-pointer text-xs text-[var(--hp-text-sub)] transition-all hover:bg-red-50 hover:text-red-600 hover:border-red-600" id="ma-goagain" data-i18n-tooltip="manage.goagain" title="重新打乱"><i class="fa-solid fa-rotate"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Preview -->
-                    <div class="mm-preview">
-                        <div class="preview-header">
-                            <h3><i class="fa-solid fa-eye"></i> <span data-i18n="manage.preview">预览</span></h3>
-                            <span id="mm-preview-label">点击模板查看渲染效果</span>
-                        </div>
-                        <div class="preview-area" id="mm-preview-area">
-                            <div class="preview-placeholder" id="mm-preview-placeholder">
-                                点击左侧模板预览卡片渲染效果
-                            </div>
-                        </div>
-                        </div>
+                        <!-- Tool app card (JS renders bound/empty) -->
+                        <div class="mm-app-card" id="mm-tool-card"></div>
+                        <!-- Data app card -->
+                        <div class="mm-app-card" id="mm-data-card"></div>
                     </div>
                 </div>
             </div>
@@ -421,9 +331,9 @@
                     </button>
                 </div>
                 <div class="mastery-tabs">
-                    <button class="mastery-tab active" data-mtab="heatmap" data-i18n="mastery.heatmap">热力图</button>
+                    <button class="mastery-tab active" data-mtab="heatmap" data-i18n="mastery.heatmap">业力图</button>
                     <button class="mastery-tab" data-mtab="categorized" data-i18n="mastery.categorized">掌握分布</button>
-                    <button class="mastery-tab" data-mtab="rounds" data-i18n="mastery.rounds">轮次统计</button>
+                    <button class="mastery-tab" data-mtab="rounds" data-i18n="mastery.rounds">轮回统计</button>
                 </div>
                 <div class="mastery-body">
                     <div class="mastery-pane" id="mastery-heatmap"></div>
@@ -434,22 +344,6 @@
         </div>
 
         <!-- Template Preview Modal (full card, no sidebar) -->
-        <div id="preview-modal" class="modal-overlay" style="display:none;">
-            <div class="preview-modal-content">
-                <div class="preview-modal-header">
-                    <div class="preview-modal-title flex items-center gap-2">
-                        <i class="fa-solid fa-eye text-[var(--hp-primary)]"></i>
-                        <span data-i18n="preview.title">模板预览</span>
-                    </div>
-                    <button class="close-btn" id="preview-modal-close">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                <div class="preview-canvas-full" id="preview-canvas">
-                    <div class="preview-loading" data-i18n="preview.loading">Loading template...</div>
-                </div>
-            </div>
-        </div>
 
         <!-- Template API Modal -->
         <div id="template-api-modal" class="modal-overlay" style="display:none;">
@@ -457,7 +351,7 @@
                 <div class="modal-header">
                     <div class="modal-title flex items-center gap-2">
                         <i class="fa-solid fa-code text-[var(--hp-primary)]"></i>
-                        <span data-i18n="manage.templateTitle">模板 API 参考</span>
+                        <span data-i18n="manage.templateTitle">小工具 API 参考</span>
                     </div>
                     <div class="flex gap-2">
                         <button id="copy-api-btn" class="manage-action-btn" style="padding:4px 10px;font-size:11px;">
@@ -475,6 +369,7 @@
             </div>
         </div>
 
+
         <!-- Font Settings Drawer (font size + font weight, applied to card content only) -->
         <div id="font-drawer" class="font-drawer" style="display:none;">
             <div class="setting-item">
@@ -489,7 +384,6 @@
         </div>
 
         <a id="download-helper" style="display:none;"></a>
-        <input type="file" id="deck-template-input" accept=".json,.js" style="display:none;">
         <input type="file" id="deck-data-input" accept=".json,application/json" style="display:none;">
 
         <div id="global-tooltip" class="action-btn-tooltip"></div>

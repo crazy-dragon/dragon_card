@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DragonCard · 卡组长什么样，数据就长什么样</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f46e5'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#f3f6fb; --card:#ffffff; --ink:#0f172a; --sub:#566580; --faint:#93a1b8;
+  --line:#e3e9f2; --line2:#eef2f8; --sunken:#f7f9fc;
+  --brand:#4f46e5; --brand-soft:rgba(79,70,229,.10);
+  --grad:linear-gradient(118deg,#0ea5e9,#4f46e5 52%,#9333ea);
+  --c-content:#2563eb; --c-study:#0d9488; --c-log:#b45309; --c-ach:#7c3aed;
+  --unknown:#dc2626; --fav:#d97706;
+  --shadow:0 1px 2px rgba(16,24,40,.05),0 10px 26px -14px rgba(16,24,40,.20);
+  --shadow-lg:0 28px 64px -28px rgba(16,24,40,.38);
+}
+body.dark{
+  --bg:#090d15; --card:#121926; --ink:#e9eefb; --sub:#96a7c0; --faint:#64748b;
+  --line:#212b3b; --line2:#1a2331; --sunken:#0e141f;
+  --brand:#8b93f8; --brand-soft:rgba(139,147,248,.14);
+  --c-content:#60a5fa; --c-study:#2dd4bf; --c-log:#fbbf24; --c-ach:#a78bfa;
+  --unknown:#f87171; --fav:#fbbf24;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 12px 30px -16px rgba(0,0,0,.75);
+  --shadow-lg:0 34px 76px -34px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;
+  background:var(--bg);transition:background .25s,color .25s;line-height:1.6}
+h1,h2,h3{margin:0;font-weight:700;line-height:1.3}
+p{margin:0}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+/* ---------- 顶栏 ---------- */
+.topbar{position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:14px;
+  padding:12px 22px;background:color-mix(in srgb,var(--card) 82%,transparent);
+  border-bottom:1px solid var(--line);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand .mark{width:36px;height:36px;border-radius:11px;background:var(--grad);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.brand b{font-size:15px;display:block;white-space:nowrap}
+.brand small{display:block;color:var(--sub);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
+.icon-btn{width:40px;height:40px;border-radius:11px;background:var(--sunken);color:var(--sub);
+  display:flex;align-items:center;justify-content:center;font-size:17px;transition:.15s;border:1px solid var(--line)}
+.icon-btn:hover{color:var(--brand);border-color:var(--brand)}
+
+/* ---------- 通用 ---------- */
+main{max-width:1180px;margin:0 auto;padding:0 22px 60px}
+.section{margin-top:34px}
+.section > h2{font-size:19px;letter-spacing:-.2px}
+.section > .lede{margin-top:6px;color:var(--sub);font-size:13.5px;max-width:760px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--brand);text-transform:uppercase}
+
+/* ---------- Hero ---------- */
+.hero{padding:38px 0 6px;max-width:820px}
+.hero h1{font-size:30px;letter-spacing:-.6px;margin-top:12px}
+.hero h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin-top:12px;font-size:15px;color:var(--sub);max-width:660px}
+.anatomy{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:22px}
+.anatomy .part{padding:12px 16px;border-radius:14px;background:var(--card);border:1px solid var(--line);
+  box-shadow:var(--shadow);min-width:168px}
+.anatomy .part b{display:block;font-size:13.5px}
+.anatomy .part span{font-size:11.5px;color:var(--sub)}
+.anatomy .part .tick{display:block;width:26px;height:3px;border-radius:2px;margin-bottom:8px}
+.anatomy .op{font-size:19px;color:var(--faint);font-weight:700}
+.anatomy .part.is-deck{background:var(--grad);border-color:transparent;box-shadow:0 14px 30px -14px rgba(79,70,229,.7)}
+.anatomy .part.is-deck b,.anatomy .part.is-deck span{color:#fff}
+.anatomy .part.is-deck span{opacity:.9}
+.anatomy .part.is-deck .tick{background:rgba(255,255,255,.85)}
+.pledges{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.pledge{display:flex;gap:8px;align-items:flex-start;flex:1 1 250px;padding:10px 14px;border-radius:12px;
+  background:var(--card);border:1px solid var(--line);font-size:12.5px;color:var(--sub);box-shadow:var(--shadow)}
+.pledge b{color:var(--ink);font-weight:600}
+.pledge i{width:15px;height:15px;border-radius:50%;background:var(--brand-soft);color:var(--brand);
+  font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;
+  font-style:normal;flex-shrink:0;margin-top:3px}
+
+/* ---------- 试学区 ---------- */
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:20px;align-items:start;margin-top:14px}
+.stage-main{min-width:0}
+
+.life{display:flex;gap:0;margin:16px 0 14px;border-radius:14px;background:var(--card);
+  border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;flex-wrap:wrap}
+.life-step{flex:1 1 120px;min-width:112px;text-align:left;padding:13px 16px;position:relative;
+  border-right:1px solid var(--line2);transition:background .18s}
+.life-step:last-child{border-right:none}
+.life-step:hover{background:var(--sunken)}
+.life-step .n{font-size:11px;font-weight:800;color:var(--faint);letter-spacing:.06em}
+.life-step .t{display:block;font-size:13.5px;font-weight:600;margin-top:2px}
+.life-step .s{display:block;font-size:11.5px;color:var(--faint);margin-top:2px}
+.life-step.done .n{color:var(--c-study)}
+.life-step.done::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2.5px;background:var(--c-study);opacity:.55}
+.life-step.active{background:var(--brand-soft)}
+.life-step.active::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2.5px;background:var(--grad)}
+
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:16px}
+.stats-bar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--line2)}
+.stat{text-align:center;min-width:58px}
+.stat .num{font-size:19px;font-weight:800;line-height:1.1}
+.stat .lbl{font-size:11px;color:var(--sub)}
+.stat.total .num{color:var(--brand)}
+.stat.unknown .num{color:var(--unknown)}
+.stat.mastered .num{color:var(--c-study)}
+.progress{flex:1;min-width:150px}
+.progress .bar{height:7px;background:var(--sunken);border-radius:6px;overflow:hidden}
+.progress .fill{height:100%;width:0;background:var(--grad);border-radius:6px;transition:width .45s cubic-bezier(.4,0,.2,1)}
+.progress .meta{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-top:6px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 4px}
+.btn{padding:11px 20px;border-radius:12px;font-size:14px;font-weight:600;border:1px solid var(--line);
+  background:var(--card);transition:.15s;box-shadow:var(--shadow)}
+.btn:hover{border-color:var(--brand);color:var(--brand)}
+.btn.primary{background:var(--grad);color:#fff;border-color:transparent;box-shadow:0 10px 22px -10px rgba(79,70,229,.75)}
+.btn.primary:hover{color:#fff;transform:translateY(-1px)}
+.btn.ghost{background:var(--sunken);box-shadow:none}
+
+.word-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.word-card{position:relative;border-radius:14px;padding:14px 16px;background:var(--card);
+  border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s,border-color .18s;
+  animation:pop .3s both;overflow:hidden}
+.word-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c-study);opacity:.75;transition:.18s}
+.word-card.is-unknown::before{background:var(--unknown);opacity:1}
+.word-card.is-unknown{border-color:color-mix(in srgb,var(--unknown) 42%,var(--line))}
+.word-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.word-card.pulse{animation:pulse 1.1s ease}
+@keyframes pulse{0%,100%{box-shadow:var(--shadow)}30%{box-shadow:0 0 0 4px var(--brand-soft),var(--shadow-lg)}}
+@keyframes pop{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.card-head{display:flex;align-items:flex-start;gap:12px}
+.word-basic{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;min-width:0}
+.word-idx{font-size:11px;font-weight:800;color:var(--faint);min-width:18px}
+.word-title{font-size:22px;font-weight:800;letter-spacing:.2px;color:var(--c-study)}
+.word-card.is-unknown .word-title{color:var(--ink)}
+.word-ph{font-size:12px;color:var(--sub);background:var(--brand-soft);padding:2px 9px;border-radius:7px}
+.acts{display:flex;gap:8px;margin-left:auto;flex-shrink:0}
+.act{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);background:var(--card);color:var(--sub);transition:.15s;flex-shrink:0}
+.act:hover{transform:scale(1.08);border-color:var(--brand);color:var(--brand)}
+.act.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.act.on-fav{background:var(--fav);border-color:var(--fav);color:#fff}
+.act.on-unknown{background:var(--unknown);border-color:var(--unknown);color:#fff}
+.word-def{margin-top:9px;font-size:13.5px;color:var(--sub)}
+
+/* ---------- 数据透视镜 ---------- */
+.lens{position:sticky;top:76px;background:var(--card);border:1px solid var(--line);
+  border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.lens-head{padding:13px 16px 11px;border-bottom:1px solid var(--line2);
+  background:linear-gradient(180deg,var(--brand-soft),transparent)}
+.lens-head b{font-size:14px;display:block}
+.lens-head span{font-size:11.5px;color:var(--sub)}
+.lens-body{padding:8px 10px 12px;max-height:min(70vh,660px);overflow:auto}
+.grp{margin-top:9px;border-radius:12px;padding:8px 9px 9px;background:var(--sunken);border:1px solid var(--line2)}
+.grp-h{display:flex;align-items:baseline;gap:7px;margin-bottom:6px}
+.grp-h .dot{width:7px;height:7px;border-radius:2px;flex-shrink:0;transform:translateY(-1px)}
+.grp-h b{font-size:12px}
+.grp-h span{font-size:10.5px;color:var(--faint);margin-left:auto}
+.trow{display:flex;align-items:center;gap:7px;padding:5px 7px;border-radius:8px;
+  background:var(--card);border:1px solid transparent;margin-top:4px;transition:.2s}
+.trow .tn{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;font-weight:600}
+.trow .tz{font-size:10.5px;color:var(--sub)}
+.trow .tc{margin-left:auto;font-size:11.5px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--brand)}
+.trow.flash{border-color:var(--brand);background:var(--brand-soft)}
+.trow.flash .tc{transform:scale(1.22)}
+.trow.is-derived{background:transparent;border:1px dashed color-mix(in srgb,var(--c-ach) 55%,var(--line))}
+.trow.is-derived .tc{color:var(--c-ach);font-size:11px;font-weight:600}
+.grp.is-ach{background:color-mix(in srgb,var(--c-ach) 7%,var(--sunken))}
+.lens-foot{border-top:1px solid var(--line2);padding:10px 14px 13px}
+.lens-foot h4{margin:0 0 7px;font-size:11px;letter-spacing:.1em;color:var(--faint);font-weight:700}
+.writes{display:flex;flex-direction:column;gap:5px;max-height:152px;overflow:auto}
+.w{font-size:11px;font-family:ui-monospace,Menlo,monospace;color:var(--sub);
+  padding:5px 8px;border-radius:7px;background:var(--sunken);border-left:2px solid var(--line);
+  animation:slidein .28s ease}
+.w:first-child{border-left-color:var(--brand);color:var(--ink)}
+.w .op{font-weight:700}
+.w .op.i{color:var(--c-study)}
+.w .op.u{color:var(--c-log)}
+.w-empty{font-size:11.5px;color:var(--faint);padding:2px 0}
+@keyframes slidein{from{opacity:0;transform:translateX(-5px)}to{opacity:1;transform:none}}
+
+/* ---------- 全貌 ---------- */
+.layers{display:flex;flex-direction:column;gap:11px;margin-top:16px}
+.layer{border-radius:15px;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);padding:13px 15px}
+.layer-h{display:flex;align-items:baseline;gap:9px;margin-bottom:10px;flex-wrap:wrap}
+.layer-h .dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.layer-h b{font-size:13.5px}
+.layer-h span{font-size:11.5px;color:var(--sub)}
+.layer-h .rel{margin-left:auto;font-size:11px;color:var(--faint);font-family:ui-monospace,Menlo,monospace}
+.chips{display:flex;gap:9px;flex-wrap:wrap}
+.chip{display:flex;flex-direction:column;gap:2px;align-items:flex-start;padding:11px 16px;border-radius:12px;
+  background:var(--sunken);border:1px solid var(--line);transition:.15s;text-align:left;min-width:132px}
+.chip:hover{border-color:var(--brand);transform:translateY(-2px);box-shadow:var(--shadow)}
+.chip .tt{font-family:ui-monospace,Menlo,monospace;font-size:13px;font-weight:600}
+.chip .ct{font-size:11.5px;color:var(--sub)}
+.chip.is-derived{border-style:dashed;border-color:color-mix(in srgb,var(--c-ach) 55%,var(--line))}
+.chip.is-user{border-style:dashed;border-color:var(--line);opacity:.78}
+.note-strip{margin-top:14px;padding:12px 15px;border-radius:12px;background:var(--sunken);
+  border:1px solid var(--line);font-size:12.5px;color:var(--sub)}
+.note-strip b{color:var(--ink);font-weight:600}
+
+/* ---------- 弹窗 ---------- */
+.mask{position:fixed;inset:0;background:rgba(8,12,22,.5);backdrop-filter:blur(3px);
+  display:flex;align-items:center;justify-content:center;z-index:200;padding:18px;
+  opacity:0;pointer-events:none;transition:opacity .18s}
+.mask.open{opacity:1;pointer-events:auto}
+.modal{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-lg);
+  width:min(620px,100%);max-height:84vh;display:flex;flex-direction:column;overflow:hidden;
+  transform:translateY(10px) scale(.985);transition:transform .18s}
+.mask.open .modal{transform:none}
+.modal-h{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line2)}
+.modal-h b{font-family:ui-monospace,Menlo,monospace;font-size:15px}
+.modal-h em{font-style:normal;font-size:12px;color:var(--sub)}
+.modal-x{margin-left:auto;width:36px;height:36px;border-radius:9px;background:var(--sunken);color:var(--sub);
+  font-size:15px;display:flex;align-items:center;justify-content:center}
+.modal-x:hover{color:var(--brand)}
+.modal-b{padding:16px 18px;overflow:auto;font-size:12.5px}
+.modal-b .desc{font-size:12px;color:var(--sub);margin-bottom:12px}
+.modal-b table{width:100%;border-collapse:collapse;font-size:12px}
+.modal-b th{text-align:left;color:var(--faint);font-weight:600;font-size:10.5px;letter-spacing:.06em;padding:5px 8px}
+.modal-b td{padding:6px 8px;border-top:1px solid var(--line2)}
+.modal-b td:first-child{font-family:ui-monospace,Menlo,monospace;font-weight:600}
+.modal-b td .key{color:var(--brand);font-weight:700}
+.modal-b .block{margin-top:14px;padding-top:12px;border-top:1px solid var(--line2)}
+.modal-b .block h5{margin:0 0 6px;font-size:12px}
+.modal-b .block p{font-size:12px;color:var(--sub)}
+
+/* ---------- Toast ---------- */
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);z-index:300;
+  background:var(--ink);color:var(--bg);font-size:12.5px;padding:9px 16px;border-radius:10px;
+  box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.22s;max-width:88vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+.foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:11.5px;color:var(--faint);display:flex;gap:12px;flex-wrap:wrap}
+
+/* ---------- 响应式 ---------- */
+@media (max-width:1000px){
+  .stage{grid-template-columns:minmax(0,1fr)}
+  .lens{position:static;top:auto}
+  .lens-body{max-height:none}
+}
+@media (max-width:640px){
+  main{padding:0 13px 46px}
+  .topbar{padding:10px 13px}
+  .brand small{display:none}
+  .hero{padding-top:24px}
+  .hero h1{font-size:23px}
+  .hero p{font-size:14px}
+  .anatomy .part{min-width:0;flex:1 1 130px}
+  .anatomy .op{display:none}
+  .word-title{font-size:19px}
+  .life-step{flex:1 1 50%;min-width:0;padding:12px 14px;border-bottom:1px solid var(--line2)}
+  .life-step:nth-child(2n){border-right:none}
+  .acts{gap:7px}
+  .act{width:38px;height:38px}
+  .btn{padding:10px 16px;font-size:13.5px}
+  .section > h2{font-size:17px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="mark">🐉</div>
+    <div>
+      <b>DragonCard</b>
+      <small>卡组长什么样，你学的每一步就记成什么样</small>
+    </div>
+  </div>
+  <div class="top-actions">
+    <button class="icon-btn" id="theme-btn" title="切换深浅色">🌙</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= Hero ================= -->
+  <section class="hero">
+    <div class="eyebrow">Flashcards, without the fuss</div>
+    <h1>一套卡组，其实就是<em>一份内容 + 一个工具</em>。</h1>
+    <p>DragonCard 的卡组打包成一个 zip：里面装着你今天要学的东西，也装着把这些东西展示出来的界面。
+       打开就能学，不用装环境。而你学的每一步——学到哪、哪不会、什么时候学的——都会落进你自己的记录里。</p>
+
+    <div class="anatomy">
+      <div class="part"><i class="tick" style="background:var(--c-content)"></i>
+        <b>内容 · 学什么</b><span>卡片数据，一条一条</span></div>
+      <div class="op">+</div>
+      <div class="part"><i class="tick" style="background:var(--c-study)"></i>
+        <b>工具 · 怎么展示</b><span>离线 H5 界面</span></div>
+      <div class="op">=</div>
+      <div class="part is-deck"><i class="tick"></i>
+        <b>卡组 · 一个 zip</b><span>导入即用</span></div>
+    </div>
+
+    <div class="pledges">
+      <div class="pledge"><i>1</i><span><b>内容能带走。</b>卡组是个压缩包，数据在里面，随时导出。</span></div>
+      <div class="pledge"><i>2</i><span><b>不用装东西。</b>打开就是能学的界面，手机电脑都行。</span></div>
+      <div class="pledge"><i>3</i><span><b>它记得住你。</b>哪些不会、哪些收藏了，下次打开还在。</span></div>
+    </div>
+  </section>
+
+  <!-- ================= 试学 + 透视镜 ================= -->
+  <section class="section">
+    <h2>试一下：学 <span id="try-n">6</span> 个词，看数据怎么变</h2>
+    <p class="lede">左边是真能点的卡组。右边那栏是「这个卡组背后的数据」——你每做一个动作，对应的地方就会亮一下、加一笔。
+       那不是动画效果，那是程序真实运行时发生的事。</p>
+
+    <div class="life" id="life"></div>
+
+    <div class="stage">
+      <div class="stage-main">
+        <div class="panel">
+          <div class="stats-bar">
+            <div class="stat total"><div class="num" id="st-total">0</div><div class="lbl">卡片总数</div></div>
+            <div class="stat unknown"><div class="num" id="st-unknown">0</div><div class="lbl">还不会</div></div>
+            <div class="stat mastered"><div class="num" id="st-known">0</div><div class="lbl">已经会了</div></div>
+            <div class="progress">
+              <div class="bar"><div class="fill" id="prog-fill"></div></div>
+              <div class="meta"><span id="prog-label">还没开始</span><span id="round-label">第 0 轮</span></div>
+            </div>
+          </div>
+          <div class="toolbar">
+            <button class="btn primary" id="round-btn">↻ 轮回一次</button>
+            <button class="btn ghost" id="reset-btn">从头开始</button>
+            <button class="btn ghost" id="export-btn">导出卡组数据</button>
+          </div>
+          <div class="word-list" id="word-list"></div>
+        </div>
+      </div>
+
+      <aside class="lens">
+        <div class="lens-head">
+          <b>数据透视镜</b>
+          <span>这个卡组在数据库里长这样</span>
+        </div>
+        <div class="lens-body" id="lens-body"></div>
+        <div class="lens-foot">
+          <h4>刚刚发生</h4>
+          <div class="writes" id="writes"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= 全貌 ================= -->
+  <section class="section">
+    <h2>想细看？整套数据结构</h2>
+    <p class="lede">上面演示的是一个卡组。放到整个系统里，一共 7 张表，天然分成三组——看它「是什么」、你「学到哪」、以及你「做过什么」。
+       点任意一张可以看字段。</p>
+
+    <div class="layers" id="layers"></div>
+
+    <div class="note-strip">
+      <b>两个容易被误会的点：</b>
+      ① 用户表 <code>t_user</code> 现在恒为 1 行（单用户），它只是被其它表引用的分区键，没有注册登录那套；
+      ② <b>成就没有表</b>——「连续学习 N 天」「发音多少次」都是从上面的行为记录里现算出来的，不额外占地方。
+    </div>
+  </section>
+
+  <div class="foot">
+    <span>DragonCard · 本地演示页</span>
+    <span>单文件、零依赖，离线可开</span>
+  </div>
+</main>
+
+<div class="mask" id="mask">
+  <div class="modal">
+    <div class="modal-h"><b id="m-title"></b><em id="m-zh"></em>
+      <button class="modal-x" id="m-x">✕</button></div>
+    <div class="modal-b" id="m-body"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ==========================================================================
+   DragonCard Playground
+   --------------------------------------------------------------------------
+   这一页要回答买家一个问题：我买到的「卡组」到底是什么，我学的东西记在哪？
+   所以主线是「功能」——收卡组 → 打开学 → 标记 → 轮回 → 留下记录；
+   数据是它的投影，右侧那块「数据透视镜」就是数据库的实时样子。
+   下面这个 db 对象就是浏览器里的一个迷你数据库，字段与真实库一致。
+   ========================================================================== */
+
+var $ = function(s){ return document.querySelector(s); };
+var $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function nowStr(){
+  var d = new Date(), p = function(n){ return (n<10?'0':'')+n; };
+  return p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());
+}
+
+/* ---------- 演示用的 6 张卡（真 COCA 词条的样子） ---------- */
+var SEED = [
+  {word:'nutty',      ph:'ˈnʌti',        zh:'adj. 有坚果味的；有点古怪的'},
+  {word:'looter',     ph:'ˈluːtər',      zh:'n. 抢劫者，掠夺者'},
+  {word:'worsening',  ph:'ˈwɜːrsənɪŋ',   zh:'v./n. 恶化，加剧'},
+  {word:'sovereign',  ph:'ˈsɑːvrɪn',     zh:'n. 君主；adj. 至高无上的'},
+  {word:'veiled',     ph:'veɪld',        zh:'adj. 蒙面的；含蓄的'},
+  {word:'anonymously',ph:'əˈnɑːnɪməsli', zh:'adv. 匿名地'}
+];
+
+/* ---------- 浏览器里的迷你数据库 ---------- */
+var db = { user:null, tool:null, deck:null, items:[], progress:[], rounds:[], events:[] };
+
+function resetDB(){
+  db.user = {id:1, username:'default', display_name:'我'};
+  db.tool = {id:1, name:'COCA 单词卡', lang:'zh', dir_path:'minitools/1/'};
+  db.deck = {id:1, user_id:1, name:'COCA 20000 · 试学', kind:'knowledge', tool_id:1};
+  db.items = SEED.map(function(w, i){
+    return {id:i+1, deck_id:1, item_order:i+1, data:w};
+  });
+  db.progress = [];
+  db.rounds = [];
+  db.events = [];
+}
+/* 真实系统里，第一次打开卡组会为每张卡自动建一条进度行（= /v1/learn/page 的 _init_progress） */
+function openDeck(){
+  if (db.progress.length) return false;
+  db.items.forEach(function(it){
+    db.progress.push({id:it.id, user_id:1, deck_id:1, deck_item_id:it.id,
+      is_unknown:0, is_favorite:0, current_order:it.item_order});
+  });
+  return true;
+}
+function progOf(id){
+  for (var i=0;i<db.progress.length;i++) if (db.progress[i].deck_item_id===id) return db.progress[i];
+  return null;
+}
+function orderedItems(){
+  if (!db.progress.length) return db.items.slice();
+  var byId = {};
+  db.progress.forEach(function(p){ byId[p.deck_item_id] = p; });
+  return db.items.slice().sort(function(a,b){
+    var pa = byId[a.id], pb = byId[b.id];
+    if (!pa || !pb) return a.item_order - b.item_order;
+    /* 只按 current_order 排 —— 与真实系统一致：标记一张卡只改它的状态，卡片不会立刻跳位；
+       真正把它挪到前面的是「轮回」（= /v1/reorder 重写整列）。 */
+    return pa.current_order - pb.current_order;
+  });
+}
+
+/* ---------- 写入日志 ---------- */
+var writes = [];
+function log(op, table, detail){
+  writes.unshift({op:op, table:table, detail:detail, t:nowStr()});
+  if (writes.length > 40) writes.pop();
+}
+function renderWrites(){
+  var box = $('#writes');
+  if (!writes.length){
+    box.innerHTML = '<div class="w-empty">还没有动作。点左边卡片上的按钮试试。</div>';
+    return;
+  }
+  box.innerHTML = writes.map(function(w){
+    var cls = w.op === 'INSERT' ? 'i' : 'u';
+    return '<div class="w"><span class="op '+cls+'">'+w.op+'</span> '+esc(w.table)+
+           (w.detail ? ' <span>· '+esc(w.detail)+'</span>' : '')+'</div>';
+  }).join('');
+}
+
+/* ==========================================================================
+   左侧：卡组演示
+   ========================================================================== */
+var ICO = {
+  play:'<svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
+  eye:'<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>',
+  star:'<svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8-6.2-3.7-6.2 3.7 1.6-6.8L2.2 8.9l6.9-.6z"/></svg>',
+  bookmark:'<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 2h12v20l-6-4-6 4z"/></svg>'
+};
+
+function renderStats(){
+  var total = db.tool ? db.items.length : 0;
+  var unknown = db.progress.filter(function(p){ return p.is_unknown===1; }).length;
+  var known = db.progress.length - unknown;
+  $('#st-total').textContent = total;
+  $('#st-unknown').textContent = unknown;
+  $('#st-known').textContent = known;
+  $('#prog-fill').style.width = (total ? known/total*100 : 0) + '%';
+  $('#prog-label').textContent = db.progress.length ? (known + ' / ' + total + ' 已经会了') : '还没开始';
+  $('#round-label').textContent = '第 ' + db.rounds.length + ' 轮';
+}
+
+function renderCards(){
+  var list = $('#word-list');
+  var items = orderedItems();
+  list.innerHTML = items.map(function(it, pos){
+    var p = progOf(it.id);
+    var unk = p && p.is_unknown === 1;
+    var fav = p && p.is_favorite === 1;
+    return '<div class="word-card'+(unk?' is-unknown':'')+'" data-card="'+it.id+'" style="animation-delay:'+(pos*0.03)+'s">'+
+      '<div class="card-head">'+
+        '<div class="word-basic">'+
+          '<span class="word-idx">'+String(pos+1).padStart(2,'0')+'</span>'+
+          '<span class="word-title">'+esc(it.data.word)+'</span>'+
+          '<span class="word-ph">'+esc(it.data.ph)+'</span>'+
+        '</div>'+
+        '<div class="acts">'+
+          '<button class="act" data-play="'+it.id+'" title="听发音">'+ICO.play+'</button>'+
+          '<button class="act'+(fav?' on-fav':'')+'" data-fav="'+it.id+'" title="收藏">'+ICO.bookmark+'</button>'+
+          '<button class="act'+(unk?' on-unknown':'')+'" data-mark="'+it.id+'" title="标记为还不会">'+ICO.star+'</button>'+
+        '</div>'+
+      '</div>'+
+      '<div class="word-def">'+esc(it.data.zh)+'</div>'+
+    '</div>';
+  }).join('');
+  renderStats();
+}
+
+/* ---------- 动作 ---------- */
+function actPlay(id){
+  var it = itemById(id); if (!it) return;
+  speak(it.data.word);
+  db.events.push({user_id:1, deck_id:1, deck_item_id:id, action:'audio_play'});
+  log('INSERT','t_learning_event','action = audio_play');
+  pulse('t_learning_event');
+  refreshLens(); renderLife();
+}
+function actFav(id){
+  var p = progOf(id); if (!p) return;
+  p.is_favorite = p.is_favorite ? 0 : 1;
+  db.events.push({user_id:1, deck_id:1, deck_item_id:id, action:'favorite_toggle'});
+  log('UPDATE','t_progress','#'+p.id+' is_favorite → '+p.is_favorite);
+  log('INSERT','t_learning_event','action = favorite_toggle');
+  pulse('t_progress'); pulse('t_learning_event');
+  renderCards(); refreshLens(); renderLife();
+}
+function actMark(id){
+  var p = progOf(id); if (!p) return;
+  p.is_unknown = p.is_unknown ? 0 : 1;
+  db.events.push({user_id:1, deck_id:1, deck_item_id:id, action:'word_mark'});
+  log('UPDATE','t_progress','#'+p.id+' is_unknown → '+p.is_unknown);
+  log('INSERT','t_learning_event','action = word_mark');
+  pulse('t_progress'); pulse('t_learning_event');
+  renderCards(); refreshLens(); renderLife();
+}
+function actRound(){
+  if (!db.progress.length){ openDeck(); }
+  /* 真实实现：/v1/reorder —— 不会的排前面，其次按原顺序，然后整列重写 current_order */
+  var unknown = db.progress.filter(function(p){ return p.is_unknown===1; });
+  var rest = db.progress.filter(function(p){ return p.is_unknown!==1; });
+  var order = unknown.concat(rest);
+  order.forEach(function(p, i){ p.current_order = i + 1; });
+  db.rounds.push({user_id:1, deck_id:1, round_number:db.rounds.length+1,
+    end_time:nowStr(), marked_count:unknown.length});
+  log('UPDATE','t_progress','整列重写 current_order（'+order.length+' 行）');
+  log('INSERT','t_study_round','round_number = '+db.rounds.length+', marked_count = '+unknown.length);
+  pulse('t_progress'); pulse('t_study_round');
+  renderCards(); refreshLens(); renderLife();
+  toast(unknown.length
+    ? ('轮回完成：不会的 ' + unknown.length + ' 张排到了前面，并记下第 ' + db.rounds.length + ' 轮。')
+    : ('轮回完成：这一轮还没标记过卡片，已记下第 ' + db.rounds.length + ' 轮。'));
+}
+function actReset(){
+  resetDB(); openDeck(); writes = [];
+  log('INSERT','t_deck','name = COCA 20000 · 试学');
+  log('INSERT','t_tool','name = COCA 单词卡');
+  log('INSERT','t_deck_item','批量导入 '+db.items.length+' 张卡');
+  log('INSERT','t_progress','为 '+db.progress.length+' 张卡建学习记录');
+  renderCards(); renderWrites(); refreshLens(); renderLife();
+  toast('已回到刚导入卡组的状态。');
+}
+function itemById(id){ for (var i=0;i<db.items.length;i++) if (db.items[i].id===id) return db.items[i]; return null; }
+
+function speak(text){
+  if (!('speechSynthesis' in window)){ toast('这个浏览器不支持朗读。'); return; }
+  speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US'; u.rate = 0.9;
+  speechSynthesis.speak(u);
+}
+
+/* ==========================================================================
+   右侧：数据透视镜
+   ========================================================================== */
+var GROUPS = [
+  {key:'content', label:'卡组内容', hint:'导入后基本不变', color:'var(--c-content)',
+   tables:[['t_deck','卡组'],['t_deck_item','卡片数据'],['t_tool','展示工具']]},
+  {key:'study', label:'学习记录', hint:'随学随变', color:'var(--c-study)',
+   tables:[['t_progress','学到哪 · 哪不会'],['t_study_round','轮回了几轮']]},
+  {key:'log', label:'行为记录', hint:'只追加，不回改', color:'var(--c-log)',
+   tables:[['t_learning_event','点过什么']]}
+];
+function countOf(t){
+  if (t==='t_user') return 1;
+  if (t==='t_tool') return 1;
+  if (t==='t_deck') return 1;
+  if (t==='t_deck_item') return db.items.length;
+  if (t==='t_progress') return db.progress.length;
+  if (t==='t_study_round') return db.rounds.length;
+  if (t==='t_learning_event') return db.events.length;
+  return 0;
+}
+function renderLens(){
+  var html = '';
+  GROUPS.forEach(function(g){
+    html += '<div class="grp"><div class="grp-h"><span class="dot" style="background:'+g.color+'"></span>'+
+      '<b>'+esc(g.label)+'</b><span>'+esc(g.hint)+'</span></div>';
+    g.tables.forEach(function(t){
+      html += '<div class="trow" data-tbl="'+t[0]+'"><span class="tn">'+t[0]+'</span>'+
+        '<span class="tz">'+esc(t[1])+'</span><span class="tc">'+countOf(t[0])+' 行</span></div>';
+    });
+    html += '</div>';
+  });
+  /* 成就：派生，没有表 */
+  var ach = achievements();
+  html += '<div class="grp is-ach"><div class="grp-h"><span class="dot" style="background:var(--c-ach)"></span>'+
+    '<b>成就</b><span>算出来的，不占表</span></div>'+
+    '<div class="trow is-derived" data-tbl="ach"><span class="tn">连续学习</span>'+
+    '<span class="tz">按行为记录现算</span><span class="tc">'+ach.streak+' 天</span></div>'+
+    '<div class="trow is-derived"><span class="tn">发音次数</span><span class="tz">audio_play</span>'+
+    '<span class="tc">'+ach.audio+' 次</span></div>'+
+    '<div class="trow is-derived"><span class="tn">标记次数</span><span class="tz">word_mark</span>'+
+    '<span class="tc">'+ach.mark+' 次</span></div></div>';
+  $('#lens-body').innerHTML = html;
+}
+function refreshLens(){
+  /* 只更新数字与"刚刚发生"，不重建 DOM —— 重建会打断闪烁动画 */
+  $$('#lens-body [data-tbl]').forEach(function(row){
+    var t = row.dataset.tbl; if (t === 'ach') return;
+    var el = row.querySelector('.tc'); if (el) el.textContent = countOf(t) + ' 行';
+  });
+  var ach = achievements();
+  var achRows = $$('#lens-body .grp.is-ach .trow');
+  if (achRows.length === 3){
+    achRows[0].querySelector('.tc').textContent = ach.streak + ' 天';
+    achRows[1].querySelector('.tc').textContent = ach.audio + ' 次';
+    achRows[2].querySelector('.tc').textContent = ach.mark + ' 次';
+  }
+  renderWrites();
+}
+function achievements(){
+  var audio = db.events.filter(function(e){ return e.action==='audio_play'; }).length;
+  var mark  = db.events.filter(function(e){ return e.action==='word_mark'; }).length;
+  return {streak: db.events.length ? 1 : 0, audio: audio, mark: mark};
+}
+var flashTimers = {};
+function pulse(t){
+  var row = document.querySelector('#lens-body [data-tbl="'+t+'"]');
+  if (!row) return;
+  row.classList.add('flash');
+  clearTimeout(flashTimers[t]);
+  flashTimers[t] = setTimeout(function(){ row.classList.remove('flash'); }, 620);
+}
+
+/* ==========================================================================
+   生命线
+   ========================================================================== */
+var LIFE = [
+  {id:'import', n:'①', t:'卡组到手',   s:'内容 + 工具'},
+  {id:'open',   n:'②', t:'打开学习',   s:'自动建记录'},
+  {id:'mark',   n:'③', t:'标记 / 收藏', s:'改学习记录'},
+  {id:'round',  n:'④', t:'轮回重排',   s:'重排 + 记一笔'},
+  {id:'keep',   n:'⑤', t:'留下记录',   s:'埋点 / 成就'}
+];
+function lifeState(){
+  var anyMark = db.progress.some(function(p){ return p.is_unknown===1 || p.is_favorite===1; });
+  return {
+    import: !!db.deck,
+    open: db.progress.length > 0,
+    mark: anyMark,
+    round: db.rounds.length > 0,
+    keep: db.events.length > 0
+  };
+}
+function renderLife(){
+  var st = lifeState();
+  var firstPending = LIFE.filter(function(s){ return !st[s.id]; })[0];
+  $('#life').innerHTML = LIFE.map(function(s){
+    var cls = st[s.id] ? 'done' : (firstPending && firstPending.id===s.id ? 'active' : '');
+    return '<button class="life-step '+cls+'" data-life="'+s.id+'">'+
+      '<span class="n">'+s.n+(st[s.id]?' 已完成':'')+'</span>'+
+      '<span class="t">'+s.t+'</span><span class="s">'+s.s+'</span></button>';
+  }).join('');
+}
+function lifeClick(id){
+  if (id==='import'){ actReset(); }
+  else if (id==='open'){
+    if (openDeck()){ log('INSERT','t_progress','为 '+db.progress.length+' 张卡建学习记录'); pulse('t_progress'); }
+    else toast('学习记录已经建好了 —— 第一次打开卡组时自动建的。');
+    renderCards(); refreshLens(); renderLife();
+  }
+  else if (id==='mark'){
+    var f = $('.word-card');
+    if (f){ f.scrollIntoView({behavior:'smooth', block:'center'}); f.classList.add('pulse');
+      setTimeout(function(){ f.classList.remove('pulse'); }, 1200); }
+    toast('点卡片右边的 ☆ 标记「还不会」，点 🔖 收藏。');
+  }
+  else if (id==='round'){ actRound(); renderLife(); }
+  else if (id==='keep'){ pulse('t_learning_event'); pulse('ach');
+    $('.lens').scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+
+/* ==========================================================================
+   全貌（7 张表）
+   ========================================================================== */
+var TABLES = {
+  t_user:{zh:'用户', desc:'目前是单用户模式，这张表恒为 1 行。它不提供注册登录，只是被其它表引用的分区键。',
+    fields:[['id','Integer','主键'],['username','String(50)','唯一'],['display_name','String(100)','可空'],
+            ['created_at','DateTime',''],['updated_at','DateTime','']],
+    note:'系统里 5 张表都带 user_id 指向它。多用户是结构上预留好的，功能上还没开放。'},
+  t_tool:{zh:'展示工具', desc:'卡组的界面本身。源码放在 minitools/<id>/，库里只存元数据。',
+    fields:[['id','Integer','主键'],['user_id','Integer','→ t_user'],['name','String(100)','必填'],
+            ['description','Text',''],['icon','String(255)',''],['lang','String(10)',''],
+            ['dir_path','String(255)',''],['manifest_json','Text',''],['tracked_actions','Text',''],
+            ['created_at','DateTime',''],['updated_at','DateTime','']],
+    note:'一个工具可以被多个卡组绑定 —— 比如同一个「单词卡」界面，既可以装 COCA 也可以装 HSK。'},
+  t_deck:{zh:'卡组', desc:'一个卡组 = 一份卡片数据 + 一个绑定的展示工具。',
+    fields:[['id','Integer','主键'],['user_id','Integer','→ t_user'],['name','String(100)','必填'],
+            ['kind','String(20)',''],['tool_id','Integer','→ t_tool'],['created_at','DateTime',''],['updated_at','DateTime','']],
+    note:'tool_id 为空时卡组只有数据、没有界面；绑上工具后，打开卡组才会进入全屏学习界面。'},
+  t_deck_item:{zh:'卡片数据', desc:'每一张卡片一行。内容存在 data 这个 JSON 字段里，所以什么卡组都能装。',
+    fields:[['id','Integer','主键'],['deck_id','Integer','→ t_deck'],['item_order','Integer','必填'],
+            ['data','JSON','必填'],['debug','Boolean',''],['created_at','DateTime',''],['updated_at','DateTime','']],
+    note:'item_order 只保证先后，不保证是 1、2、3… —— 删过卡片就会留空号。所以排序一律按「排完的位置」算。'},
+  t_progress:{zh:'学习记录', desc:'每个用户 × 每张卡一行（唯一约束）。你的学习状态就存在这里。',
+    fields:[['id','Integer','主键'],['user_id','Integer','→ t_user'],['deck_id','Integer','→ t_deck'],
+            ['deck_item_id','Integer','→ t_deck_item'],['is_unknown','Integer','会不会'],
+            ['is_favorite','Integer','收藏'],['current_order','Integer','必填 · 队列位置'],
+            ['created_at','DateTime',''],['updated_at','DateTime','']],
+    note:'第一次打开卡组时，会一次性为所有卡片建好这些行；之后每次标记只是改其中一行。唯一约束 '+
+         '(user_id, deck_id, deck_item_id) 保证不会重复建。'},
+  t_study_round:{zh:'轮回轮次', desc:'每「轮回」一次追加一行，记录这一轮结束时还有多少张不会。',
+    fields:[['id','Integer','主键'],['user_id','Integer','→ t_user'],['deck_id','Integer','→ t_deck'],
+            ['round_number','Integer','必填'],['end_time','DateTime','必填'],['marked_count','Integer','必填']],
+    note:'唯一约束 (user_id, deck_id, round_number) 保证轮次不会重复。成就里的「这个卡组学了 N 轮」就来自这里。'},
+  t_learning_event:{zh:'行为记录', desc:'每点一次按钮就追加一行：听了发音、标记了、收藏了。只增不改。',
+    fields:[['id','Integer','主键'],['user_id','Integer','→ t_user'],['deck_id','Integer','→ t_deck'],
+            ['deck_item_id','Integer','→ t_deck_item'],['action','String(50)','必填'],
+            ['created_at','DateTime','本地时间']],
+    note:'时间特意存本地时间：如果存成 UTC，东八区凌晨 0–8 点的记录会被算到前一天，连续学习天数就断了。'}
+};
+
+var LAYERS = [
+  {label:'卡组内容', hint:'导入后基本不变', color:'var(--c-content)', rel:'t_deck_item.deck_id → t_deck · t_deck.tool_id → t_tool',
+   chips:[['t_deck','卡组'],['t_deck_item','卡片数据'],['t_tool','展示工具']]},
+  {label:'学习记录', hint:'随学随变', color:'var(--c-study)', rel:'三张表都挂 user_id / deck_id / deck_item_id',
+   chips:[['t_progress','学到哪 · 哪不会'],['t_study_round','轮回了几轮']]},
+  {label:'行为记录', hint:'只追加，不回改', color:'var(--c-log)', rel:'最长的一张表 · 成就的数据源',
+   chips:[['t_learning_event','点过什么']]}
+];
+function renderLayers(){
+  var html = '';
+  /* 用户：横切面 */
+  html += '<div class="layer"><div class="layer-h"><span class="dot" style="background:var(--faint)"></span>'+
+    '<b>用户</b><span>结构上是全局分区键，功能上恒为 1 行（单用户）</span>'+
+    '<span class="rel">被上面三组表引用</span></div>'+
+    '<div class="chips"><button class="chip is-user" data-tbl="t_user"><span class="tt">t_user</span>'+
+    '<span class="ct">用户（恒 1 行）</span></button></div></div>';
+  LAYERS.forEach(function(L){
+    html += '<div class="layer"><div class="layer-h"><span class="dot" style="background:'+L.color+'"></span>'+
+      '<b>'+esc(L.label)+'</b><span>'+esc(L.hint)+'</span><span class="rel">'+esc(L.rel)+'</span></div><div class="chips">'+
+      L.chips.map(function(c){
+        return '<button class="chip" data-tbl="'+c[0]+'"><span class="tt">'+c[0]+'</span>'+
+               '<span class="ct">'+esc(c[1])+'</span></button>';
+      }).join('')+'</div></div>';
+  });
+  /* 成就：派生 */
+  html += '<div class="layer"><div class="layer-h"><span class="dot" style="background:var(--c-ach)"></span>'+
+    '<b>成就</b><span>连学天数 / 发音次数 / 标记次数</span>'+
+    '<span class="rel">库里没有这张表 · 用行为记录现算</span></div>'+
+    '<div class="chips"><button class="chip is-derived" data-tbl="ach"><span class="tt">（派生）</span>'+
+    '<span class="ct">不占存储，随时可重算</span></button></div></div>';
+  $('#layers').innerHTML = html;
+}
+function openTable(t){
+  if (t === 'ach'){
+    $('#m-title').textContent = '成就（派生）';
+    $('#m-zh').textContent = '';
+    $('#m-body').innerHTML = '<div class="desc">成就没有自己的表。它是由别的数据现算出来的 —— '+
+      '「这个卡组学了 N 轮」来自 <code>t_study_round</code>，「连续学习 N 天」「发音多少次」来自 <code>t_learning_event</code>。'+
+      '好处是不用额外维护，坏处是每次查都要算一遍。</div>'+
+      '<div class="block"><h5>算它用了哪些数据</h5><p>t_study_round（卡组轮次）· t_learning_event（连学天数 / 发音 / 标记）· '+
+      't_progress（已掌握卡片数）· t_deck（卡组数）</p></div>';
+    $('#mask').classList.add('open'); return;
+  }
+  var T = TABLES[t]; if (!T) return;
+  var rows = T.fields.map(function(f){
+    return '<tr><td'+(f[2].indexOf('主键')===0?' class="key"':'')+'>'+f[0]+'</td><td>'+f[1]+'</td><td>'+f[2]+'</td></tr>';
+  }).join('');
+  $('#m-title').textContent = t;
+  $('#m-zh').textContent = T.zh;
+  $('#m-body').innerHTML =
+    '<div class="desc">'+T.desc+'</div>'+
+    '<table><thead><tr><th>列名</th><th>类型</th><th>说明</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+    '<div class="block"><h5>为什么要这么设计</h5><p>'+T.note+'</p></div>';
+  $('#mask').classList.add('open');
+}
+
+/* ==========================================================================
+   事件绑定 / 主题 / 启动
+   ========================================================================== */
+var toastTimer = null;
+function toast(msg){
+  var el = $('#toast'); el.textContent = msg; el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 2400);
+}
+
+function onCardClick(e){
+  var b = e.target.closest('[data-play],[data-mark],[data-fav]');
+  if (!b) return;
+  if (b.dataset.play) actPlay(+b.dataset.play);
+  else if (b.dataset.mark) actMark(+b.dataset.mark);
+  else if (b.dataset.fav) actFav(+b.dataset.fav);
+}
+function applyTheme(dark){
+  document.body.classList.toggle('dark', dark);
+  $('#theme-btn').textContent = dark ? '☀️' : '🌙';
+  try { localStorage.setItem('dc-playground-theme', dark ? 'dark' : 'light'); } catch(e){}
+}
+function init(){
+  renderLayers();
+  resetDB(); openDeck();
+  log('INSERT','t_deck','name = COCA 20000 · 试学');
+  log('INSERT','t_tool','name = COCA 单词卡');
+  log('INSERT','t_deck_item','批量导入 '+db.items.length+' 张卡');
+  log('INSERT','t_progress','为 '+db.progress.length+' 张卡建学习记录');
+  $('#try-n').textContent = db.items.length;
+  renderCards(); renderLens(); renderWrites(); renderLife();
+
+  $('#word-list').addEventListener('click', onCardClick);
+  $('#life').addEventListener('click', function(e){
+    var b = e.target.closest('[data-life]'); if (b) lifeClick(b.dataset.life);
+  });
+  $('#layers').addEventListener('click', function(e){
+    var b = e.target.closest('[data-tbl]'); if (b) openTable(b.dataset.tbl);
+  });
+  $('#round-btn').addEventListener('click', function(){ actRound(); renderLife(); });
+  $('#reset-btn').addEventListener('click', actReset);
+  $('#export-btn').addEventListener('click', function(){
+    toast('导出会把整个卡组（数据 + 工具）打成一个 zip —— 换台电脑导入照样能学。');
+  });
+  $('#m-x').addEventListener('click', function(){ $('#mask').classList.remove('open'); });
+  $('#mask').addEventListener('click', function(e){ if (e.target === this) this.classList.remove('open'); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') $('#mask').classList.remove('open');
+  });
+  $('#theme-btn').addEventListener('click', function(){
+    applyTheme(!document.body.classList.contains('dark'));
+  });
+
+  var saved = null;
+  try { saved = localStorage.getItem('dc-playground-theme'); } catch(e){}
+  applyTheme(saved ? saved === 'dark'
+    : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches));
+}
+init();
+</script>
+</body>
+</html>

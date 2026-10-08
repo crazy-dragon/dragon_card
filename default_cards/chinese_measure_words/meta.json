@@ -1,10 +1,11 @@
 {
-  "name": "汉语量词 · Chinese Measure Words",
-  "description": "195 个常用量词（含引导卡），按 HSK 等级平铺，配英文用法、典型搭配与例句。",
+  "name": "汉语量词 · Measure Words",
+  "description": "汉语量词：常用量词与典型搭配。196 张。记录：发音、例词、标记、收藏。",
   "version": "1.0.0",
   "author": "Alfred Long",
   "email": "alfred.long@qq.com",
   "source": "自编整理",
   "license": "DragonCard Data License v1.0",
-  "updated": "2026-09-05"
+  "updated": "2026-09-27",
+  "tool": "chinese-measure-words"
 }
