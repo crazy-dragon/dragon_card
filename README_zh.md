@@ -142,7 +142,6 @@ dragoncard/
 ├── seed_decks.py              # 导入内置免费卡组（tool.zip + cards.json）
 ├── requirements.txt
 ├── DB_relation.md             # 数据库关系说明
-├── FOLLOWUP.md                # 模板→工具迁移待办清单
 ├── README.md / README_zh.md
 │
 ├── default_cards/             # 内置卡组包（tool.zip + cards.json + meta.json）
@@ -151,17 +150,17 @@ dragoncard/
 │   ├── japanese_gojuon/        # 日语五十音图
 │   ├── yijing/ + prelude_yijing/  # 周易（一 zip 双卡组）
 │   ├── checkin_log/            # 星际航行日志（Voyage Log，按天多任务打卡）
-│   ├── chinese_hsk/ chinese_idiom/ chinese_measure_words/ chinese_radicals/
+│   ├── chinese_hsk/ chinese_idiom/ chinese_measure_words/ chinese_radicals/ laozi/
 │   ├── chemistry_periodic/ stratagems_36/ western_allusions/ history_chenyu/
 │   ├── dino_alphabet/ dinosaur_3d/ english_sentence_patterns/
 │   ├── english_irregular_verbs/ reading_card/ ...
 │
 ├── templates/
 │   └── index.html             # SPA 主页面
+├── playground.html            # 独立卡片/小工具演示页（/playground）
 │
 └── static/
-    ├── media/                 # 本地多媒体资源（3D 模型等）
-    ├── app.js                 # 框架 JS (小工具加载/学习引擎/国际化)
+    ├── app.js                 # 首页/管理界面、小工具启动与国际化
     ├── i18n.js                # 中英文案字典
     ├── docs.js                # 内置使用文档（中英双语）
     ├── styles.css             # 框架 UI 样式

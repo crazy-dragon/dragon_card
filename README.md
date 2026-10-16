@@ -143,7 +143,6 @@ dragoncard/
 ├── seed_decks.py              # Import bundled free decks (tool.zip + cards.json)
 ├── requirements.txt
 ├── DB_relation.md             # Database relationship docs
-├── FOLLOWUP.md                # Tool-migration backlog
 ├── README.md / README_zh.md
 │
 ├── default_cards/             # Bundled deck packs (tool.zip + cards.json + meta.json)
@@ -152,17 +151,17 @@ dragoncard/
 │   ├── japanese_gojuon/        # 日语五十音图
 │   ├── yijing/ + prelude_yijing/  # 周易（一 zip 双卡组）
 │   ├── checkin_log/            # 星际航行日志（Voyage Log）
-│   ├── chinese_hsk/ chinese_idiom/ chinese_measure_words/ chinese_radicals/
+│   ├── chinese_hsk/ chinese_idiom/ chinese_measure_words/ chinese_radicals/ laozi/
 │   ├── chemistry_periodic/ stratagems_36/ western_allusions/ history_chenyu/
 │   ├── dino_alphabet/ dinosaur_3d/ english_sentence_patterns/
 │   ├── english_irregular_verbs/ reading_card/ ...
 │
 ├── templates/
 │   └── index.html             # SPA main page
+├── playground.html            # Standalone card/tool demo (/playground)
 │
 └── static/
-    ├── media/                 # Local media (3D models, etc.)
-    ├── app.js                 # Framework JS (tool loading / study engine / i18n)
+    ├── app.js                 # Home/manage UI, tool launch, and i18n
     ├── i18n.js                # 中/EN message dictionaries
     ├── docs.js                # Built-in user docs (bilingual)
     ├── styles.css             # Framework UI styles

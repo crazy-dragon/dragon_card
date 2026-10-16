@@ -56,22 +56,16 @@
                         <button id="settings-btn" class="hh-btn" data-i18n-tooltip="common.about" data-tooltip="关于" title="关于">
                             <i class="fa-solid fa-circle-info"></i>
                         </button>
-                        <div class="skin-toggle-wrap" id="skin-toggle-wrap">
-                            <button id="dark-theme-btn" class="hh-btn" data-i18n-tooltip="skin.title" data-tooltip="皮肤" title="皮肤">
-                                <i class="fa-solid fa-palette"></i>
-                            </button>
-                            <div class="skin-dropdown" id="skin-dropdown" style="display:none;">
-                                <div class="skin-dropdown-header"><i class="fa-solid fa-palette"></i> <span data-i18n="skin.title">皮肤</span></div>
-                                <div class="skin-list" id="skin-list"></div>
-                            </div>
-                        </div>
+                        <button id="dark-theme-btn" class="hh-btn" data-i18n-tooltip="skin.toggle" data-i18n-aria-label="skin.toggle" data-tooltip="切换明暗主题" title="切换明暗主题" aria-label="切换明暗主题">
+                            <i class="fa-solid fa-moon"></i>
+                        </button>
                         <button id="store-btn" class="hh-btn" data-i18n-tooltip="home.store" data-tooltip="商店" title="商店">
                             <i class="fa-solid fa-store"></i>
                         </button>
                         <button id="lang-toggle-btn" class="hh-btn" data-tooltip="切换语言 / Switch Language" title="切换语言 / Switch Language">
                             <span class="lang-label">中/EN</span>
                         </button>
-                        <button id="howto-btn" class="hh-btn" data-i18n-tooltip="manage.templateTitle" data-tooltip="小工具 API 参考" title="小工具 API 参考">
+                        <button id="howto-btn" class="hh-btn" data-i18n-tooltip="manage.toolApiTitle" data-tooltip="小工具 API 参考" title="小工具 API 参考">
                             <i class="fa-solid fa-code"></i>
                         </button>
                         <button class="hh-btn-primary" id="new-deck-btn">
@@ -204,8 +198,8 @@
                     <p class="text-xs text-[var(--hp-text-light)] mt-1">v1.1.0</p>
                 </div>
                 <div class="px-6 pb-4 text-center text-sm text-[var(--hp-text-sub)] leading-relaxed">
-                    <span data-i18n="about.tagline">通用卡片学习框架</span><br>
-                    <span class="text-xs" data-i18n="about.taglineSub">用自定义模板学习任何内容</span>
+                    <span data-i18n="about.tagline">本地优先的卡片学习工具</span><br>
+                    <span class="text-xs" data-i18n="about.taglineSub">卡组保存内容，小工具定义呈现与交互</span>
                 </div>
                 <div class="border-t border-[var(--hp-border)] px-6 py-4 text-center">
                     <p class="text-xs text-[var(--hp-text-light)]">
@@ -277,7 +271,7 @@
                     </div>
                     <div class="bg-[var(--hp-primary-soft)] text-[var(--hp-primary)] text-xs px-3 py-2 rounded-lg mb-4 flex items-start gap-2">
                         <i class="fa-solid fa-circle-info mt-0.5"></i>
-                        <span data-i18n="newDeck.hint">创建后可点击「管理卡组」上传模版与数据</span>
+                        <span data-i18n="newDeck.hint">创建后可在「管理卡组」中绑定小工具并导入数据</span>
                     </div>
                     <div class="flex gap-3">
                         <button id="new-deck-do-cancel" class="px-4 py-2 bg-[var(--hp-bg)] text-[var(--hp-text-sub)] rounded-lg hover:bg-[var(--hp-border)] transition-colors text-sm font-medium" data-i18n="common.cancel">取消</button>
@@ -343,22 +337,20 @@
             </div>
         </div>
 
-        <!-- Template Preview Modal (full card, no sidebar) -->
-
-        <!-- Template API Modal -->
-        <div id="template-api-modal" class="modal-overlay" style="display:none;">
+        <!-- Tool API Modal -->
+        <div id="tool-api-modal" class="modal-overlay" style="display:none;">
             <div class="modal modal--md">
                 <div class="modal-header">
                     <div class="modal-title flex items-center gap-2">
                         <i class="fa-solid fa-code text-[var(--hp-primary)]"></i>
-                        <span data-i18n="manage.templateTitle">小工具 API 参考</span>
+                        <span data-i18n="manage.toolApiTitle">小工具 API 参考</span>
                     </div>
                     <div class="flex gap-2">
                         <button id="copy-api-btn" class="manage-action-btn" style="padding:4px 10px;font-size:11px;">
                             <i class="fa-solid fa-copy"></i>
                             <span data-i18n="common.copy">复制</span>
                         </button>
-                        <button class="close-btn" id="template-api-modal-close">
+                        <button class="close-btn" id="tool-api-modal-close">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
                     </div>

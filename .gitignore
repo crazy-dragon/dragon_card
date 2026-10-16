@@ -11,13 +11,6 @@ instance/*.db
 instance/*.db-*
 backups/
 
-# 本地多媒体资源（3D 模型等大文件，不提交）
-static/media/*.glb
-static/media/*.obj
-static/media/*.stl
-static/media/*.usdz
-static/media/*.gltf
-
 # 临时设计稿
 designs/
 

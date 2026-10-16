@@ -1,219 +1,157 @@
-/* DragonCard 使用文档（中英双语）— 应用内嵌，语言随 i18n 切换 */
+/* DragonCard user guide (Chinese/English), rendered in the app's current language. */
 (function () {
     'use strict';
 
     var DOCS = {
         zh: {
-            intro: 'DragonCard 是一款通用卡片学习框架：数据、模板、引擎三层解耦。用自定义模板学习任何内容。',
-            philosophy: {
-                title: '写在前面：这不是 Anki',
+            intro: 'DragonCard 把卡片数据和展示方式分开管理：卡组保存数据，可绑定一个小工具来展示卡片并提供交互。',
+            principle: {
+                title: 'DragonCard 如何工作',
                 paragraphs: [
-                    'DragonCard 不是 Anki。它没有复杂的间隔重复算法，只有一种很简单的分类学习方法——把知识快速呈现在你面前：标记未掌握的内容，掌握靠前，难点靠前，仅此而已。它不替你安排复习节奏，也不承诺"多少天记住"。',
-                    '因为记忆的本质从来不是技巧，而是重复。艾宾浩斯用一生证明：记忆的关键就是重复。所以我们相信的是你——你的坚持本身。持之以恒，必有收获。',
-                    '而这里还有一个更深的机制在起作用：大脑是一个极其擅长偷懒的器官。当你长期坚持做同一件事，它不会一直停留在最初吃力的状态，而会逐渐演变成一件越来越省力的事——原本需要刻意专注的动作，会慢慢变成自然的习惯，甚至成为本能。DragonCard 利用的，正是这个机制。',
-                    '它提供的不是魔法，而是一个简单的容器：你把知识放进去，然后把"重复"这件最朴素的事，交给每天都来的自己。久而久之，你会发现记忆的潜力远比想象中更大——而这，正是探索自己记忆潜力的方式。'
-                ],
-                table: [
-                    ['维度', 'Anki', 'DragonCard'],
-                    ['调度单元', '单张卡片独立计算下次复习时间', '完整有序列表为单元，靠排序实现优先级'],
-                    ['时间约束', '严格日期驱动', '弹性，什么时候继续、间隔多久由使用者决定'],
-                    ['熟词处理', '达标后降低复习频率，甚至退出复习池', '全程保留在列表尾部，轻量刷一遍维持记忆'],
-                    ['优势', '理论记忆效率上限更高', '流程简单稳定、断卡后更容易续上、保留词条上下文顺序'],
-                    ['短板', '任务量不可控，断卡后维护成本高', '不会精准在遗忘临界点触发复习，单条记忆效率理论上限略低']
+                    '一个卡组由卡片数据和可选绑定的小工具组成。小工具可以有自己的卡片样式与操作，通过 window.cardAPI 与 DragonCard 读取卡片、保存标记和记录学习事件。',
+                    'DragonCard 不按日期强制安排复习。标记未掌握的卡片后，手动执行「轮回」会将未掌握卡片排到前面，并记录新一轮；何时继续学习由你决定。'
                 ]
             },
             sections: [
                 {
-                    title: '一、快速开始',
+                    title: '快速开始',
                     blocks: [
                         { type: 'steps', items: [
-                            '点击「新建卡组」，填写名称并选择类型（语言 / 知识 / 逻辑 / 技能 / 其它）。',
-                            '进入卡组 → 点击「管理卡组」→ 在「模板」区上传模板文件（JSON）。',
-                            '在「数据」区上传数据文件（JSON），然后返回目录开始学习。'
+                            '点击「新建卡组」，填写名称并选择分类。',
+                            '打开卡组管理，上传小工具 zip 绑定到卡组。zip 根目录必须有 index.html；manifest.json 用于声明工具名称、语言等信息。',
+                            '在卡组数据区上传 cards.json。建议使用对象数组，每条包含从 1 开始的 item_order 和 data。',
+                            '回到首页点击卡组，即可在新标签页打开绑定的小工具。'
                         ] }
                     ]
                 },
                 {
-                    title: '二、卡组管理',
+                    title: '卡组与小工具',
                     blocks: [
-                        { type: 'p', text: '点击卡组卡片右上角的齿轮图标（鼠标悬停显示）打开管理面板。' },
+                        { type: 'p', text: '点击卡组卡片右上角的管理按钮，打开卡组管理面板。一个卡组绑定一个小工具。' },
                         { type: 'ul', items: [
-                            '类型与图标：每种类型有专属图标与配色，可在管理面板中修改类型。',
-                            '模板区：每个卡组最多绑定 3 个模板，点击卡片可预览渲染效果，点击底部圆点可设为当前模板。',
-                            '数据区：显示数据条数，支持上传（JSON）、导出、重新打乱。'
+                            '上传工具：选择 tool.zip 绑定到卡组；重新上传可替换当前工具，下载可导出工具 zip，解绑只解除关联，不删除卡组数据。',
+                            '工具结构：index.html 必须位于 zip 根目录。工具所需的 CSS、JavaScript、图片等资源应放在 zip 内。manifest.json 可声明 name、lang、description、fields 和 trackedActions。',
+                            '卡组分类只用于整理和筛选，不会改变卡组数据或工具的运行方式。'
                         ] }
                     ]
                 },
                 {
-                    title: '三、开始学习',
+                    title: '导入与导出卡片数据',
                     blocks: [
-                        { type: 'p', text: '点击卡组卡片主体进入学习视图。目录页按每页 100 张分页，点击页码打开学习页。' },
                         { type: 'ul', items: [
-                            '单卡模式：点击顶栏「网格」图标切换，用左右方向键或空格键翻卡。',
-                            '发音：点击卡片上的喇叭按钮，TTS 会按模板语言自动选择语音朗读当前词。',
-                            '语音选择：顶栏麦克风图标，语音按语言分组显示，选择后按语言记忆。',
-                            '标记与收藏：星星标记生词/已掌握，书签收藏重点卡片。',
-                            '切换释义：眼睛按钮控制释义/翻译的显示与隐藏。'
+                            '数据格式：支持 JSON 对象数组，也支持 { "items": [...] }。推荐每条使用 { "item_order": 1, "data": { ... } } 结构。',
+                            'item_order：建议从 1 开始连续编号。重复导入时，编号相同的卡片会更新；新增编号会添加卡片；文件中缺少的编号会从卡组移除。',
+                            '学习记录：更新同一编号的卡片会保留对应学习进度；导入前如果不确定，请先导出一份数据备份。',
+                            '管理面板中的「导出数据」导出卡片 JSON；工具 zip 可通过工具区域的下载操作单独导出。'
                         ] }
                     ]
                 },
                 {
-                    title: '四、学习引擎',
+                    title: '学习、标记与轮回',
                     blocks: [
-                        { type: 'p', text: '学习引擎保持固定，模板只负责外观与交互。' },
+                        { type: 'p', text: '卡组打开后由绑定的小工具负责呈现卡片和学习操作，因此不同工具的按钮和界面可能不同。' },
                         { type: 'ul', items: [
-                            '标记机制：标记为「未掌握」的卡片会前移，已掌握的靠后。',
-                            '重新打乱：管理面板数据区的「旋转」按钮，输入确认短语后打乱所有卡片顺序并开启新学习轮次。',
-                            '进度持久化：学习进度、标记状态自动保存，重新进入卡组不丢失。'
+                            '工具可通过 window.cardAPI 分页读取卡片，并按需保存未掌握、收藏和交互事件。支持哪些操作由具体工具决定。',
+                            '标记未掌握不会按日期自动安排复习。执行「轮回」时，卡片按 item_order 重新排列，未掌握的排在前面，并开始新一轮。',
+                            '学习进度、标记和轮次会保存在 DragonCard 中，重新打开卡组后仍可继续。'
                         ] }
                     ]
                 },
                 {
-                    title: '五、数据与备份',
+                    title: '统计与成就',
                     blocks: [
                         { type: 'ul', items: [
-                            '导出数据：管理面板数据区「下载」按钮，导出当前卡组的 JSON 数据。',
-                            '导入数据：支持 JSON，按 item_order 同名数据会覆盖更新。',
-                            '模板备份：删除模板时自动备份到服务器的 backups/ 目录，可恢复。'
+                            '首页卡组卡片展示卡片数量、掌握情况、轮次和今年的学习天数。',
+                            '统计页可查看学习活动和卡组数据；成就页展示连续学习、轮次和互动等记录。'
                         ] }
                     ]
                 },
                 {
-                    title: '六、统计与成就',
+                    title: '语言、主题与常见问题',
                     blocks: [
                         { type: 'ul', items: [
-                            '数据统计：热力图（全年活动分布）、日/周/月视图，可按卡组筛选。',
-                            '掌握统计：卡组内热力图、掌握分布、学习轮次金字塔。',
-                            '成就系统：称号（按卡组学习轮次升级）、连续学习天数、卡组数量、互动次数等成就。'
-                        ] }
-                    ]
-                },
-                {
-                    title: '七、语言与外观',
-                    blocks: [
-                        { type: 'ul', items: [
-                            '语言切换：主页顶栏「中/EN」按钮，切换中文与英文界面。',
-                            '深色模式：主页顶栏月亮/太阳按钮切换。',
-                            '字体大小：学习视图顶栏「A」按钮调节卡片内容字号。'
-                        ] }
-                    ]
-                },
-                {
-                    title: '八、常见问题（FAQ）',
-                    blocks: [
-                        { type: 'ul', items: [
-                            '卡片空白 / 未渲染：模板未正确加载。请确认已上传模板且设为当前模板，刷新页面重试。',
-                            '发音不对：确认模板的 lang 字段（如 en/ja/zh），并在语音选择中为该语言选择可用语音。',
-                            '没有声音：浏览器需支持 speechSynthesis，且需在支持的网络环境中（部分语音为在线服务）。',
-                            '数据导入失败：JSON 需为对象数组或 { items: [...] } 结构。'
+                            '界面语言：使用首页顶栏的中/EN 按钮切换中文和英文。',
+                            '明暗主题：点击月亮/太阳按钮切换浅色和深色主题；选择会保存在当前浏览器。',
+                            '没有声音：朗读由浏览器 Web Speech API 提供，请确认浏览器支持语音合成，并检查系统可用语音。',
+                            '小工具打不开：确认卡组已绑定工具，并确认 zip 根目录包含 index.html。',
+                            '导入后卡片变化：导入会按 item_order 同步卡片；文件里不存在的编号会从卡组移除。重要数据建议先导出备份。'
                         ] }
                     ]
                 }
             ]
         },
         en: {
-            intro: 'DragonCard is a generic flashcard learning framework: data, template, and engine are decoupled. Study anything with custom card templates.',
-            philosophy: {
-                title: 'Foreword: This is not Anki',
+            intro: 'DragonCard keeps card data separate from presentation: a deck stores cards and can bind one tool to render them and provide interactions.',
+            principle: {
+                title: 'How DragonCard works',
                 paragraphs: [
-                    'DragonCard is not Anki. It has no complex spaced-repetition algorithm—only a very simple way of classifying and learning: knowledge is presented to you quickly; you mark what you have not mastered, mastered items move forward, difficult ones come to the front. That is all. It does not schedule your reviews or promise "memorized in N days".',
-                    'Because the essence of memory is never technique—it is repetition. Ebbinghaus proved with a lifetime of work that repetition is the key to memory. So what we trust in is you—your own persistence. Keep at it, and the results will come.',
-                    'There is a deeper mechanism at work here: the brain is an organ extremely good at taking the easy way out. When you persist at the same thing for a long time, it will not stay in that initial hard state—it gradually evolves into something easier and easier. Actions that once required deliberate focus slowly become natural habits, even instinct. DragonCard leverages exactly this mechanism.',
-                    'What it offers is not magic, but a simple container: you put knowledge in, and leave the simplest act of all—repetition—to the self that shows up every day. Over time, you will discover that the potential of memory is far greater than you imagined. And this is exactly how you explore your own memory\'s potential.'
-                ],
-                table: [
-                    ['Aspect', 'Anki', 'DragonCard'],
-                    ['Scheduling unit', 'Each card independently computes its next review time', 'The whole ordered list is the unit; priority via sorting'],
-                    ['Time constraint', 'Strictly date-driven', 'Flexible — when and how often is up to the learner'],
-                    ['Mastered words', 'Lower review frequency, may leave the study pool', 'Stay at the list tail, lightly reviewed to maintain memory'],
-                    ['Strength', 'Higher theoretical memory efficiency', 'Simple & stable, easy to resume after a break, keeps context order'],
-                    ['Weakness', 'Unpredictable workload, costly to maintain after a break', 'No precise recall-at-edge-of-forgetting; slightly lower per-item theoretical ceiling']
+                    'A deck consists of card data and an optional bound tool. A tool defines its own card presentation and controls, and uses window.cardAPI to read cards, save marks, and record learning events.',
+                    'DragonCard does not schedule reviews by date. After marking cards as unknown, use Samsara to move them to the front and record a new round. You decide when to study again.'
                 ]
             },
             sections: [
                 {
-                    title: '1. Quick Start',
+                    title: 'Quick start',
                     blocks: [
                         { type: 'steps', items: [
-                            'Click "New Deck", enter a name and pick a type (Language / Knowledge / Logic / Skill / Other).',
-                            'Open the deck → click "Manage deck" → upload a template file (JSON) in the Templates area.',
-                            'Upload a data file (JSON) in the Data area, then return to the catalogue to start studying.'
+                            'Click “New Deck”, enter a name, and choose a category.',
+                            'Open deck management and upload a tool zip to bind it. The zip must contain index.html at its root; manifest.json can declare the tool name, language, and other metadata.',
+                            'Upload cards.json in the deck data area. Use an array of objects with item_order (starting at 1) and data for each card.',
+                            'Return to the home page and open the deck. Its bound tool launches in a new tab.'
                         ] }
                     ]
                 },
                 {
-                    title: '2. Deck Management',
+                    title: 'Decks and tools',
                     blocks: [
-                        { type: 'p', text: 'Hover a deck card and click the gear icon (top-right) to open the management panel.' },
+                        { type: 'p', text: 'Click the management button at the top-right of a deck card to open its management panel. Each deck binds one tool.' },
                         { type: 'ul', items: [
-                            'Type & icon: each type has its own icon and color; you can change the type in the management panel.',
-                            'Templates: up to 3 templates per deck. Click a card to preview, click the dot at the bottom to set it active.',
-                            'Data: shows item count; supports upload (JSON), export, and shuffle.'
+                            'Upload a tool: choose tool.zip to bind it. Upload again to replace the current tool, download to export its zip, or unbind it without deleting the deck data.',
+                            'Tool structure: index.html must be at the zip root. Include required CSS, JavaScript, images, and other assets in the zip. manifest.json can declare name, lang, description, fields, and trackedActions.',
+                            'Deck categories help organize and filter decks; they do not change deck data or how a tool runs.'
                         ] }
                     ]
                 },
                 {
-                    title: '3. Start Studying',
+                    title: 'Importing and exporting cards',
                     blocks: [
-                        { type: 'p', text: 'Click the deck card body to enter study view. The catalogue paginates at 100 cards per page; click a page number to open it.' },
                         { type: 'ul', items: [
-                            'Single-card mode: toggle with the grid icon in the top bar; use arrow keys or Space to flip.',
-                            'Pronunciation: click the speaker on a card; TTS picks the right voice automatically by the template language.',
-                            'Voice picker: the mic icon in the top bar; voices are grouped by language and remembered per language.',
-                            'Mark & favorite: star marks unknown/mastered, bookmark favorites key cards.',
-                            'Toggle definition: the eye button shows/hides the translation.'
+                            'Data format: a JSON array of objects or { "items": [...] }. Each item should contain item_order and data, for example { "item_order": 1, "data": { ... } }.',
+                            'item_order: use consecutive numbers starting at 1. Re-importing updates matching numbers, adds new numbers, and removes cards whose numbers are absent from the file.',
+                            'Study progress: updating a card at the same item_order keeps its progress. Export a backup first if you are unsure about the import.',
+                            'Use “Export data” in deck management to export card JSON. The tool zip can be downloaded separately from the tool section.'
                         ] }
                     ]
                 },
                 {
-                    title: '4. Learning Engine',
+                    title: 'Studying, marking, and Samsara',
                     blocks: [
-                        { type: 'p', text: 'The learning engine is fixed; templates only define look and interaction.' },
+                        { type: 'p', text: 'The bound tool presents the cards and study controls, so buttons and interactions may differ between tools.' },
                         { type: 'ul', items: [
-                            'Marking: cards marked "unknown" move forward, mastered ones fall behind.',
-                            'Shuffle: use the rotate button in the Data area, type the confirm phrase to reshuffle all cards and start a new round.',
-                            'Persistence: progress and marks are saved automatically and survive re-entering the deck.'
+                            'A tool can use window.cardAPI to read paginated cards and, as needed, save unknown marks, favorites, and interaction events. Available actions depend on the tool.',
+                            'Unknown marks do not schedule date-based reviews. Samsara reorders cards by item_order, placing unknown cards first, and starts a new round.',
+                            'Progress, marks, and rounds are stored by DragonCard and remain available when you reopen a deck.'
                         ] }
                     ]
                 },
                 {
-                    title: '5. Data & Backup',
+                    title: 'Statistics and achievements',
                     blocks: [
                         { type: 'ul', items: [
-                            'Export data: the download button in the Data area exports the deck as JSON.',
-                            'Import data: supports JSON; entries are aligned by item_order and overwritten.',
-                            'Template backup: deleting a template auto-backups it to the server backups/ directory.'
+                            'Deck cards on the home page show card count, mastery, rounds, and study days this year.',
+                            'The Statistics page shows study activity and deck data; Achievements tracks streaks, rounds, interactions, and other milestones.'
                         ] }
                     ]
                 },
                 {
-                    title: '6. Statistics & Achievements',
+                    title: 'Language, theme, and FAQ',
                     blocks: [
                         { type: 'ul', items: [
-                            'Data stats: yearly heatmap, day/week/month views, filterable by deck.',
-                            'Mastery stats: per-deck heatmap, state distribution, and study-round pyramid.',
-                            'Achievements: titles (level up by study rounds), study streak, deck count, and interaction counts.'
-                        ] }
-                    ]
-                },
-                {
-                    title: '7. Language & Appearance',
-                    blocks: [
-                        { type: 'ul', items: [
-                            'Language: the "中/EN" button in the home top bar switches between Chinese and English.',
-                            'Dark mode: the moon/sun button in the home top bar.',
-                            'Font size: the "A" button in the study top bar adjusts card content size.'
-                        ] }
-                    ]
-                },
-                {
-                    title: '8. FAQ',
-                    blocks: [
-                        { type: 'ul', items: [
-                            'Blank / unrendered cards: the template may not be loaded. Make sure a template is uploaded and set active, then refresh.',
-                            'Wrong pronunciation: check the template lang field (e.g. en/ja/zh) and pick an available voice for that language.',
-                            'No sound: your browser must support speechSynthesis; some voices are online services and need network access.',
-                            'Import fails: JSON must be an array of objects or { items: [...] }.'
+                            'Interface language: use the 中/EN button in the home header to switch between Chinese and English.',
+                            'Light/dark theme: use the moon/sun button in the home header. The choice is saved in this browser.',
+                            'No audio: speech uses the browser Web Speech API. Check browser support and the voices available on your system.',
+                            'A tool will not open: confirm that the deck has a bound tool and that index.html is at the zip root.',
+                            'Cards changed after import: imports synchronize by item_order; cards absent from the file are removed. Export a backup first if the data is important.'
                         ] }
                     ]
                 }
@@ -221,18 +159,23 @@
         }
     };
 
-    function escapeHtml(s) {
-        if (s === null || s === undefined) return '';
-        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    function escapeHtml(value) {
+        if (value === null || value === undefined) return '';
+        return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
 
     function renderBlock(block) {
         if (block.type === 'p') return '<p>' + escapeHtml(block.text) + '</p>';
         if (block.type === 'ul') {
-            return '<ul>' + block.items.map(function (it) { return '<li>' + escapeHtml(it) + '</li>'; }).join('') + '</ul>';
+            return '<ul>' + block.items.map(function (item) {
+                return '<li>' + escapeHtml(item) + '</li>';
+            }).join('') + '</ul>';
         }
         if (block.type === 'steps') {
-            return '<ol class="docs-steps">' + block.items.map(function (it) { return '<li>' + escapeHtml(it) + '</li>'; }).join('') + '</ol>';
+            return '<ol class="docs-steps">' + block.items.map(function (item) {
+                return '<li>' + escapeHtml(item) + '</li>';
+            }).join('') + '</ol>';
         }
         return '';
     }
@@ -242,41 +185,32 @@
         if (!container) return;
         var lang = (window.i18n && window.i18n.lang === 'en') ? 'en' : 'zh';
         var doc = DOCS[lang] || DOCS.zh;
-
         var html = '<div class="docs-intro">' + escapeHtml(doc.intro) + '</div>';
 
-        if (doc.philosophy) {
-            html += '<div class="docs-philosophy">';
-            html += '<h3>' + escapeHtml(doc.philosophy.title) + '</h3>';
-            doc.philosophy.paragraphs.forEach(function (p) {
-                html += '<p>' + escapeHtml(p) + '</p>';
+        if (doc.principle) {
+            html += '<section class="docs-philosophy"><h3>' + escapeHtml(doc.principle.title) + '</h3>';
+            doc.principle.paragraphs.forEach(function (paragraph) {
+                html += '<p>' + escapeHtml(paragraph) + '</p>';
             });
-            if (doc.philosophy.table) {
-                html += '<table class="docs-compare">';
-                html += '<thead><tr><th>' + escapeHtml(doc.philosophy.table[0][0]) + '</th><th>' + escapeHtml(doc.philosophy.table[0][1]) + '</th><th>' + escapeHtml(doc.philosophy.table[0][2]) + '</th></tr></thead>';
-                html += '<tbody>';
-                for (var ti = 1; ti < doc.philosophy.table.length; ti++) {
-                    html += '<tr>';
-                    for (var tj = 0; tj < doc.philosophy.table[ti].length; tj++) {
-                        html += '<td>' + escapeHtml(doc.philosophy.table[ti][tj]) + '</td>';
-                    }
-                    html += '</tr>';
-                }
-                html += '</tbody></table>';
-            }
-            html += '</div>';
+            html += '</section>';
         }
 
-        doc.sections.forEach(function (sec) {
-            html += '<div class="docs-section"><h3>' + escapeHtml(sec.title) + '</h3>';
-            sec.blocks.forEach(function (b) { html += renderBlock(b); });
-            html += '</div>';
+        html += '<nav class="docs-toc" aria-label="' + (lang === 'en' ? 'Guide sections' : '文档章节') + '">';
+        doc.sections.forEach(function (section, index) {
+            html += '<a href="#docs-section-' + index + '">' + escapeHtml(section.title) + '</a>';
+        });
+        html += '</nav>';
+
+        doc.sections.forEach(function (section, index) {
+            html += '<section class="docs-section" id="docs-section-' + index + '"><h3>' + escapeHtml(section.title) + '</h3>';
+            section.blocks.forEach(function (block) { html += renderBlock(block); });
+            html += '</section>';
         });
         container.innerHTML = html;
 
         var headerP = document.querySelector('#ph-docs .docs-header p');
-        if (headerP) headerP.textContent = lang === 'en' ? 'DragonCard User Guide' : 'DragonCard 使用说明';
+        if (headerP) headerP.textContent = lang === 'en' ? 'A practical guide to your decks and tools' : '卡组与小工具使用指南';
         var headerH2 = document.querySelector('#ph-docs .docs-header h2');
-        if (headerH2) headerH2.textContent = lang === 'en' ? 'Documentation' : '使用文档';
+        if (headerH2) headerH2.textContent = lang === 'en' ? 'User guide' : '使用文档';
     };
 })();
