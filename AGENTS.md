@@ -64,7 +64,7 @@ models.py         SQLAlchemy models (User, Deck, Tool, DeckItem, Progress, ...)
 config.py         Config (env overridable)
 seed_decks.py     CLI to import default_cards/ free decks
 default_cards/    bundled deck packs (tool.zip + cards.json + meta)
-static/           SPA: app.js (home/manage/i18n/skins), styles.css, vendor/
+static/           SPA: app.js (home/manage/i18n/theme), styles.css, vendor/
 templates/index.html  single-page shell
 playground.html   standalone demo page (served at /playground)
 minitools/        extracted tool zips at runtime (gitignored)
@@ -82,8 +82,8 @@ Key concepts:
 - `Deck.to_dict()` returns per-deck stats used by the home grid
   (item_count / unknown / mastered / round_count / year_study_days /
   last_studied_at). `_study_activity_map` computes study activity in one query.
-- The UI is a vanilla-JS SPA; all state lives in `static/app.js`
-  (including `_deckKindFilter`, skin system, i18n, single-card study mode).
+- The UI is a vanilla-JS SPA; app state and home/manage flows live in
+  `static/app.js` (including `_deckKindFilter`, light/dark theme, and i18n).
 
 ## API overview (all JSON)
 
@@ -119,12 +119,8 @@ Key concepts:
 - The app listens on `0.0.0.0:5001`; port is at the end of `app.py`
   (`app.run(host='0.0.0.0', port=5001)`).
 - TTS uses the browser's Web Speech API (no server dependency).
-- Skins are front-end only (CSS variable overrides + a `pointer-events:none`
-  decoration layer). Skin CSS must **not** change layout widths or
-  card-content variables.
-- The built-in themed skins live in `static/app.js` `SKINS`; card
-  content variables are intentionally untouched so tool cards keep their
-  user-defined look.
+- The host UI has light/dark modes. Tools run as separate pages and own their
+  card styling; host theme changes must not override tool-defined card looks.
 - `minitools/<id>.retired-<hex>/` dirs are **intentional** recovery backups
   from the atomic tool replace (old dir renamed aside, staging swapped in);
   `minitools/` is gitignored, and stale `.retired-*`/`.staging-*` dirs can

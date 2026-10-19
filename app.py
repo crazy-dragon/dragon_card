@@ -169,8 +169,6 @@ def update_user(user_id):
     return jsonify({'success': True, 'user': u.to_dict()})
 
 
-# ==================== Template ====================
-
 # ==================== Tool (zip 小工具) ====================
 
 def _tool_dir(tool):

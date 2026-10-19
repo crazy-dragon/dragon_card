@@ -184,7 +184,7 @@ class LearningEvent(db.Model):
 
 
 class Tool(db.Model):
-    """全屏 zip 小工具（模板）：独立离线 H5 应用，数据/排序/进度/埋点由本体桥接。
+    """全屏 zip 小工具：独立离线 H5 应用，数据/排序/进度/埋点由本体桥接。
     存储：文件系统 minitools/<id>/（index.html + manifest.json + assets/），DB 只存元数据。"""
     __tablename__ = 't_tool'
 

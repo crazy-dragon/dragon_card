@@ -16,19 +16,15 @@ Contents / 内容
 
 Models / 模型文件
 -----------------
-The .glb files ship **inside the tool** (tool.zip → assets/models/), so
-the zip is self-contained and works even without the host's
-static/media/. Card data may still point at /static/media/*.glb — the
-tool maps both to its bundled copy, and falls back to the original URL
-if the bundled file is missing.
+The .glb files ship **inside the tool** (tool.zip → assets/models/).
+The cards refer to these bundled files by name (`trex.glb`, `ptero.glb`);
+no host-side model files are needed.
 
-Note: the host must allow .glb in TOOL_EXT_WHITELIST (app.py), otherwise
-the asset route returns 403.
+The host tool-asset route allows `.glb` in `TOOL_EXT_WHITELIST` (app.py).
 
 模型**随工具 zip 自带**（assets/models/），zip 脱离宿主分发也能跑。
-卡片数据里的 model 字段写宿主路径（/static/media/*.glb）也没关系——
-工具会等价映射到自带资源；自带文件缺失时回退原始地址。
-注意：宿主 app.py 的 TOOL_EXT_WHITELIST 需放行 .glb，否则资源路由 403。
+卡片数据的 model 字段使用文件名（`trex.glb`、`ptero.glb`），无需在宿主
+单独放置模型文件。宿主工具资源路由在 `TOOL_EXT_WHITELIST` 中放行 `.glb`。
 
 Using the tool / 使用小工具
 ---------------------------

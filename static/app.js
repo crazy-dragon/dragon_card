@@ -17,9 +17,6 @@ var state = {
     skinId: localStorage.getItem('dc-skin-id') || (localStorage.getItem('dc-dark-theme') === '1' ? 'dark' : 'default'),
     soundEnabled: localStorage.getItem('dc-sound') !== '0',
     enteredPages: new Set(),
-    singleCardMode: false,
-    singleCardIndex: 0,
-    _singleCard3D: false,
 };
 
 /* Callback held while the import-confirm modal is open */
@@ -291,87 +288,29 @@ my-tool/
 
 管理卡组 → 上传 zip 绑定 / 重新上传 / 下载 / 解绑；进入卡组即打开工具。`;
 
-/* ===== Skin System =====
-   default = light (no decor), dark = dark mode (no decor).
-   Custom skins can add side-gutter decor + optional CSS overrides.
-   Skins are independent; switching to a skin fully replaces the previous one. */
-var SKINS = {
-    default: { id: 'default', name: 'Default', icon: 'fa-sun', dark: false, css: '', html: '', js: '' },
-    dark:    { id: 'dark', name: 'Dark', icon: 'fa-moon', dark: true, css: '', html: '', js: '' },
-    ocean: { id: 'ocean', name: 'Ocean', icon: 'fa-water', dark: false, css: 'body[data-skin="ocean"]{--hp-primary:#1f7fbf;--hp-primary-soft:rgba(31,127,191,.10);--hp-primary-dark:#1a6fa3;--hp-success:#1f9d6b;--hp-warning:#d9a441;--hp-danger:#d24d57;--hp-bg:#dcf0f6;--hp-card:#f4fbfd;--hp-sidebar:#e3f2f6;--hp-header:#f4fbfd;--hp-border:#b7d8e2;--hp-text:#123d50;--hp-text-sub:#3d667a;--hp-text-light:#7ea3b3;--hp-shadow:0 4px 24px rgba(0,0,0,.05);--hp-shadow-hover:0 8px 30px rgba(31,127,191,.15);--study-bg:#d9eef4;--study-bg-end:#c8e6ef;--study-sidebar:#f0fafd;--study-card-bg:#ffffff;--study-content-bg:#d9edf3;--study-shadow:0 4px 20px rgba(0,0,0,.06);--study-shadow-hover:0 8px 30px rgba(31,127,191,.15)}body[data-skin="ocean"] .app-main{background:linear-gradient(180deg,#e8f6fa,#cfe9f2)}', html: '', js: '' },
-    starry: { id: 'starry', name: 'Starry', icon: 'fa-star', dark: true, css: 'body[data-skin="starry"]{--hp-bg:#0e1430;--hp-card:#1a2140;--hp-sidebar:#111735;--hp-header:#161e3a;--hp-border:#2b3560;--hp-text:#e8ecff;--hp-text-sub:#a6b0d8;--hp-text-light:#7e89b5;--hp-primary:#8ba0f0;--hp-primary-soft:rgba(139,160,240,.16);--hp-primary-dark:#6f86e0;--hp-success:#5ad6a0;--hp-warning:#e0b352;--hp-danger:#f0697a;--hp-shadow:0 4px 24px rgba(0,0,0,.45);--hp-shadow-hover:0 8px 30px rgba(139,160,240,.25);--study-bg:#0c1128;--study-bg-end:#0c1128;--study-sidebar:#141b38;--study-card-bg:#1c2344;--study-content-bg:#121a34;--study-shadow:0 4px 20px rgba(0,0,0,.35);--study-shadow-hover:0 8px 30px rgba(0,0,0,.45)}body[data-skin="starry"] .app-main{background:radial-gradient(circle at 50% 0%,#2a3566,#0e1430 70%)}', html: '', js: '' },
-    scifi: { id: 'scifi', name: 'Sci-Fi', icon: 'fa-microchip', dark: true, css: 'body[data-skin="scifi"]{--hp-bg:#0a0f1a;--hp-card:#10161f;--hp-sidebar:#0c1119;--hp-header:#0f1620;--hp-border:#1f3341;--hp-text:#d6f5f5;--hp-text-sub:#8fb6bd;--hp-text-light:#5f838c;--hp-primary:#22d3ee;--hp-primary-soft:rgba(34,211,238,.15);--hp-primary-dark:#0ea5c4;--hp-success:#34d399;--hp-warning:#f0b857;--hp-danger:#f87171;--hp-shadow:0 4px 24px rgba(0,0,0,.5);--hp-shadow-hover:0 8px 30px rgba(34,211,238,.28);--study-bg:#08101a;--study-bg-end:#08101a;--study-sidebar:#0f1a26;--study-card-bg:#122233;--study-content-bg:#0d1a26;--study-shadow:0 4px 20px rgba(0,0,0,.4);--study-shadow-hover:0 8px 30px rgba(0,0,0,.5)}body[data-skin="scifi"] .app-main{background:linear-gradient(180deg,#0b141f,#08101a)}', html: '', js: '' },
-};
-
-var _skinStyleEl = null;
-var _skinDecoEl = null;
-var _skinJsFn = null;
-
+/* Light/dark appearance modes. Older palette-only skin IDs are normalized below. */
 function applySkin() {
     var id = state.skinId;
-    var skin = SKINS[id] || SKINS['default'];
-    state.skinId = skin.id;
-    state.darkTheme = !!skin.dark;
-
-    /* body class + attribute for CSS scoping */
+    if (id !== 'default' && id !== 'dark') {
+        // Preserve the closest base mode for users who had selected a removed palette.
+        id = (id === 'starry' || id === 'scifi') ? 'dark' : 'default';
+    }
+    state.skinId = id;
+    state.darkTheme = id === 'dark';
     document.body.classList.toggle('dark-mode', state.darkTheme);
-    document.body.dataset.skin = skin.id;
-
-    /* inject skin CSS */
-    if (skin.css) {
-        if (!_skinStyleEl) {
-            _skinStyleEl = document.createElement('style');
-            _skinStyleEl.id = 'skin-css';
-            document.head.appendChild(_skinStyleEl);
-        }
-        _skinStyleEl.textContent = skin.css;
-    } else if (_skinStyleEl) {
-        _skinStyleEl.textContent = '';
-    }
-
-    /* inject decoration layer */
-    if (skin.html) {
-        if (!_skinDecoEl) {
-            _skinDecoEl = document.createElement('div');
-            _skinDecoEl.id = 'skin-deco';
-            _skinDecoEl.className = 'skin-deco';
-            document.body.appendChild(_skinDecoEl);
-        }
-        _skinDecoEl.innerHTML = skin.html;
-    } else if (_skinDecoEl) {
-        _skinDecoEl.innerHTML = '';
-    }
-
-    /* run optional skin JS */
-    if (_skinJsFn) { try { _skinJsFn(); } catch (e) {} }
-    _skinJsFn = null;
-    if (skin.js) {
-        try { _skinJsFn = new Function(skin.js)(); } catch (e) {}
-    }
-
-    localStorage.setItem('dc-skin-id', skin.id);
+    document.body.dataset.skin = id;
+    localStorage.setItem('dc-skin-id', id);
     localStorage.setItem('dc-dark-theme', state.darkTheme ? '1' : '0');
-    renderSkinList();
+    var btn = $('#dark-theme-btn');
+    if (btn) {
+        btn.innerHTML = '<i class="fa-solid ' + (state.darkTheme ? 'fa-sun' : 'fa-moon') + '"></i>';
+        btn.setAttribute('aria-label', t('skin.toggle'));
+    }
 }
 
-function renderSkinList() {
-    var list = $('#skin-list');
-    if (!list) return;
-    var html = '';
-    Object.keys(SKINS).forEach(function (id) {
-        var s = SKINS[id];
-        var active = state.skinId === id ? ' active' : '';
-        html += '<div class="skin-option' + active + '" data-skin-option="' + id + '"><i class="fa-solid ' + s.icon + '"></i><span>' + (t('skin.' + id) || s.name) + '</span></div>';
-    });
-    list.innerHTML = html;
-}
-
-function toggleSkinDropdown(force) {
-    var dd = $('#skin-dropdown');
-    if (!dd) return;
-    var show = force !== undefined ? force : dd.style.display === 'none';
-    dd.style.display = show ? 'block' : 'none';
-    if (show) renderSkinList();
+function toggleTheme() {
+    state.skinId = state.darkTheme ? 'default' : 'dark';
+    applySkin();
 }
 
 /* ===== i18n ===== */
@@ -390,6 +329,9 @@ function applyStaticI18n() {
         el.setAttribute('data-tooltip', t(el.dataset.i18nTooltip));
         el.setAttribute('title', t(el.dataset.i18nTooltip));
     });
+    document.querySelectorAll('[data-i18n-aria-label]').forEach(function (el) {
+        el.setAttribute('aria-label', t(el.dataset.i18nAriaLabel));
+    });
 }
 
 /* Toggle language and refresh the whole app view */
@@ -397,7 +339,6 @@ function toggleLang() {
     if (!window.i18n) return;
     window.i18n.toggle();
     applyStaticI18n();
-    renderSkinList();
     updateLangBtn();
     renderSagesPop();
     /* Re-render current view so dynamic text updates */
@@ -407,7 +348,7 @@ function toggleLang() {
     if (achPage && achPage.classList.contains('visible')) {
         loadAchievements();
     }
-    /* Refresh manage modal if open so template list / preview stay intact */
+    /* Refresh the tool/data management panel if it is open. */
     var manageModal = $('#manage-modal');
     if (manageModal && manageModal.style.display === 'flex' && _manageDeckId) {
         openManageModal(_manageDeckId);
@@ -523,7 +464,7 @@ function renderDeckList(forceRefresh) {
             html += '</div>';
             html += '</div>';
 
-            /* Description: tool description (falls back to template description). */
+            /* Description supplied by the bound tool. */
             html += '<div class="deck-desc" title="' + (deck.tool_description ? escapeHtml(deck.tool_description) : '') + '">' + (deck.tool_description ? escapeHtml(deck.tool_description) : t('home.notBound')) + '</div>';
 
             /* Stats (mastered count left, study rounds right) */
@@ -590,7 +531,7 @@ function updateHomeStats(decks) {
     }
 }
 
-/* ===== Study Mode ===== */
+/* ===== Open a deck's bound tool ===== */
 function enterDeck(deckId) {
     state.deckId = deckId;
     state.cards = {};
@@ -636,13 +577,12 @@ function initApp() {
     });
     applySkin();
     applyStaticI18n();
-    renderSkinList();
     updateLangBtn();
     localStorage.removeItem('dc-card-font-weight');
     applyCardFont();
     initSages();
 
-    /* Templates are uploaded later inside the deck management modal */
+    /* Tools and deck data are added later from the deck management modal. */
 }
 
 /* ===== Stats ===== */
@@ -667,7 +607,7 @@ function renderVoiceDropdown() {
     var currentLang = voiceMgr._currentLang;
     var currentPrimary = currentLang ? voiceMgr._primary(currentLang) : null;
 
-    /* Filter voices to the current template's language when in study mode */
+    /* Filter voices to the selected pronunciation language. */
     var voices = voiceMgr.voices;
     /* 隐藏「变声玩具」音色；若该语言下全是玩具（理论上不会）就退回完整列表，免得下拉空掉 */
     var realVoices = voices.filter(function (v) { return !voiceMgr.isToy(v); });
@@ -1564,7 +1504,7 @@ function unbindToolFromDeck(deckId) {
     }).catch(function () { showToast(t('common.loadFailed'), true); });
 }
 
-/* ===== Create Deck (with kind picker + template select) ===== */
+/* ===== Create Deck (with kind picker) ===== */
 var _newDeckKind = 'other';
 
 function renderKindPicker(containerId, selected) {
@@ -1846,11 +1786,6 @@ function setupEventListeners() {
 
 
         /* Close skin dropdown when clicking outside it */
-        if (!target.closest('#skin-toggle-wrap')) {
-            var skinDd = $('#skin-dropdown');
-            if (skinDd && skinDd.style.display === 'block') toggleSkinDropdown(false);
-        }
-
         /* Global sidebar navigation */
         var gsItem = target.closest('.gs-nav-item');
         if (gsItem) {
@@ -1995,13 +1930,13 @@ function setupEventListeners() {
 
         /* How To */
         if (target.closest('#howto-btn')) {
-            showModal('template-api');
+            showModal('tool-api');
             var el = $('#api-md-content');
             if (el && !el.dataset.loaded) { el.textContent = TOOL_API_MD; el.dataset.loaded = '1'; }
             return;
         }
-        if (target.closest('#template-api-modal-close') || (target.closest('#template-api-modal') && !target.closest('.modal'))) {
-            hideModal('template-api'); return;
+        if (target.closest('#tool-api-modal-close') || (target.closest('#tool-api-modal') && !target.closest('.modal'))) {
+            hideModal('tool-api'); return;
         }
         if (target.closest('#copy-api-btn')) {
             var text = $('#api-md-content');
@@ -2060,22 +1995,9 @@ function setupEventListeners() {
             return;
         }
 
-                                                /* Skin selector */
+        /* Light/dark appearance toggle */
         if (target.closest('#dark-theme-btn')) {
-            toggleSkinDropdown();
-            return;
-        }
-        if (target.closest('[data-skin-option]')) {
-            var optEl = target.closest('[data-skin-option]');
-            var skinId = optEl.dataset.skinOption;
-            if (SKINS[skinId]) {
-                state.skinId = skinId;
-                applySkin();
-            }
-            toggleSkinDropdown(false);
-            return;
-        }
-        if (target.closest('#skin-dropdown')) {
+            toggleTheme();
             return;
         }
 
